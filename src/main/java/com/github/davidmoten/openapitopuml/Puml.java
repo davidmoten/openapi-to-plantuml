@@ -13,14 +13,15 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.io.IOUtils;
 
-import com.github.davidmoten.guavamini.Lists;
 import com.github.davidmoten.guavamini.Sets;
 
 import io.swagger.parser.OpenAPIParser;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.media.ArraySchema;
+import io.swagger.v3.oas.models.media.BooleanSchema;
 import io.swagger.v3.oas.models.media.DateSchema;
 import io.swagger.v3.oas.models.media.DateTimeSchema;
+import io.swagger.v3.oas.models.media.IntegerSchema;
 import io.swagger.v3.oas.models.media.NumberSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
@@ -43,18 +44,6 @@ public class Puml {
         // the parsed POJO
         OpenAPI a = result.getOpenAPI();
 
-        // @startuml
-//        class A {
-//            {static} int counter
-//            +void {abstract} start(int timeout)
-//            }
-//            note right of A::counter
-//              This member is annotated
-//            end note
-//            note right of A::start
-//              This method is now explained in a UML note
-//            end note
-//            @enduml
         return "@startuml" //
                 + a.getComponents() //
                         .getSchemas() //
@@ -83,13 +72,17 @@ public class Puml {
             }
             schema.getProperties().entrySet().forEach(entry -> {
                 if (entry.getValue() instanceof StringSchema) {
-                    append(b, required, "String", entry.getKey());
+                    append(b, required, "string", entry.getKey());
                 } else if (entry.getValue() instanceof NumberSchema) {
-                    append(b, required, "Decimal", entry.getKey());
+                    append(b, required, "decimal", entry.getKey());
                 } else if (entry.getValue() instanceof DateTimeSchema) {
-                    append(b, required, "Timestamp", entry.getKey());
+                    append(b, required, "timestamp", entry.getKey());
                 } else if (entry.getValue() instanceof DateSchema) {
-                    append(b, required, "Date", entry.getKey());
+                    append(b, required, "date", entry.getKey());
+                } else if (entry.getValue() instanceof BooleanSchema) {
+                    append(b, required, "boolean", entry.getKey());
+                } else if (entry.getValue() instanceof IntegerSchema) {
+                    append(b, required, "integer", entry.getKey());
                 } else if (entry.getValue() instanceof ArraySchema) {
                     ArraySchema a = (ArraySchema) entry.getValue();
                     Schema<?> items = a.getItems();
@@ -126,7 +119,7 @@ public class Puml {
             }
         } else if (schema instanceof StringSchema) {
             StringSchema s = (StringSchema) schema;
-            append(b, Sets.newHashSet("value"), "String", "value");
+            append(b, Sets.newHashSet("value"), "string", "value");
         } else {
             // TODO
             System.out.println("not processed " + name + ":" + schema);
