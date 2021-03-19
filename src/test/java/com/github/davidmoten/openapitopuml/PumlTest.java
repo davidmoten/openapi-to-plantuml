@@ -29,7 +29,7 @@ public class PumlTest {
 
     @Test
     public void testConvertCts() throws IOException {
-        try (InputStream in = PumlTest.class.getResourceAsStream("/openapi-1.yml")) {
+        try (InputStream in = PumlTest.class.getResourceAsStream("/openapi-example.yml")) {
             String puml = Puml.openApiToPuml(in);
             System.out.println(puml);
             SourceStringReader reader = new SourceStringReader(puml);
@@ -37,7 +37,7 @@ public class PumlTest {
                 // Write the first image to "os"
                 reader.generateImage(os, new FileFormatOption(FileFormat.SVG));
 
-                File file = new File("src/docs/openapi-1.svg");
+                File file = new File("src/docs/openapi-example.svg");
                 file.delete();
                 Files.write(file.toPath(), os.toByteArray());
             }
