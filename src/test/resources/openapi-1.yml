@@ -1,0 +1,699 @@
+# This document is maintained manually. If you make changes to the rest API those changes
+# should be reflected in this document.
+openapi: 3.0.0
+info:
+  version: '1.0'
+  title: Craft Tracking System
+  description: REST style service access for CTS
+servers:
+  - url: URL_HERE
+    description: DESCRIPTION_HERE
+    
+paths:
+  /agent:
+    get:
+      summary: Returns the list of craft reporting agents (reporting sources)
+      description: |
+        Returns the list of craft reporting agents (reporting sources), like AIS, LRIT, FIS.
+      responses:
+        '200':    # status code
+          description: OK
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/agents'
+                  
+  /craftType:
+    get:
+      summary: Returns the list of craft types
+      description: |
+        Returns the list of craft types, like Vessel, Aircraft, Tracking Device, etc.
+      responses:
+        '200':    # status code
+          description: OK
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/craftTypes'
+                  
+  /track/rect:
+    get:
+      summary: |
+        Returns a list of tracks (craft with positions) according to position, time and other criteria
+      description: |
+        Returns a list of track objects with identifiers, properties and positions
+      parameters: 
+        - in: query
+          name: startTimeInclusive
+          description: start of the search time window, must be less than finishTimeExclusive
+          required: true
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: finishTimeExclusive
+          description: finish of the search time window, must be greater than startTimeExclusive
+          required: true
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: identifierValue
+          description: identifier values to filter on, no filtering if empty
+          schema: 
+            type: array
+            items: 
+              type: string
+        - in: query
+          name: craftId
+          description: craftId to filter on, no filtering if empty
+          schema: 
+            type: array
+            items: 
+              type: string
+        - in: query
+          name: craftType
+          description: craft types to filter on, no filtering if empty
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: agent
+          description: craft reporting agents to filter on, no filtering if empty
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: minLat
+          description: southermost latitude of the bounding box, must be less than maxLatExclusive
+          required: true
+          schema: 
+            type: number
+            minimum: -90
+            maximum: 90
+        - in: query
+          name: maxLat
+          description: northernmost latitude of the bounding box, must be greater than or equal to minLat
+          required: true
+          schema:
+            type: number
+            minimum: -90
+            maximum: 90
+        - in: query
+          name: leftLon
+          description: |
+            left longitude of the bounding box. Note that it is possible and acceptable to have 
+            leftLon > rightLon. For example leftLon = 160, rightLon=-160 defines the region 20 
+            degrees each side of the 180 degree line of longitude.
+          required: true
+          schema:
+            type: number
+            minimum: -180
+            maximum: 180
+        - in: query
+          name: rightLon
+          description: |
+            right longitude of the bounding box. Note that it is possible and acceptable to have 
+            leftLon > rightLon. For example leftLon = 160, rightLon=-160 defines the region 20 
+            degrees each side of the 180 degree line of longitude.
+          required: true
+          schema:
+            type: number
+            minimum: -180
+            maximum: 180
+        - in: query
+          name: includeFixProperties
+          description: includes fix properties if true otherwise does not
+          schema:
+            type: boolean
+            default: true
+        - in: query
+          name: includeFixIdentifers
+          description: includes fix identifiers if true otherwise does not
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':    # status code
+          description: OK
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/tracks'
+                
+  /track/circle:
+    get:
+      summary: Returns a list of tracks (craft with positions) according to position, time and other criteria
+      description: Returns a list of track objects with craft identifiers and positions
+      parameters: 
+        - in: query
+          name: startTimeInclusive
+          description: start of the search time window, must be less than finishTimeExclusive
+          required: true
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: finishTimeExclusive
+          description: finish of the search time window, must be greater than startTimeExclusive
+          required: true
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: identifierValue
+          description: identifier values to filter on, no filtering if empty
+          schema: 
+            type: array
+            items: 
+              type: string
+        - in: query
+          name: craftId
+          description: craftId to filter on, no filtering if empty
+          schema: 
+            type: array
+            items: 
+              type: string              
+        - in: query
+          name: craftType
+          description: craft types to filter on, no filtering if empty
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: agent
+          description: craft reporting agents to filter on, no filtering if empty
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: centreLat
+          description: latitude of the centre of the search region
+          required: true
+          schema: 
+            type: number
+            minimum: -90
+            maximum: 90
+        - in: query
+          name: centreLon
+          description: longitude of the centre of the search region
+          required: true
+          schema:
+            type: number
+            minimum: -180
+            maximum: 180
+        - in: query
+          name: radiusNm
+          description: radius of the search circle in nautical miles
+          required: true
+          schema:
+            type: number
+            minimum: 0
+        - in: query
+          name: includeFixProperties
+          description: includes fix properties if true otherwise does not
+          schema:
+            type: boolean
+            default: true
+        - in: query
+          name: includeFixIdentifers
+          description: includes fix identifiers if true otherwise does not
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':    # status code
+          description: OK
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/tracks'                
+                
+  /craftpic/rect:
+    get:
+      summary: |
+        Returns closest actual positions by time or predicted positions 
+        (using interpolation/extrapolation) at given time within a rectangular
+        WGS84 region and other criteria. Expands the given rectangular region 
+        with a margin based on the given speed knots of craft and the duration 
+        of the time window so that vessels entering the region during the time
+        window are considered. Note that closest actual position by time becomes
+        last actual position if afterHours is set to 0. 
+      description: Returns a list of craft with position
+      parameters: 
+        - in: query
+          name: time
+          description: time to predict positions at or to find the closest actual position to
+          required: true
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: beforeHours
+          description: hours before time to search for fixes
+          required: true
+          schema: 
+            type: number
+            minimum: 0
+            default: 24
+        - in: query
+          name: afterHours
+          description: hours after time to search for fixes
+          required: true
+          schema: 
+            type: number
+            minimum: 0
+            default: 2   
+        - in: query
+          name: identifierValue
+          description: identifier values to filter on, no filtering if empty
+          schema: 
+            type: array
+            items: 
+              type: string
+        - in: query
+          name: craftId
+          description: craftId to filter on, no filtering if empty
+          schema: 
+            type: array
+            items: 
+              type: string              
+        - in: query
+          name: craftType
+          description: craft types to filter on, no filtering if empty
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: agent
+          description: craft reporting agents to filter on, no filtering if empty
+          schema:
+            type: array
+            items:
+              type: string                   
+        - in: query
+          name: minLat
+          description: southermost latitude of the bounding box, must be less than or equal to maxLat
+          required: true
+          schema: 
+            type: number
+            minimum: -90
+            maximum: 90
+        - in: query
+          name: maxLat
+          description: northernmost latitude of the bounding box, must be greater than or equal to minLat
+          required: true
+          schema:
+            type: number
+            minimum: -90
+            maximum: 90
+        - in: query
+          name: leftLon
+          description: |
+            left longitude of the bounding box. Note that it is possible and acceptable to have 
+            leftLon > rightLon. For example leftLon = 160, rightLon=-160 defines the region 20 
+            degrees each side of the 180 degree line of longitude.
+          required: true
+          schema:
+            type: number
+            minimum: -180
+            maximum: 180
+        - in: query
+          name: rightLon
+          description: |
+            right longitude of the bounding box. Note that it is possible and acceptable to have 
+            leftLon > rightLon. For example leftLon = 160, rightLon=-160 defines the region 20 
+            degrees each side of the 180 degree line of longitude.
+          required: true
+          schema:
+            type: number
+            minimum: -180
+            maximum: 180
+        - in: query
+          name: includeFixProperties
+          description: includes fix properties if true otherwise does not
+          schema:
+            type: boolean
+            default: true
+        - in: query
+          name: includeCraftProperties
+          description: includes craft properties if true otherwise does not
+          schema:
+            type: boolean
+            default: true
+        - in: query
+          name: includeFixIdentifers
+          description: includes fix identifiers if true otherwise does not
+          schema:
+            type: boolean
+            default: false
+        - in: query
+          name: predicted
+          description: if true then uses extrapolation/interpolation to predict the positions at target time. If false returns closest actual positions by time to the target time. 
+          schema:
+            type: boolean
+            default: true
+        - in: query
+          name: speedForMarginKnots
+          description: |
+            Initial search region is expanded by at least the distance that a craft would travel in the given time
+            window to capture vessels starting outside the region at start of time window and entering the
+            region before the finish of the time window. Setting this value to 0 effectively turns off the 
+            margin. The number of degrees of longitude for a given distance varies with the latitude and the
+            most distant latitude of the region from the equator is used to calculate the margins in the longitude
+            direction (left, right margins). The default value of 20 knots is the average speed of container vessels. 
+            Cruise ships travel even faster (25 knots) so override the default as you see fit. 
+          schema:
+            type: number
+            default: 20
+            minimum: 0
+      responses:
+        '200':    # status code
+          description: OK
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/craftpic'
+                
+  /craftpic/circle:
+    get:
+      summary: |
+        Returns the closest actual positions by time or predicted positions 
+        (using interpolation/extrapolation) at given time within a circular 
+        WGS84 region and other criteria. Expands the given rectangular region 
+        with a margin based on the given speed knots of craft and the duration 
+        of the time window so that craft entering the region during the time
+        window are considered. Note that closest actual position by time becomes
+        last actual position if afterHours is set to 0.
+      description: Returns a list of craft with position
+      parameters: 
+        - in: query
+          name: time
+          description: time to find closest actual by time or predicted positions at
+          required: true
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: beforeHours
+          description: hours before time to search for fixes
+          required: true
+          schema: 
+            type: number
+            minimum: 0
+            default: 24
+        - in: query
+          name: afterHours
+          description: hours after time to search for fixes
+          required: true
+          schema: 
+            type: number
+            minimum: 0
+            default: 2          
+        - in: query
+          name: identifierValue
+          description: identifier values to filter on, no filtering if empty
+          schema: 
+            type: array
+            items: 
+              type: string
+        - in: query
+          name: craftId
+          description: craftId to filter on, no filtering if empty
+          schema: 
+            type: array
+            items: 
+              type: string              
+        - in: query
+          name: craftType
+          description: craft types to filter on, no filtering if empty
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: agent
+          description: craft reporting agents to filter on, no filtering if empty
+          schema:
+            type: array
+            items:
+              type: string             
+        - in: query
+          name: centreLat
+          description: latitude of the centre of the circular search region
+          required: true
+          schema: 
+            type: number
+            minimum: -90
+            maximum: 90
+        - in: query
+          name: centreLon
+          description: longitude of the centre of the circular search region
+          required: true
+          schema:
+            type: number
+            minimum: -180
+            maximum: 180
+        - in: query
+          name: radiusNm
+          description: radius of the search region in nautical miles
+          required: true
+          schema:
+            type: number
+            minimum: 0
+        - in: query
+          name: includeCraftProperties
+          description: includes craft properties if true otherwise does not
+          schema:
+            type: boolean
+            default: true
+        - in: query
+          name: includeFixProperties
+          description: includes fix properties if true otherwise does not
+          schema:
+            type: boolean
+            default: true
+        - in: query
+          name: includeFixIdentifers
+          description: includes fix identifiers if true otherwise does not
+          schema:
+            type: boolean
+            default: false
+        - in: query
+          name: predicted
+          description: if true then uses extrapolation/interpolation to predict the positions at target time. If false returns closest actual positions by time to the target time. 
+          schema:
+            type: boolean
+            default: true
+        - in: query
+          name: speedForMarginKnots
+          description: |
+            Initial search region is expanded by at least the distance that a craft would travel in the given time
+            window to capture vessels starting outside the region at start of time window and entering the
+            region before the finish of the time window. Setting this value to 0 effectively turns off the 
+            margin. The number of degrees of longitude for a given distance varies with the latitude and the
+            most distant latitude of the region from the equator is used to calculate the margins in the longitude
+            direction (left, right margins). The default value of 20 knots is the average speed of container vessels. 
+            Cruise ships travel even faster (25 knots) so override the default as you see fit.
+          schema:
+            type: number
+            default: 20
+            minimum: 0
+      responses:
+        '200':    # status code
+          description: OK
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/craftpic'                
+
+components:
+  schemas:
+  
+    agents:
+      description: craft reporting agents like AIS, LRIT
+      type: array
+      items:
+        type: string
+            
+    craftTypes:
+      description: craft types like Vessel, Aircraft
+      type: array
+      items:
+        type: string
+
+    tracks: 
+      description: a collection of unique craft and their position reports (fixes)
+      type: array
+      items:
+        $ref: '#/components/schemas/craftFixes'
+          
+    craftpic:
+      description: a collection of unique craft and a single position report (fix)
+      type: array
+      items: 
+        $ref: '#/components/schemas/craftFix'
+            
+    craftFix:
+      description: a single craft together with a single position for that craft (fix)
+      properties:
+        craftId:
+          type: string
+          maxLength: 512
+          minLength: 1
+          example: 43215678
+        craftType:
+          type: string
+          maxLength: 512
+          minLength: 1
+          example: Vessel
+        identifiers:
+          type: array
+          items:
+            $ref: '#/components/schemas/identifier'
+        properties:
+          description: |
+            the properties here are accumulated from fix properties over time 
+            and correspond to the current time rather than the search time. Given this fact
+            a client may want to ignore many of these properties (and focus on effectively
+            static ones like Name or CraftSubtype). 
+          type: array
+          items:
+            $ref: '#/components/schemas/property'
+        fix:
+          $ref: '#/components/schemas/fix'
+      required:
+      - craftId
+      - craftType
+      - fix
+              
+    craftFixes:
+      description: a single craft and a collection of position reports (fixes)
+      properties:
+        craftId:
+          type: string
+          maxLength: 512
+          minLength: 1
+          example: 43215678
+        craftType:
+          type: string
+          maxLength: 512
+          minLength: 1
+          example: Vessel
+        identifiers:
+          type: array
+          items:
+            $ref: '#/components/schemas/identifier'
+        properties:
+          description: |
+            the properties here are accumulated from fix properties over time 
+            and correspond to the current time rather than the search time. Given this fact
+            a client may want to ignore many of these properties (and focus on effectively
+            static ones like Name or CraftSubtype). 
+          type: array
+          items:
+            $ref: '#/components/schemas/property'
+        fixes:
+          type: array
+          items:
+            $ref: '#/components/schemas/fix'
+      required:
+      - craftId
+      - craftType
+
+    identifier:
+      description: a unique identifier for a craft having a key and value
+      properties:
+        key: 
+          type: string
+          minLength: 1
+          example: MMSI
+        value:
+          type: string
+          example: '123456789'
+      required:
+      - key
+      - value
+
+    property:
+      description: a key-value property of the craft and/or fix
+      properties:
+        key: 
+          type: string
+          minLength: 1
+          example: Name
+        value:
+          type: string
+          example: 'PACIFIC EXPLORER'
+      required:
+      - key
+      - value
+
+    fix:
+      description: a position report for a craft (may be actual or predicted)
+      properties:
+        fixId: 
+          type: string
+          maxLength: 512
+          minLength: 1
+          example: '7654321'
+        time: 
+          type: string
+          format: date-time
+          example: '2020-11-17T14:08:18.123Z'
+        lat: 
+          type: number
+          minimum: -90.0
+          maximum: 90.0
+          example: -34.2
+        lon: 
+          type: number
+          minimum: -180
+          maximum: 180
+          example: 140.0
+        altitudeMetres: 
+          type: number
+        cog: 
+          type: number
+          minimum: 0
+          maximum: 360
+          example: 345.0
+        speedKnots: 
+          type: number
+          minimum: 0.0
+          example: 10.5
+        agent: 
+          type: string
+          minLength: 1
+          example: AIS
+        properties: 
+          type: array
+          items: 
+            $ref: '#/components/schemas/property'
+        identifiers:
+          type: array
+          items: 
+            $ref: '#/components/schemas/identifier'
+        closestActualFixTime: 
+          type: string
+          format: date-time
+      required:
+      - fixId
+      - time
+      - lat
+      - lon
+      - agent
+
+  securitySchemes:
+    basicAuth:     # <-- arbitrary name for the security scheme
+      type: http
+      scheme: basic
+      
+security:
+  - basicAuth: [] # applies to whole api
+      
