@@ -1,0 +1,124 @@
+@startuml
+hide <<Method>> circle
+class "GET /agent" <<Method>> {
+}
+
+class "GET /track/circle" <<Method>>{
+    centreLat : decimal
+    centreLon : decimal
+    radiusNm : decimal
+    includeCraftProperties : boolean
+    includeFixIdentifiers : boolean
+    includeFixProperties : boolean
+}
+
+class "GET /track/rect" <<Method>>{
+    minLat : decimal
+    maxLat : decimal
+    leftLon : decimal
+    rightLon : decimal
+    includeCraftProperties : boolean
+    includeFixIdentifiers : boolean
+    includeFixProperties : boolean
+}
+
+class agents {
+}
+
+"GET /agent" --> agents: 200
+
+"GET /track/circle" --> tracks: 200
+"GET /track/rect" --> tracks: 200
+
+agents --> "*" agent
+
+class agent {
+  value : string
+}
+
+class craftTypes {
+}
+
+craftTypes --> "*" craftType
+
+class tracks {
+}
+
+tracks --> "*" craftFixes
+
+class craftpic {
+}
+
+craftpic --> "*" craftFix
+
+class craftId {
+  value : string
+}
+
+class craftType {
+  value : string
+}
+
+class identifierTypes {
+}
+
+identifierTypes --> "*" identifierType
+
+class identifierType {
+  value : string
+}
+
+class craftFix {
+}
+
+craftFix --> "1" craftId
+
+craftFix --> "1" craftType
+
+craftFix --> "*" identifier : identifiers
+
+craftFix --> "*" property : properties
+
+craftFix --> "1" fix
+
+class craftFixes {
+}
+
+craftFixes --> "1" craftId
+
+craftFixes --> "1" craftType
+
+craftFixes --> "*" identifier : identifiers
+
+craftFixes --> "*" property : properties
+
+craftFixes --> "*" fix : fixes
+
+class identifier {
+  value : string
+}
+
+identifier --> "1" identifierType : key
+
+class property {
+  key : string
+  value : string
+}
+
+class fix {
+  fixId : string
+  time : timestamp
+  lat : decimal
+  lon : decimal
+  altitudeMetres : decimal {O}
+  cog : decimal {O}
+  speedKnots : decimal {O}
+  closestActualFixTime : timestamp {O}
+}
+
+fix --> "1" agent
+
+fix --> "*" property : properties
+
+fix --> "*" identifier : identifiers
+@enduml

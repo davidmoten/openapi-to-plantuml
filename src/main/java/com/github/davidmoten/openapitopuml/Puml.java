@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.io.IOUtils;
 
@@ -17,6 +18,8 @@ import com.github.davidmoten.guavamini.Sets;
 
 import io.swagger.parser.OpenAPIParser;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.Operation;
+import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.BooleanSchema;
 import io.swagger.v3.oas.models.media.DateSchema;
@@ -45,13 +48,39 @@ public class Puml {
         OpenAPI a = result.getOpenAPI();
 
         return "@startuml" //
-                + a.getComponents() //
-                        .getSchemas() //
-                        .entrySet() //
-                        .stream() //
-                        .map(entry -> toPlantUmlClass(entry.getKey(), entry.getValue())) //
-                        .collect(Collectors.joining("")) //
+                + components(a) //
+                + paths(a) //
                 + "\n@enduml";
+    }
+
+    private static String paths(OpenAPI a) {
+        return a.getPaths() //
+                .entrySet() //
+                .stream() //
+                .map(entry -> toPlantUmlPath(entry.getKey(), entry.getValue())).collect(Collectors.joining());
+
+    }
+
+    private static String components(OpenAPI a) {
+        return a.getComponents() //
+                .getSchemas() //
+                .entrySet() //
+                .stream() //
+                .map(entry -> toPlantUmlClass(entry.getKey(), entry.getValue())) //
+                .collect(Collectors.joining()) //
+        ;
+    }
+
+    private static String toPlantUmlPath(String name, PathItem p) {
+        // add method class blocks with HTTP verb and parameters
+        // add response lines
+        return operations(p).stream().map(o -> "").collect(Collectors.joining());
+    }
+
+    private static List<Operation> operations(PathItem p) {
+        return Stream.of(p.getGet(), p.getPost(), p.getPut(), p.getPatch()) //
+                .filter(o -> o != null) //
+                .collect(Collectors.toList());
     }
 
     private static String toPlantUmlClass(String name, Schema<?> schema) {
