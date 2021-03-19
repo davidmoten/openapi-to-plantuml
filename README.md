@@ -3,7 +3,7 @@ Java library to generate plantuml class diagram (merged with paths) from an Open
 
 An example definition is [openapi-example.yml](src/test/resources/openapi-example.yml).
 
-The corresponding Class Diagram (supplemented with Path operations) is:
+The corresponding Class Diagram (supplemented with Path operations) is (best viewed with a light background colour):
 
 <img style="background-color:white" src="src/docs/openapi-example.svg"/>
 
