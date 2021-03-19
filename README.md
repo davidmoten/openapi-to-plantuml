@@ -5,5 +5,5 @@ An example definition is [openapi-example.yml](src/test/resources/openapi-exampl
 
 The corresponding Class Diagram (supplemented with Path operations) is:
 
-<img src="src/docs/openapi-example.svg"/>
+<img style="background-color:white" src="src/docs/openapi-example.svg"/>
 
