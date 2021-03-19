@@ -118,7 +118,6 @@ public class Puml {
                 // TODO
             }
         } else if (schema instanceof StringSchema) {
-            StringSchema s = (StringSchema) schema;
             append(b, Sets.newHashSet("value"), "string", "value");
         } else {
             // TODO

@@ -17,7 +17,7 @@ public class PumlTest {
                 + "          type: array\n" + "          items:\n"
                 + "            $ref: '#/components/schemas/Customer'\n" + "      ";
 
-        //System.out.println(Puml.toPuml(openapi));
+        Puml.toPuml(openapi);
     }
 
     @Test
