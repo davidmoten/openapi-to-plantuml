@@ -52,20 +52,20 @@ public class Puml {
 //              This method is now explained in a UML note
 //            end note
 //            @enduml
-        return "@startuml\n\n" //
+        return "@startuml" //
                 + a.getComponents() //
                         .getSchemas() //
                         .entrySet() //
                         .stream() //
                         .map(entry -> toPlantUmlClass(entry.getKey(), entry.getValue())) //
-                        .collect(Collectors.joining("\n\n")) //
+                        .collect(Collectors.joining("")) //
                 + "\n@enduml";
     }
 
     private static String toPlantUmlClass(String name, Schema<?> schema) {
         StringBuilder b = new StringBuilder();
         List<Entry<String, Schema<?>>> more = new ArrayList<>();
-        b.append("class " + name + " {\n");
+        b.append("\n\nclass " + name + " {\n");
         List<String> relationships = new ArrayList<>();
         if (schema.get$ref() != null) {
             String ref = schema.get$ref();
@@ -123,8 +123,9 @@ public class Puml {
             }
         } else if (schema instanceof StringSchema) {
             StringSchema s = (StringSchema) schema;
-            b.append("  String value\n");
+            append(b, Collections.emptySet(), "String", "value");
         } else {
+            // TODO
             System.out.println("not processed " + name + ":" + schema);
         }
         b.append("}");
@@ -132,13 +133,13 @@ public class Puml {
             b.append(toPlantUmlClass(entry.getKey(), entry.getValue()));
         }
         for (String relationship : relationships) {
-            b.append("\n" + relationship);
+            b.append("\n\n" + relationship);
         }
         return b.toString();
     }
 
-    private static void append(StringBuilder b, Set<String> required , String type, String name) {
-        b.append("  " + type + " " + name + required(required, name) + "\n");
+    private static void append(StringBuilder b, Set<String> required, String type, String name) {
+        b.append("  " + name + " : " + type + required(required, name) + "\n");
     }
 
     private static String required(Set<String> required, String name) {
