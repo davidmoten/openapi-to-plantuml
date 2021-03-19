@@ -1,9 +1,16 @@
 package com.github.davidmoten.openapitopuml;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 
 import org.junit.Test;
+
+import net.sourceforge.plantuml.FileFormat;
+import net.sourceforge.plantuml.FileFormatOption;
+import net.sourceforge.plantuml.SourceStringReader;
 
 public class PumlTest {
 
@@ -17,13 +24,23 @@ public class PumlTest {
                 + "          type: array\n" + "          items:\n"
                 + "            $ref: '#/components/schemas/Customer'\n" + "      ";
 
-        Puml.toPuml(openapi);
+        Puml.openApiToPuml(openapi);
     }
 
     @Test
     public void testConvertCts() throws IOException {
         try (InputStream in = PumlTest.class.getResourceAsStream("/openapi-1.yml")) {
-            System.out.println(Puml.toPuml(in));
+            String puml = Puml.openApiToPuml(in);
+            System.out.println(puml);
+            SourceStringReader reader = new SourceStringReader(puml);
+            try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+                // Write the first image to "os"
+                reader.generateImage(os, new FileFormatOption(FileFormat.SVG));
+
+                File file = new File("src/docs/openapi-1.svg");
+                file.delete();
+                Files.write(file.toPath(), os.toByteArray());
+            }
         }
     }
 }

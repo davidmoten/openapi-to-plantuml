@@ -2,6 +2,7 @@ package com.github.davidmoten.openapitopuml;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,11 +35,11 @@ import io.swagger.v3.parser.core.models.SwaggerParseResult;
 
 public class Puml {
 
-    public static String toPuml(InputStream in) throws IOException {
-        return toPuml(IOUtils.toString(in, StandardCharsets.UTF_8));
+    public static String openApiToPuml(InputStream in) throws IOException {
+        return openApiToPuml(IOUtils.toString(in, StandardCharsets.UTF_8));
     }
-
-    public static String toPuml(String openApi) {
+    
+    public static String openApiToPuml(String openApi) {
         SwaggerParseResult result = new OpenAPIParser().readContents(openApi, null, null);
 
         // or from a file
@@ -49,7 +50,7 @@ public class Puml {
         OpenAPI a = result.getOpenAPI();
 
         return "@startuml" //
-                + "hide <<Method>> circle" //
+                + "\nhide <<Method>> circle" //
                 + components(a) //
                 + paths(a) //
                 + "\n@enduml";
