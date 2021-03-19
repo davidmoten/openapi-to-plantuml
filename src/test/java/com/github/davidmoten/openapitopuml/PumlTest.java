@@ -11,9 +11,9 @@ public class PumlTest {
                 "  schemas:\n" + 
                 "    CustomerType:\n" + 
                 "      type: string\n" + 
-                "      example: Example value" + 
+                "      example: Example value\n" + 
                 "    Customer:\n" + 
-                "      type: string" +
+                "      type: string\n" +
                 "      "
                 ;
         
