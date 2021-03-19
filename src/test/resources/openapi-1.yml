@@ -35,7 +35,20 @@ paths:
             application/json:
               schema: 
                 $ref: '#/components/schemas/craftTypes'
-                  
+      
+  /identifierType:
+    get:
+      summary: Returns the list of craft identifier types 
+      description: |
+        Returns the list of craft identifier types like MMSI, Serial Number, IMO Number
+      responses:
+        '200':    # status code
+          description: OK
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/identifierTypes'
+                            
   /track/rect:
     get:
       summary: |
@@ -519,13 +532,17 @@ components:
       description: craft reporting agents like AIS, LRIT
       type: array
       items:
-        type: string
+        $ref: '#/components/schemas/agent'
             
+    agent:
+      description: craft reporting agent like AIS, LRIT
+      type: string
+      
     craftTypes:
       description: craft types like Vessel, Aircraft
       type: array
       items:
-        type: string
+        $ref: '#/components/schemas/craftType'
 
     tracks: 
       description: a collection of unique craft and their position reports (fixes)
@@ -538,20 +555,38 @@ components:
       type: array
       items: 
         $ref: '#/components/schemas/craftFix'
+        
+    craftId:
+      description: the unique system identifier of a craft (not one of the public identifiers for a craft like the MMSI no)
+      type: string
+      maxLength: 512
+      minLength: 1
+      example: 43215678
+      
+    craftType:
+      type: string
+      maxLength: 512
+      minLength: 1
+      example: Vessel
+
+    identifierTypes:
+      type: array
+      items:
+        $ref: '#/components/schemas/identifierType'
+      
+    identifierType:
+      type: string
+      maxLength: 256
+      minLength: 1
+      example: MMSI
             
     craftFix:
       description: a single craft together with a single position for that craft (fix)
       properties:
         craftId:
-          type: string
-          maxLength: 512
-          minLength: 1
-          example: 43215678
+          $ref: '#/components/schemas/craftId'
         craftType:
-          type: string
-          maxLength: 512
-          minLength: 1
-          example: Vessel
+          $ref: '#/components/schemas/craftType'
         identifiers:
           type: array
           items:
@@ -576,15 +611,9 @@ components:
       description: a single craft and a collection of position reports (fixes)
       properties:
         craftId:
-          type: string
-          maxLength: 512
-          minLength: 1
-          example: 43215678
+          $ref: '#/components/schemas/craftId'
         craftType:
-          type: string
-          maxLength: 512
-          minLength: 1
-          example: Vessel
+          $ref: '#/components/schemas/craftType'
         identifiers:
           type: array
           items:
@@ -610,9 +639,7 @@ components:
       description: a unique identifier for a craft having a key and value
       properties:
         key: 
-          type: string
-          minLength: 1
-          example: MMSI
+          $ref: '#/components/schemas/identifierType'
         value:
           type: string
           example: '123456789'
@@ -668,9 +695,7 @@ components:
           minimum: 0.0
           example: 10.5
         agent: 
-          type: string
-          minLength: 1
-          example: AIS
+          $ref: '#/components/schemas/agent'
         properties: 
           type: array
           items: 

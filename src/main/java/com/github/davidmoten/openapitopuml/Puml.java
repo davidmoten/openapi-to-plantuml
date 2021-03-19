@@ -13,6 +13,9 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.io.IOUtils;
 
+import com.github.davidmoten.guavamini.Lists;
+import com.github.davidmoten.guavamini.Sets;
+
 import io.swagger.parser.OpenAPIParser;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.media.ArraySchema;
@@ -93,14 +96,14 @@ public class Puml {
                     String ref = items.get$ref();
                     if (ref != null) {
                         String otherClassName = refToClassName(ref);
-                        relationships.add(name + " --> \"*\" " + otherClassName + ": " + entry.getKey());
+                        addToMany(relationships, name, otherClassName, entry.getKey());
                     } else {
                         // TODO
                     }
                 } else if (entry.getValue().get$ref() != null) {
                     String ref = entry.getValue().get$ref();
                     String otherClassName = refToClassName(ref);
-                    relationships.add(name + " --> \"1\" " + otherClassName + ": " + entry.getKey());
+                    addToOne(relationships, name, otherClassName, entry.getKey());
                 }
             });
         } else if (schema instanceof ArraySchema) {
@@ -109,7 +112,7 @@ public class Puml {
             String ref = items.get$ref();
             if (ref != null) {
                 String otherClassName = refToClassName(ref);
-                relationships.add(name + " --> \"*\" " + otherClassName);
+                addToMany(relationships, name, otherClassName);
             } else {
                 // TODO
             }
@@ -123,7 +126,7 @@ public class Puml {
             }
         } else if (schema instanceof StringSchema) {
             StringSchema s = (StringSchema) schema;
-            append(b, Collections.emptySet(), "String", "value");
+            append(b, Sets.newHashSet("value"), "String", "value");
         } else {
             // TODO
             System.out.println("not processed " + name + ":" + schema);
@@ -136,6 +139,19 @@ public class Puml {
             b.append("\n\n" + relationship);
         }
         return b.toString();
+    }
+
+    private static void addToMany(List<String> relationships, String name, String otherClassName) {
+        addToMany(relationships, name, otherClassName, null);
+    }
+
+    private static void addToMany(List<String> relationships, String name, String otherClassName, String field) {
+        relationships.add(name + " --> \"*\" " + otherClassName
+                + (field == null || field.equals(otherClassName) ? "" : " : " + field));
+    }
+
+    private static void addToOne(List<String> relationships, String name, String otherClassName, String field) {
+        relationships.add(name + " --> \"1\" " + otherClassName + (field.equals(otherClassName) ? "" : " : " + field));
     }
 
     private static void append(StringBuilder b, Set<String> required, String type, String name) {
