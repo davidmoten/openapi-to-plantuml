@@ -1,4 +1,4 @@
-package com.github.davidmoten.openapitopuml;
+package com.github.davidmoten.oa2puml.v3;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.nio.file.Files;
 
 import org.junit.Test;
+
+import com.github.davidmoten.oa2puml.v3.Puml;
 
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;

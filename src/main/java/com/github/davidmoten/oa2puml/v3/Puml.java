@@ -1,4 +1,4 @@
-package com.github.davidmoten.openapitopuml;
+package com.github.davidmoten.oa2puml.v3;
 
 import java.io.IOException;
 import java.io.InputStream;
