@@ -167,7 +167,7 @@ public class Converter {
                 if (entry.getValue().get$ref() != null) {
                     String ref = entry.getValue().get$ref();
                     String otherClassName = refToClassName(ref);
-                    addToOne(relationships, name, otherClassName, entry.getKey());
+                    addToOne(relationships, name, otherClassName, entry.getKey(), required.contains(entry.getKey()));
                 } else {
                     String type = getUmlTypeName(entry.getValue().get$ref(), entry.getValue());
                     if (type.endsWith("[]") && !type.equals("byte[]")) {
@@ -223,8 +223,8 @@ public class Converter {
                 + (field == null || field.equals(otherClassName) ? "" : " : " + field));
     }
 
-    private static void addToOne(List<String> relationships, String name, String otherClassName, String field) {
-        relationships.add(name + " --> \"1\" " + otherClassName + (field.equals(otherClassName) ? "" : " : " + field));
+    private static void addToOne(List<String> relationships, String name, String otherClassName, String field, boolean isToOne) {
+        relationships.add(name + " --> \"" + (isToOne?"1":"0..1") + "\" " + otherClassName + (field.equals(otherClassName) ? "" : " : " + field));
     }
 
     private static void append(StringBuilder b, Set<String> required, String type, String name) {

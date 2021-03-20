@@ -5,13 +5,15 @@ class CustomerType {
 }
 
 class Customer {
-  firstName : string {O}
-  lastName : string {O}
+  firstName : string
+  lastName : string
   heightMetres : decimal {O}
 }
 
 Customer --> "1" CustomerType : type
 
 Customer --> "*" Customer : friends
+
+Customer --> "0..1" Customer : favouritePartner
 
 @enduml
