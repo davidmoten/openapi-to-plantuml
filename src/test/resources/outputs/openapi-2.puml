@@ -1,0 +1,13 @@
+@startuml
+
+class Customer {
+  firstName : string
+  lastName : string
+  heightMetres : decimal {O}
+  lastSessionTime : timestamp {O}
+  numberOfChildren : integer {O}
+  alive : boolean {O}
+  picture : byte[] {O}
+}
+
+@enduml

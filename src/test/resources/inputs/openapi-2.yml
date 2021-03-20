@@ -1,0 +1,28 @@
+openapi: 3.0.1
+components:
+  schemas:
+    Customer:
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        heightMetres:
+          type: number
+        dateOfBirth:
+          type: date
+        lastSessionTime:
+          type: string
+          format: date-time  
+        numberOfChildren:
+          type: integer        
+        alive:
+          type: boolean
+        picture:
+          type: string
+          format: binary
+      required:
+      - firstName
+      - lastName
+      - dateOfBirth
+        
