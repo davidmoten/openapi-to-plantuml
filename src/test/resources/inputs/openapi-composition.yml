@@ -1,11 +1,23 @@
 openapi: 3.0.1
 components:
   schemas:
-    Thing:
-      properties:
-        amount:
-          oneOf: 
-            - string
-            - integer
+    employee:
+      oneOf: 
+      - type:
+          $ref: "#/components/schemas/doctor"
+      - type:
+          $ref: "#/components/schemas/nurse"
       
-    
+    nurse:
+      properties:
+        level:
+          type: integer
+      required:
+      - level
+      
+    doctor:
+      properties:
+        income:
+          type: number
+      required:
+      - income
