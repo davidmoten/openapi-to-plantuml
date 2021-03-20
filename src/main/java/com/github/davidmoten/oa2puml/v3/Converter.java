@@ -197,13 +197,7 @@ public class Converter {
                 // TODO
             }
         } else if (schema instanceof ObjectSchema) {
-            ObjectSchema s = (ObjectSchema) schema;
-            if (s.get$ref() != null) {
-                String otherClassName = s.get$ref().substring(s.get$ref().lastIndexOf("/") + 1);
-                relationships.add(name + " --> " + otherClassName);
-            } else {
-                // TODO
-            }
+            throw new RuntimeException("anonymous object schema fragements not supported");
         } else if (schema instanceof StringSchema) {
             append(b, Sets.newHashSet("value"), "string", "value");
         } else {

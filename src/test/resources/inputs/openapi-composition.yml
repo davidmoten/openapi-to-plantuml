@@ -1,0 +1,11 @@
+openapi: 3.0.1
+components:
+  schemas:
+    Thing:
+      properties:
+        amount:
+          oneOf: 
+            - string
+            - integer
+      
+    
