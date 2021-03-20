@@ -3,10 +3,8 @@ components:
   schemas:
     employee:
       oneOf: 
-      - type:
-          $ref: "#/components/schemas/doctor"
-      - type:
-          $ref: "#/components/schemas/nurse"
+      - $ref: "#/components/schemas/doctor"
+      - $ref: "#/components/schemas/nurse"
       
     nurse:
       properties:

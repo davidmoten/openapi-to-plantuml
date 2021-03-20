@@ -22,6 +22,7 @@ import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.BinarySchema;
 import io.swagger.v3.oas.models.media.BooleanSchema;
+import io.swagger.v3.oas.models.media.ComposedSchema;
 import io.swagger.v3.oas.models.media.DateSchema;
 import io.swagger.v3.oas.models.media.DateTimeSchema;
 import io.swagger.v3.oas.models.media.IntegerSchema;
@@ -33,7 +34,11 @@ import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.parser.core.models.SwaggerParseResult;
 
-public class Converter {
+public final class Converter {
+
+    private Converter() {
+        // prevent instantiation
+    }
 
     public static String openApiToPuml(InputStream in) throws IOException {
         return openApiToPuml(IOUtils.toString(in, StandardCharsets.UTF_8));
@@ -153,9 +158,22 @@ public class Converter {
         b.append("\n\nclass " + name + " {\n");
         List<String> relationships = new ArrayList<>();
         if (schema.get$ref() != null) {
+            // this is an alias case for a schema
             String ref = schema.get$ref();
             String otherClassName = refToClassName(ref);
             relationships.add(name + " --> " + otherClassName);
+        } else if (schema instanceof ComposedSchema) {
+            ComposedSchema s = (ComposedSchema) schema;
+            System.out.println(s);
+            if (!s.getOneOf().isEmpty()) {
+                validateComposed(s.getOneOf());
+                List<String> otherClassNames = s //
+                        .getOneOf() //
+                        .stream() //
+                        .map(x -> refToClassName(x.get$ref())) //
+                        .collect(Collectors.toList());
+                addInheritance(relationships, name, otherClassNames);
+            }
         } else if (schema.getProperties() != null) {
             final Set<String> required;
             if (schema.getRequired() != null) {
@@ -214,6 +232,22 @@ public class Converter {
         return b.toString();
     }
 
+    private static void addInheritance(List<String> relationships, String name, List<String> otherClassNames) {
+        for (String otherClassName : otherClassNames) {
+            relationships.add(name + " <|-- " + otherClassName);
+        }
+    }
+
+    private static void validateComposed(@SuppressWarnings("rawtypes") List<Schema> schemas) {
+        if (schemas.stream().anyMatch(s -> s.get$ref() == null)) {
+            System.out.println(schemas.stream().map(x -> x.getClass().getSimpleName()).collect(Collectors.toList()));
+            throw new RuntimeException(
+                    "all elements of a composed type (oneOf, etc.) must be $ref (so that a meaningful diagram can be generated).\n"
+                            + schemas.stream().map(s -> s.toString()).collect(Collectors.joining("\n")));
+        }
+
+    }
+
     private static void addToMany(List<String> relationships, String name, String otherClassName) {
         addToMany(relationships, name, otherClassName, null);
     }
@@ -223,8 +257,10 @@ public class Converter {
                 + (field == null || field.equals(otherClassName) ? "" : " : " + field));
     }
 
-    private static void addToOne(List<String> relationships, String name, String otherClassName, String field, boolean isToOne) {
-        relationships.add(name + " --> \"" + (isToOne?"1":"0..1") + "\" " + otherClassName + (field.equals(otherClassName) ? "" : " : " + field));
+    private static void addToOne(List<String> relationships, String name, String otherClassName, String field,
+            boolean isToOne) {
+        relationships.add(name + " --> \"" + (isToOne ? "1" : "0..1") + "\" " + otherClassName
+                + (field.equals(otherClassName) ? "" : " : " + field));
     }
 
     private static void append(StringBuilder b, Set<String> required, String type, String name) {
