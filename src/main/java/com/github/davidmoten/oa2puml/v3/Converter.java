@@ -50,7 +50,6 @@ public class Converter {
         OpenAPI a = result.getOpenAPI();
 
         return "@startuml" //
-                + "\nhide <<Method>> circle" //
                 + components(a) //
                 + paths(a) //
                 + "\n@enduml";
@@ -60,12 +59,13 @@ public class Converter {
         if (a.getPaths() == null) {
             return "";
         } else {
-            return a.getPaths() //
-                    .entrySet() //
-                    .stream() //
-                    .map(entry -> toPlantUmlPath(entry.getKey(), //
-                            entry.getValue()))
-                    .collect(Collectors.joining());
+            return "\nhide <<Method>> circle" //
+                    + a.getPaths() //
+                            .entrySet() //
+                            .stream() //
+                            .map(entry -> toPlantUmlPath(entry.getKey(), //
+                                    entry.getValue()))
+                            .collect(Collectors.joining());
         }
     }
 
