@@ -25,6 +25,7 @@ public class ConverterTest {
                 + "          type: array\n" + "          items:\n"
                 + "            $ref: '#/components/schemas/Customer'\n" + "      ";
 
+        System.out.println(openapi);
         Converter.openApiToPuml(openapi);
     }
 

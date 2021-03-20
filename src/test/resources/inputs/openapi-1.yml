@@ -1,0 +1,20 @@
+openapi: 3.0.1
+components:
+  schemas:
+    CustomerType:
+      type: string
+      example: Example value
+    Customer:
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        heightMetres:
+          type: number
+        type:
+          $ref: '#/components/schemas/CustomerType'
+        friends:
+          type: array
+          items:
+            $ref: '#/components/schemas/Customer'
