@@ -22,7 +22,6 @@
         <maven.compiler.target>1.8</maven.compiler.target>
 
         <slf4j.version>1.7.28</slf4j.version>
-        <cobertura.version>2.7</cobertura.version>
         <checkstyle.version>3.1.2</checkstyle.version>
         <findbugs.version>2.5.4</findbugs.version>
         <javadoc.version>3.2.0</javadoc.version>
@@ -56,7 +55,7 @@
         <url>https://github.com/davidmoten/openapi-to-plantuml/issues</url>
     </issueManagement>
 
-    <inceptionYear>2013</inceptionYear>
+    <inceptionYear>2021</inceptionYear>
     <developers>
         <developer>
             <id>dave</id>
