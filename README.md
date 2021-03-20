@@ -12,3 +12,22 @@ The corresponding Class Diagram (supplemented with Path operations) is (best vie
 
 <img style="background-color:white" src="src/docs/openapi-example.svg"/>
 
+## Getting started
+Add this dependency to your pom.xml:
+
+```xml
+<dependency>
+  <groupId>com.github.davidmoten</groupId>
+  <artifactId>openapi-to-plantuml</artifactId>
+  <version>VERSION_HERE</version>
+</dependency>
+```
+
+## Usage
+
+```java
+String puml = Puml.openApiToPuml(openapi);
+```
+
+
+
