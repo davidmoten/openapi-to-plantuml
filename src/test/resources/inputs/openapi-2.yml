@@ -23,6 +23,10 @@ components:
           type: array
           items: 
             type: string
+        favouriteNumbers:
+          type: array
+          items:
+            type: integer 
         picture:
           type: string
           format: binary

@@ -56,6 +56,7 @@ public class ConverterTest {
                     File output = new File(outputs,
                             input.getName().substring(0, input.getName().lastIndexOf('.')) + ".puml");
                     if (!output.exists()) {
+                        output.createNewFile();
                         System.out.println(puml);
                         throw new RuntimeException(output + " does not exist");
                     }

@@ -9,6 +9,7 @@ class Customer {
   numberOfChildren : integer {O}
   alive : boolean {O}
   nicknames : string[] {O}
+  favouriteNumbers : integer[] {O}
   picture : byte[] {O}
 }
 
