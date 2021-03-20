@@ -95,7 +95,7 @@ public class Converter {
                         s.append(parameters //
                                 .stream()//
                                 .map(param -> {
-                                    final String type = paramToTypeName(param.get$ref(), param.getSchema());
+                                    final String type = getUmlTypeName(param.get$ref(), param.getSchema());
                                     final String optional = param.getRequired() ? "" : " {O}";
                                     return "\n" + "  " + param.getName() + " : " + type + optional;
                                 }) //
@@ -120,7 +120,7 @@ public class Converter {
         return b.toString();
     }
 
-    private static String paramToTypeName(String ref, Schema<?> schema) {
+    private static String getUmlTypeName(String ref, Schema<?> schema) {
         final String type;
         if (ref != null) {
             type = refToClassName(ref);
@@ -138,7 +138,7 @@ public class Converter {
             type = "integer";
         } else if (schema instanceof ArraySchema) {
             ArraySchema a = (ArraySchema) schema;
-            type = paramToTypeName(schema.get$ref(), a.getItems()) + "[]";
+            type = getUmlTypeName(schema.get$ref(), a.getItems()) + "[]";
         } else if (schema instanceof BinarySchema) {
             type = "byte[]";
         } else {
@@ -164,39 +164,29 @@ public class Converter {
                 required = Collections.emptySet();
             }
             schema.getProperties().entrySet().forEach(entry -> {
-                if (entry.getValue() instanceof StringSchema) {
-                    append(b, required, "string", entry.getKey());
-                } else if (entry.getValue() instanceof NumberSchema) {
-                    append(b, required, "decimal", entry.getKey());
-                } else if (entry.getValue() instanceof BinarySchema) {
-                    append(b, required, "byte[]", entry.getKey());
-                } else if (entry.getValue() instanceof DateTimeSchema) {
-                    append(b, required, "timestamp", entry.getKey());
-                } else if (entry.getValue() instanceof DateSchema) {
-                    append(b, required, "date", entry.getKey());
-                } else if (entry.getValue() instanceof BooleanSchema) {
-                    append(b, required, "boolean", entry.getKey());
-                } else if (entry.getValue() instanceof IntegerSchema) {
-                    append(b, required, "integer", entry.getKey());
-                } else if (entry.getValue() instanceof ArraySchema) {
-                    ArraySchema a = (ArraySchema) entry.getValue();
-                    Schema<?> items = a.getItems();
-                    String ref = items.get$ref();
-                    if (ref != null) {
-                        String otherClassName = refToClassName(ref);
-                        addToMany(relationships, name, otherClassName, entry.getKey());
-                    } else {
-                        // TODO
-                    }
-                } else if (entry.getValue().get$ref() != null) {
+                if (entry.getValue().get$ref() != null) {
                     String ref = entry.getValue().get$ref();
                     String otherClassName = refToClassName(ref);
                     addToOne(relationships, name, otherClassName, entry.getKey());
+                } else {
+                    String type = getUmlTypeName(entry.getValue().get$ref(), entry.getValue());
+                    if (type.endsWith("[]") && !type.equals("byte[]")) {
+                        // is array of items
+                        ArraySchema a = (ArraySchema) entry.getValue();
+                        Schema<?> items = a.getItems();
+                        String ref = items.get$ref();
+                        if (ref != null) {
+                            String otherClassName = refToClassName(ref);
+                            addToMany(relationships, name, otherClassName, entry.getKey());
+                        } else {
+                            append(b, required, type, entry.getKey());
+                        }
+                    } else {
+                        append(b, required, type, entry.getKey());
+                    }
                 }
             });
-        } else if (schema instanceof ArraySchema)
-
-        {
+        } else if (schema instanceof ArraySchema) {
             ArraySchema a = (ArraySchema) schema;
             Schema<?> items = a.getItems();
             String ref = items.get$ref();

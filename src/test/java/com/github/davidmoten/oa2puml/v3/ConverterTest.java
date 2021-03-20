@@ -60,8 +60,7 @@ public class ConverterTest {
                         throw new RuntimeException(output + " does not exist");
                     }
                     String expected = new String(Files.readAllBytes(output.toPath()), StandardCharsets.UTF_8).trim();
-
-                    System.out.println(puml);
+                    
                     assertEquals(expected, puml);
                 } catch (IOException e) {
                     throw new UncheckedIOException(e);

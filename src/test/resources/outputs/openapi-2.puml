@@ -4,9 +4,11 @@ class Customer {
   firstName : string
   lastName : string
   heightMetres : decimal {O}
+  dateOfBirth : date
   lastSessionTime : timestamp {O}
   numberOfChildren : integer {O}
   alive : boolean {O}
+  nicknames : string[] {O}
   picture : byte[] {O}
 }
 

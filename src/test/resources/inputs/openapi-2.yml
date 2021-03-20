@@ -10,7 +10,8 @@ components:
         heightMetres:
           type: number
         dateOfBirth:
-          type: date
+          type: string
+          format: date
         lastSessionTime:
           type: string
           format: date-time  
