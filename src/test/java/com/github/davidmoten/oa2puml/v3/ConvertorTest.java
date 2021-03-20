@@ -13,7 +13,7 @@ import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.SourceStringReader;
 
-public class PumlTest {
+public class ConvertorTest {
 
     @Test
     public void testConvert() {
@@ -25,7 +25,7 @@ public class PumlTest {
                 + "          type: array\n" + "          items:\n"
                 + "            $ref: '#/components/schemas/Customer'\n" + "      ";
 
-        Puml.openApiToPuml(openapi);
+        Converter.openApiToPuml(openapi);
     }
 
     @Test
@@ -40,8 +40,8 @@ public class PumlTest {
     }
     
     private static void writeSvg(String filename) throws IOException {
-        try (InputStream in = PumlTest.class.getResourceAsStream("/openapi-example.yml")) {
-            String puml = Puml.openApiToPuml(in);
+        try (InputStream in = ConvertorTest.class.getResourceAsStream("/openapi-example.yml")) {
+            String puml = Converter.openApiToPuml(in);
             System.out.println(puml);
             SourceStringReader reader = new SourceStringReader(puml);
             try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {

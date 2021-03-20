@@ -33,7 +33,7 @@ import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.parser.core.models.SwaggerParseResult;
 
-public class Puml {
+public class Converter {
 
     public static String openApiToPuml(InputStream in) throws IOException {
         return openApiToPuml(IOUtils.toString(in, StandardCharsets.UTF_8));
