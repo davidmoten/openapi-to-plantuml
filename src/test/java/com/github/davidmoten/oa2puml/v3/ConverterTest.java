@@ -1,9 +1,14 @@
 package com.github.davidmoten.oa2puml.v3;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
 import org.junit.Ignore;
@@ -33,17 +38,42 @@ public class ConverterTest {
     public void testConvertPumlToSvg() throws IOException {
         writeSvg("target/openapi-example.svg");
     }
-    
+
     @Test
     @Ignore
     public void updateDocs() throws IOException {
         writeSvg("src/docs/openapi-example.svg");
     }
-    
+
+    @Test
+    public void test() {
+        File inputs = new File("src/test/resources/inputs/");
+        File outputs = new File("src/test/resources/outputs/");
+        File[] list = inputs.listFiles();
+        if (list != null) {
+            for (File input : list) {
+                try (InputStream in = new FileInputStream(input)) {
+                    String puml = Converter.openApiToPuml(in).trim();
+                    File output = new File(outputs,
+                            input.getName().substring(0, input.getName().lastIndexOf('.')) + ".puml");
+                    if (!output.exists()) {
+                        System.out.println(puml);
+                        throw new RuntimeException(output + " does not exist");
+                    }
+                    String expected = new String(Files.readAllBytes(output.toPath()), StandardCharsets.UTF_8).trim();
+
+                    System.out.println(puml);
+                    assertEquals(expected, puml);
+                } catch (IOException e) {
+                    throw new UncheckedIOException(e);
+                }
+            }
+        }
+    }
+
     private static void writeSvg(String filename) throws IOException {
         try (InputStream in = ConverterTest.class.getResourceAsStream("/openapi-example.yml")) {
             String puml = Converter.openApiToPuml(in);
-            System.out.println(puml);
             SourceStringReader reader = new SourceStringReader(puml);
             try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
                 // Write the first image to "os"

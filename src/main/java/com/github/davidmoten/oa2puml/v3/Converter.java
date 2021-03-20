@@ -52,7 +52,7 @@ public class Converter {
         return "@startuml" //
                 + components(a) //
                 + paths(a) //
-                + "\n@enduml";
+                + "\n\n@enduml";
     }
 
     private static String paths(OpenAPI a) {

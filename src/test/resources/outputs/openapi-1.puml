@@ -1,0 +1,17 @@
+@startuml
+
+class CustomerType {
+  value : string
+}
+
+class Customer {
+  firstName : string {O}
+  lastName : string {O}
+  heightMetres : decimal {O}
+}
+
+Customer --> "1" CustomerType : type
+
+Customer --> "*" Customer : friends
+
+@enduml
