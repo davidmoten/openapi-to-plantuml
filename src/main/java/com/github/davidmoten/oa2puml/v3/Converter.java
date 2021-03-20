@@ -166,7 +166,6 @@ public final class Converter {
             relationships.add(name + " --> " + otherClassName);
         } else if (schema instanceof ComposedSchema) {
             ComposedSchema s = (ComposedSchema) schema;
-            System.out.println(s);
             if (!s.getOneOf().isEmpty()) {
                 validateComposed(s.getOneOf());
                 addInheritance(relationships, name, s.getOneOf());
@@ -262,12 +261,10 @@ public final class Converter {
 
     private static void validateComposed(@SuppressWarnings("rawtypes") List<Schema> schemas) {
         if (schemas.stream().anyMatch(s -> s.get$ref() == null)) {
-            System.out.println(schemas.stream().map(x -> x.getClass().getSimpleName()).collect(Collectors.toList()));
             throw new RuntimeException(
                     "all elements of a composed type (oneOf, etc.) must be $ref (so that a meaningful diagram can be generated).\n"
                             + schemas.stream().map(s -> s.toString()).collect(Collectors.joining("\n")));
         }
-
     }
 
     private static void addToMany(List<String> relationships, String name, String otherClassName) {

@@ -17,6 +17,7 @@ import org.junit.Test;
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.SourceStringReader;
+import net.sourceforge.plantuml.core.DiagramDescription;
 
 public class ConverterTest {
 
@@ -46,6 +47,10 @@ public class ConverterTest {
         writeSvg(OPENAPI_EXAMPLE,"src/docs/openapi-example.svg");
     }
 
+    private static String readString(String filename) throws IOException {
+        return new String(Files.readAllBytes(new File(filename).toPath() ), StandardCharsets.UTF_8);
+    }
+    
     @Test
     public void test() {
         File inputs = new File("src/test/resources/inputs/");
@@ -80,7 +85,8 @@ public class ConverterTest {
             SourceStringReader reader = new SourceStringReader(puml);
             try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
                 // Write the first image to "os"
-                reader.generateImage(os, new FileFormatOption(FileFormat.SVG));
+                DiagramDescription result = reader.outputImage(os, new FileFormatOption(FileFormat.SVG));
+                System.out.println(filename + ": " + result.getDescription());
 
                 File file = new File(filename);
                 file.delete();
