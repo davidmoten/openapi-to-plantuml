@@ -6,9 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 
+import org.junit.Ignore;
 import org.junit.Test;
-
-import com.github.davidmoten.oa2puml.v3.Puml;
 
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
@@ -30,7 +29,17 @@ public class PumlTest {
     }
 
     @Test
-    public void testConvertCts() throws IOException {
+    public void testConvertPumlToSvg() throws IOException {
+        writeSvg("target/openapi-example.svg");
+    }
+    
+    @Test
+    @Ignore
+    public void updateDocs() throws IOException {
+        writeSvg("src/docs/openapi-example.svg");
+    }
+    
+    private static void writeSvg(String filename) throws IOException {
         try (InputStream in = PumlTest.class.getResourceAsStream("/openapi-example.yml")) {
             String puml = Puml.openApiToPuml(in);
             System.out.println(puml);
@@ -39,7 +48,7 @@ public class PumlTest {
                 // Write the first image to "os"
                 reader.generateImage(os, new FileFormatOption(FileFormat.SVG));
 
-                File file = new File("src/docs/openapi-example.svg");
+                File file = new File(filename);
                 file.delete();
                 Files.write(file.toPath(), os.toByteArray());
             }
