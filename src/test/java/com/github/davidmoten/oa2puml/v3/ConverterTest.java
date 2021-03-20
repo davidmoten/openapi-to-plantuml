@@ -20,6 +20,8 @@ import net.sourceforge.plantuml.SourceStringReader;
 
 public class ConverterTest {
 
+    private static final File OPENAPI_EXAMPLE = new File("src/test/resources/openapi-example.yml");
+
     @Test
     public void testConvert() {
         String openapi = "openapi: 3.0.1\n" + "components:\n" + "  schemas:\n" + "    CustomerType:\n"
@@ -35,13 +37,13 @@ public class ConverterTest {
 
     @Test
     public void testConvertPumlToSvg() throws IOException {
-        writeSvg("target/openapi-example.svg");
+        writeSvg(OPENAPI_EXAMPLE, "target/openapi-example.svg");
     }
 
     @Test
     @Ignore
     public void updateDocs() throws IOException {
-        writeSvg("src/docs/openapi-example.svg");
+        writeSvg(OPENAPI_EXAMPLE,"src/docs/openapi-example.svg");
     }
 
     @Test
@@ -51,6 +53,7 @@ public class ConverterTest {
         File[] list = inputs.listFiles();
         if (list != null) {
             for (File input : list) {
+
                 try (InputStream in = new FileInputStream(input)) {
                     String puml = Converter.openApiToPuml(in).trim();
                     File output = new File(outputs,
@@ -61,8 +64,9 @@ public class ConverterTest {
                         throw new RuntimeException(output + " does not exist");
                     }
                     String expected = new String(Files.readAllBytes(output.toPath()), StandardCharsets.UTF_8).trim();
-                    
                     assertEquals(expected, puml);
+                    System.out.println(input + " passed");
+                    writeSvg(input,"target/" + output.getName() + ".svg");
                 } catch (IOException e) {
                     throw new UncheckedIOException(e);
                 }
@@ -70,8 +74,8 @@ public class ConverterTest {
         }
     }
 
-    private static void writeSvg(String filename) throws IOException {
-        try (InputStream in = ConverterTest.class.getResourceAsStream("/openapi-example.yml")) {
+    private static void writeSvg(File openApiFile, String filename) throws IOException {
+        try (InputStream in = new FileInputStream(openApiFile)) {
             String puml = Converter.openApiToPuml(in);
             SourceStringReader reader = new SourceStringReader(puml);
             try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
