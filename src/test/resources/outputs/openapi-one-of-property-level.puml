@@ -1,0 +1,22 @@
+@startuml
+
+class employee {
+}
+
+diamond anon1
+
+employee --> "0..1" anon1: role
+
+anon1 <|-- doctor
+
+anon1 <|-- nurse
+
+class nurse {
+  level : integer
+}
+
+class doctor {
+  income : decimal
+}
+
+@enduml

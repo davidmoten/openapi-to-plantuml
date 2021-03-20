@@ -36,6 +36,8 @@ import io.swagger.v3.parser.core.models.SwaggerParseResult;
 
 public final class Converter {
 
+    private static int counter = 0;
+
     private Converter() {
         // prevent instantiation
     }
@@ -167,12 +169,7 @@ public final class Converter {
             System.out.println(s);
             if (!s.getOneOf().isEmpty()) {
                 validateComposed(s.getOneOf());
-                List<String> otherClassNames = s //
-                        .getOneOf() //
-                        .stream() //
-                        .map(x -> refToClassName(x.get$ref())) //
-                        .collect(Collectors.toList());
-                addInheritance(relationships, name, otherClassNames);
+                addInheritance(relationships, name, s.getOneOf());
             }
         } else if (schema.getProperties() != null) {
             final Set<String> required;
@@ -182,7 +179,11 @@ public final class Converter {
                 required = Collections.emptySet();
             }
             schema.getProperties().entrySet().forEach(entry -> {
-                if (entry.getValue().get$ref() != null) {
+                if (entry.getValue() instanceof ComposedSchema) {
+                    ComposedSchema s = (ComposedSchema) entry.getValue();
+                    addInheritance(relationships, name, s.getOneOf(), required.contains(entry.getKey()),
+                            entry.getKey());
+                } else if (entry.getValue().get$ref() != null) {
                     String ref = entry.getValue().get$ref();
                     String otherClassName = refToClassName(ref);
                     addToOne(relationships, name, otherClassName, entry.getKey(), required.contains(entry.getKey()));
@@ -232,10 +233,30 @@ public final class Converter {
         return b.toString();
     }
 
-    private static void addInheritance(List<String> relationships, String name, List<String> otherClassNames) {
+    private static void addInheritance(List<String> relationships, String name, List<Schema> oneOf, boolean required,
+            String propertyName) {
+        String label = "anon" + ++counter;
+        relationships.add("diamond " + label);
+        relationships.add(name + " --> \"" + (required ? "1" : "0..1" + "\" " + label + ": " + propertyName));
+        List<String> otherClassNames = refsToClassNames(oneOf);
+        for (String otherClassName : otherClassNames) {
+            relationships.add(label + " <|-- " + otherClassName);
+        }
+    }
+
+    private static void addInheritance(List<String> relationships, String name, List<Schema> schemas) {
+        List<String> otherClassNames = refsToClassNames(schemas);
         for (String otherClassName : otherClassNames) {
             relationships.add(name + " <|-- " + otherClassName);
         }
+    }
+
+    private static List<String> refsToClassNames(List<Schema> schemas) {
+        List<String> otherClassNames = schemas //
+                .stream() //
+                .map(x -> refToClassName(x.get$ref())) //
+                .collect(Collectors.toList());
+        return otherClassNames;
     }
 
     private static void validateComposed(@SuppressWarnings("rawtypes") List<Schema> schemas) {
