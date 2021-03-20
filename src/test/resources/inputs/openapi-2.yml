@@ -18,6 +18,10 @@ components:
           type: integer        
         alive:
           type: boolean
+        nicknames:
+          type: array
+          items: 
+            type: string
         picture:
           type: string
           format: binary
