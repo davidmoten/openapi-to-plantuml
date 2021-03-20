@@ -2,7 +2,6 @@ package com.github.davidmoten.openapitopuml;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,6 +20,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.media.ArraySchema;
+import io.swagger.v3.oas.models.media.BinarySchema;
 import io.swagger.v3.oas.models.media.BooleanSchema;
 import io.swagger.v3.oas.models.media.DateSchema;
 import io.swagger.v3.oas.models.media.DateTimeSchema;
@@ -38,7 +38,7 @@ public class Puml {
     public static String openApiToPuml(InputStream in) throws IOException {
         return openApiToPuml(IOUtils.toString(in, StandardCharsets.UTF_8));
     }
-    
+
     public static String openApiToPuml(String openApi) {
         SwaggerParseResult result = new OpenAPIParser().readContents(openApi, null, null);
 
@@ -108,10 +108,11 @@ public class Puml {
                             .stream() //
                             .map(ent -> {
                                 String responseCode = ent.getKey();
-                                //TODO only using the first content
-                                Entry<String, MediaType> mediaType = ent.getValue().getContent().entrySet().parallelStream().findFirst().get();
+                                // TODO only using the first content
+                                Entry<String, MediaType> mediaType = ent.getValue().getContent().entrySet()
+                                        .parallelStream().findFirst().get();
                                 String returnClassName = refToClassName(mediaType.getValue().getSchema().get$ref());
-                                return "\n\n\"" + className + "\" --> \"" + returnClassName + "\": " + responseCode ;
+                                return "\n\n\"" + className + "\" --> \"" + returnClassName + "\": " + responseCode;
                             }).collect(Collectors.joining()));
                     return s.toString();
                 }) //
@@ -138,6 +139,8 @@ public class Puml {
         } else if (schema instanceof ArraySchema) {
             ArraySchema a = (ArraySchema) schema;
             type = paramToTypeName(schema.get$ref(), a.getItems()) + "[]";
+        } else if (schema instanceof BinarySchema) {
+            type = "byte[]";
         } else {
             type = "unknown";
         }
@@ -165,6 +168,8 @@ public class Puml {
                     append(b, required, "string", entry.getKey());
                 } else if (entry.getValue() instanceof NumberSchema) {
                     append(b, required, "decimal", entry.getKey());
+                } else if (entry.getValue() instanceof BinarySchema) {
+                    append(b, required, "byte[]", entry.getKey());
                 } else if (entry.getValue() instanceof DateTimeSchema) {
                     append(b, required, "timestamp", entry.getKey());
                 } else if (entry.getValue() instanceof DateSchema) {
@@ -189,7 +194,9 @@ public class Puml {
                     addToOne(relationships, name, otherClassName, entry.getKey());
                 }
             });
-        } else if (schema instanceof ArraySchema) {
+        } else if (schema instanceof ArraySchema)
+
+        {
             ArraySchema a = (ArraySchema) schema;
             Schema<?> items = a.getItems();
             String ref = items.get$ref();
