@@ -233,8 +233,8 @@ public final class Converter {
         return b.toString();
     }
 
-    private static void addInheritance(List<String> relationships, String name, List<Schema> oneOf, boolean required,
-            String propertyName) {
+    private static void addInheritance(List<String> relationships, String name,
+            @SuppressWarnings("rawtypes") List<Schema> oneOf, boolean required, String propertyName) {
         String label = "anon" + ++counter;
         relationships.add("diamond " + label);
         relationships.add(name + " --> \"" + (required ? "1" : "0..1" + "\" " + label + ": " + propertyName));
@@ -244,14 +244,15 @@ public final class Converter {
         }
     }
 
-    private static void addInheritance(List<String> relationships, String name, List<Schema> schemas) {
+    private static void addInheritance(List<String> relationships, String name,
+            @SuppressWarnings("rawtypes") List<Schema> schemas) {
         List<String> otherClassNames = refsToClassNames(schemas);
         for (String otherClassName : otherClassNames) {
             relationships.add(name + " <|-- " + otherClassName);
         }
     }
 
-    private static List<String> refsToClassNames(List<Schema> schemas) {
+    private static List<String> refsToClassNames(@SuppressWarnings("rawtypes") List<Schema> schemas) {
         List<String> otherClassNames = schemas //
                 .stream() //
                 .map(x -> refToClassName(x.get$ref())) //
