@@ -30,5 +30,19 @@ Add this dependency to your pom.xml:
 String puml = Puml.openApiToPuml(openapi);
 ```
 
+## Examples
+From the unit tests:
 
+<img src="src/docs/tests/openapi-all-of-class-level.puml.svg"/>
 
+<img src="src/docs/tests/openapi-any-of-class-level.puml.svg"/>
+
+<img src="src/docs/tests/openapi-any-of-property-level.puml.svg"/>
+
+<img src="src/docs/tests/openapi-one-of-class-level.puml.svg"/>
+
+<img src="src/docs/tests/openapi-one-of-property-level.puml.svg"/>
+
+<img src="src/docs/tests/simple-has-refs.puml.svg"/>
+
+<img src="src/docs/tests/simple-types-and-arrays.puml.svg"/>
