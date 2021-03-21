@@ -1,0 +1,18 @@
+@startuml
+
+class employee {
+}
+
+employee "all" <|-- doctor
+
+employee "all" <|-- nurse
+
+class nurse {
+  level : integer
+}
+
+class doctor {
+  income : decimal
+}
+
+@enduml
