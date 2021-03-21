@@ -52,3 +52,5 @@ From the unit tests:
 <img src="src/docs/tests/petstore.puml.svg"/>
 
 <img src="src/docs/tests/petstore-expanded.puml.svg"/>
+
+<img src="src/docs/tests/bookstore.puml.svg"/>

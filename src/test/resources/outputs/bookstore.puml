@@ -1,0 +1,66 @@
+@startuml
+
+class "AccessToken" {
+  accessToken : string
+  expiresAt : timestamp
+}
+
+class "Error" {
+  code : string
+  message : timestamp
+}
+
+class "Author" {
+  fullname : string
+  country : string {O}
+  birthYear : date {O}
+  gender : string {O}
+}
+
+class "BookGenre" {
+  value : string
+}
+
+class "Book" {
+  id : integer
+  title : string
+  totalPages : integer
+  publishingHouse : string
+}
+
+"Book" --> "0..1" "BookGenre" : genre
+
+"Book" --> "1" "Author" : author
+hide <<Method>> circle
+
+class "POST /login" <<Method>> {
+}
+
+"POST /login" ..> "AccessToken": 200
+
+"POST /login" ..> "Error": 400
+
+class "GET /books" <<Method>> {
+  offset : integer
+  limit : integer
+  genre : unknown {O}
+  search : string {O}
+}
+
+class "GET /books 200 Return" {
+}
+
+"GET /books 200 Return" --> "*" "Book"
+
+"GET /books" ..> "GET /books 200 Return": 200
+
+"GET /books" ..> "Error": 400
+
+class "POST /books" <<Method>> {
+}
+
+"POST /books" ..> "Book": 201
+
+"POST /books" ..> "Error": 400
+
+@enduml
