@@ -137,6 +137,12 @@ paths:
             minimum: -180
             maximum: 180
         - in: query
+          name: includeCraftProperties
+          description: includes craft properties if true otherwise does not
+          schema:
+            type: boolean
+            default: true            
+        - in: query
           name: includeFixProperties
           description: includes fix properties if true otherwise does not
           schema:
@@ -226,6 +232,12 @@ paths:
           schema:
             type: number
             minimum: 0
+        - in: query
+          name: includeCraftProperties
+          description: includes craft properties if true otherwise does not
+          schema:
+            type: boolean
+            default: true            
         - in: query
           name: includeFixProperties
           description: includes fix properties if true otherwise does not
@@ -367,7 +379,9 @@ paths:
             default: false
         - in: query
           name: predicted
-          description: if true then uses extrapolation/interpolation to predict the positions at target time. If false returns closest actual positions by time to the target time. 
+          description: |
+            if true then uses extrapolation/interpolation to predict the positions at target time. 
+            If false returns closest actual positions by time to the target time. 
           schema:
             type: boolean
             default: true
