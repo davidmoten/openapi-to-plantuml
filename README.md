@@ -40,3 +40,10 @@ String puml = Puml.openApiToPuml(openapi);
 
 <img src="src/docs/tests/bookstore.puml.svg"/>
 
+[ecommerce.yml](src/test/resources/inputs/ecommerce.yml)
+
+<img src="src/docs/tests/ecommerce.puml.svg"/>
+
+[banking.yml](src/test/resources/inputs/banking.yml):
+
+<img src="src/docs/tests/banking.puml.svg"/>
