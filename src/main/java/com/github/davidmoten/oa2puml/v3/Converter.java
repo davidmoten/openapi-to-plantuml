@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.IOUtils;
@@ -36,8 +37,6 @@ import io.swagger.v3.parser.core.models.SwaggerParseResult;
 
 public final class Converter {
 
-    private static int counter = 0;
-
     private Converter() {
         // prevent instantiation
     }
@@ -47,6 +46,7 @@ public final class Converter {
     }
 
     public static String openApiToPuml(String openApi) {
+        AtomicLong counter = new AtomicLong();
         SwaggerParseResult result = new OpenAPIParser().readContents(openApi, null, null);
 
         // or from a file
@@ -57,7 +57,7 @@ public final class Converter {
         OpenAPI a = result.getOpenAPI();
 
         return "@startuml" //
-                + components(a) //
+                + components(a, counter) //
                 + paths(a) //
                 + "\n\n@enduml";
     }
@@ -76,12 +76,12 @@ public final class Converter {
         }
     }
 
-    private static String components(OpenAPI a) {
+    private static String components(OpenAPI a, AtomicLong counter) {
         return a.getComponents() //
                 .getSchemas() //
                 .entrySet() //
                 .stream() //
-                .map(entry -> toPlantUmlClass(entry.getKey(), entry.getValue())) //
+                .map(entry -> toPlantUmlClass(entry.getKey(), entry.getValue(), counter)) //
                 .collect(Collectors.joining());
     }
 
@@ -154,7 +154,7 @@ public final class Converter {
         return type;
     }
 
-    private static String toPlantUmlClass(String name, Schema<?> schema) {
+    private static String toPlantUmlClass(String name, Schema<?> schema, AtomicLong counter) {
         StringBuilder b = new StringBuilder();
         List<Entry<String, Schema<?>>> more = new ArrayList<>();
         b.append("\n\nclass " + name + " {\n");
@@ -166,10 +166,14 @@ public final class Converter {
             relationships.add(name + " --> " + otherClassName);
         } else if (schema instanceof ComposedSchema) {
             ComposedSchema s = (ComposedSchema) schema;
-            if (!s.getOneOf().isEmpty()) {
+            if (s.getOneOf() != null) {
                 validateComposed(s.getOneOf());
                 addInheritance(relationships, name, s.getOneOf());
+            } else if (s.getAnyOf() != null) {
+                validateComposed(s.getAnyOf());
+                addInheritance(relationships, name, s.getAnyOf());
             }
+
         } else if (schema.getProperties() != null) {
             final Set<String> required;
             if (schema.getRequired() != null) {
@@ -180,8 +184,18 @@ public final class Converter {
             schema.getProperties().entrySet().forEach(entry -> {
                 if (entry.getValue() instanceof ComposedSchema) {
                     ComposedSchema s = (ComposedSchema) entry.getValue();
-                    addInheritance(relationships, name, s.getOneOf(), required.contains(entry.getKey()),
-                            entry.getKey());
+                    @SuppressWarnings("rawtypes")
+                    final List<Schema> list;
+                    if (s.getOneOf() != null) {
+                        list = s.getOneOf();
+                    } else if (s.getAnyOf() != null) {
+                        list = s.getAnyOf();
+                    } else {
+                        list = Collections.emptyList();
+                    }
+                    if (!list.isEmpty()) {
+                        addInheritance(relationships, name, list, required.contains(entry.getKey()), entry.getKey(), counter);
+                    }
                 } else if (entry.getValue().get$ref() != null) {
                     String ref = entry.getValue().get$ref();
                     String otherClassName = refToClassName(ref);
@@ -224,7 +238,7 @@ public final class Converter {
         }
         b.append("}");
         for (Entry<String, Schema<?>> entry : more) {
-            b.append(toPlantUmlClass(entry.getKey(), entry.getValue()));
+            b.append(toPlantUmlClass(entry.getKey(), entry.getValue(), counter));
         }
         for (String relationship : relationships) {
             b.append("\n\n" + relationship);
@@ -233,8 +247,8 @@ public final class Converter {
     }
 
     private static void addInheritance(List<String> relationships, String name,
-            @SuppressWarnings("rawtypes") List<Schema> oneOf, boolean required, String propertyName) {
-        String label = "anon" + ++counter;
+            @SuppressWarnings("rawtypes") List<Schema> oneOf, boolean required, String propertyName, AtomicLong counter) {
+        String label = "anon" + counter.incrementAndGet();
         relationships.add("diamond " + label);
         relationships.add(name + " --> \"" + (required ? "1" : "0..1" + "\" " + label + ": " + propertyName));
         List<String> otherClassNames = refsToClassNames(oneOf);

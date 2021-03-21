@@ -1,0 +1,21 @@
+openapi: 3.0.1
+components:
+  schemas:
+    employee:
+      anyOf: 
+      - $ref: "#/components/schemas/doctor"
+      - $ref: "#/components/schemas/nurse"
+      
+    nurse:
+      properties:
+        level:
+          type: integer
+      required:
+      - level
+      
+    doctor:
+      properties:
+        income:
+          type: number
+      required:
+      - income

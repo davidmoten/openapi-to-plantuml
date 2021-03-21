@@ -66,8 +66,8 @@ public class ConverterTest {
                     if (!output.exists()) {
                         output.createNewFile();
                         System.out.println(puml);
-                        throw new RuntimeException(output + " does not exist");
                     }
+                    System.out.println("checking " + input);
                     String expected = new String(Files.readAllBytes(output.toPath()), StandardCharsets.UTF_8).trim();
                     assertEquals(expected, puml);
                     System.out.println(input + " passed");
