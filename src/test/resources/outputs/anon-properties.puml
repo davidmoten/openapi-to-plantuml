@@ -1,0 +1,14 @@
+@startuml
+
+class "Customer" {
+  heightMetres : decimal {O}
+}
+
+class "Customer.name" {
+  firstName : string
+  lastName : string
+}
+
+"Customer" --> "1" "Customer.name" : name
+
+@enduml
