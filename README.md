@@ -46,3 +46,9 @@ From the unit tests:
 <img src="src/docs/tests/simple-has-refs.puml.svg"/>
 
 <img src="src/docs/tests/simple-types-and-arrays.puml.svg"/>
+
+<img src="src/docs/tests/openapi-path-returns-non-ref.puml.svg"/>
+
+<img src="src/docs/tests/petstore.puml.svg"/>
+
+<img src="src/docs/tests/petstore-expanded.puml.svg"/>
