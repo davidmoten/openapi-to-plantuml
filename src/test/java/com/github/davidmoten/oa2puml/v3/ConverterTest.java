@@ -1,6 +1,8 @@
 package com.github.davidmoten.oa2puml.v3;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -45,6 +47,11 @@ public class ConverterTest {
     @Ignore
     public void updateDocs() throws IOException {
         writeSvg(OPENAPI_EXAMPLE,"src/docs/openapi-example.svg");
+    }
+    
+    @Test
+    public void testReadString() throws IOException {
+        assertFalse(readString("src/test/resources/openapi-example.yml").isEmpty());
     }
 
     private static String readString(String filename) throws IOException {
