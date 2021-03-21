@@ -1,0 +1,494 @@
+openapi: 3.0.0
+info:
+  title: eCommerce
+  description: BCE eCommerce API
+  version: v1
+servers:
+  - url: 'https://virtserver.swaggerhub.com/advanced5/bce/v1'
+    description: SwaggerHub API Auto Mocking
+security:
+  - password:
+      - read
+      - write
+paths:
+  /companies:
+    get:
+      summary: Get a list of companies
+      description: List of companies/company name/codes that could be linked to
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Company'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /tax-rates:
+    get:
+      summary: Get a list of tax/VAT codes
+      description: List of VAT Codes & Rates
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TaxRate'
+  /exchange-rates:
+    get:
+      summary: Get a list of exchange rates
+      description: List of all Currencies + exchange rates
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ExchangeRate'
+  /products/categories:
+    get:
+      summary: Get a list of product categories
+      description: List of Stock/product categories
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StockCategory'
+  /products:
+    get:
+      summary: Get a list of catalogue items.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+    post:
+      summary: Add a new product
+      requestBody:
+        $ref: '#/components/requestBodies/Product'
+      responses:
+        '201':
+          description: Created
+  '/products/{stockItemCode}':
+    put:
+      summary: Update a product
+      parameters:
+        - name: stockItemCode
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+      requestBody:
+        $ref: '#/components/requestBodies/Product'
+      responses:
+        '200':
+          description: Success
+  /customers:
+    get:
+      summary: Get a list of customers.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+    post:
+      summary: Add a new customer
+      requestBody:
+        $ref: '#/components/requestBodies/Customer'
+      responses:
+        '201':
+          description: Created
+  '/customers/{customerCode}':
+    put:
+      summary: Update an existing customer.
+      parameters:
+        - name: customerCode
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Customer'
+      responses:
+        '200':
+          description: Success
+  /sales-orders:
+    get:
+      summary: Get a list of sales orders
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SalesOrder'
+    post:
+      summary: Add a new sales order
+      requestBody:
+        $ref: '#/components/requestBodies/SalesOrder'
+      responses:
+        '201':
+          description: Created
+  /receipts:
+    get:
+      summary: Get a list of receipts
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Receipt'
+    post:
+      summary: Add a new receipt
+      requestBody:
+        $ref: '#/components/requestBodies/Receipt'
+      responses:
+        '201':
+          description: Created
+  '/receipts/{id}':
+    put:
+      summary: Update an existing receipt.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+      requestBody:
+        $ref: '#/components/requestBodies/Receipt'
+      responses:
+        '200':
+          description: Success
+  /locations:
+    get:
+      summary: Get a list of Locations
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Location'
+  /bank-accounts:
+    get:
+      summary: Get a list of bank accounts
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BankAccount'
+  /discounts:
+    get:
+      summary: Get a list of discounts
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Discount'
+  /ping:
+    get:
+      summary: Server heartbeat operation
+      description: Response indicates that the service is functional.
+      responses:
+        '200':
+          description: OK
+      security: []
+components:
+  schemas:
+    Company:
+      type: object
+      properties:
+        CompanyId:
+          type: string
+        CompanyName:
+          type: string
+        Address:
+          $ref: '#/components/schemas/Address'
+        CompanyNumber:
+          type: integer
+        VATNumber:
+          type: integer
+    TaxRate:
+      type: object
+      properties:
+        TaxRateId:
+          type: integer
+        Name:
+          type: string
+        Rate:
+          type: number
+        CountryCode:
+          type: string
+    ExchangeRate:
+      type: object
+      properties:
+        CurrencyCode:
+          type: string
+        CountryCode:
+          type: string
+        Description:
+          type: string
+        RateVsGbp:
+          type: number
+    StockCategory:
+      type: object
+      properties:
+        CategoryId:
+          type: integer
+        CategoryName:
+          type: string
+    Product:
+      type: object
+      properties:
+        StockItemId:
+          type: integer
+        StockItemCode:
+          type: string
+        StockItemName:
+          type: string
+        StockItemDescription:
+          type: string
+        SalesUoM:
+          type: number
+        ListPrice:
+          type: number
+        VatRate:
+          $ref: '#/components/schemas/TaxRate'
+        ManufacturerPartNumber:
+          type: string
+        ManufacturerPartName:
+          type: string
+        Weight:
+          type: number
+        Url:
+          type: string
+        LeadTime:
+          type: number
+        Barcode:
+          type: integer
+        DefaultStockLocation:
+          $ref: '#/components/schemas/Location'
+      description: Catalogue Item
+    Customer:
+      type: object
+      properties:
+        CustomerCode:
+          type: string
+        AccountCode:
+          type: string
+        AccountName:
+          type: string
+        Address:
+          $ref: '#/components/schemas/Address'
+        VatNumber:
+          type: integer
+        VatType:
+          type: string
+        Currency:
+          type: string
+        MainContact:
+          $ref: '#/components/schemas/Contact'
+        DeliveryAddress:
+          $ref: '#/components/schemas/Address'
+        Discounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Discount'
+        AccountStatus:
+          type: string
+      description: Full details for a customer
+    SalesOrder:
+      type: object
+      properties:
+        SalesOrderCode:
+          type: string
+        CustomerCode:
+          type: string
+        OrderDescription:
+          type: string
+        Status:
+          type: string
+        CustomerRef:
+          type: string
+        VatType:
+          type: string
+        Currency:
+          type: string
+        StockItemCode:
+          type: string
+        Quantity:
+          type: number
+        Total:
+          type: number
+        PickedDate:
+          type: string
+          format: date-time
+      description: Full sales order detail
+    Receipt:
+      type: object
+      properties:
+        Id:
+          type: integer
+        CustomerCode:
+          type: string
+        BankAccount:
+          type: string
+        Amount:
+          type: number
+        Currency:
+          type: string
+        Date:
+          type: string
+          format: date-time
+        Reference:
+          type: string
+      description: Receipt details
+    BankAccount:
+      type: object
+      properties:
+        AccountCode:
+          type: string
+        AccountName:
+          type: string
+    Discount:
+      type: object
+      properties:
+        CustomerCode:
+          type: string
+        ProductCode:
+          type: string
+        DiscountRate:
+          type: number
+        DiscountStart:
+          type: string
+          format: date-time
+        DiscountEnd:
+          type: string
+          format: date-time
+    Address:
+      type: object
+      properties:
+        AddressLine1:
+          type: string
+        AddressLine2:
+          type: string
+        AddressLine3:
+          type: string
+        AddressLine4:
+          type: string
+        PostalCode:
+          type: string
+        CountryCode:
+          type: string
+    Contact:
+      type: object
+      properties:
+        Name:
+          type: string
+        ContactMethods:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactMethod'
+        Address:
+          $ref: '#/components/schemas/Address'
+    ContactMethod:
+      type: object
+      properties:
+        Type:
+          type: string
+          enum:
+            - Tel
+            - Mobile
+            - Email
+        Address:
+          type: string
+    Location:
+      type: object
+      properties:
+        LocationCode:
+          type: string
+        Name:
+          type: string
+        Address:
+          $ref: '#/components/schemas/Address'
+    Error:
+      type: object
+      properties:
+        Reference:
+          type: string
+        Message:
+          type: string
+  requestBodies:
+    Product:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Product'
+    Customer:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Customer'
+    SalesOrder:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SalesOrder'
+    Receipt:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Receipt'
+  securitySchemes:
+    password:
+      type: oauth2
+      flows:
+        password:
+          tokenUrl: 'http://example.com/oauth/token'
+          scopes:
+            write: allows modifying resources
+            read: allows reading resources
