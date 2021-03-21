@@ -175,6 +175,8 @@ public final class Converter {
             type = "object";
         } else {
             type = "unknown";
+            System.out.println("NOT IMPLEMENTED: " + schema.getClass().getSimpleName());
+            System.out.println(schema);
         }
         return type;
     }
@@ -236,6 +238,9 @@ public final class Converter {
                     addToOne(relationships, name, otherClassName, property, required.contains(entry.getKey()));
                 } else {
                     String type = getUmlTypeName(entry.getValue().get$ref(), entry.getValue());
+                    if (type.startsWith("unknown")) {
+                        System.out.println("unknown property:\n" + entry);
+                    }
                     if (type.endsWith("[]") && !isSimpleArrayType(type)) {
                         addArray(name, relationships, property, entry.getValue(), counter, classNames);
                     } else if (type.equals("object")) {
