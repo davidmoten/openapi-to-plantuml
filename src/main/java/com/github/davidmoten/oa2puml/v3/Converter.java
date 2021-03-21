@@ -188,10 +188,8 @@ public final class Converter {
         } else if (schema instanceof ComposedSchema) {
             ComposedSchema s = (ComposedSchema) schema;
             if (s.getOneOf() != null) {
-                validateComposed(s.getOneOf());
                 addInheritance(relationships, name, s.getOneOf(), null, counter);
             } else if (s.getAnyOf() != null) {
-                validateComposed(s.getAnyOf());
                 addInheritance(relationships, name, s.getAnyOf(), null, counter);
             } else if (s.getAllOf() != null) {
 //                validateComposed(s.getAllOf());
@@ -277,7 +275,7 @@ public final class Converter {
         return simpleTypesWithoutArrayDelimiters.contains(s.replace("[", "").replace("]", ""));
     }
 
-    private static void addArray(String name, List<String> relationships, String property, Schema schema,
+    private static void addArray(String name, List<String> relationships, String property, @SuppressWarnings("rawtypes") Schema schema,
             AtomicLong counter) {
         // is array of items
         ArraySchema a = (ArraySchema) schema;
@@ -332,7 +330,7 @@ public final class Converter {
     }
 
     private static List<String> addAnonymousClassesAndReturnOtherClassNames(List<String> relationships,
-            List<Schema> schemas, AtomicLong counter) {
+            @SuppressWarnings("rawtypes") List<Schema> schemas, AtomicLong counter) {
         List<String> otherClassNames = schemas.stream() //
                 .map(s -> {
                     if (s.get$ref() != null) {
@@ -345,14 +343,6 @@ public final class Converter {
                     }
                 }).collect(Collectors.toList());
         return otherClassNames;
-    }
-
-    private static void validateComposed(@SuppressWarnings("rawtypes") List<Schema> schemas) {
-        if (schemas.stream().anyMatch(s -> s.get$ref() == null)) {
-            throw new RuntimeException(
-                    "all elements of a composed type (oneOf, etc.) must be $ref (so that a meaningful diagram can be generated).\n"
-                            + schemas.stream().map(s -> s.toString()).collect(Collectors.joining("\n")));
-        }
     }
 
     private static void addToMany(List<String> relationships, String name, String otherClassName) {
