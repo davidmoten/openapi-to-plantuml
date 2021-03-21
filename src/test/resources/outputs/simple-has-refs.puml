@@ -1,19 +1,19 @@
 @startuml
 
-class CustomerType {
+class "CustomerType" {
   value : string
 }
 
-class Customer {
+class "Customer" {
   firstName : string
   lastName : string
   heightMetres : decimal {O}
 }
 
-Customer --> "1" CustomerType : type
+"Customer" --> "1" "CustomerType" : type
 
-Customer --> "*" Customer : friends
+"Customer" --> "*" "Customer" : friends
 
-Customer --> "0..1" Customer : favouritePartner
+"Customer" --> "0..1" "Customer" : favouritePartner
 
 @enduml

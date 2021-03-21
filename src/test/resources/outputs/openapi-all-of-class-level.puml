@@ -1,17 +1,17 @@
 @startuml
 
-class employee {
+class "employee" {
 }
 
-employee "all" <|-- doctor
+"employee" "all" <|-- "doctor"
 
-employee "all" <|-- nurse
+"employee" "all" <|-- "nurse"
 
-class nurse {
+class "nurse" {
   level : integer
 }
 
-class doctor {
+class "doctor" {
   income : decimal
 }
 

@@ -1,21 +1,21 @@
 @startuml
 
-class employee {
+class "employee" {
 }
 
 diamond anon1
 
-employee --> "0..1" anon1: role
+"employee" --> "0..1" anon1: role
 
-anon1 <|-- doctor
+anon1 <|-- "doctor"
 
-anon1 <|-- nurse
+anon1 <|-- "nurse"
 
-class nurse {
+class "nurse" {
   level : integer
 }
 
-class doctor {
+class "doctor" {
   income : decimal
 }
 

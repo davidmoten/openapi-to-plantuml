@@ -62,11 +62,11 @@ public final class Converter {
 
         return "@startuml" //
                 + components(a, counter) //
-                + paths(a) //
+                + paths(a, counter) //
                 + "\n\n@enduml";
     }
 
-    private static String paths(OpenAPI a) {
+    private static String paths(OpenAPI a, AtomicLong counter) {
         if (a.getPaths() == null) {
             return "";
         } else {
@@ -75,7 +75,7 @@ public final class Converter {
                             .entrySet() //
                             .stream() //
                             .map(entry -> toPlantUmlPath(entry.getKey(), //
-                                    entry.getValue()))
+                                    entry.getValue(), counter))
                             .collect(Collectors.joining());
         }
     }
@@ -89,7 +89,7 @@ public final class Converter {
                 .collect(Collectors.joining());
     }
 
-    private static String toPlantUmlPath(String path, PathItem p) {
+    private static String toPlantUmlPath(String path, PathItem p, AtomicLong counter) {
         StringBuilder b = new StringBuilder();
         // add method class blocks with HTTP verb and parameters
         // add response lines
@@ -100,7 +100,7 @@ public final class Converter {
                     Operation operation = entry.getValue();
                     String className = entry.getKey() + " " + path;
                     StringBuilder s = new StringBuilder();
-                    s.append("\n\nclass \"" + className + "\" <<Method>> {");
+                    s.append("\n\nclass " + quote(className) + " <<Method>> {");
                     List<Parameter> parameters = operation.getParameters();
                     if (parameters != null) {
                         s.append(parameters //
@@ -122,9 +122,18 @@ public final class Converter {
                                 // TODO only using the first content
                                 Entry<String, MediaType> mediaType = ent.getValue().getContent().entrySet()
                                         .parallelStream().findFirst().get();
-                                String returnClassName = refToClassName(mediaType.getValue().getSchema().get$ref());
-                                return "\n\n\"" + className + "\"" + PATH_RELATIONSHIP_RIGHT_ARROW + "\""
-                                        + returnClassName + "\": " + responseCode;
+                                Schema<?> sch = mediaType.getValue().getSchema();
+                                final String returnClassName;
+                                final String returnClassDeclaration;
+                                if (sch.get$ref() != null) {
+                                    returnClassName = refToClassName(sch.get$ref());
+                                    returnClassDeclaration = "";
+                                } else {
+                                    returnClassName = (className + " " + responseCode + " Return");
+                                    returnClassDeclaration = toPlantUmlClass(returnClassName, sch, counter);
+                                }
+                                return returnClassDeclaration + "\n\n" + quote(className)
+                                        + PATH_RELATIONSHIP_RIGHT_ARROW + quote(returnClassName) + ": " + responseCode;
                             }).collect(Collectors.joining()));
                     return s.toString();
                 }) //
@@ -162,13 +171,13 @@ public final class Converter {
     private static String toPlantUmlClass(String name, Schema<?> schema, AtomicLong counter) {
         StringBuilder b = new StringBuilder();
         List<Entry<String, Schema<?>>> more = new ArrayList<>();
-        b.append("\n\nclass " + name + " {\n");
+        b.append("\n\nclass " + quote(name) + " {\n");
         List<String> relationships = new ArrayList<>();
         if (schema.get$ref() != null) {
             // this is an alias case for a schema
             String ref = schema.get$ref();
             String otherClassName = refToClassName(ref);
-            relationships.add(name + CLASS_RELATIONSHIP_RIGHT_ARROW + otherClassName);
+            relationships.add(quote(name) + CLASS_RELATIONSHIP_RIGHT_ARROW + quote(otherClassName));
         } else if (schema instanceof ComposedSchema) {
             ComposedSchema s = (ComposedSchema) schema;
             if (s.getOneOf() != null) {
@@ -281,11 +290,11 @@ public final class Converter {
             Cardinality cardinality) {
         String label = "anon" + counter.incrementAndGet();
         relationships.add("diamond " + label);
-        relationships
-                .add(name + CLASS_RELATIONSHIP_RIGHT_ARROW + "\"" + cardinality + "\" " + label + ": " + propertyName);
+        relationships.add(quote(name) + CLASS_RELATIONSHIP_RIGHT_ARROW + "\"" + cardinality + "\" " + label + ": "
+                + propertyName);
         List<String> otherClassNames = refsToClassNames(oneOf);
         for (String otherClassName : otherClassNames) {
-            relationships.add(label + INHERITANCE_LEFT_ARROW + otherClassName);
+            relationships.add(label + INHERITANCE_LEFT_ARROW + quote(otherClassName));
         }
     }
 
@@ -294,7 +303,7 @@ public final class Converter {
         List<String> otherClassNames = refsToClassNames(schemas);
         final String s = cardinality == null ? "" : " \"" + cardinality + "\"";
         for (String otherClassName : otherClassNames) {
-            relationships.add(name + s + INHERITANCE_LEFT_ARROW + otherClassName);
+            relationships.add(quote(name) + s + INHERITANCE_LEFT_ARROW + quote(otherClassName));
         }
     }
 
@@ -318,15 +327,19 @@ public final class Converter {
         addToMany(relationships, name, otherClassName, null);
     }
 
+    private static String quote(String s) {
+        return "\"" + s + "\"";
+    }
+
     private static void addToMany(List<String> relationships, String name, String otherClassName, String field) {
-        relationships.add(name + CLASS_RELATIONSHIP_RIGHT_ARROW + "\"*\" " + otherClassName
+        relationships.add(quote(name) + CLASS_RELATIONSHIP_RIGHT_ARROW + "\"*\" " + quote(otherClassName)
                 + (field == null || field.equals(otherClassName) ? "" : " : " + field));
     }
 
     private static void addToOne(List<String> relationships, String name, String otherClassName, String field,
             boolean isToOne) {
-        relationships.add(name + CLASS_RELATIONSHIP_RIGHT_ARROW + "\"" + (isToOne ? "1" : "0..1") + "\" "
-                + otherClassName + (field.equals(otherClassName) ? "" : " : " + field));
+        relationships.add(quote(name) + CLASS_RELATIONSHIP_RIGHT_ARROW + "\"" + (isToOne ? "1" : "0..1") + "\" "
+                + quote(otherClassName) + (field.equals(otherClassName) ? "" : " : " + field));
     }
 
     private static void append(StringBuilder b, Set<String> required, String type, String name) {
