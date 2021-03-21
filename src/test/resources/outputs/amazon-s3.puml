@@ -1,0 +1,3595 @@
+@startuml
+
+class "AbortDate" {
+}
+
+class "AbortIncompleteMultipartUpload" {
+}
+
+"AbortIncompleteMultipartUpload" --> "0..1" "DaysAfterInitiation"
+
+class "AbortMultipartUploadOutput" {
+}
+
+class "AbortMultipartUploadRequest" {
+}
+
+class "AbortRuleId" {
+  value : string
+}
+
+class "AccelerateConfiguration" {
+}
+
+"AccelerateConfiguration" --> "0..1" "BucketAccelerateStatus" : Status
+
+class "AcceptRanges" {
+  value : string
+}
+
+class "AccessControlPolicy" {
+}
+
+"AccessControlPolicy" --> "0..1" "Grants"
+
+"AccessControlPolicy" --> "0..1" "Owner"
+
+class "AccessControlTranslation" {
+}
+
+"AccessControlTranslation" --> "1" "OwnerOverride" : Owner
+
+class "AccountId" {
+  value : string
+}
+
+class "AllowQuotedRecordDelimiter" {
+}
+
+class "AllowedHeader" {
+  value : string
+}
+
+class "AllowedHeaders" {
+}
+
+"AllowedHeaders" --> "*" "AllowedHeader"
+
+class "AllowedMethod" {
+  value : string
+}
+
+class "AllowedMethods" {
+}
+
+"AllowedMethods" --> "*" "AllowedMethod"
+
+class "AllowedOrigin" {
+  value : string
+}
+
+class "AllowedOrigins" {
+}
+
+"AllowedOrigins" --> "*" "AllowedOrigin"
+
+class "AnalyticsAndOperator" {
+}
+
+"AnalyticsAndOperator" --> "0..1" "Prefix"
+
+"AnalyticsAndOperator" --> "0..1" "TagSet" : Tags
+
+class "AnalyticsConfiguration" {
+}
+
+"AnalyticsConfiguration" --> "0..1" "AnalyticsFilter" : Filter
+
+"AnalyticsConfiguration" --> "1" "AnalyticsId" : Id
+
+"AnalyticsConfiguration" --> "1" "StorageClassAnalysis"
+
+class "AnalyticsConfigurationList" {
+}
+
+"AnalyticsConfigurationList" --> "*" "AnalyticsConfiguration"
+
+class "AnalyticsExportDestination" {
+}
+
+"AnalyticsExportDestination" --> "1" "AnalyticsS3BucketDestination" : S3BucketDestination
+
+class "AnalyticsFilter" {
+}
+
+"AnalyticsFilter" --> "0..1" "AnalyticsAndOperator" : And
+
+"AnalyticsFilter" --> "0..1" "Prefix"
+
+"AnalyticsFilter" --> "0..1" "Tag"
+
+class "AnalyticsId" {
+  value : string
+}
+
+class "AnalyticsS3BucketDestination" {
+}
+
+"AnalyticsS3BucketDestination" --> "1" "BucketName" : Bucket
+
+"AnalyticsS3BucketDestination" --> "0..1" "AccountId" : BucketAccountId
+
+"AnalyticsS3BucketDestination" --> "1" "AnalyticsS3ExportFileFormat" : Format
+
+"AnalyticsS3BucketDestination" --> "0..1" "Prefix"
+
+class "AnalyticsS3ExportFileFormat" {
+  value : string
+}
+
+class "Body" {
+  value : string
+}
+
+class "Bucket" {
+}
+
+"Bucket" --> "0..1" "CreationDate"
+
+"Bucket" --> "0..1" "BucketName" : Name
+
+class "BucketAccelerateStatus" {
+  value : string
+}
+
+class "BucketAlreadyExists" {
+}
+
+class "BucketAlreadyOwnedByYou" {
+}
+
+class "BucketCannedACL" {
+  value : string
+}
+
+class "BucketLifecycleConfiguration" {
+}
+
+"BucketLifecycleConfiguration" --> "1" "LifecycleRules" : Rules
+
+class "BucketLocationConstraint" {
+  value : string
+}
+
+class "BucketLoggingStatus" {
+}
+
+"BucketLoggingStatus" --> "0..1" "LoggingEnabled"
+
+class "BucketLogsPermission" {
+  value : string
+}
+
+class "BucketName" {
+  value : string
+}
+
+class "BucketVersioningStatus" {
+  value : string
+}
+
+class "Buckets" {
+}
+
+"Buckets" --> "*" "Bucket"
+
+class "BypassGovernanceRetention" {
+}
+
+class "BytesProcessed" {
+}
+
+class "BytesReturned" {
+}
+
+class "BytesScanned" {
+}
+
+class "CORSConfiguration" {
+}
+
+"CORSConfiguration" --> "1" "CORSRules"
+
+class "CORSRule" {
+}
+
+"CORSRule" --> "0..1" "AllowedHeaders"
+
+"CORSRule" --> "1" "AllowedMethods"
+
+"CORSRule" --> "1" "AllowedOrigins"
+
+"CORSRule" --> "0..1" "ExposeHeaders"
+
+"CORSRule" --> "0..1" "MaxAgeSeconds"
+
+class "CORSRules" {
+}
+
+"CORSRules" --> "*" "CORSRule"
+
+class "CSVInput" {
+}
+
+"CSVInput" --> "0..1" "AllowQuotedRecordDelimiter"
+
+"CSVInput" --> "0..1" "Comments"
+
+"CSVInput" --> "0..1" "FieldDelimiter"
+
+"CSVInput" --> "0..1" "FileHeaderInfo"
+
+"CSVInput" --> "0..1" "QuoteCharacter"
+
+"CSVInput" --> "0..1" "QuoteEscapeCharacter"
+
+"CSVInput" --> "0..1" "RecordDelimiter"
+
+class "CSVOutput" {
+}
+
+"CSVOutput" --> "0..1" "FieldDelimiter"
+
+"CSVOutput" --> "0..1" "QuoteCharacter"
+
+"CSVOutput" --> "0..1" "QuoteEscapeCharacter"
+
+"CSVOutput" --> "0..1" "QuoteFields"
+
+"CSVOutput" --> "0..1" "RecordDelimiter"
+
+class "CacheControl" {
+  value : string
+}
+
+class "CloudFunction" {
+  value : string
+}
+
+class "CloudFunctionConfiguration" {
+}
+
+"CloudFunctionConfiguration" --> "0..1" "CloudFunction"
+
+"CloudFunctionConfiguration" --> "0..1" "Event"
+
+"CloudFunctionConfiguration" --> "0..1" "EventList" : Events
+
+"CloudFunctionConfiguration" --> "0..1" "NotificationId" : Id
+
+"CloudFunctionConfiguration" --> "0..1" "CloudFunctionInvocationRole" : InvocationRole
+
+class "CloudFunctionInvocationRole" {
+  value : string
+}
+
+class "Code" {
+  value : string
+}
+
+class "Comments" {
+  value : string
+}
+
+class "CommonPrefix" {
+}
+
+"CommonPrefix" --> "0..1" "Prefix"
+
+class "CommonPrefixList" {
+}
+
+"CommonPrefixList" --> "*" "CommonPrefix"
+
+class "CompleteMultipartUploadOutput" {
+}
+
+"CompleteMultipartUploadOutput" --> "0..1" "BucketName" : Bucket
+
+"CompleteMultipartUploadOutput" --> "0..1" "ETag"
+
+"CompleteMultipartUploadOutput" --> "0..1" "ObjectKey" : Key
+
+"CompleteMultipartUploadOutput" --> "0..1" "Location"
+
+class "CompleteMultipartUploadRequest" {
+}
+
+"CompleteMultipartUploadRequest" --> "0..1" "CompletedMultipartUpload" : MultipartUpload
+
+class "CompletedMultipartUpload" {
+}
+
+"CompletedMultipartUpload" --> "0..1" "CompletedPartList" : Parts
+
+class "CompletedPart" {
+}
+
+"CompletedPart" --> "0..1" "ETag"
+
+"CompletedPart" --> "0..1" "PartNumber"
+
+class "CompletedPartList" {
+}
+
+"CompletedPartList" --> "*" "CompletedPart"
+
+class "CompressionType" {
+  value : string
+}
+
+class "Condition" {
+}
+
+"Condition" --> "0..1" "HttpErrorCodeReturnedEquals"
+
+"Condition" --> "0..1" "KeyPrefixEquals"
+
+class "ConfirmRemoveSelfBucketAccess" {
+}
+
+class "ContentDisposition" {
+  value : string
+}
+
+class "ContentEncoding" {
+  value : string
+}
+
+class "ContentLanguage" {
+  value : string
+}
+
+class "ContentLength" {
+}
+
+class "ContentMD5" {
+  value : string
+}
+
+class "ContentRange" {
+  value : string
+}
+
+class "ContentType" {
+  value : string
+}
+
+class "ContinuationEvent" {
+}
+
+class "CopyObjectOutput" {
+}
+
+"CopyObjectOutput" --> "0..1" "CopyObjectResult"
+
+class "CopyObjectRequest" {
+}
+
+"CopyObjectRequest" --> "0..1" "Metadata"
+
+class "CopyObjectResult" {
+}
+
+"CopyObjectResult" --> "0..1" "ETag"
+
+"CopyObjectResult" --> "0..1" "LastModified"
+
+class "CopyPartResult" {
+}
+
+"CopyPartResult" --> "0..1" "ETag"
+
+"CopyPartResult" --> "0..1" "LastModified"
+
+class "CopySource" {
+  value : string
+}
+
+class "CopySourceIfMatch" {
+  value : string
+}
+
+class "CopySourceIfModifiedSince" {
+}
+
+class "CopySourceIfNoneMatch" {
+  value : string
+}
+
+class "CopySourceIfUnmodifiedSince" {
+}
+
+class "CopySourceRange" {
+  value : string
+}
+
+class "CopySourceSSECustomerAlgorithm" {
+  value : string
+}
+
+class "CopySourceSSECustomerKey" {
+}
+
+class "CopySourceSSECustomerKeyMD5" {
+  value : string
+}
+
+class "CopySourceVersionId" {
+  value : string
+}
+
+class "CreateBucketConfiguration" {
+}
+
+"CreateBucketConfiguration" --> "0..1" "BucketLocationConstraint" : LocationConstraint
+
+class "CreateBucketOutput" {
+}
+
+class "CreateBucketRequest" {
+}
+
+"CreateBucketRequest" --> "0..1" "CreateBucketConfiguration"
+
+class "CreateMultipartUploadOutput" {
+}
+
+"CreateMultipartUploadOutput" --> "0..1" "BucketName" : Bucket
+
+"CreateMultipartUploadOutput" --> "0..1" "ObjectKey" : Key
+
+"CreateMultipartUploadOutput" --> "0..1" "MultipartUploadId" : UploadId
+
+class "CreateMultipartUploadRequest" {
+}
+
+"CreateMultipartUploadRequest" --> "0..1" "Metadata"
+
+class "CreationDate" {
+}
+
+class "Date" {
+}
+
+class "Days" {
+}
+
+class "DaysAfterInitiation" {
+}
+
+class "DefaultRetention" {
+}
+
+"DefaultRetention" --> "0..1" "Days"
+
+"DefaultRetention" --> "0..1" "ObjectLockRetentionMode" : Mode
+
+"DefaultRetention" --> "0..1" "Years"
+
+class "Delete" {
+}
+
+"Delete" --> "1" "ObjectIdentifierList" : Objects
+
+"Delete" --> "0..1" "Quiet"
+
+class "DeleteBucketAnalyticsConfigurationRequest" {
+}
+
+class "DeleteBucketCorsRequest" {
+}
+
+class "DeleteBucketEncryptionRequest" {
+}
+
+class "DeleteBucketInventoryConfigurationRequest" {
+}
+
+class "DeleteBucketLifecycleRequest" {
+}
+
+class "DeleteBucketMetricsConfigurationRequest" {
+}
+
+class "DeleteBucketPolicyRequest" {
+}
+
+class "DeleteBucketReplicationRequest" {
+}
+
+class "DeleteBucketRequest" {
+}
+
+class "DeleteBucketTaggingRequest" {
+}
+
+class "DeleteBucketWebsiteRequest" {
+}
+
+class "DeleteMarker" {
+}
+
+class "DeleteMarkerEntry" {
+}
+
+"DeleteMarkerEntry" --> "0..1" "IsLatest"
+
+"DeleteMarkerEntry" --> "0..1" "ObjectKey" : Key
+
+"DeleteMarkerEntry" --> "0..1" "LastModified"
+
+"DeleteMarkerEntry" --> "0..1" "Owner"
+
+"DeleteMarkerEntry" --> "0..1" "ObjectVersionId" : VersionId
+
+class "DeleteMarkerReplication" {
+}
+
+"DeleteMarkerReplication" --> "0..1" "DeleteMarkerReplicationStatus" : Status
+
+class "DeleteMarkerReplicationStatus" {
+  value : string
+}
+
+class "DeleteMarkerVersionId" {
+  value : string
+}
+
+class "DeleteMarkers" {
+}
+
+"DeleteMarkers" --> "*" "DeleteMarkerEntry"
+
+class "DeleteObjectOutput" {
+}
+
+class "DeleteObjectRequest" {
+}
+
+class "DeleteObjectTaggingOutput" {
+}
+
+class "DeleteObjectTaggingRequest" {
+}
+
+class "DeleteObjectsOutput" {
+}
+
+"DeleteObjectsOutput" --> "0..1" "DeletedObjects" : Deleted
+
+"DeleteObjectsOutput" --> "0..1" "Errors"
+
+class "DeleteObjectsRequest" {
+}
+
+"DeleteObjectsRequest" --> "1" "Delete"
+
+class "DeletePublicAccessBlockRequest" {
+}
+
+class "DeletedObject" {
+}
+
+"DeletedObject" --> "0..1" "DeleteMarker"
+
+"DeletedObject" --> "0..1" "DeleteMarkerVersionId"
+
+"DeletedObject" --> "0..1" "ObjectKey" : Key
+
+"DeletedObject" --> "0..1" "ObjectVersionId" : VersionId
+
+class "DeletedObjects" {
+}
+
+"DeletedObjects" --> "*" "DeletedObject"
+
+class "Delimiter" {
+  value : string
+}
+
+class "Description" {
+  value : string
+}
+
+class "Destination" {
+}
+
+"Destination" --> "0..1" "AccessControlTranslation"
+
+"Destination" --> "0..1" "AccountId" : Account
+
+"Destination" --> "1" "BucketName" : Bucket
+
+"Destination" --> "0..1" "EncryptionConfiguration"
+
+"Destination" --> "0..1" "Metrics"
+
+"Destination" --> "0..1" "ReplicationTime"
+
+"Destination" --> "0..1" "StorageClass"
+
+class "DisplayName" {
+  value : string
+}
+
+class "ETag" {
+  value : string
+}
+
+class "EmailAddress" {
+  value : string
+}
+
+class "EnableRequestProgress" {
+}
+
+class "EncodingType" {
+  value : string
+}
+
+class "Encryption" {
+}
+
+"Encryption" --> "1" "ServerSideEncryption" : EncryptionType
+
+"Encryption" --> "0..1" "KMSContext"
+
+"Encryption" --> "0..1" "SSEKMSKeyId" : KMSKeyId
+
+class "EncryptionConfiguration" {
+}
+
+"EncryptionConfiguration" --> "0..1" "ReplicaKmsKeyID"
+
+class "End" {
+}
+
+class "EndEvent" {
+}
+
+class "Error" {
+}
+
+"Error" --> "0..1" "Code"
+
+"Error" --> "0..1" "ObjectKey" : Key
+
+"Error" --> "0..1" "Message"
+
+"Error" --> "0..1" "ObjectVersionId" : VersionId
+
+class "ErrorDocument" {
+}
+
+"ErrorDocument" --> "1" "ObjectKey" : Key
+
+class "Errors" {
+}
+
+"Errors" --> "*" "Error"
+
+class "Event" {
+  value : string
+}
+
+class "EventList" {
+}
+
+"EventList" --> "*" "Event"
+
+class "ExistingObjectReplication" {
+}
+
+"ExistingObjectReplication" --> "1" "ExistingObjectReplicationStatus" : Status
+
+class "ExistingObjectReplicationStatus" {
+  value : string
+}
+
+class "Expiration" {
+  value : string
+}
+
+class "ExpirationStatus" {
+  value : string
+}
+
+class "ExpiredObjectDeleteMarker" {
+}
+
+class "Expires" {
+}
+
+class "ExposeHeader" {
+  value : string
+}
+
+class "ExposeHeaders" {
+}
+
+"ExposeHeaders" --> "*" "ExposeHeader"
+
+class "Expression" {
+  value : string
+}
+
+class "ExpressionType" {
+  value : string
+}
+
+class "FetchOwner" {
+}
+
+class "FieldDelimiter" {
+  value : string
+}
+
+class "FileHeaderInfo" {
+  value : string
+}
+
+class "FilterRule" {
+}
+
+"FilterRule" --> "0..1" "FilterRuleName" : Name
+
+"FilterRule" --> "0..1" "FilterRuleValue" : Value
+
+class "FilterRuleList" {
+}
+
+"FilterRuleList" --> "*" "FilterRule"
+
+class "FilterRuleName" {
+  value : string
+}
+
+class "FilterRuleValue" {
+  value : string
+}
+
+class "GetBucketAccelerateConfigurationOutput" {
+}
+
+"GetBucketAccelerateConfigurationOutput" --> "0..1" "BucketAccelerateStatus" : Status
+
+class "GetBucketAccelerateConfigurationRequest" {
+}
+
+class "GetBucketAclOutput" {
+}
+
+"GetBucketAclOutput" --> "0..1" "Grants"
+
+"GetBucketAclOutput" --> "0..1" "Owner"
+
+class "GetBucketAclRequest" {
+}
+
+class "GetBucketAnalyticsConfigurationOutput" {
+}
+
+"GetBucketAnalyticsConfigurationOutput" --> "0..1" "AnalyticsConfiguration"
+
+class "GetBucketAnalyticsConfigurationRequest" {
+}
+
+class "GetBucketCorsOutput" {
+}
+
+"GetBucketCorsOutput" --> "0..1" "CORSRules"
+
+class "GetBucketCorsRequest" {
+}
+
+class "GetBucketEncryptionOutput" {
+}
+
+"GetBucketEncryptionOutput" --> "0..1" "ServerSideEncryptionConfiguration"
+
+class "GetBucketEncryptionRequest" {
+}
+
+class "GetBucketInventoryConfigurationOutput" {
+}
+
+"GetBucketInventoryConfigurationOutput" --> "0..1" "InventoryConfiguration"
+
+class "GetBucketInventoryConfigurationRequest" {
+}
+
+class "GetBucketLifecycleConfigurationOutput" {
+}
+
+"GetBucketLifecycleConfigurationOutput" --> "0..1" "LifecycleRules" : Rules
+
+class "GetBucketLifecycleConfigurationRequest" {
+}
+
+class "GetBucketLifecycleOutput" {
+}
+
+"GetBucketLifecycleOutput" --> "0..1" "Rules"
+
+class "GetBucketLifecycleRequest" {
+}
+
+class "GetBucketLocationOutput" {
+}
+
+"GetBucketLocationOutput" --> "0..1" "BucketLocationConstraint" : LocationConstraint
+
+class "GetBucketLocationRequest" {
+}
+
+class "GetBucketLoggingOutput" {
+}
+
+"GetBucketLoggingOutput" --> "0..1" "LoggingEnabled"
+
+class "GetBucketLoggingRequest" {
+}
+
+class "GetBucketMetricsConfigurationOutput" {
+}
+
+"GetBucketMetricsConfigurationOutput" --> "0..1" "MetricsConfiguration"
+
+class "GetBucketMetricsConfigurationRequest" {
+}
+
+class "GetBucketNotificationConfigurationRequest" {
+}
+
+class "GetBucketPolicyOutput" {
+}
+
+"GetBucketPolicyOutput" --> "0..1" "Policy"
+
+class "GetBucketPolicyRequest" {
+}
+
+class "GetBucketPolicyStatusOutput" {
+}
+
+"GetBucketPolicyStatusOutput" --> "0..1" "PolicyStatus"
+
+class "GetBucketPolicyStatusRequest" {
+}
+
+class "GetBucketReplicationOutput" {
+}
+
+"GetBucketReplicationOutput" --> "0..1" "ReplicationConfiguration"
+
+class "GetBucketReplicationRequest" {
+}
+
+class "GetBucketRequestPaymentOutput" {
+}
+
+"GetBucketRequestPaymentOutput" --> "0..1" "Payer"
+
+class "GetBucketRequestPaymentRequest" {
+}
+
+class "GetBucketTaggingOutput" {
+}
+
+"GetBucketTaggingOutput" --> "1" "TagSet"
+
+class "GetBucketTaggingRequest" {
+}
+
+class "GetBucketVersioningOutput" {
+}
+
+"GetBucketVersioningOutput" --> "0..1" "MFADeleteStatus" : MFADelete
+
+"GetBucketVersioningOutput" --> "0..1" "BucketVersioningStatus" : Status
+
+class "GetBucketVersioningRequest" {
+}
+
+class "GetBucketWebsiteOutput" {
+}
+
+"GetBucketWebsiteOutput" --> "0..1" "ErrorDocument"
+
+"GetBucketWebsiteOutput" --> "0..1" "IndexDocument"
+
+"GetBucketWebsiteOutput" --> "0..1" "RedirectAllRequestsTo"
+
+"GetBucketWebsiteOutput" --> "0..1" "RoutingRules"
+
+class "GetBucketWebsiteRequest" {
+}
+
+class "GetObjectAclOutput" {
+}
+
+"GetObjectAclOutput" --> "0..1" "Grants"
+
+"GetObjectAclOutput" --> "0..1" "Owner"
+
+class "GetObjectAclRequest" {
+}
+
+class "GetObjectLegalHoldOutput" {
+}
+
+"GetObjectLegalHoldOutput" --> "0..1" "ObjectLockLegalHold" : LegalHold
+
+class "GetObjectLegalHoldRequest" {
+}
+
+class "GetObjectLockConfigurationOutput" {
+}
+
+"GetObjectLockConfigurationOutput" --> "0..1" "ObjectLockConfiguration"
+
+class "GetObjectLockConfigurationRequest" {
+}
+
+class "GetObjectOutput" {
+}
+
+"GetObjectOutput" --> "0..1" "Body"
+
+"GetObjectOutput" --> "0..1" "Metadata"
+
+class "GetObjectRequest" {
+}
+
+class "GetObjectRetentionOutput" {
+}
+
+"GetObjectRetentionOutput" --> "0..1" "ObjectLockRetention" : Retention
+
+class "GetObjectRetentionRequest" {
+}
+
+class "GetObjectTaggingOutput" {
+}
+
+"GetObjectTaggingOutput" --> "1" "TagSet"
+
+class "GetObjectTaggingRequest" {
+}
+
+class "GetObjectTorrentOutput" {
+}
+
+"GetObjectTorrentOutput" --> "0..1" "Body"
+
+class "GetObjectTorrentRequest" {
+}
+
+class "GetPublicAccessBlockOutput" {
+}
+
+"GetPublicAccessBlockOutput" --> "0..1" "PublicAccessBlockConfiguration"
+
+class "GetPublicAccessBlockRequest" {
+}
+
+class "GlacierJobParameters" {
+}
+
+"GlacierJobParameters" --> "1" "Tier"
+
+class "Grant" {
+}
+
+"Grant" --> "0..1" "Grantee"
+
+"Grant" --> "0..1" "Permission"
+
+class "GrantFullControl" {
+  value : string
+}
+
+class "GrantRead" {
+  value : string
+}
+
+class "GrantReadACP" {
+  value : string
+}
+
+class "GrantWrite" {
+  value : string
+}
+
+class "GrantWriteACP" {
+  value : string
+}
+
+class "Grantee" {
+}
+
+"Grantee" --> "0..1" "DisplayName"
+
+"Grantee" --> "0..1" "EmailAddress"
+
+"Grantee" --> "0..1" "ID"
+
+"Grantee" --> "1" "Type"
+
+"Grantee" --> "0..1" "URI"
+
+class "Grants" {
+}
+
+"Grants" --> "*" "Grant"
+
+class "HeadBucketRequest" {
+}
+
+class "HeadObjectOutput" {
+}
+
+"HeadObjectOutput" --> "0..1" "Metadata"
+
+class "HeadObjectRequest" {
+}
+
+class "HostName" {
+  value : string
+}
+
+class "HttpErrorCodeReturnedEquals" {
+  value : string
+}
+
+class "HttpRedirectCode" {
+  value : string
+}
+
+class "ID" {
+  value : string
+}
+
+class "IfMatch" {
+  value : string
+}
+
+class "IfModifiedSince" {
+}
+
+class "IfNoneMatch" {
+  value : string
+}
+
+class "IfUnmodifiedSince" {
+}
+
+class "IndexDocument" {
+}
+
+"IndexDocument" --> "1" "Suffix"
+
+class "Initiated" {
+}
+
+class "Initiator" {
+}
+
+"Initiator" --> "0..1" "DisplayName"
+
+"Initiator" --> "0..1" "ID"
+
+class "InputSerialization" {
+}
+
+"InputSerialization" --> "0..1" "CSVInput" : CSV
+
+"InputSerialization" --> "0..1" "CompressionType"
+
+"InputSerialization" --> "0..1" "JSONInput" : JSON
+
+"InputSerialization" --> "0..1" "ParquetInput" : Parquet
+
+class "InventoryConfiguration" {
+}
+
+"InventoryConfiguration" --> "1" "InventoryDestination" : Destination
+
+"InventoryConfiguration" --> "0..1" "InventoryFilter" : Filter
+
+"InventoryConfiguration" --> "1" "InventoryId" : Id
+
+"InventoryConfiguration" --> "1" "InventoryIncludedObjectVersions" : IncludedObjectVersions
+
+"InventoryConfiguration" --> "1" "IsEnabled"
+
+"InventoryConfiguration" --> "0..1" "InventoryOptionalFields" : OptionalFields
+
+"InventoryConfiguration" --> "1" "InventorySchedule" : Schedule
+
+class "InventoryConfigurationList" {
+}
+
+"InventoryConfigurationList" --> "*" "InventoryConfiguration"
+
+class "InventoryDestination" {
+}
+
+"InventoryDestination" --> "1" "InventoryS3BucketDestination" : S3BucketDestination
+
+class "InventoryEncryption" {
+}
+
+"InventoryEncryption" --> "0..1" "SSEKMS"
+
+"InventoryEncryption" --> "0..1" "SSES3"
+
+class "InventoryFilter" {
+}
+
+"InventoryFilter" --> "1" "Prefix"
+
+class "InventoryFormat" {
+  value : string
+}
+
+class "InventoryFrequency" {
+  value : string
+}
+
+class "InventoryId" {
+  value : string
+}
+
+class "InventoryIncludedObjectVersions" {
+  value : string
+}
+
+class "InventoryOptionalField" {
+  value : string
+}
+
+class "InventoryOptionalFields" {
+}
+
+"InventoryOptionalFields" --> "*" "InventoryOptionalField"
+
+class "InventoryS3BucketDestination" {
+}
+
+"InventoryS3BucketDestination" --> "0..1" "AccountId"
+
+"InventoryS3BucketDestination" --> "1" "BucketName" : Bucket
+
+"InventoryS3BucketDestination" --> "0..1" "InventoryEncryption" : Encryption
+
+"InventoryS3BucketDestination" --> "1" "InventoryFormat" : Format
+
+"InventoryS3BucketDestination" --> "0..1" "Prefix"
+
+class "InventorySchedule" {
+}
+
+"InventorySchedule" --> "1" "InventoryFrequency" : Frequency
+
+class "IsEnabled" {
+}
+
+class "IsLatest" {
+}
+
+class "IsPublic" {
+}
+
+class "IsTruncated" {
+}
+
+class "JSONInput" {
+}
+
+"JSONInput" --> "0..1" "JSONType" : Type
+
+class "JSONOutput" {
+}
+
+"JSONOutput" --> "0..1" "RecordDelimiter"
+
+class "JSONType" {
+  value : string
+}
+
+class "KMSContext" {
+  value : string
+}
+
+class "KeyCount" {
+}
+
+class "KeyMarker" {
+  value : string
+}
+
+class "KeyPrefixEquals" {
+  value : string
+}
+
+class "LambdaFunctionArn" {
+  value : string
+}
+
+class "LambdaFunctionConfiguration" {
+}
+
+"LambdaFunctionConfiguration" --> "1" "EventList" : Events
+
+"LambdaFunctionConfiguration" --> "0..1" "NotificationConfigurationFilter" : Filter
+
+"LambdaFunctionConfiguration" --> "0..1" "NotificationId" : Id
+
+"LambdaFunctionConfiguration" --> "1" "LambdaFunctionArn"
+
+class "LambdaFunctionConfigurationList" {
+}
+
+"LambdaFunctionConfigurationList" --> "*" "LambdaFunctionConfiguration"
+
+class "LastModified" {
+}
+
+class "LifecycleConfiguration" {
+}
+
+"LifecycleConfiguration" --> "1" "Rules"
+
+class "LifecycleExpiration" {
+}
+
+"LifecycleExpiration" --> "0..1" "Date"
+
+"LifecycleExpiration" --> "0..1" "Days"
+
+"LifecycleExpiration" --> "0..1" "ExpiredObjectDeleteMarker"
+
+class "LifecycleRule" {
+}
+
+"LifecycleRule" --> "0..1" "AbortIncompleteMultipartUpload"
+
+"LifecycleRule" --> "0..1" "LifecycleExpiration" : Expiration
+
+"LifecycleRule" --> "0..1" "LifecycleRuleFilter" : Filter
+
+"LifecycleRule" --> "0..1" "ID"
+
+"LifecycleRule" --> "0..1" "NoncurrentVersionExpiration"
+
+"LifecycleRule" --> "0..1" "NoncurrentVersionTransitionList" : NoncurrentVersionTransitions
+
+"LifecycleRule" --> "0..1" "Prefix"
+
+"LifecycleRule" --> "1" "ExpirationStatus" : Status
+
+"LifecycleRule" --> "0..1" "TransitionList" : Transitions
+
+class "LifecycleRuleAndOperator" {
+}
+
+"LifecycleRuleAndOperator" --> "0..1" "Prefix"
+
+"LifecycleRuleAndOperator" --> "0..1" "TagSet" : Tags
+
+class "LifecycleRuleFilter" {
+}
+
+"LifecycleRuleFilter" --> "0..1" "LifecycleRuleAndOperator" : And
+
+"LifecycleRuleFilter" --> "0..1" "Prefix"
+
+"LifecycleRuleFilter" --> "0..1" "Tag"
+
+class "LifecycleRules" {
+}
+
+"LifecycleRules" --> "*" "LifecycleRule"
+
+class "ListBucketAnalyticsConfigurationsOutput" {
+}
+
+"ListBucketAnalyticsConfigurationsOutput" --> "0..1" "AnalyticsConfigurationList"
+
+"ListBucketAnalyticsConfigurationsOutput" --> "0..1" "Token" : ContinuationToken
+
+"ListBucketAnalyticsConfigurationsOutput" --> "0..1" "IsTruncated"
+
+"ListBucketAnalyticsConfigurationsOutput" --> "0..1" "NextToken" : NextContinuationToken
+
+class "ListBucketAnalyticsConfigurationsRequest" {
+}
+
+class "ListBucketInventoryConfigurationsOutput" {
+}
+
+"ListBucketInventoryConfigurationsOutput" --> "0..1" "Token" : ContinuationToken
+
+"ListBucketInventoryConfigurationsOutput" --> "0..1" "InventoryConfigurationList"
+
+"ListBucketInventoryConfigurationsOutput" --> "0..1" "IsTruncated"
+
+"ListBucketInventoryConfigurationsOutput" --> "0..1" "NextToken" : NextContinuationToken
+
+class "ListBucketInventoryConfigurationsRequest" {
+}
+
+class "ListBucketMetricsConfigurationsOutput" {
+}
+
+"ListBucketMetricsConfigurationsOutput" --> "0..1" "Token" : ContinuationToken
+
+"ListBucketMetricsConfigurationsOutput" --> "0..1" "IsTruncated"
+
+"ListBucketMetricsConfigurationsOutput" --> "0..1" "MetricsConfigurationList"
+
+"ListBucketMetricsConfigurationsOutput" --> "0..1" "NextToken" : NextContinuationToken
+
+class "ListBucketMetricsConfigurationsRequest" {
+}
+
+class "ListBucketsOutput" {
+}
+
+"ListBucketsOutput" --> "0..1" "Buckets"
+
+"ListBucketsOutput" --> "0..1" "Owner"
+
+class "ListMultipartUploadsOutput" {
+}
+
+"ListMultipartUploadsOutput" --> "0..1" "BucketName" : Bucket
+
+"ListMultipartUploadsOutput" --> "0..1" "CommonPrefixList" : CommonPrefixes
+
+"ListMultipartUploadsOutput" --> "0..1" "Delimiter"
+
+"ListMultipartUploadsOutput" --> "0..1" "EncodingType"
+
+"ListMultipartUploadsOutput" --> "0..1" "IsTruncated"
+
+"ListMultipartUploadsOutput" --> "0..1" "KeyMarker"
+
+"ListMultipartUploadsOutput" --> "0..1" "MaxUploads"
+
+"ListMultipartUploadsOutput" --> "0..1" "NextKeyMarker"
+
+"ListMultipartUploadsOutput" --> "0..1" "NextUploadIdMarker"
+
+"ListMultipartUploadsOutput" --> "0..1" "Prefix"
+
+"ListMultipartUploadsOutput" --> "0..1" "UploadIdMarker"
+
+"ListMultipartUploadsOutput" --> "0..1" "MultipartUploadList" : Uploads
+
+class "ListMultipartUploadsRequest" {
+}
+
+class "ListObjectVersionsOutput" {
+}
+
+"ListObjectVersionsOutput" --> "0..1" "CommonPrefixList" : CommonPrefixes
+
+"ListObjectVersionsOutput" --> "0..1" "DeleteMarkers"
+
+"ListObjectVersionsOutput" --> "0..1" "Delimiter"
+
+"ListObjectVersionsOutput" --> "0..1" "EncodingType"
+
+"ListObjectVersionsOutput" --> "0..1" "IsTruncated"
+
+"ListObjectVersionsOutput" --> "0..1" "KeyMarker"
+
+"ListObjectVersionsOutput" --> "0..1" "MaxKeys"
+
+"ListObjectVersionsOutput" --> "0..1" "BucketName" : Name
+
+"ListObjectVersionsOutput" --> "0..1" "NextKeyMarker"
+
+"ListObjectVersionsOutput" --> "0..1" "NextVersionIdMarker"
+
+"ListObjectVersionsOutput" --> "0..1" "Prefix"
+
+"ListObjectVersionsOutput" --> "0..1" "VersionIdMarker"
+
+"ListObjectVersionsOutput" --> "0..1" "ObjectVersionList" : Versions
+
+class "ListObjectVersionsRequest" {
+}
+
+class "ListObjectsOutput" {
+}
+
+"ListObjectsOutput" --> "0..1" "CommonPrefixList" : CommonPrefixes
+
+"ListObjectsOutput" --> "0..1" "ObjectList" : Contents
+
+"ListObjectsOutput" --> "0..1" "Delimiter"
+
+"ListObjectsOutput" --> "0..1" "EncodingType"
+
+"ListObjectsOutput" --> "0..1" "IsTruncated"
+
+"ListObjectsOutput" --> "0..1" "Marker"
+
+"ListObjectsOutput" --> "0..1" "MaxKeys"
+
+"ListObjectsOutput" --> "0..1" "BucketName" : Name
+
+"ListObjectsOutput" --> "0..1" "NextMarker"
+
+"ListObjectsOutput" --> "0..1" "Prefix"
+
+class "ListObjectsRequest" {
+}
+
+class "ListObjectsV2Output" {
+}
+
+"ListObjectsV2Output" --> "0..1" "CommonPrefixList" : CommonPrefixes
+
+"ListObjectsV2Output" --> "0..1" "ObjectList" : Contents
+
+"ListObjectsV2Output" --> "0..1" "Token" : ContinuationToken
+
+"ListObjectsV2Output" --> "0..1" "Delimiter"
+
+"ListObjectsV2Output" --> "0..1" "EncodingType"
+
+"ListObjectsV2Output" --> "0..1" "IsTruncated"
+
+"ListObjectsV2Output" --> "0..1" "KeyCount"
+
+"ListObjectsV2Output" --> "0..1" "MaxKeys"
+
+"ListObjectsV2Output" --> "0..1" "BucketName" : Name
+
+"ListObjectsV2Output" --> "0..1" "NextToken" : NextContinuationToken
+
+"ListObjectsV2Output" --> "0..1" "Prefix"
+
+"ListObjectsV2Output" --> "0..1" "StartAfter"
+
+class "ListObjectsV2Request" {
+}
+
+class "ListPartsOutput" {
+}
+
+"ListPartsOutput" --> "0..1" "BucketName" : Bucket
+
+"ListPartsOutput" --> "0..1" "Initiator"
+
+"ListPartsOutput" --> "0..1" "IsTruncated"
+
+"ListPartsOutput" --> "0..1" "ObjectKey" : Key
+
+"ListPartsOutput" --> "0..1" "MaxParts"
+
+"ListPartsOutput" --> "0..1" "NextPartNumberMarker"
+
+"ListPartsOutput" --> "0..1" "Owner"
+
+"ListPartsOutput" --> "0..1" "PartNumberMarker"
+
+"ListPartsOutput" --> "0..1" "Parts"
+
+"ListPartsOutput" --> "0..1" "StorageClass"
+
+"ListPartsOutput" --> "0..1" "MultipartUploadId" : UploadId
+
+class "ListPartsRequest" {
+}
+
+class "Location" {
+  value : string
+}
+
+class "LocationPrefix" {
+  value : string
+}
+
+class "LoggingEnabled" {
+}
+
+"LoggingEnabled" --> "1" "TargetBucket"
+
+"LoggingEnabled" --> "0..1" "TargetGrants"
+
+"LoggingEnabled" --> "1" "TargetPrefix"
+
+class "MFA" {
+  value : string
+}
+
+class "MFADelete" {
+  value : string
+}
+
+class "MFADeleteStatus" {
+  value : string
+}
+
+class "Marker" {
+  value : string
+}
+
+class "MaxAgeSeconds" {
+}
+
+class "MaxKeys" {
+}
+
+class "MaxParts" {
+}
+
+class "MaxUploads" {
+}
+
+class "Message" {
+  value : string
+}
+
+class "Metadata" {
+}
+
+class "MetadataDirective" {
+  value : string
+}
+
+class "MetadataEntry" {
+}
+
+"MetadataEntry" --> "0..1" "MetadataKey" : Name
+
+"MetadataEntry" --> "0..1" "MetadataValue" : Value
+
+class "MetadataKey" {
+  value : string
+}
+
+class "MetadataValue" {
+  value : string
+}
+
+class "Metrics" {
+}
+
+"Metrics" --> "1" "ReplicationTimeValue" : EventThreshold
+
+"Metrics" --> "1" "MetricsStatus" : Status
+
+class "MetricsAndOperator" {
+}
+
+"MetricsAndOperator" --> "0..1" "Prefix"
+
+"MetricsAndOperator" --> "0..1" "TagSet" : Tags
+
+class "MetricsConfiguration" {
+}
+
+"MetricsConfiguration" --> "0..1" "MetricsFilter" : Filter
+
+"MetricsConfiguration" --> "1" "MetricsId" : Id
+
+class "MetricsConfigurationList" {
+}
+
+"MetricsConfigurationList" --> "*" "MetricsConfiguration"
+
+class "MetricsFilter" {
+}
+
+"MetricsFilter" --> "0..1" "MetricsAndOperator" : And
+
+"MetricsFilter" --> "0..1" "Prefix"
+
+"MetricsFilter" --> "0..1" "Tag"
+
+class "MetricsId" {
+  value : string
+}
+
+class "MetricsStatus" {
+  value : string
+}
+
+class "Minutes" {
+}
+
+class "MissingMeta" {
+}
+
+class "MultipartUpload" {
+}
+
+"MultipartUpload" --> "0..1" "Initiated"
+
+"MultipartUpload" --> "0..1" "Initiator"
+
+"MultipartUpload" --> "0..1" "ObjectKey" : Key
+
+"MultipartUpload" --> "0..1" "Owner"
+
+"MultipartUpload" --> "0..1" "StorageClass"
+
+"MultipartUpload" --> "0..1" "MultipartUploadId" : UploadId
+
+class "MultipartUploadId" {
+  value : string
+}
+
+class "MultipartUploadList" {
+}
+
+"MultipartUploadList" --> "*" "MultipartUpload"
+
+class "NextKeyMarker" {
+  value : string
+}
+
+class "NextMarker" {
+  value : string
+}
+
+class "NextPartNumberMarker" {
+}
+
+class "NextToken" {
+  value : string
+}
+
+class "NextUploadIdMarker" {
+  value : string
+}
+
+class "NextVersionIdMarker" {
+  value : string
+}
+
+class "NoSuchBucket" {
+}
+
+class "NoSuchKey" {
+}
+
+class "NoSuchUpload" {
+}
+
+class "NoncurrentVersionExpiration" {
+}
+
+"NoncurrentVersionExpiration" --> "0..1" "Days" : NoncurrentDays
+
+class "NoncurrentVersionTransition" {
+}
+
+"NoncurrentVersionTransition" --> "0..1" "Days" : NoncurrentDays
+
+"NoncurrentVersionTransition" --> "0..1" "TransitionStorageClass" : StorageClass
+
+class "NoncurrentVersionTransitionList" {
+}
+
+"NoncurrentVersionTransitionList" --> "*" "NoncurrentVersionTransition"
+
+class "NotificationConfiguration" {
+}
+
+"NotificationConfiguration" --> "0..1" "LambdaFunctionConfigurationList" : LambdaFunctionConfigurations
+
+"NotificationConfiguration" --> "0..1" "QueueConfigurationList" : QueueConfigurations
+
+"NotificationConfiguration" --> "0..1" "TopicConfigurationList" : TopicConfigurations
+
+class "NotificationConfigurationDeprecated" {
+}
+
+"NotificationConfigurationDeprecated" --> "0..1" "CloudFunctionConfiguration"
+
+"NotificationConfigurationDeprecated" --> "0..1" "QueueConfigurationDeprecated" : QueueConfiguration
+
+"NotificationConfigurationDeprecated" --> "0..1" "TopicConfigurationDeprecated" : TopicConfiguration
+
+class "NotificationConfigurationFilter" {
+}
+
+"NotificationConfigurationFilter" --> "0..1" "S3KeyFilter" : Key
+
+class "NotificationId" {
+  value : string
+}
+
+class "Object" {
+}
+
+"Object" --> "0..1" "ETag"
+
+"Object" --> "0..1" "ObjectKey" : Key
+
+"Object" --> "0..1" "LastModified"
+
+"Object" --> "0..1" "Owner"
+
+"Object" --> "0..1" "Size"
+
+"Object" --> "0..1" "ObjectStorageClass" : StorageClass
+
+class "ObjectAlreadyInActiveTierError" {
+}
+
+class "ObjectCannedACL" {
+  value : string
+}
+
+class "ObjectIdentifier" {
+}
+
+"ObjectIdentifier" --> "1" "ObjectKey" : Key
+
+"ObjectIdentifier" --> "0..1" "ObjectVersionId" : VersionId
+
+class "ObjectIdentifierList" {
+}
+
+"ObjectIdentifierList" --> "*" "ObjectIdentifier"
+
+class "ObjectKey" {
+  value : string
+}
+
+class "ObjectList" {
+}
+
+"ObjectList" --> "*" "Object"
+
+class "ObjectLockConfiguration" {
+}
+
+"ObjectLockConfiguration" --> "0..1" "ObjectLockEnabled"
+
+"ObjectLockConfiguration" --> "0..1" "ObjectLockRule" : Rule
+
+class "ObjectLockEnabled" {
+  value : string
+}
+
+class "ObjectLockEnabledForBucket" {
+}
+
+class "ObjectLockLegalHold" {
+}
+
+"ObjectLockLegalHold" --> "0..1" "ObjectLockLegalHoldStatus" : Status
+
+class "ObjectLockLegalHoldStatus" {
+  value : string
+}
+
+class "ObjectLockMode" {
+  value : string
+}
+
+class "ObjectLockRetainUntilDate" {
+}
+
+class "ObjectLockRetention" {
+}
+
+"ObjectLockRetention" --> "0..1" "ObjectLockRetentionMode" : Mode
+
+"ObjectLockRetention" --> "0..1" "Date" : RetainUntilDate
+
+class "ObjectLockRetentionMode" {
+  value : string
+}
+
+class "ObjectLockRule" {
+}
+
+"ObjectLockRule" --> "0..1" "DefaultRetention"
+
+class "ObjectLockToken" {
+  value : string
+}
+
+class "ObjectNotInActiveTierError" {
+}
+
+class "ObjectStorageClass" {
+  value : string
+}
+
+class "ObjectVersion" {
+}
+
+"ObjectVersion" --> "0..1" "ETag"
+
+"ObjectVersion" --> "0..1" "IsLatest"
+
+"ObjectVersion" --> "0..1" "ObjectKey" : Key
+
+"ObjectVersion" --> "0..1" "LastModified"
+
+"ObjectVersion" --> "0..1" "Owner"
+
+"ObjectVersion" --> "0..1" "Size"
+
+"ObjectVersion" --> "0..1" "ObjectVersionStorageClass" : StorageClass
+
+"ObjectVersion" --> "0..1" "ObjectVersionId" : VersionId
+
+class "ObjectVersionId" {
+  value : string
+}
+
+class "ObjectVersionList" {
+}
+
+"ObjectVersionList" --> "*" "ObjectVersion"
+
+class "ObjectVersionStorageClass" {
+  value : string
+}
+
+class "OutputLocation" {
+}
+
+"OutputLocation" --> "0..1" "S3Location" : S3
+
+class "OutputSerialization" {
+}
+
+"OutputSerialization" --> "0..1" "CSVOutput" : CSV
+
+"OutputSerialization" --> "0..1" "JSONOutput" : JSON
+
+class "Owner" {
+}
+
+"Owner" --> "0..1" "DisplayName"
+
+"Owner" --> "0..1" "ID"
+
+class "OwnerOverride" {
+  value : string
+}
+
+class "ParquetInput" {
+}
+
+class "Part" {
+}
+
+"Part" --> "0..1" "ETag"
+
+"Part" --> "0..1" "LastModified"
+
+"Part" --> "0..1" "PartNumber"
+
+"Part" --> "0..1" "Size"
+
+class "PartNumber" {
+}
+
+class "PartNumberMarker" {
+}
+
+class "Parts" {
+}
+
+"Parts" --> "*" "Part"
+
+class "PartsCount" {
+}
+
+class "Payer" {
+  value : string
+}
+
+class "Permission" {
+  value : string
+}
+
+class "Policy" {
+  value : string
+}
+
+class "PolicyStatus" {
+}
+
+"PolicyStatus" --> "0..1" "IsPublic"
+
+class "Prefix" {
+  value : string
+}
+
+class "Priority" {
+}
+
+class "Progress" {
+}
+
+"Progress" --> "0..1" "BytesProcessed"
+
+"Progress" --> "0..1" "BytesReturned"
+
+"Progress" --> "0..1" "BytesScanned"
+
+class "ProgressEvent" {
+}
+
+"ProgressEvent" --> "0..1" "Progress" : Details
+
+class "Protocol" {
+  value : string
+}
+
+class "PublicAccessBlockConfiguration" {
+}
+
+"PublicAccessBlockConfiguration" --> "0..1" "Setting" : BlockPublicAcls
+
+"PublicAccessBlockConfiguration" --> "0..1" "Setting" : BlockPublicPolicy
+
+"PublicAccessBlockConfiguration" --> "0..1" "Setting" : IgnorePublicAcls
+
+"PublicAccessBlockConfiguration" --> "0..1" "Setting" : RestrictPublicBuckets
+
+class "PutBucketAccelerateConfigurationRequest" {
+}
+
+"PutBucketAccelerateConfigurationRequest" --> "1" "AccelerateConfiguration"
+
+class "PutBucketAclRequest" {
+}
+
+"PutBucketAclRequest" --> "0..1" "AccessControlPolicy"
+
+class "PutBucketAnalyticsConfigurationRequest" {
+}
+
+"PutBucketAnalyticsConfigurationRequest" --> "1" "AnalyticsConfiguration"
+
+class "PutBucketCorsRequest" {
+}
+
+"PutBucketCorsRequest" --> "1" "CORSConfiguration"
+
+class "PutBucketEncryptionRequest" {
+}
+
+"PutBucketEncryptionRequest" --> "1" "ServerSideEncryptionConfiguration"
+
+class "PutBucketInventoryConfigurationRequest" {
+}
+
+"PutBucketInventoryConfigurationRequest" --> "1" "InventoryConfiguration"
+
+class "PutBucketLifecycleConfigurationRequest" {
+}
+
+"PutBucketLifecycleConfigurationRequest" --> "0..1" "BucketLifecycleConfiguration" : LifecycleConfiguration
+
+class "PutBucketLifecycleRequest" {
+}
+
+"PutBucketLifecycleRequest" --> "0..1" "LifecycleConfiguration"
+
+class "PutBucketLoggingRequest" {
+}
+
+"PutBucketLoggingRequest" --> "1" "BucketLoggingStatus"
+
+class "PutBucketMetricsConfigurationRequest" {
+}
+
+"PutBucketMetricsConfigurationRequest" --> "1" "MetricsConfiguration"
+
+class "PutBucketNotificationConfigurationRequest" {
+}
+
+"PutBucketNotificationConfigurationRequest" --> "1" "NotificationConfiguration"
+
+class "PutBucketNotificationRequest" {
+}
+
+"PutBucketNotificationRequest" --> "1" "NotificationConfigurationDeprecated" : NotificationConfiguration
+
+class "PutBucketPolicyRequest" {
+}
+
+"PutBucketPolicyRequest" --> "1" "Policy"
+
+class "PutBucketReplicationRequest" {
+}
+
+"PutBucketReplicationRequest" --> "1" "ReplicationConfiguration"
+
+class "PutBucketRequestPaymentRequest" {
+}
+
+"PutBucketRequestPaymentRequest" --> "1" "RequestPaymentConfiguration"
+
+class "PutBucketTaggingRequest" {
+}
+
+"PutBucketTaggingRequest" --> "1" "Tagging"
+
+class "PutBucketVersioningRequest" {
+}
+
+"PutBucketVersioningRequest" --> "1" "VersioningConfiguration"
+
+class "PutBucketWebsiteRequest" {
+}
+
+"PutBucketWebsiteRequest" --> "1" "WebsiteConfiguration"
+
+class "PutObjectAclOutput" {
+}
+
+class "PutObjectAclRequest" {
+}
+
+"PutObjectAclRequest" --> "0..1" "AccessControlPolicy"
+
+class "PutObjectLegalHoldOutput" {
+}
+
+class "PutObjectLegalHoldRequest" {
+}
+
+"PutObjectLegalHoldRequest" --> "0..1" "ObjectLockLegalHold" : LegalHold
+
+class "PutObjectLockConfigurationOutput" {
+}
+
+class "PutObjectLockConfigurationRequest" {
+}
+
+"PutObjectLockConfigurationRequest" --> "0..1" "ObjectLockConfiguration"
+
+class "PutObjectOutput" {
+}
+
+class "PutObjectRequest" {
+}
+
+"PutObjectRequest" --> "0..1" "Body"
+
+"PutObjectRequest" --> "0..1" "Metadata"
+
+class "PutObjectRetentionOutput" {
+}
+
+class "PutObjectRetentionRequest" {
+}
+
+"PutObjectRetentionRequest" --> "0..1" "ObjectLockRetention" : Retention
+
+class "PutObjectTaggingOutput" {
+}
+
+class "PutObjectTaggingRequest" {
+}
+
+"PutObjectTaggingRequest" --> "1" "Tagging"
+
+class "PutPublicAccessBlockRequest" {
+}
+
+"PutPublicAccessBlockRequest" --> "1" "PublicAccessBlockConfiguration"
+
+class "QueueArn" {
+  value : string
+}
+
+class "QueueConfiguration" {
+}
+
+"QueueConfiguration" --> "1" "EventList" : Events
+
+"QueueConfiguration" --> "0..1" "NotificationConfigurationFilter" : Filter
+
+"QueueConfiguration" --> "0..1" "NotificationId" : Id
+
+"QueueConfiguration" --> "1" "QueueArn"
+
+class "QueueConfigurationDeprecated" {
+}
+
+"QueueConfigurationDeprecated" --> "0..1" "Event"
+
+"QueueConfigurationDeprecated" --> "0..1" "EventList" : Events
+
+"QueueConfigurationDeprecated" --> "0..1" "NotificationId" : Id
+
+"QueueConfigurationDeprecated" --> "0..1" "QueueArn" : Queue
+
+class "QueueConfigurationList" {
+}
+
+"QueueConfigurationList" --> "*" "QueueConfiguration"
+
+class "Quiet" {
+}
+
+class "QuoteCharacter" {
+  value : string
+}
+
+class "QuoteEscapeCharacter" {
+  value : string
+}
+
+class "QuoteFields" {
+  value : string
+}
+
+class "Range" {
+  value : string
+}
+
+class "RecordDelimiter" {
+  value : string
+}
+
+class "RecordsEvent" {
+}
+
+"RecordsEvent" --> "0..1" "Body" : Payload
+
+class "Redirect" {
+}
+
+"Redirect" --> "0..1" "HostName"
+
+"Redirect" --> "0..1" "HttpRedirectCode"
+
+"Redirect" --> "0..1" "Protocol"
+
+"Redirect" --> "0..1" "ReplaceKeyPrefixWith"
+
+"Redirect" --> "0..1" "ReplaceKeyWith"
+
+class "RedirectAllRequestsTo" {
+}
+
+"RedirectAllRequestsTo" --> "1" "HostName"
+
+"RedirectAllRequestsTo" --> "0..1" "Protocol"
+
+class "ReplaceKeyPrefixWith" {
+  value : string
+}
+
+class "ReplaceKeyWith" {
+  value : string
+}
+
+class "ReplicaKmsKeyID" {
+  value : string
+}
+
+class "ReplicationConfiguration" {
+}
+
+"ReplicationConfiguration" --> "1" "Role"
+
+"ReplicationConfiguration" --> "1" "ReplicationRules" : Rules
+
+class "ReplicationRule" {
+}
+
+"ReplicationRule" --> "0..1" "DeleteMarkerReplication"
+
+"ReplicationRule" --> "1" "Destination"
+
+"ReplicationRule" --> "0..1" "ExistingObjectReplication"
+
+"ReplicationRule" --> "0..1" "ReplicationRuleFilter" : Filter
+
+"ReplicationRule" --> "0..1" "ID"
+
+"ReplicationRule" --> "0..1" "Prefix"
+
+"ReplicationRule" --> "0..1" "Priority"
+
+"ReplicationRule" --> "0..1" "SourceSelectionCriteria"
+
+"ReplicationRule" --> "1" "ReplicationRuleStatus" : Status
+
+class "ReplicationRuleAndOperator" {
+}
+
+"ReplicationRuleAndOperator" --> "0..1" "Prefix"
+
+"ReplicationRuleAndOperator" --> "0..1" "TagSet" : Tags
+
+class "ReplicationRuleFilter" {
+}
+
+"ReplicationRuleFilter" --> "0..1" "ReplicationRuleAndOperator" : And
+
+"ReplicationRuleFilter" --> "0..1" "Prefix"
+
+"ReplicationRuleFilter" --> "0..1" "Tag"
+
+class "ReplicationRuleStatus" {
+  value : string
+}
+
+class "ReplicationRules" {
+}
+
+"ReplicationRules" --> "*" "ReplicationRule"
+
+class "ReplicationStatus" {
+  value : string
+}
+
+class "ReplicationTime" {
+}
+
+"ReplicationTime" --> "1" "ReplicationTimeStatus" : Status
+
+"ReplicationTime" --> "1" "ReplicationTimeValue" : Time
+
+class "ReplicationTimeStatus" {
+  value : string
+}
+
+class "ReplicationTimeValue" {
+}
+
+"ReplicationTimeValue" --> "0..1" "Minutes"
+
+class "RequestCharged" {
+  value : string
+}
+
+class "RequestPayer" {
+  value : string
+}
+
+class "RequestPaymentConfiguration" {
+}
+
+"RequestPaymentConfiguration" --> "1" "Payer"
+
+class "RequestProgress" {
+}
+
+"RequestProgress" --> "0..1" "EnableRequestProgress" : Enabled
+
+class "ResponseCacheControl" {
+  value : string
+}
+
+class "ResponseContentDisposition" {
+  value : string
+}
+
+class "ResponseContentEncoding" {
+  value : string
+}
+
+class "ResponseContentLanguage" {
+  value : string
+}
+
+class "ResponseContentType" {
+  value : string
+}
+
+class "ResponseExpires" {
+}
+
+class "Restore" {
+  value : string
+}
+
+class "RestoreObjectOutput" {
+}
+
+class "RestoreObjectRequest" {
+}
+
+"RestoreObjectRequest" --> "0..1" "RestoreRequest"
+
+class "RestoreOutputPath" {
+  value : string
+}
+
+class "RestoreRequest" {
+}
+
+"RestoreRequest" --> "0..1" "Days"
+
+"RestoreRequest" --> "0..1" "Description"
+
+"RestoreRequest" --> "0..1" "GlacierJobParameters"
+
+"RestoreRequest" --> "0..1" "OutputLocation"
+
+"RestoreRequest" --> "0..1" "SelectParameters"
+
+"RestoreRequest" --> "0..1" "Tier"
+
+"RestoreRequest" --> "0..1" "RestoreRequestType" : Type
+
+class "RestoreRequestType" {
+  value : string
+}
+
+class "Role" {
+  value : string
+}
+
+class "RoutingRule" {
+}
+
+"RoutingRule" --> "0..1" "Condition"
+
+"RoutingRule" --> "1" "Redirect"
+
+class "RoutingRules" {
+}
+
+"RoutingRules" --> "*" "RoutingRule"
+
+class "Rule" {
+}
+
+"Rule" --> "0..1" "AbortIncompleteMultipartUpload"
+
+"Rule" --> "0..1" "LifecycleExpiration" : Expiration
+
+"Rule" --> "0..1" "ID"
+
+"Rule" --> "0..1" "NoncurrentVersionExpiration"
+
+"Rule" --> "0..1" "NoncurrentVersionTransition"
+
+"Rule" --> "1" "Prefix"
+
+"Rule" --> "1" "ExpirationStatus" : Status
+
+"Rule" --> "0..1" "Transition"
+
+class "Rules" {
+}
+
+"Rules" --> "*" "Rule"
+
+class "S3KeyFilter" {
+}
+
+"S3KeyFilter" --> "0..1" "FilterRuleList" : FilterRules
+
+class "S3Location" {
+}
+
+"S3Location" --> "0..1" "Grants" : AccessControlList
+
+"S3Location" --> "1" "BucketName"
+
+"S3Location" --> "0..1" "ObjectCannedACL" : CannedACL
+
+"S3Location" --> "0..1" "Encryption"
+
+"S3Location" --> "1" "LocationPrefix" : Prefix
+
+"S3Location" --> "0..1" "StorageClass"
+
+"S3Location" --> "0..1" "Tagging"
+
+"S3Location" --> "0..1" "UserMetadata"
+
+class "SSECustomerAlgorithm" {
+  value : string
+}
+
+class "SSECustomerKey" {
+}
+
+class "SSECustomerKeyMD5" {
+  value : string
+}
+
+class "SSEKMS" {
+}
+
+"SSEKMS" --> "1" "SSEKMSKeyId" : KeyId
+
+class "SSEKMSEncryptionContext" {
+}
+
+class "SSEKMSKeyId" {
+}
+
+class "SSES3" {
+}
+
+class "ScanRange" {
+}
+
+"ScanRange" --> "0..1" "End"
+
+"ScanRange" --> "0..1" "Start"
+
+class "SelectObjectContentEventStream" {
+}
+
+"SelectObjectContentEventStream" --> "0..1" "ContinuationEvent" : Cont
+
+"SelectObjectContentEventStream" --> "0..1" "EndEvent" : End
+
+"SelectObjectContentEventStream" --> "0..1" "ProgressEvent" : Progress
+
+"SelectObjectContentEventStream" --> "0..1" "RecordsEvent" : Records
+
+"SelectObjectContentEventStream" --> "0..1" "StatsEvent" : Stats
+
+class "SelectObjectContentOutput" {
+}
+
+"SelectObjectContentOutput" --> "0..1" "SelectObjectContentEventStream" : Payload
+
+class "SelectObjectContentRequest" {
+}
+
+"SelectObjectContentRequest" --> "1" "Expression"
+
+"SelectObjectContentRequest" --> "1" "ExpressionType"
+
+"SelectObjectContentRequest" --> "1" "InputSerialization"
+
+"SelectObjectContentRequest" --> "1" "OutputSerialization"
+
+"SelectObjectContentRequest" --> "0..1" "RequestProgress"
+
+"SelectObjectContentRequest" --> "0..1" "ScanRange"
+
+class "SelectParameters" {
+}
+
+"SelectParameters" --> "1" "Expression"
+
+"SelectParameters" --> "1" "ExpressionType"
+
+"SelectParameters" --> "1" "InputSerialization"
+
+"SelectParameters" --> "1" "OutputSerialization"
+
+class "ServerSideEncryption" {
+  value : string
+}
+
+class "ServerSideEncryptionByDefault" {
+}
+
+"ServerSideEncryptionByDefault" --> "0..1" "SSEKMSKeyId" : KMSMasterKeyID
+
+"ServerSideEncryptionByDefault" --> "1" "ServerSideEncryption" : SSEAlgorithm
+
+class "ServerSideEncryptionConfiguration" {
+}
+
+"ServerSideEncryptionConfiguration" --> "1" "ServerSideEncryptionRules" : Rules
+
+class "ServerSideEncryptionRule" {
+}
+
+"ServerSideEncryptionRule" --> "0..1" "ServerSideEncryptionByDefault" : ApplyServerSideEncryptionByDefault
+
+class "ServerSideEncryptionRules" {
+}
+
+"ServerSideEncryptionRules" --> "*" "ServerSideEncryptionRule"
+
+class "Setting" {
+}
+
+class "Size" {
+}
+
+class "SourceSelectionCriteria" {
+}
+
+"SourceSelectionCriteria" --> "0..1" "SseKmsEncryptedObjects"
+
+class "SseKmsEncryptedObjects" {
+}
+
+"SseKmsEncryptedObjects" --> "1" "SseKmsEncryptedObjectsStatus" : Status
+
+class "SseKmsEncryptedObjectsStatus" {
+  value : string
+}
+
+class "Start" {
+}
+
+class "StartAfter" {
+  value : string
+}
+
+class "Stats" {
+}
+
+"Stats" --> "0..1" "BytesProcessed"
+
+"Stats" --> "0..1" "BytesReturned"
+
+"Stats" --> "0..1" "BytesScanned"
+
+class "StatsEvent" {
+}
+
+"StatsEvent" --> "0..1" "Stats" : Details
+
+class "StorageClass" {
+  value : string
+}
+
+class "StorageClassAnalysis" {
+}
+
+"StorageClassAnalysis" --> "0..1" "StorageClassAnalysisDataExport" : DataExport
+
+class "StorageClassAnalysisDataExport" {
+}
+
+"StorageClassAnalysisDataExport" --> "1" "AnalyticsExportDestination" : Destination
+
+"StorageClassAnalysisDataExport" --> "1" "StorageClassAnalysisSchemaVersion" : OutputSchemaVersion
+
+class "StorageClassAnalysisSchemaVersion" {
+  value : string
+}
+
+class "Suffix" {
+  value : string
+}
+
+class "Tag" {
+}
+
+"Tag" --> "1" "ObjectKey" : Key
+
+"Tag" --> "1" "Value"
+
+class "TagCount" {
+}
+
+class "TagSet" {
+}
+
+"TagSet" --> "*" "Tag"
+
+class "Tagging" {
+}
+
+"Tagging" --> "1" "TagSet"
+
+class "TaggingDirective" {
+  value : string
+}
+
+class "TaggingHeader" {
+  value : string
+}
+
+class "TargetBucket" {
+  value : string
+}
+
+class "TargetGrant" {
+}
+
+"TargetGrant" --> "0..1" "Grantee"
+
+"TargetGrant" --> "0..1" "BucketLogsPermission" : Permission
+
+class "TargetGrants" {
+}
+
+"TargetGrants" --> "*" "TargetGrant"
+
+class "TargetPrefix" {
+  value : string
+}
+
+class "Tier" {
+  value : string
+}
+
+class "Token" {
+  value : string
+}
+
+class "TopicArn" {
+  value : string
+}
+
+class "TopicConfiguration" {
+}
+
+"TopicConfiguration" --> "1" "EventList" : Events
+
+"TopicConfiguration" --> "0..1" "NotificationConfigurationFilter" : Filter
+
+"TopicConfiguration" --> "0..1" "NotificationId" : Id
+
+"TopicConfiguration" --> "1" "TopicArn"
+
+class "TopicConfigurationDeprecated" {
+}
+
+"TopicConfigurationDeprecated" --> "0..1" "Event"
+
+"TopicConfigurationDeprecated" --> "0..1" "EventList" : Events
+
+"TopicConfigurationDeprecated" --> "0..1" "NotificationId" : Id
+
+"TopicConfigurationDeprecated" --> "0..1" "TopicArn" : Topic
+
+class "TopicConfigurationList" {
+}
+
+"TopicConfigurationList" --> "*" "TopicConfiguration"
+
+class "Transition" {
+}
+
+"Transition" --> "0..1" "Date"
+
+"Transition" --> "0..1" "Days"
+
+"Transition" --> "0..1" "TransitionStorageClass" : StorageClass
+
+class "TransitionList" {
+}
+
+"TransitionList" --> "*" "Transition"
+
+class "TransitionStorageClass" {
+  value : string
+}
+
+class "Type" {
+  value : string
+}
+
+class "URI" {
+  value : string
+}
+
+class "UploadIdMarker" {
+  value : string
+}
+
+class "UploadPartCopyOutput" {
+}
+
+"UploadPartCopyOutput" --> "0..1" "CopyPartResult"
+
+class "UploadPartCopyRequest" {
+}
+
+class "UploadPartOutput" {
+}
+
+class "UploadPartRequest" {
+}
+
+"UploadPartRequest" --> "0..1" "Body"
+
+class "UserMetadata" {
+}
+
+"UserMetadata" --> "*" "MetadataEntry"
+
+class "Value" {
+  value : string
+}
+
+class "VersionIdMarker" {
+  value : string
+}
+
+class "VersioningConfiguration" {
+}
+
+"VersioningConfiguration" --> "0..1" "MFADelete"
+
+"VersioningConfiguration" --> "0..1" "BucketVersioningStatus" : Status
+
+class "WebsiteConfiguration" {
+}
+
+"WebsiteConfiguration" --> "0..1" "ErrorDocument"
+
+"WebsiteConfiguration" --> "0..1" "IndexDocument"
+
+"WebsiteConfiguration" --> "0..1" "RedirectAllRequestsTo"
+
+"WebsiteConfiguration" --> "0..1" "RoutingRules"
+
+class "WebsiteRedirectLocation" {
+  value : string
+}
+
+class "Years" {
+}
+hide <<Method>> circle
+
+class "GET /" <<Method>> {
+}
+
+"GET /" ..> "ListBucketsOutput": 200
+
+class "GET /{Bucket}" <<Method>> {
+  Bucket : string
+  delimiter : string {O}
+  encoding-type : string {O}
+  marker : string {O}
+  max-keys : integer {O}
+  prefix : string {O}
+  x-amz-request-payer : string {O}
+  MaxKeys : string {O}
+  Marker : string {O}
+}
+
+"GET /{Bucket}" ..> "ListObjectsOutput": 200
+
+"GET /{Bucket}" ..> "NoSuchBucket": 480
+
+class "PUT /{Bucket}" <<Method>> {
+  x-amz-acl : string {O}
+  Bucket : string
+  x-amz-grant-full-control : string {O}
+  x-amz-grant-read : string {O}
+  x-amz-grant-read-acp : string {O}
+  x-amz-grant-write : string {O}
+  x-amz-grant-write-acp : string {O}
+  x-amz-bucket-object-lock-enabled : boolean {O}
+}
+
+"PUT /{Bucket}" ..> "CreateBucketOutput": 200
+
+"PUT /{Bucket}" ..> "BucketAlreadyExists": 480
+
+"PUT /{Bucket}" ..> "BucketAlreadyOwnedByYou": 481
+
+class "DELETE /{Bucket}" <<Method>> {
+  Bucket : string
+}
+
+class "HEAD /{Bucket}" <<Method>> {
+  Bucket : string
+}
+
+"HEAD /{Bucket}" ..> "NoSuchBucket": 480
+
+class "GET /{Bucket}#accelerate" <<Method>> {
+  Bucket : string
+  accelerate : boolean
+}
+
+"GET /{Bucket}#accelerate" ..> "GetBucketAccelerateConfigurationOutput": 200
+
+class "PUT /{Bucket}#accelerate" <<Method>> {
+  Bucket : string
+  accelerate : boolean
+}
+
+class "GET /{Bucket}#acl" <<Method>> {
+  Bucket : string
+  acl : boolean
+}
+
+"GET /{Bucket}#acl" ..> "GetBucketAclOutput": 200
+
+class "PUT /{Bucket}#acl" <<Method>> {
+  x-amz-acl : string {O}
+  Bucket : string
+  Content-MD5 : string {O}
+  x-amz-grant-full-control : string {O}
+  x-amz-grant-read : string {O}
+  x-amz-grant-read-acp : string {O}
+  x-amz-grant-write : string {O}
+  x-amz-grant-write-acp : string {O}
+  acl : boolean
+}
+
+class "GET /{Bucket}#analytics" <<Method>> {
+  Bucket : string
+  continuation-token : string {O}
+  analytics : boolean
+}
+
+"GET /{Bucket}#analytics" ..> "ListBucketAnalyticsConfigurationsOutput": 200
+
+class "GET /{Bucket}#analytics&id" <<Method>> {
+  Bucket : string
+  id : string
+  analytics : boolean
+}
+
+"GET /{Bucket}#analytics&id" ..> "GetBucketAnalyticsConfigurationOutput": 200
+
+class "PUT /{Bucket}#analytics&id" <<Method>> {
+  Bucket : string
+  id : string
+  analytics : boolean
+}
+
+class "DELETE /{Bucket}#analytics&id" <<Method>> {
+  Bucket : string
+  id : string
+  analytics : boolean
+}
+
+class "GET /{Bucket}#cors" <<Method>> {
+  Bucket : string
+  cors : boolean
+}
+
+"GET /{Bucket}#cors" ..> "GetBucketCorsOutput": 200
+
+class "PUT /{Bucket}#cors" <<Method>> {
+  Bucket : string
+  Content-MD5 : string {O}
+  cors : boolean
+}
+
+class "DELETE /{Bucket}#cors" <<Method>> {
+  Bucket : string
+  cors : boolean
+}
+
+class "POST /{Bucket}#delete" <<Method>> {
+  Bucket : string
+  x-amz-mfa : string {O}
+  x-amz-request-payer : string {O}
+  x-amz-bypass-governance-retention : boolean {O}
+  delete : boolean
+}
+
+"POST /{Bucket}#delete" ..> "DeleteObjectsOutput": 200
+
+class "GET /{Bucket}#encryption" <<Method>> {
+  Bucket : string
+  encryption : boolean
+}
+
+"GET /{Bucket}#encryption" ..> "GetBucketEncryptionOutput": 200
+
+class "PUT /{Bucket}#encryption" <<Method>> {
+  Bucket : string
+  Content-MD5 : string {O}
+  encryption : boolean
+}
+
+class "DELETE /{Bucket}#encryption" <<Method>> {
+  Bucket : string
+  encryption : boolean
+}
+
+class "GET /{Bucket}#inventory" <<Method>> {
+  Bucket : string
+  continuation-token : string {O}
+  inventory : boolean
+}
+
+"GET /{Bucket}#inventory" ..> "ListBucketInventoryConfigurationsOutput": 200
+
+class "GET /{Bucket}#inventory&id" <<Method>> {
+  Bucket : string
+  id : string
+  inventory : boolean
+}
+
+"GET /{Bucket}#inventory&id" ..> "GetBucketInventoryConfigurationOutput": 200
+
+class "PUT /{Bucket}#inventory&id" <<Method>> {
+  Bucket : string
+  id : string
+  inventory : boolean
+}
+
+class "DELETE /{Bucket}#inventory&id" <<Method>> {
+  Bucket : string
+  id : string
+  inventory : boolean
+}
+
+class "GET /{Bucket}#lifecycle" <<Method>> {
+  Bucket : string
+  lifecycle : boolean
+}
+
+"GET /{Bucket}#lifecycle" ..> "GetBucketLifecycleConfigurationOutput": 200
+
+class "PUT /{Bucket}#lifecycle" <<Method>> {
+  Bucket : string
+  lifecycle : boolean
+}
+
+class "DELETE /{Bucket}#lifecycle" <<Method>> {
+  Bucket : string
+  lifecycle : boolean
+}
+
+class "GET /{Bucket}#lifecycle&deprecated!" <<Method>> {
+  Bucket : string
+  lifecycle : boolean
+}
+
+"GET /{Bucket}#lifecycle&deprecated!" ..> "GetBucketLifecycleOutput": 200
+
+class "PUT /{Bucket}#lifecycle&deprecated!" <<Method>> {
+  Bucket : string
+  Content-MD5 : string {O}
+  lifecycle : boolean
+}
+
+class "GET /{Bucket}#list-type=2" <<Method>> {
+  Bucket : string
+  delimiter : string {O}
+  encoding-type : string {O}
+  max-keys : integer {O}
+  prefix : string {O}
+  continuation-token : string {O}
+  fetch-owner : boolean {O}
+  start-after : string {O}
+  x-amz-request-payer : string {O}
+  MaxKeys : string {O}
+  ContinuationToken : string {O}
+  list-type : string
+}
+
+"GET /{Bucket}#list-type=2" ..> "ListObjectsV2Output": 200
+
+"GET /{Bucket}#list-type=2" ..> "NoSuchBucket": 480
+
+class "GET /{Bucket}#location" <<Method>> {
+  Bucket : string
+  location : boolean
+}
+
+"GET /{Bucket}#location" ..> "GetBucketLocationOutput": 200
+
+class "GET /{Bucket}#logging" <<Method>> {
+  Bucket : string
+  logging : boolean
+}
+
+"GET /{Bucket}#logging" ..> "GetBucketLoggingOutput": 200
+
+class "PUT /{Bucket}#logging" <<Method>> {
+  Bucket : string
+  Content-MD5 : string {O}
+  logging : boolean
+}
+
+class "GET /{Bucket}#metrics" <<Method>> {
+  Bucket : string
+  continuation-token : string {O}
+  metrics : boolean
+}
+
+"GET /{Bucket}#metrics" ..> "ListBucketMetricsConfigurationsOutput": 200
+
+class "GET /{Bucket}#metrics&id" <<Method>> {
+  Bucket : string
+  id : string
+  metrics : boolean
+}
+
+"GET /{Bucket}#metrics&id" ..> "GetBucketMetricsConfigurationOutput": 200
+
+class "PUT /{Bucket}#metrics&id" <<Method>> {
+  Bucket : string
+  id : string
+  metrics : boolean
+}
+
+class "DELETE /{Bucket}#metrics&id" <<Method>> {
+  Bucket : string
+  id : string
+  metrics : boolean
+}
+
+class "GET /{Bucket}#notification" <<Method>> {
+  Bucket : string
+  notification : boolean
+}
+
+"GET /{Bucket}#notification" ..> "NotificationConfiguration": 200
+
+class "PUT /{Bucket}#notification" <<Method>> {
+  Bucket : string
+  notification : boolean
+}
+
+class "GET /{Bucket}#notification&deprecated!" <<Method>> {
+  Bucket : string
+  notification : boolean
+}
+
+"GET /{Bucket}#notification&deprecated!" ..> "NotificationConfigurationDeprecated": 200
+
+class "PUT /{Bucket}#notification&deprecated!" <<Method>> {
+  Bucket : string
+  Content-MD5 : string {O}
+  notification : boolean
+}
+
+class "GET /{Bucket}#object-lock" <<Method>> {
+  Bucket : string
+  object-lock : boolean
+}
+
+"GET /{Bucket}#object-lock" ..> "GetObjectLockConfigurationOutput": 200
+
+class "PUT /{Bucket}#object-lock" <<Method>> {
+  Bucket : string
+  x-amz-request-payer : string {O}
+  x-amz-bucket-object-lock-token : string {O}
+  Content-MD5 : string {O}
+  object-lock : boolean
+}
+
+"PUT /{Bucket}#object-lock" ..> "PutObjectLockConfigurationOutput": 200
+
+class "GET /{Bucket}#policy" <<Method>> {
+  Bucket : string
+  policy : boolean
+}
+
+"GET /{Bucket}#policy" ..> "GetBucketPolicyOutput": 200
+
+class "PUT /{Bucket}#policy" <<Method>> {
+  Bucket : string
+  Content-MD5 : string {O}
+  x-amz-confirm-remove-self-bucket-access : boolean {O}
+  policy : boolean
+}
+
+class "DELETE /{Bucket}#policy" <<Method>> {
+  Bucket : string
+  policy : boolean
+}
+
+class "GET /{Bucket}#policyStatus" <<Method>> {
+  Bucket : string
+  policyStatus : boolean
+}
+
+"GET /{Bucket}#policyStatus" ..> "GetBucketPolicyStatusOutput": 200
+
+class "GET /{Bucket}#publicAccessBlock" <<Method>> {
+  Bucket : string
+  publicAccessBlock : boolean
+}
+
+"GET /{Bucket}#publicAccessBlock" ..> "GetPublicAccessBlockOutput": 200
+
+class "PUT /{Bucket}#publicAccessBlock" <<Method>> {
+  Bucket : string
+  Content-MD5 : string {O}
+  publicAccessBlock : boolean
+}
+
+class "DELETE /{Bucket}#publicAccessBlock" <<Method>> {
+  Bucket : string
+  publicAccessBlock : boolean
+}
+
+class "GET /{Bucket}#replication" <<Method>> {
+  Bucket : string
+  replication : boolean
+}
+
+"GET /{Bucket}#replication" ..> "GetBucketReplicationOutput": 200
+
+class "PUT /{Bucket}#replication" <<Method>> {
+  Bucket : string
+  Content-MD5 : string {O}
+  x-amz-bucket-object-lock-token : string {O}
+  replication : boolean
+}
+
+class "DELETE /{Bucket}#replication" <<Method>> {
+  Bucket : string
+  replication : boolean
+}
+
+class "GET /{Bucket}#requestPayment" <<Method>> {
+  Bucket : string
+  requestPayment : boolean
+}
+
+"GET /{Bucket}#requestPayment" ..> "GetBucketRequestPaymentOutput": 200
+
+class "PUT /{Bucket}#requestPayment" <<Method>> {
+  Bucket : string
+  Content-MD5 : string {O}
+  requestPayment : boolean
+}
+
+class "GET /{Bucket}#tagging" <<Method>> {
+  Bucket : string
+  tagging : boolean
+}
+
+"GET /{Bucket}#tagging" ..> "GetBucketTaggingOutput": 200
+
+class "PUT /{Bucket}#tagging" <<Method>> {
+  Bucket : string
+  Content-MD5 : string {O}
+  tagging : boolean
+}
+
+class "DELETE /{Bucket}#tagging" <<Method>> {
+  Bucket : string
+  tagging : boolean
+}
+
+class "GET /{Bucket}#uploads" <<Method>> {
+  Bucket : string
+  delimiter : string {O}
+  encoding-type : string {O}
+  key-marker : string {O}
+  max-uploads : integer {O}
+  prefix : string {O}
+  upload-id-marker : string {O}
+  MaxUploads : string {O}
+  KeyMarker : string {O}
+  UploadIdMarker : string {O}
+  uploads : boolean
+}
+
+"GET /{Bucket}#uploads" ..> "ListMultipartUploadsOutput": 200
+
+class "GET /{Bucket}#versioning" <<Method>> {
+  Bucket : string
+  versioning : boolean
+}
+
+"GET /{Bucket}#versioning" ..> "GetBucketVersioningOutput": 200
+
+class "PUT /{Bucket}#versioning" <<Method>> {
+  Bucket : string
+  Content-MD5 : string {O}
+  x-amz-mfa : string {O}
+  versioning : boolean
+}
+
+class "GET /{Bucket}#versions" <<Method>> {
+  Bucket : string
+  delimiter : string {O}
+  encoding-type : string {O}
+  key-marker : string {O}
+  max-keys : integer {O}
+  prefix : string {O}
+  version-id-marker : string {O}
+  MaxKeys : string {O}
+  KeyMarker : string {O}
+  VersionIdMarker : string {O}
+  versions : boolean
+}
+
+"GET /{Bucket}#versions" ..> "ListObjectVersionsOutput": 200
+
+class "GET /{Bucket}#website" <<Method>> {
+  Bucket : string
+  website : boolean
+}
+
+"GET /{Bucket}#website" ..> "GetBucketWebsiteOutput": 200
+
+class "PUT /{Bucket}#website" <<Method>> {
+  Bucket : string
+  Content-MD5 : string {O}
+  website : boolean
+}
+
+class "DELETE /{Bucket}#website" <<Method>> {
+  Bucket : string
+  website : boolean
+}
+
+class "GET /{Bucket}/{Key}" <<Method>> {
+  Bucket : string
+  If-Match : string {O}
+  If-Modified-Since : timestamp {O}
+  If-None-Match : string {O}
+  If-Unmodified-Since : timestamp {O}
+  Key : string
+  Range : string {O}
+  response-cache-control : string {O}
+  response-content-disposition : string {O}
+  response-content-encoding : string {O}
+  response-content-language : string {O}
+  response-content-type : string {O}
+  response-expires : timestamp {O}
+  versionId : string {O}
+  x-amz-server-side-encryption-customer-algorithm : string {O}
+  x-amz-server-side-encryption-customer-key : unknown {O}
+  x-amz-server-side-encryption-customer-key-MD5 : string {O}
+  x-amz-request-payer : string {O}
+  partNumber : integer {O}
+}
+
+"GET /{Bucket}/{Key}" ..> "GetObjectOutput": 200
+
+"GET /{Bucket}/{Key}" ..> "NoSuchKey": 480
+
+class "PUT /{Bucket}/{Key}" <<Method>> {
+  x-amz-acl : string {O}
+  Bucket : string
+  Cache-Control : string {O}
+  Content-Disposition : string {O}
+  Content-Encoding : string {O}
+  Content-Language : string {O}
+  Content-Length : integer {O}
+  Content-MD5 : string {O}
+  Content-Type : string {O}
+  Expires : timestamp {O}
+  x-amz-grant-full-control : string {O}
+  x-amz-grant-read : string {O}
+  x-amz-grant-read-acp : string {O}
+  x-amz-grant-write-acp : string {O}
+  Key : string
+  x-amz-server-side-encryption : string {O}
+  x-amz-storage-class : string {O}
+  x-amz-website-redirect-location : string {O}
+  x-amz-server-side-encryption-customer-algorithm : string {O}
+  x-amz-server-side-encryption-customer-key : unknown {O}
+  x-amz-server-side-encryption-customer-key-MD5 : string {O}
+  x-amz-server-side-encryption-aws-kms-key-id : unknown {O}
+  x-amz-server-side-encryption-context : unknown {O}
+  x-amz-request-payer : string {O}
+  x-amz-tagging : string {O}
+  x-amz-object-lock-mode : string {O}
+  x-amz-object-lock-retain-until-date : timestamp {O}
+  x-amz-object-lock-legal-hold : string {O}
+}
+
+"PUT /{Bucket}/{Key}" ..> "PutObjectOutput": 200
+
+class "DELETE /{Bucket}/{Key}" <<Method>> {
+  Bucket : string
+  Key : string
+  x-amz-mfa : string {O}
+  versionId : string {O}
+  x-amz-request-payer : string {O}
+  x-amz-bypass-governance-retention : boolean {O}
+}
+
+"DELETE /{Bucket}/{Key}" ..> "DeleteObjectOutput": 204
+
+class "HEAD /{Bucket}/{Key}" <<Method>> {
+  Bucket : string
+  If-Match : string {O}
+  If-Modified-Since : timestamp {O}
+  If-None-Match : string {O}
+  If-Unmodified-Since : timestamp {O}
+  Key : string
+  Range : string {O}
+  versionId : string {O}
+  x-amz-server-side-encryption-customer-algorithm : string {O}
+  x-amz-server-side-encryption-customer-key : unknown {O}
+  x-amz-server-side-encryption-customer-key-MD5 : string {O}
+  x-amz-request-payer : string {O}
+  partNumber : integer {O}
+}
+
+"HEAD /{Bucket}/{Key}" ..> "HeadObjectOutput": 200
+
+"HEAD /{Bucket}/{Key}" ..> "NoSuchKey": 480
+
+class "GET /{Bucket}/{Key}#acl" <<Method>> {
+  Bucket : string
+  Key : string
+  versionId : string {O}
+  x-amz-request-payer : string {O}
+  acl : boolean
+}
+
+"GET /{Bucket}/{Key}#acl" ..> "GetObjectAclOutput": 200
+
+"GET /{Bucket}/{Key}#acl" ..> "NoSuchKey": 480
+
+class "PUT /{Bucket}/{Key}#acl" <<Method>> {
+  x-amz-acl : string {O}
+  Bucket : string
+  Content-MD5 : string {O}
+  x-amz-grant-full-control : string {O}
+  x-amz-grant-read : string {O}
+  x-amz-grant-read-acp : string {O}
+  x-amz-grant-write : string {O}
+  x-amz-grant-write-acp : string {O}
+  Key : string
+  x-amz-request-payer : string {O}
+  versionId : string {O}
+  acl : boolean
+}
+
+"PUT /{Bucket}/{Key}#acl" ..> "PutObjectAclOutput": 200
+
+"PUT /{Bucket}/{Key}#acl" ..> "NoSuchKey": 480
+
+class "GET /{Bucket}/{Key}#legal-hold" <<Method>> {
+  Bucket : string
+  Key : string
+  versionId : string {O}
+  x-amz-request-payer : string {O}
+  legal-hold : boolean
+}
+
+"GET /{Bucket}/{Key}#legal-hold" ..> "GetObjectLegalHoldOutput": 200
+
+class "PUT /{Bucket}/{Key}#legal-hold" <<Method>> {
+  Bucket : string
+  Key : string
+  x-amz-request-payer : string {O}
+  versionId : string {O}
+  Content-MD5 : string {O}
+  legal-hold : boolean
+}
+
+"PUT /{Bucket}/{Key}#legal-hold" ..> "PutObjectLegalHoldOutput": 200
+
+class "PUT /{Bucket}/{Key}#partNumber&uploadId" <<Method>> {
+  Bucket : string
+  Content-Length : integer {O}
+  Content-MD5 : string {O}
+  Key : string
+  partNumber : integer
+  uploadId : string
+  x-amz-server-side-encryption-customer-algorithm : string {O}
+  x-amz-server-side-encryption-customer-key : unknown {O}
+  x-amz-server-side-encryption-customer-key-MD5 : string {O}
+  x-amz-request-payer : string {O}
+}
+
+"PUT /{Bucket}/{Key}#partNumber&uploadId" ..> "UploadPartOutput": 200
+
+class "POST /{Bucket}/{Key}#restore" <<Method>> {
+  Bucket : string
+  Key : string
+  versionId : string {O}
+  x-amz-request-payer : string {O}
+  restore : boolean
+}
+
+"POST /{Bucket}/{Key}#restore" ..> "RestoreObjectOutput": 200
+
+"POST /{Bucket}/{Key}#restore" ..> "ObjectAlreadyInActiveTierError": 480
+
+class "GET /{Bucket}/{Key}#retention" <<Method>> {
+  Bucket : string
+  Key : string
+  versionId : string {O}
+  x-amz-request-payer : string {O}
+  retention : boolean
+}
+
+"GET /{Bucket}/{Key}#retention" ..> "GetObjectRetentionOutput": 200
+
+class "PUT /{Bucket}/{Key}#retention" <<Method>> {
+  Bucket : string
+  Key : string
+  x-amz-request-payer : string {O}
+  versionId : string {O}
+  x-amz-bypass-governance-retention : boolean {O}
+  Content-MD5 : string {O}
+  retention : boolean
+}
+
+"PUT /{Bucket}/{Key}#retention" ..> "PutObjectRetentionOutput": 200
+
+class "POST /{Bucket}/{Key}#select&select-type=2" <<Method>> {
+  Bucket : string
+  Key : string
+  x-amz-server-side-encryption-customer-algorithm : string {O}
+  x-amz-server-side-encryption-customer-key : unknown {O}
+  x-amz-server-side-encryption-customer-key-MD5 : string {O}
+  select : boolean
+  select-type : string
+}
+
+"POST /{Bucket}/{Key}#select&select-type=2" ..> "SelectObjectContentOutput": 200
+
+class "GET /{Bucket}/{Key}#tagging" <<Method>> {
+  Bucket : string
+  Key : string
+  versionId : string {O}
+  tagging : boolean
+}
+
+"GET /{Bucket}/{Key}#tagging" ..> "GetObjectTaggingOutput": 200
+
+class "PUT /{Bucket}/{Key}#tagging" <<Method>> {
+  Bucket : string
+  Key : string
+  versionId : string {O}
+  Content-MD5 : string {O}
+  tagging : boolean
+}
+
+"PUT /{Bucket}/{Key}#tagging" ..> "PutObjectTaggingOutput": 200
+
+class "DELETE /{Bucket}/{Key}#tagging" <<Method>> {
+  Bucket : string
+  Key : string
+  versionId : string {O}
+  tagging : boolean
+}
+
+"DELETE /{Bucket}/{Key}#tagging" ..> "DeleteObjectTaggingOutput": 204
+
+class "GET /{Bucket}/{Key}#torrent" <<Method>> {
+  Bucket : string
+  Key : string
+  x-amz-request-payer : string {O}
+  torrent : boolean
+}
+
+"GET /{Bucket}/{Key}#torrent" ..> "GetObjectTorrentOutput": 200
+
+class "GET /{Bucket}/{Key}#uploadId" <<Method>> {
+  Bucket : string
+  Key : string
+  max-parts : integer {O}
+  part-number-marker : integer {O}
+  uploadId : string
+  x-amz-request-payer : string {O}
+  MaxParts : string {O}
+  PartNumberMarker : string {O}
+}
+
+"GET /{Bucket}/{Key}#uploadId" ..> "ListPartsOutput": 200
+
+class "POST /{Bucket}/{Key}#uploadId" <<Method>> {
+  Bucket : string
+  Key : string
+  uploadId : string
+  x-amz-request-payer : string {O}
+}
+
+"POST /{Bucket}/{Key}#uploadId" ..> "CompleteMultipartUploadOutput": 200
+
+class "DELETE /{Bucket}/{Key}#uploadId" <<Method>> {
+  Bucket : string
+  Key : string
+  uploadId : string
+  x-amz-request-payer : string {O}
+}
+
+"DELETE /{Bucket}/{Key}#uploadId" ..> "AbortMultipartUploadOutput": 204
+
+"DELETE /{Bucket}/{Key}#uploadId" ..> "NoSuchUpload": 480
+
+class "POST /{Bucket}/{Key}#uploads" <<Method>> {
+  x-amz-acl : string {O}
+  Bucket : string
+  Cache-Control : string {O}
+  Content-Disposition : string {O}
+  Content-Encoding : string {O}
+  Content-Language : string {O}
+  Content-Type : string {O}
+  Expires : timestamp {O}
+  x-amz-grant-full-control : string {O}
+  x-amz-grant-read : string {O}
+  x-amz-grant-read-acp : string {O}
+  x-amz-grant-write-acp : string {O}
+  Key : string
+  x-amz-server-side-encryption : string {O}
+  x-amz-storage-class : string {O}
+  x-amz-website-redirect-location : string {O}
+  x-amz-server-side-encryption-customer-algorithm : string {O}
+  x-amz-server-side-encryption-customer-key : unknown {O}
+  x-amz-server-side-encryption-customer-key-MD5 : string {O}
+  x-amz-server-side-encryption-aws-kms-key-id : unknown {O}
+  x-amz-server-side-encryption-context : unknown {O}
+  x-amz-request-payer : string {O}
+  x-amz-tagging : string {O}
+  x-amz-object-lock-mode : string {O}
+  x-amz-object-lock-retain-until-date : timestamp {O}
+  x-amz-object-lock-legal-hold : string {O}
+  uploads : boolean
+}
+
+"POST /{Bucket}/{Key}#uploads" ..> "CreateMultipartUploadOutput": 200
+
+class "PUT /{Bucket}/{Key}#x-amz-copy-source" <<Method>> {
+  x-amz-acl : string {O}
+  Bucket : string
+  Cache-Control : string {O}
+  Content-Disposition : string {O}
+  Content-Encoding : string {O}
+  Content-Language : string {O}
+  Content-Type : string {O}
+  x-amz-copy-source : string
+  x-amz-copy-source-if-match : string {O}
+  x-amz-copy-source-if-modified-since : timestamp {O}
+  x-amz-copy-source-if-none-match : string {O}
+  x-amz-copy-source-if-unmodified-since : timestamp {O}
+  Expires : timestamp {O}
+  x-amz-grant-full-control : string {O}
+  x-amz-grant-read : string {O}
+  x-amz-grant-read-acp : string {O}
+  x-amz-grant-write-acp : string {O}
+  Key : string
+  x-amz-metadata-directive : string {O}
+  x-amz-tagging-directive : string {O}
+  x-amz-server-side-encryption : string {O}
+  x-amz-storage-class : string {O}
+  x-amz-website-redirect-location : string {O}
+  x-amz-server-side-encryption-customer-algorithm : string {O}
+  x-amz-server-side-encryption-customer-key : unknown {O}
+  x-amz-server-side-encryption-customer-key-MD5 : string {O}
+  x-amz-server-side-encryption-aws-kms-key-id : unknown {O}
+  x-amz-server-side-encryption-context : unknown {O}
+  x-amz-copy-source-server-side-encryption-customer-algorithm : string {O}
+  x-amz-copy-source-server-side-encryption-customer-key : unknown {O}
+  x-amz-copy-source-server-side-encryption-customer-key-MD5 : string {O}
+  x-amz-request-payer : string {O}
+  x-amz-tagging : string {O}
+  x-amz-object-lock-mode : string {O}
+  x-amz-object-lock-retain-until-date : timestamp {O}
+  x-amz-object-lock-legal-hold : string {O}
+}
+
+"PUT /{Bucket}/{Key}#x-amz-copy-source" ..> "CopyObjectOutput": 200
+
+"PUT /{Bucket}/{Key}#x-amz-copy-source" ..> "ObjectNotInActiveTierError": 480
+
+class "PUT /{Bucket}/{Key}#x-amz-copy-source&partNumber&uploadId" <<Method>> {
+  Bucket : string
+  x-amz-copy-source : string
+  x-amz-copy-source-if-match : string {O}
+  x-amz-copy-source-if-modified-since : timestamp {O}
+  x-amz-copy-source-if-none-match : string {O}
+  x-amz-copy-source-if-unmodified-since : timestamp {O}
+  x-amz-copy-source-range : string {O}
+  Key : string
+  partNumber : integer
+  uploadId : string
+  x-amz-server-side-encryption-customer-algorithm : string {O}
+  x-amz-server-side-encryption-customer-key : unknown {O}
+  x-amz-server-side-encryption-customer-key-MD5 : string {O}
+  x-amz-copy-source-server-side-encryption-customer-algorithm : string {O}
+  x-amz-copy-source-server-side-encryption-customer-key : unknown {O}
+  x-amz-copy-source-server-side-encryption-customer-key-MD5 : string {O}
+  x-amz-request-payer : string {O}
+}
+
+"PUT /{Bucket}/{Key}#x-amz-copy-source&partNumber&uploadId" ..> "UploadPartCopyOutput": 200
+
+@enduml
