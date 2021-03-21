@@ -37,6 +37,9 @@ import io.swagger.v3.parser.core.models.SwaggerParseResult;
 
 public final class Converter {
 
+    private static final String CLASS_RELATIONSHIP_RIGHT_ARROW = " --> ";
+    private static final String INHERITANCE_LEFT_ARROW = " <|-- ";
+
     private Converter() {
         // prevent instantiation
     }
@@ -119,7 +122,8 @@ public final class Converter {
                                 Entry<String, MediaType> mediaType = ent.getValue().getContent().entrySet()
                                         .parallelStream().findFirst().get();
                                 String returnClassName = refToClassName(mediaType.getValue().getSchema().get$ref());
-                                return "\n\n\"" + className + "\" --> \"" + returnClassName + "\": " + responseCode;
+                                return "\n\n\"" + className + "\"" + CLASS_RELATIONSHIP_RIGHT_ARROW + "\""
+                                        + returnClassName + "\": " + responseCode;
                             }).collect(Collectors.joining()));
                     return s.toString();
                 }) //
@@ -163,7 +167,7 @@ public final class Converter {
             // this is an alias case for a schema
             String ref = schema.get$ref();
             String otherClassName = refToClassName(ref);
-            relationships.add(name + " --> " + otherClassName);
+            relationships.add(name + CLASS_RELATIONSHIP_RIGHT_ARROW + otherClassName);
         } else if (schema instanceof ComposedSchema) {
             ComposedSchema s = (ComposedSchema) schema;
             if (s.getOneOf() != null) {
@@ -204,8 +208,7 @@ public final class Converter {
                         cardinality = null;
                     }
                     if (!list.isEmpty()) {
-                        addInheritanceForProperty(relationships, name, list, entry.getKey(),
-                                counter, cardinality);
+                        addInheritanceForProperty(relationships, name, list, entry.getKey(), counter, cardinality);
                     }
                 } else if (entry.getValue().get$ref() != null) {
                     String ref = entry.getValue().get$ref();
@@ -277,10 +280,11 @@ public final class Converter {
             Cardinality cardinality) {
         String label = "anon" + counter.incrementAndGet();
         relationships.add("diamond " + label);
-        relationships.add(name + " --> \"" + cardinality + "\" "+  label + ": " + propertyName);
+        relationships
+                .add(name + CLASS_RELATIONSHIP_RIGHT_ARROW + "\"" + cardinality + "\" " + label + ": " + propertyName);
         List<String> otherClassNames = refsToClassNames(oneOf);
         for (String otherClassName : otherClassNames) {
-            relationships.add(label + " <|-- " + otherClassName);
+            relationships.add(label + INHERITANCE_LEFT_ARROW + otherClassName);
         }
     }
 
@@ -289,7 +293,7 @@ public final class Converter {
         List<String> otherClassNames = refsToClassNames(schemas);
         final String s = cardinality == null ? "" : " \"" + cardinality + "\"";
         for (String otherClassName : otherClassNames) {
-            relationships.add(name + s + " <|-- " + otherClassName);
+            relationships.add(name + s + INHERITANCE_LEFT_ARROW + otherClassName);
         }
     }
 
@@ -314,14 +318,14 @@ public final class Converter {
     }
 
     private static void addToMany(List<String> relationships, String name, String otherClassName, String field) {
-        relationships.add(name + " --> \"*\" " + otherClassName
+        relationships.add(name + CLASS_RELATIONSHIP_RIGHT_ARROW + "\"*\" " + otherClassName
                 + (field == null || field.equals(otherClassName) ? "" : " : " + field));
     }
 
     private static void addToOne(List<String> relationships, String name, String otherClassName, String field,
             boolean isToOne) {
-        relationships.add(name + " --> \"" + (isToOne ? "1" : "0..1") + "\" " + otherClassName
-                + (field.equals(otherClassName) ? "" : " : " + field));
+        relationships.add(name + CLASS_RELATIONSHIP_RIGHT_ARROW + "\"" + (isToOne ? "1" : "0..1") + "\" "
+                + otherClassName + (field.equals(otherClassName) ? "" : " : " + field));
     }
 
     private static void append(StringBuilder b, Set<String> required, String type, String name) {
