@@ -5,7 +5,7 @@ This library makes big assumptions about the style that the definition uses. In 
 
 * No anonymous object structures (declare each structure as a schema)
 * It only consumes the first response content (but uses all responses) 
-* Members of a mixed type (`oneOf` for example) should be `$ref`
+* Members of a mixed type (`oneOf`, `anyOf`, `allOf`) should be `$ref` (to add meaning to the generated diagram)
 
 You can infer more about the style I'm preferring by looking at [openapi-example.yml](src/test/resources/openapi-example.yml). 
 
