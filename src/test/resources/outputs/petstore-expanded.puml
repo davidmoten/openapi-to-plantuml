@@ -1,0 +1,60 @@
+@startuml
+
+class "Pet" {
+}
+
+"Pet" "all" <|-- "NewPet"
+
+"Pet" "all" <|-- "PetId"
+
+class "PetId" {
+  id : integer
+}
+
+class "NewPet" {
+  name : string
+  tag : string {O}
+}
+
+class "Error" {
+  code : integer
+  message : string
+}
+hide <<Method>> circle
+
+class "GET /pets" <<Method>> {
+  tags : string[] {O}
+  limit : integer {O}
+}
+
+class "GET /pets 200 Return" {
+}
+
+"GET /pets 200 Return" --> "*" "Pet"
+
+"GET /pets" ..> "GET /pets 200 Return": 200
+
+"GET /pets" ..> "Error": default
+
+class "POST /pets" <<Method>> {
+}
+
+"POST /pets" ..> "Pet": 200
+
+"POST /pets" ..> "Error": default
+
+class "GET /pets/{id}" <<Method>> {
+  id : integer
+}
+
+"GET /pets/{id}" ..> "Pet": 200
+
+"GET /pets/{id}" ..> "Error": default
+
+class "DELETE /pets/{id}" <<Method>> {
+  id : integer
+}
+
+"DELETE /pets/{id}" ..> "Error": default
+
+@enduml

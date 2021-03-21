@@ -1,0 +1,41 @@
+@startuml
+
+class "Pet" {
+  id : integer
+  name : string
+  tag : string {O}
+}
+
+class "Pets" {
+}
+
+"Pets" --> "*" "Pet"
+
+class "Error" {
+  code : integer
+  message : string
+}
+hide <<Method>> circle
+
+class "GET /pets" <<Method>> {
+  limit : integer {O}
+}
+
+"GET /pets" ..> "Pets": 200
+
+"GET /pets" ..> "Error": default
+
+class "POST /pets" <<Method>> {
+}
+
+"POST /pets" ..> "Error": default
+
+class "GET /pets/{petId}" <<Method>> {
+  petId : string
+}
+
+"GET /pets/{petId}" ..> "Pet": 200
+
+"GET /pets/{petId}" ..> "Error": default
+
+@enduml

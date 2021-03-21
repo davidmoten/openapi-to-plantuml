@@ -120,20 +120,25 @@ public final class Converter {
                             .map(ent -> {
                                 String responseCode = ent.getKey();
                                 // TODO only using the first content
-                                Entry<String, MediaType> mediaType = ent.getValue().getContent().entrySet()
-                                        .parallelStream().findFirst().get();
-                                Schema<?> sch = mediaType.getValue().getSchema();
-                                final String returnClassName;
-                                final String returnClassDeclaration;
-                                if (sch.get$ref() != null) {
-                                    returnClassName = refToClassName(sch.get$ref());
-                                    returnClassDeclaration = "";
+                                if (ent.getValue().getContent() == null) {
+                                    return "";
                                 } else {
-                                    returnClassName = (className + " " + responseCode + " Return");
-                                    returnClassDeclaration = toPlantUmlClass(returnClassName, sch, counter);
+                                    Entry<String, MediaType> mediaType = ent.getValue().getContent().entrySet()
+                                            .parallelStream().findFirst().get();
+                                    Schema<?> sch = mediaType.getValue().getSchema();
+                                    final String returnClassName;
+                                    final String returnClassDeclaration;
+                                    if (sch.get$ref() != null) {
+                                        returnClassName = refToClassName(sch.get$ref());
+                                        returnClassDeclaration = "";
+                                    } else {
+                                        returnClassName = (className + " " + responseCode + " Return");
+                                        returnClassDeclaration = toPlantUmlClass(returnClassName, sch, counter);
+                                    }
+                                    return returnClassDeclaration + "\n\n" + quote(className)
+                                            + PATH_RELATIONSHIP_RIGHT_ARROW + quote(returnClassName) + ": "
+                                            + responseCode;
                                 }
-                                return returnClassDeclaration + "\n\n" + quote(className)
-                                        + PATH_RELATIONSHIP_RIGHT_ARROW + quote(returnClassName) + ": " + responseCode;
                             }).collect(Collectors.joining()));
                     return s.toString();
                 }) //
