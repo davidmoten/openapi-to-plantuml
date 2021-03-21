@@ -168,12 +168,14 @@ public final class Converter {
             ComposedSchema s = (ComposedSchema) schema;
             if (s.getOneOf() != null) {
                 validateComposed(s.getOneOf());
-                addInheritance(relationships, name, s.getOneOf());
+                addInheritance(relationships, name, s.getOneOf(), null);
             } else if (s.getAnyOf() != null) {
                 validateComposed(s.getAnyOf());
-                addInheritance(relationships, name, s.getAnyOf());
+                addInheritance(relationships, name, s.getAnyOf(), null);
+            } else if (s.getAllOf() != null) {
+                validateComposed(s.getAllOf());
+                addInheritance(relationships, name, s.getAllOf(), Cardinality.ALL);
             }
-
         } else if (schema.getProperties() != null) {
             final Set<String> required;
             if (schema.getRequired() != null) {
@@ -186,15 +188,24 @@ public final class Converter {
                     ComposedSchema s = (ComposedSchema) entry.getValue();
                     @SuppressWarnings("rawtypes")
                     final List<Schema> list;
+                    final Cardinality cardinality;
+                    boolean req = required.contains(entry.getKey());
                     if (s.getOneOf() != null) {
                         list = s.getOneOf();
+                        cardinality = req ? Cardinality.ONE : Cardinality.ZERO_ONE;
                     } else if (s.getAnyOf() != null) {
                         list = s.getAnyOf();
+                        cardinality = req ? Cardinality.ONE : Cardinality.ZERO_ONE;
+                    } else if (s.getAllOf() != null) {
+                        list = s.getAllOf();
+                        cardinality = Cardinality.ALL;
                     } else {
                         list = Collections.emptyList();
+                        cardinality = null;
                     }
                     if (!list.isEmpty()) {
-                        addInheritance(relationships, name, list, required.contains(entry.getKey()), entry.getKey(), counter);
+                        addInheritanceForProperty(relationships, name, list, entry.getKey(),
+                                counter, cardinality);
                     }
                 } else if (entry.getValue().get$ref() != null) {
                     String ref = entry.getValue().get$ref();
@@ -246,11 +257,27 @@ public final class Converter {
         return b.toString();
     }
 
-    private static void addInheritance(List<String> relationships, String name,
-            @SuppressWarnings("rawtypes") List<Schema> oneOf, boolean required, String propertyName, AtomicLong counter) {
+    private enum Cardinality {
+        ZERO_ONE("0..1"), ONE("1"), MANY("*"), ALL("all");
+        private final String string;
+
+        private Cardinality(String string) {
+            this.string = string;
+        }
+
+        @Override
+        public String toString() {
+            return string;
+        }
+
+    }
+
+    private static void addInheritanceForProperty(List<String> relationships, String name,
+            @SuppressWarnings("rawtypes") List<Schema> oneOf, String propertyName, AtomicLong counter,
+            Cardinality cardinality) {
         String label = "anon" + counter.incrementAndGet();
         relationships.add("diamond " + label);
-        relationships.add(name + " --> \"" + (required ? "1" : "0..1" + "\" " + label + ": " + propertyName));
+        relationships.add(name + " --> \"" + cardinality + "\" "+  label + ": " + propertyName);
         List<String> otherClassNames = refsToClassNames(oneOf);
         for (String otherClassName : otherClassNames) {
             relationships.add(label + " <|-- " + otherClassName);
@@ -258,10 +285,11 @@ public final class Converter {
     }
 
     private static void addInheritance(List<String> relationships, String name,
-            @SuppressWarnings("rawtypes") List<Schema> schemas) {
+            @SuppressWarnings("rawtypes") List<Schema> schemas, Cardinality cardinality) {
         List<String> otherClassNames = refsToClassNames(schemas);
+        final String s = cardinality == null ? "" : " \"" + cardinality + "\"";
         for (String otherClassName : otherClassNames) {
-            relationships.add(name + " <|-- " + otherClassName);
+            relationships.add(name + s + " <|-- " + otherClassName);
         }
     }
 
