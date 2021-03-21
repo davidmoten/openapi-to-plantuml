@@ -107,7 +107,7 @@ public final class Converter {
                                 .stream()//
                                 .map(param -> {
                                     final String type = getUmlTypeName(param.get$ref(), param.getSchema());
-                                    final String optional = param.getRequired() ? "" : " {O}";
+                                    final String optional = param.getRequired()!= null && param.getRequired() ? "" : " {O}";
                                     return "\n" + "  " + param.getName() + " : " + type + optional;
                                 }) //
                                 .collect(Collectors.joining()));
