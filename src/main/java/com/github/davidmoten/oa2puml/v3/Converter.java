@@ -40,6 +40,7 @@ public final class Converter {
     private static final String PATH_RELATIONSHIP_RIGHT_ARROW = " ..> ";
     private static final String CLASS_RELATIONSHIP_RIGHT_ARROW = " --> ";
     private static final String INHERITANCE_LEFT_ARROW = " <|-- ";
+    private static final Set<String> simpleTypesWithoutArrayDelimiters = Sets.newHashSet("string", "decimal", "integer", "byte","date", "boolean");
 
     private Converter() {
         // prevent instantiation
@@ -107,7 +108,8 @@ public final class Converter {
                                 .stream()//
                                 .map(param -> {
                                     final String type = getUmlTypeName(param.get$ref(), param.getSchema());
-                                    final String optional = param.getRequired()!= null && param.getRequired() ? "" : " {O}";
+                                    final String optional = param.getRequired() != null && param.getRequired() ? ""
+                                            : " {O}";
                                     return "\n" + "  " + param.getName() + " : " + type + optional;
                                 }) //
                                 .collect(Collectors.joining()));
@@ -231,17 +233,8 @@ public final class Converter {
                     addToOne(relationships, name, otherClassName, entry.getKey(), required.contains(entry.getKey()));
                 } else {
                     String type = getUmlTypeName(entry.getValue().get$ref(), entry.getValue());
-                    if (type.endsWith("[]") && !type.equals("byte[]")) {
-                        // is array of items
-                        ArraySchema a = (ArraySchema) entry.getValue();
-                        Schema<?> items = a.getItems();
-                        String ref = items.get$ref();
-                        if (ref != null) {
-                            String otherClassName = refToClassName(ref);
-                            addToMany(relationships, name, otherClassName, entry.getKey());
-                        } else {
-                            append(b, required, type, entry.getKey());
-                        }
+                    if (type.endsWith("[]") && !isSimpleArrayType(type)) {
+                        addArray(name, relationships, entry.getKey(), entry.getValue(), counter);
                     } else {
                         append(b, required, type, entry.getKey());
                     }
@@ -251,7 +244,7 @@ public final class Converter {
             ArraySchema a = (ArraySchema) schema;
             Schema<?> items = a.getItems();
             String ref = items.get$ref();
-            String  otherClassName;
+            String otherClassName;
             if (ref != null) {
                 otherClassName = refToClassName(ref);
             } else {
@@ -264,9 +257,12 @@ public final class Converter {
             // has no properties so ignore
         } else {
             String type = getUmlTypeName(schema.get$ref(), schema);
-            append(b, Sets.newHashSet("value"),type, name);
-            //TODO handle Arrays (add anon classes if required)
-        } 
+            if (type.endsWith("[]") && !isSimpleArrayType(type)) {
+                addArray(name, relationships, null, schema, counter);
+            } else {
+                append(b, Sets.newHashSet("value"), type, "value");
+            }
+        }
         b.append("}");
         for (Entry<String, Schema<?>> entry : more) {
             b.append(toPlantUmlClass(entry.getKey(), entry.getValue(), counter));
@@ -275,6 +271,27 @@ public final class Converter {
             b.append("\n\n" + relationship);
         }
         return b.toString();
+    }
+    
+    private static boolean isSimpleArrayType(String s) {
+        return simpleTypesWithoutArrayDelimiters.contains(s.replace("[", "").replace("]", ""));
+    }
+
+    private static void addArray(String name, List<String> relationships, String property, Schema schema,
+            AtomicLong counter) {
+        // is array of items
+        ArraySchema a = (ArraySchema) schema;
+        Schema<?> items = a.getItems();
+        String ref = items.get$ref();
+        final String otherClassName;
+        if (ref != null) {
+            otherClassName = refToClassName(ref);
+        } else {
+            // create anon class
+            otherClassName = name + "." + property + " anon" + counter.incrementAndGet();
+            toPlantUmlClass(otherClassName, items, counter);
+        }
+        addToMany(relationships, name, otherClassName, property);
     }
 
     private enum Cardinality {
@@ -314,7 +331,8 @@ public final class Converter {
         }
     }
 
-    private static List<String> addAnonymousClassesAndReturnOtherClassNames(List<String> relationships, List<Schema> schemas, AtomicLong counter) {
+    private static List<String> addAnonymousClassesAndReturnOtherClassNames(List<String> relationships,
+            List<Schema> schemas, AtomicLong counter) {
         List<String> otherClassNames = schemas.stream() //
                 .map(s -> {
                     if (s.get$ref() != null) {
