@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="291px" preserveAspectRatio="none" style="width:255px;height:291px;" version="1.1" viewBox="0 0 255 291" width="255px" zoomAndPan="magnify"><defs><filter height="300%" id="ffcei56s8o61" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[58521b9143a6696c24486cbdfb8e8110]
+class employee--><rect codeLine="2" fill="#FEFECE" filter="url(#ffcei56s8o61)" height="48" id="employee" style="stroke:#A80036;stroke-width:1.5;" width="92" x="82.5" y="7"/><ellipse cx="97.5" cy="23" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M100.4688,28.6406 Q99.8906,28.9375 99.25,29.0859 Q98.6094,29.2344 97.9063,29.2344 Q95.4063,29.2344 94.0859,27.5859 Q92.7656,25.9375 92.7656,22.8125 Q92.7656,19.6875 94.0859,18.0313 Q95.4063,16.375 97.9063,16.375 Q98.6094,16.375 99.2578,16.5313 Q99.9063,16.6875 100.4688,16.9844 L100.4688,19.7031 Q99.8438,19.125 99.25,18.8516 Q98.6563,18.5781 98.0313,18.5781 Q96.6875,18.5781 96,19.6484 Q95.3125,20.7188 95.3125,22.8125 Q95.3125,24.9063 96,25.9766 Q96.6875,27.0469 98.0313,27.0469 Q98.6563,27.0469 99.25,26.7734 Q99.8438,26.5 100.4688,25.9219 L100.4688,28.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="60" x="111.5" y="27.1543">employee</text><line style="stroke:#A80036;stroke-width:1.5;" x1="83.5" x2="173.5" y1="39" y2="39"/><line style="stroke:#A80036;stroke-width:1.5;" x1="83.5" x2="173.5" y1="47" y2="47"/><polygon fill="#FEFECE" filter="url(#ffcei56s8o61)" points="128.5,132,140.5,144,128.5,156,116.5,144,128.5,132" style="stroke:#A80036;stroke-width:1.5;"/><!--MD5=[c24d5af84c82019f1badc7472456af6e]
+class doctor--><rect codeLine="17" fill="#FEFECE" filter="url(#ffcei56s8o61)" height="60.8047" id="doctor" style="stroke:#A80036;stroke-width:1.5;" width="109" x="7" y="217"/><ellipse cx="38.2" cy="233" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M41.1688,238.6406 Q40.5906,238.9375 39.95,239.0859 Q39.3094,239.2344 38.6063,239.2344 Q36.1063,239.2344 34.7859,237.5859 Q33.4656,235.9375 33.4656,232.8125 Q33.4656,229.6875 34.7859,228.0313 Q36.1063,226.375 38.6063,226.375 Q39.3094,226.375 39.9578,226.5313 Q40.6063,226.6875 41.1688,226.9844 L41.1688,229.7031 Q40.5438,229.125 39.95,228.8516 Q39.3563,228.5781 38.7313,228.5781 Q37.3875,228.5781 36.7,229.6484 Q36.0125,230.7188 36.0125,232.8125 Q36.0125,234.9063 36.7,235.9766 Q37.3875,237.0469 38.7313,237.0469 Q39.3563,237.0469 39.95,236.7734 Q40.5438,236.5 41.1688,235.9219 L41.1688,238.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="41" x="55.8" y="237.1543">doctor</text><line style="stroke:#A80036;stroke-width:1.5;" x1="8" x2="115" y1="249" y2="249"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="97" x="13" y="263.2104">income : decimal</text><line style="stroke:#A80036;stroke-width:1.5;" x1="8" x2="115" y1="269.8047" y2="269.8047"/><!--MD5=[eec114a0b3352c6b1c1f53d18fe88291]
+class nurse--><rect codeLine="13" fill="#FEFECE" filter="url(#ffcei56s8o61)" height="60.8047" id="nurse" style="stroke:#A80036;stroke-width:1.5;" width="90" x="151.5" y="217"/><ellipse cx="176.4" cy="233" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M179.3688,238.6406 Q178.7906,238.9375 178.15,239.0859 Q177.5094,239.2344 176.8063,239.2344 Q174.3063,239.2344 172.9859,237.5859 Q171.6656,235.9375 171.6656,232.8125 Q171.6656,229.6875 172.9859,228.0313 Q174.3063,226.375 176.8063,226.375 Q177.5094,226.375 178.1578,226.5313 Q178.8063,226.6875 179.3688,226.9844 L179.3688,229.7031 Q178.7438,229.125 178.15,228.8516 Q177.5563,228.5781 176.9313,228.5781 Q175.5875,228.5781 174.9,229.6484 Q174.2125,230.7188 174.2125,232.8125 Q174.2125,234.9063 174.9,235.9766 Q175.5875,237.0469 176.9313,237.0469 Q177.5563,237.0469 178.15,236.7734 Q178.7438,236.5 179.3688,235.9219 L179.3688,238.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="36" x="192.6" y="237.1543">nurse</text><line style="stroke:#A80036;stroke-width:1.5;" x1="152.5" x2="240.5" y1="249" y2="249"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="78" x="157.5" y="263.2104">level : integer</text><line style="stroke:#A80036;stroke-width:1.5;" x1="152.5" x2="240.5" y1="269.8047" y2="269.8047"/><!--MD5=[abe639915a57cc4665ca41286734383a]
+link employee to anon1--><path codeLine="7" d="M128.5,55.269 C128.5,76.586 128.5,107.61 128.5,126.483 " fill="none" id="employee-to-anon1" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="128.5,131.926,132.5,122.926,128.5,126.926,124.5,122.926,128.5,131.926" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="24" x="129.5" y="98.0669">role</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="24" x="99.55" y="120.946">0..1</text><!--MD5=[cb6116c94dd135642bd0f409a1e05f2c]
+reverse link anon1 to doctor--><path codeLine="9" d="M113.052,168.403 C103.589,182.7383 91.3862,201.2247 81.2285,216.6127 " fill="none" id="anon1-backto-doctor" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="none" points="107.244,164.495,124.104,151.66,118.928,172.207,107.244,164.495" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[aa88bcbb87b7b8e6daa88991976ef8b6]
+reverse link anon1 to nurse--><path codeLine="11" d="M144.179,168.403 C153.783,182.7383 166.168,201.2247 176.477,216.6127 " fill="none" id="anon1-backto-nurse" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="none" points="138.278,172.172,132.962,151.66,149.909,164.379,138.278,172.172" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[b12edc739c893cf72697d35f046bf856]
+@startuml
+
+class employee {
+}
+
+diamond anon1
+
+employee - -> "0..1" anon1: role
+
+anon1 <|- - doctor
+
+anon1 <|- - nurse
+
+class nurse {
+  level : integer
+}
+
+class doctor {
+  income : decimal
+}
+
+@enduml
+
+PlantUML version 1.2021.2(Sun Mar 07 22:10:27 AEDT 2021)
+(GPL source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>
