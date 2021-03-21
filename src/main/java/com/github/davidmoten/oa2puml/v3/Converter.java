@@ -168,15 +168,13 @@ public final class Converter {
             type = "integer";
         } else if (schema instanceof ArraySchema) {
             ArraySchema a = (ArraySchema) schema;
-            type = getUmlTypeName(schema.get$ref(), a.getItems()) + "[]";
+            type = getUmlTypeName(a.getItems().get$ref(), a.getItems()) + "[]";
         } else if (schema instanceof BinarySchema) {
             type = "byte[]";
         } else if (schema instanceof ObjectSchema) {
             type = "object";
         } else {
-            type = "unknown";
-            System.out.println("NOT IMPLEMENTED: " + schema.getClass().getSimpleName());
-            System.out.println(schema);
+            throw new RuntimeException("not expected");
         }
         return type;
     }
