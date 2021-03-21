@@ -100,4 +100,8 @@ public class ConverterTest {
             }
         }
     }
+    
+    public static void main(String[] args) throws IOException {
+        writeSvg(new File(System.getProperty("user.home","") +  "/graph-openapi.yaml"), "target/graph-openapi.yml.svg");
+    }
 }

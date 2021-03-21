@@ -187,13 +187,13 @@ public final class Converter {
             ComposedSchema s = (ComposedSchema) schema;
             if (s.getOneOf() != null) {
                 validateComposed(s.getOneOf());
-                addInheritance(relationships, name, s.getOneOf(), null);
+                addInheritance(relationships, name, s.getOneOf(), null, counter);
             } else if (s.getAnyOf() != null) {
                 validateComposed(s.getAnyOf());
-                addInheritance(relationships, name, s.getAnyOf(), null);
+                addInheritance(relationships, name, s.getAnyOf(), null, counter);
             } else if (s.getAllOf() != null) {
-                validateComposed(s.getAllOf());
-                addInheritance(relationships, name, s.getAllOf(), Cardinality.ALL);
+//                validateComposed(s.getAllOf());
+                addInheritance(relationships, name, s.getAllOf(), Cardinality.ALL, counter);
             }
         } else if (schema.getProperties() != null) {
             final Set<String> required;
@@ -255,16 +255,15 @@ public final class Converter {
                 String otherClassName = refToClassName(ref);
                 addToMany(relationships, name, otherClassName);
             } else {
-                // TODO
+                throw new RuntimeException("class level array of non-ref type not supported yet");
             }
         } else if (schema instanceof ObjectSchema) {
-            throw new RuntimeException("anonymous object schema fragements not supported");
-        } else if (schema instanceof StringSchema) {
-            append(b, Sets.newHashSet("value"), "string", "value");
+            // has no properties so ignore
         } else {
-            // TODO
-            System.out.println("not processed " + name + ":" + schema);
-        }
+            String type = getUmlTypeName(schema.get$ref(), schema);
+            append(b, Sets.newHashSet("value"),type, name);
+            //TODO handle Arrays (add anon classes if required)
+        } 
         b.append("}");
         for (Entry<String, Schema<?>> entry : more) {
             b.append(toPlantUmlClass(entry.getKey(), entry.getValue(), counter));
@@ -291,32 +290,39 @@ public final class Converter {
     }
 
     private static void addInheritanceForProperty(List<String> relationships, String name,
-            @SuppressWarnings("rawtypes") List<Schema> oneOf, String propertyName, AtomicLong counter,
+            @SuppressWarnings("rawtypes") List<Schema> schemas, String propertyName, AtomicLong counter,
             Cardinality cardinality) {
         String label = "anon" + counter.incrementAndGet();
         relationships.add("diamond " + label);
         relationships.add(quote(name) + CLASS_RELATIONSHIP_RIGHT_ARROW + "\"" + cardinality + "\" " + label + ": "
                 + propertyName);
-        List<String> otherClassNames = refsToClassNames(oneOf);
+        List<String> otherClassNames = addAnonymousClassesAndReturnOtherClassNames(relationships, schemas, counter);
         for (String otherClassName : otherClassNames) {
             relationships.add(label + INHERITANCE_LEFT_ARROW + quote(otherClassName));
         }
     }
 
     private static void addInheritance(List<String> relationships, String name,
-            @SuppressWarnings("rawtypes") List<Schema> schemas, Cardinality cardinality) {
-        List<String> otherClassNames = refsToClassNames(schemas);
+            @SuppressWarnings("rawtypes") List<Schema> schemas, Cardinality cardinality, AtomicLong counter) {
+        List<String> otherClassNames = addAnonymousClassesAndReturnOtherClassNames(relationships, schemas, counter);
         final String s = cardinality == null ? "" : " \"" + cardinality + "\"";
         for (String otherClassName : otherClassNames) {
             relationships.add(quote(name) + s + INHERITANCE_LEFT_ARROW + quote(otherClassName));
         }
     }
 
-    private static List<String> refsToClassNames(@SuppressWarnings("rawtypes") List<Schema> schemas) {
-        List<String> otherClassNames = schemas //
-                .stream() //
-                .map(x -> refToClassName(x.get$ref())) //
-                .collect(Collectors.toList());
+    private static List<String> addAnonymousClassesAndReturnOtherClassNames(List<String> relationships, List<Schema> schemas, AtomicLong counter) {
+        List<String> otherClassNames = schemas.stream() //
+                .map(s -> {
+                    if (s.get$ref() != null) {
+                        return refToClassName(s.get$ref());
+                    } else {
+                        String className = "anon" + counter.incrementAndGet();
+                        String classDeclaration = toPlantUmlClass(className, s, counter);
+                        relationships.add(classDeclaration);
+                        return className;
+                    }
+                }).collect(Collectors.toList());
         return otherClassNames;
     }
 
