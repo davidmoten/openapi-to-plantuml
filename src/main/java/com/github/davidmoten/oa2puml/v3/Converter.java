@@ -192,7 +192,6 @@ public final class Converter {
             } else if (s.getAnyOf() != null) {
                 addInheritance(relationships, name, s.getAnyOf(), null, counter);
             } else if (s.getAllOf() != null) {
-//                validateComposed(s.getAllOf());
                 addInheritance(relationships, name, s.getAllOf(), Cardinality.ALL, counter);
             }
         } else if (schema.getProperties() != null) {
