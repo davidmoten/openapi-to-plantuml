@@ -37,6 +37,7 @@ import io.swagger.v3.parser.core.models.SwaggerParseResult;
 
 public final class Converter {
 
+    private static final String PATH_RELATIONSHIP_RIGHT_ARROW = " ..> ";
     private static final String CLASS_RELATIONSHIP_RIGHT_ARROW = " --> ";
     private static final String INHERITANCE_LEFT_ARROW = " <|-- ";
 
@@ -122,7 +123,7 @@ public final class Converter {
                                 Entry<String, MediaType> mediaType = ent.getValue().getContent().entrySet()
                                         .parallelStream().findFirst().get();
                                 String returnClassName = refToClassName(mediaType.getValue().getSchema().get$ref());
-                                return "\n\n\"" + className + "\"" + CLASS_RELATIONSHIP_RIGHT_ARROW + "\""
+                                return "\n\n\"" + className + "\"" + PATH_RELATIONSHIP_RIGHT_ARROW + "\""
                                         + returnClassName + "\": " + responseCode;
                             }).collect(Collectors.joining()));
                     return s.toString();
