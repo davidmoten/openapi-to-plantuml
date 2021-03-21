@@ -1,0 +1,19 @@
+openapi: 3.0.1
+components:
+  schemas:
+  
+    Customers:
+      type: array
+      items:
+        $ref: "#/components/schemas/Customer"
+        
+    Customer:
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+      required:
+      - firstName
+      - lastName
+        

@@ -259,7 +259,7 @@ public final class Converter {
             } else {
                 // create anon class
                 otherClassName = nextClassName(classNames, name);
-                b.append(toPlantUmlClass(otherClassName, items, counter, classNames));
+                relationships.add(toPlantUmlClass(otherClassName, items, counter, classNames).trim());
             }
             addToMany(relationships, name, otherClassName);
         } else if (schema instanceof ObjectSchema) {
