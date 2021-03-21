@@ -251,12 +251,15 @@ public final class Converter {
             ArraySchema a = (ArraySchema) schema;
             Schema<?> items = a.getItems();
             String ref = items.get$ref();
+            String  otherClassName;
             if (ref != null) {
-                String otherClassName = refToClassName(ref);
-                addToMany(relationships, name, otherClassName);
+                otherClassName = refToClassName(ref);
             } else {
-                throw new RuntimeException("class level array of non-ref type not supported yet");
+                // create anon class
+                otherClassName = name + " anon" + counter.incrementAndGet();
+                toPlantUmlClass(otherClassName, items, counter);
             }
+            addToMany(relationships, name, otherClassName);
         } else if (schema instanceof ObjectSchema) {
             // has no properties so ignore
         } else {
