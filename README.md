@@ -47,3 +47,7 @@ String puml = Puml.openApiToPuml(openapi);
 [banking.yml](src/test/resources/inputs/banking.yml):
 
 <img src="src/docs/tests/banking.puml.svg"/>
+
+[amazon-s3.yml](src/test/resources/inputs/amazon-s3.yml):
+
+<img src="src/docs/tests/amazon-s3.puml.svg"/>
