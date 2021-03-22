@@ -64,6 +64,7 @@ public final class Converter {
         // OpenAPIParser().readContents("./path/to/openapi.yaml", null, null);
 
         // the parsed POJO
+        
         OpenAPI a = result.getOpenAPI();
         Set<String> classNames = new HashSet<>(a.getComponents().getSchemas().keySet());
         return "@startuml" //
@@ -162,6 +163,7 @@ public final class Converter {
                                             + responseCode;
                                 }
                             }).collect(Collectors.joining()));
+                    //TODO support RequestBody (post)
                     return s.toString();
                 }) //
                 .collect(Collectors.joining()));

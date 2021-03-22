@@ -36,7 +36,6 @@ public class DemoBatchTest {
     }
 
     @Test
-    @Ignore
     public void testBatch() {
         System.out.println("checking " + input);
         try (InputStream in = new FileInputStream(input)) {
