@@ -55,18 +55,6 @@ public class ConverterTest {
         return new String(Files.readAllBytes(new File(filename).toPath() ), StandardCharsets.UTF_8);
     }
     
-    @Test
-    public void test() {
-        File inputs = new File("src/test/resources/inputs/");
-        File outputs = new File("src/test/resources/outputs/");
-        File[] list = inputs.listFiles();
-        if (list != null) {
-            for (File input : list) {
-
-            }
-        }
-    }
-
     static void writeSvg(File openApiFile, String filename) throws IOException {
         try (InputStream in = new FileInputStream(openApiFile)) {
             String puml = Converter.openApiToPuml(in);
@@ -74,7 +62,7 @@ public class ConverterTest {
             try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
                 // Write the first image to "os"
                 DiagramDescription result = reader.outputImage(os, new FileFormatOption(FileFormat.SVG));
-                System.out.println(filename + ": " + result.getDescription());
+                System.out.println("  svg result: " + result.getDescription());
 
                 File file = new File(filename);
                 file.delete();

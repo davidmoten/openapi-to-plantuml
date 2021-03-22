@@ -18,21 +18,21 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 @RunWith(Parameterized.class)
-public class BatchTest {
+public class ConverterBatchTest {
 
     private static final File inputs = new File("src/test/resources/inputs/");
     private static final File outputs = new File("src/test/resources/outputs/");
 
     private final File input;
 
-    public BatchTest(File input) {
+    public ConverterBatchTest(File input) {
         this.input = input;
     }
 
     @Parameterized.Parameters
     public static Collection<?> primeNumbers() {
         File[] list = inputs.listFiles();
-        if (list != null) {
+        if (list == null) {
             return Collections.emptyList();
         } else {
             return Arrays.asList(list);
@@ -41,7 +41,7 @@ public class BatchTest {
 
     @Test
     public void testBatch() {
-        if (true) throw new RuntimeException(input.toString());
+        System.out.println("checking " + input);
         try (InputStream in = new FileInputStream(input)) {
             String puml = Converter.openApiToPuml(in).trim();
             File output = new File(outputs, input.getName().substring(0, input.getName().lastIndexOf('.')) + ".puml");
@@ -49,10 +49,8 @@ public class BatchTest {
                 output.createNewFile();
                 System.out.println(puml);
             }
-            System.out.println("checking " + input);
             String expected = new String(Files.readAllBytes(output.toPath()), StandardCharsets.UTF_8).trim();
             assertEquals(expected, puml);
-            System.out.println(input + " passed");
             ConverterTest.writeSvg(input, "target/" + output.getName() + ".svg");
         } catch (IOException e) {
             throw new UncheckedIOException(e);
