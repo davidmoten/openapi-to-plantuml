@@ -29,12 +29,14 @@ import io.swagger.v3.oas.models.media.ComposedSchema;
 import io.swagger.v3.oas.models.media.DateSchema;
 import io.swagger.v3.oas.models.media.DateTimeSchema;
 import io.swagger.v3.oas.models.media.IntegerSchema;
+import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.media.NumberSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
+import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.parser.core.models.SwaggerParseResult;
 
 public final class Converter {
@@ -78,7 +80,7 @@ public final class Converter {
                     + a.getPaths() //
                             .entrySet() //
                             .stream() //
-                            .map(entry -> toPlantUmlPath(entry.getKey(), //
+                            .map(entry -> toPlantUmlPath(a, entry.getKey(), //
                                     entry.getValue(), counter, classNames))
                             .collect(Collectors.joining());
         }
@@ -93,7 +95,8 @@ public final class Converter {
                 .collect(Collectors.joining());
     }
 
-    private static String toPlantUmlPath(String path, PathItem p, AtomicLong counter, Set<String> classNames) {
+    private static String toPlantUmlPath(OpenAPI a, String path, PathItem p, AtomicLong counter,
+            Set<String> classNames) {
         StringBuilder b = new StringBuilder();
         // add method class blocks with HTTP verb and parameters
         // add response lines
@@ -106,14 +109,18 @@ public final class Converter {
                     StringBuilder s = new StringBuilder();
                     s.append("\n\nclass " + quote(className) + " <<Method>> {");
                     List<Parameter> parameters = operation.getParameters();
+                    int[] parameterNo = new int[1];
                     if (parameters != null) {
                         s.append(parameters //
                                 .stream()//
                                 .map(param -> {
+                                    parameterNo[0]++;
+                                    String parameterName = param.getName() == null ? "parameter" + parameterNo[0]
+                                            : param.getName();
                                     final String type = getUmlTypeName(param.get$ref(), param.getSchema());
                                     final String optional = param.getRequired() != null && param.getRequired() ? ""
                                             : " {O}";
-                                    return "\n" + "  " + param.getName() + " : " + type + optional;
+                                    return "\n" + "  " + parameterName + " : " + type + optional;
                                 }) //
                                 .collect(Collectors.joining()));
                     }
@@ -123,23 +130,32 @@ public final class Converter {
                             .entrySet() //
                             .stream() //
                             .map(ent -> {
+                                // TODO support refs to #/components/responses
                                 String responseCode = ent.getKey();
                                 // TODO only using the first content
-                                if (ent.getValue().getContent() == null) {
+                                ApiResponse r = ent.getValue();
+                                if (r.get$ref() != null) {
+                                    r = a.getComponents().getResponses().get(refToClassName(r.get$ref()));
+                                }
+                                if (r.getContent() == null) {
                                     return "";
                                 } else {
-                                    Entry<String, MediaType> mediaType = ent.getValue().getContent().entrySet()
-                                            .parallelStream().findFirst().get();
+                                    Entry<String, MediaType> mediaType = r.getContent().entrySet().parallelStream()
+                                            .findFirst().get();
                                     Schema<?> sch = mediaType.getValue().getSchema();
                                     final String returnClassName;
                                     final String returnClassDeclaration;
-                                    if (sch.get$ref() != null) {
+                                    if (sch != null && sch.get$ref() != null) {
                                         returnClassName = refToClassName(sch.get$ref());
                                         returnClassDeclaration = "";
                                     } else {
                                         returnClassName = (className + " " + responseCode + " Return");
-                                        returnClassDeclaration = toPlantUmlClass(returnClassName, sch, counter,
-                                                classNames);
+                                        if (sch == null) {
+                                            returnClassDeclaration = "";
+                                        } else {
+                                            returnClassDeclaration = toPlantUmlClass(returnClassName, sch, counter,
+                                                    classNames);
+                                        }
                                     }
                                     return returnClassDeclaration + "\n\n" + quote(className)
                                             + PATH_RELATIONSHIP_RIGHT_ARROW + quote(returnClassName) + ": "
@@ -175,11 +191,19 @@ public final class Converter {
             type = "byte[]";
         } else if (schema instanceof ObjectSchema) {
             type = "object";
+        } else if (schema instanceof MapSchema) {
+            // TODO handle MapSchema
+            return "map";
         } else if (schema instanceof ComposedSchema) {
-            //TODO handle composedschema
+            // TODO handle ComposedSchema
             return "composed";
         } else if ("string".equals(schema.getType())) {
             type = "string";
+        } else if (schema.get$ref() != null) {
+            type = refToClassName(schema.get$ref());
+        } else if (schema.getType() == null) {
+            // TODO don't display a type with empty
+            type = "empty";
         } else {
             throw new RuntimeException("not expected" + schema);
         }

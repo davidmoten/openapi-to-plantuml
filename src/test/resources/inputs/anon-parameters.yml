@@ -1,0 +1,25 @@
+openapi: 3.0.1
+paths:
+  /customer/expired:
+    get:
+      parameters:
+      - $ref: '#/components/schemas/CustomerId'
+      - $ref: '#/components/schemas/CustomerId'
+      responses:
+        '200':  
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+components:
+  schemas:
+    Customer:
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+    CustomerId:
+      type: string                   
