@@ -175,8 +175,13 @@ public final class Converter {
             type = "byte[]";
         } else if (schema instanceof ObjectSchema) {
             type = "object";
+        } else if (schema instanceof ComposedSchema) {
+            //TODO handle composedschema
+            return "composed";
+        } else if ("string".equals(schema.getType())) {
+            type = "string";
         } else {
-            throw new RuntimeException("not expected");
+            throw new RuntimeException("not expected" + schema);
         }
         return type;
     }
@@ -310,9 +315,9 @@ public final class Converter {
                 return className;
             }
             i++;
-        }        
+        }
     }
-    
+
     private static String nextClassName(Set<String> classNames, String... candidates) {
         return nextClassName(classNames, Arrays.asList(candidates));
     }
