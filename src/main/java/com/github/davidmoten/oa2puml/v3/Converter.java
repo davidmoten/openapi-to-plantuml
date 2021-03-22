@@ -194,11 +194,11 @@ public final class Converter {
         } else if (schema instanceof ComposedSchema) {
             ComposedSchema s = (ComposedSchema) schema;
             if (s.getOneOf() != null) {
-                addInheritance(relationships, name, s.getOneOf(), null, counter, classNames, s.getTitle());
+                addInheritance(relationships, name, s.getOneOf(), null, counter, classNames);
             } else if (s.getAnyOf() != null) {
-                addInheritance(relationships, name, s.getAnyOf(), null, counter, classNames, s.getTitle());
+                addInheritance(relationships, name, s.getAnyOf(), null, counter, classNames);
             } else if (s.getAllOf() != null) {
-                addInheritance(relationships, name, s.getAllOf(), Cardinality.ALL, counter, classNames, s.getTitle());
+                addInheritance(relationships, name, s.getAllOf(), Cardinality.ALL, counter, classNames);
             }
         } else if (schema.getProperties() != null) {
             final Set<String> required;
@@ -363,9 +363,9 @@ public final class Converter {
 
     private static void addInheritance(List<String> relationships, String name,
             @SuppressWarnings("rawtypes") List<Schema> schemas, Cardinality cardinality, AtomicLong counter,
-            Set<String> classNames, String otherClassNamePartCandidate) {
+            Set<String> classNames) {
         List<String> otherClassNames = addAnonymousClassesAndReturnOtherClassNames(relationships, name, schemas,
-                counter, classNames, otherClassNamePartCandidate);
+                counter, classNames, null);
         final String s = cardinality == null ? "" : " \"" + cardinality + "\"";
         for (String otherClassName : otherClassNames) {
             relationships.add(quote(name) + s + INHERITANCE_LEFT_ARROW + quote(otherClassName));
