@@ -190,7 +190,7 @@ public final class Converter {
             // this is an alias case for a schema
             String ref = schema.get$ref();
             String otherClassName = refToClassName(ref);
-            relationships.add(quote(name) + CLASS_RELATIONSHIP_RIGHT_ARROW + quote(otherClassName));
+            relationships.add(quote(name) + CLASS_RELATIONSHIP_RIGHT_ARROW + "\"1\"" + quote(otherClassName));
         } else if (schema instanceof ComposedSchema) {
             ComposedSchema s = (ComposedSchema) schema;
             if (s.getOneOf() != null) {

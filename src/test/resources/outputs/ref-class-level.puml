@@ -1,0 +1,13 @@
+@startuml
+
+class "Customer" {
+  firstName : string
+  lastName : string
+}
+
+class "Client" {
+}
+
+"Client" --> "1""Customer"
+
+@enduml
