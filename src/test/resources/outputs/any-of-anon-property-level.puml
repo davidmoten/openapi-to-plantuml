@@ -1,0 +1,28 @@
+@startuml
+
+class "employee" {
+}
+
+diamond anon1
+
+"employee" --> "0..1" anon1: role
+
+
+
+class "employee.role" {
+  employeeType : string {O}
+  level : integer
+}
+
+
+
+class "employee.role.1" {
+  employeeType : string {O}
+  income : decimal
+}
+
+anon1 <|-- "employee.role"
+
+anon1 <|-- "employee.role.1"
+
+@enduml
