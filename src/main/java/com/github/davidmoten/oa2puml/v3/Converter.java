@@ -199,6 +199,8 @@ public final class Converter {
                 addInheritance(relationships, name, s.getAnyOf(), null, counter, classNames);
             } else if (s.getAllOf() != null) {
                 addInheritance(relationships, name, s.getAllOf(), Cardinality.ALL, counter, classNames);
+            } else {
+                throw new RuntimeException("unexpected");
             }
         } else if (schema.getProperties() != null) {
             final Set<String> required;
@@ -241,7 +243,7 @@ public final class Converter {
                     if (type.startsWith("unknown")) {
                         System.out.println("unknown property:\n" + entry);
                     }
-                    if (type.endsWith("[]") && !isSimpleArrayType(type)) {
+                    if (isComplexArrayType(type)) {
                         addArray(name, relationships, property, entry.getValue(), counter, classNames);
                     } else if (type.equals("object")) {
                         // create anon class
@@ -271,7 +273,7 @@ public final class Converter {
             // has no properties so ignore
         } else {
             String type = getUmlTypeName(schema.get$ref(), schema);
-            if (type.endsWith("[]") && !isSimpleArrayType(type)) {
+            if (isComplexArrayType(type)) {
                 addArray(name, relationships, null, schema, counter, classNames);
             } else {
                 append(b, Sets.newHashSet("value"), type, "value");
@@ -285,6 +287,10 @@ public final class Converter {
             b.append("\n\n" + relationship);
         }
         return b.toString();
+    }
+
+    private static boolean isComplexArrayType(String type) {
+        return type.endsWith("[]") && !isSimpleArrayType(type);
     }
 
     private static String nextClassName(Set<String> classNames, List<String> candidates) {
