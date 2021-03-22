@@ -29,7 +29,7 @@ public class ConverterBatchTest {
         this.input = input;
     }
 
-    @Parameterized.Parameters
+    @Parameterized.Parameters(name="{0}")
     public static Collection<?> primeNumbers() {
         File[] list = inputs.listFiles();
         if (list == null) {

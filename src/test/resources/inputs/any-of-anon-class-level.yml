@@ -4,7 +4,6 @@ components:
     employee:
       anyOf: 
       - type: object
-        title: nurse
         properties:
           employeeType:
             type: string 
@@ -14,7 +13,6 @@ components:
         required:
         - level
       - type: object
-        title: doctor
         properties:
           employeeType:
             type: string 
