@@ -1,6 +1,5 @@
 package com.github.davidmoten.oa2puml.v3;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import java.io.ByteArrayOutputStream;
@@ -8,7 +7,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
@@ -65,27 +63,11 @@ public class ConverterTest {
         if (list != null) {
             for (File input : list) {
 
-                try (InputStream in = new FileInputStream(input)) {
-                    String puml = Converter.openApiToPuml(in).trim();
-                    File output = new File(outputs,
-                            input.getName().substring(0, input.getName().lastIndexOf('.')) + ".puml");
-                    if (!output.exists()) {
-                        output.createNewFile();
-                        System.out.println(puml);
-                    }
-                    System.out.println("checking " + input);
-                    String expected = new String(Files.readAllBytes(output.toPath()), StandardCharsets.UTF_8).trim();
-                    assertEquals(expected, puml);
-                    System.out.println(input + " passed");
-                    writeSvg(input,"target/" + output.getName() + ".svg");
-                } catch (IOException e) {
-                    throw new UncheckedIOException(e);
-                }
             }
         }
     }
 
-    private static void writeSvg(File openApiFile, String filename) throws IOException {
+    static void writeSvg(File openApiFile, String filename) throws IOException {
         try (InputStream in = new FileInputStream(openApiFile)) {
             String puml = Converter.openApiToPuml(in);
             SourceStringReader reader = new SourceStringReader(puml);
