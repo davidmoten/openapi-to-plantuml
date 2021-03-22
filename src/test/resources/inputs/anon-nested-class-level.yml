@@ -1,0 +1,25 @@
+openapi: 3.0.1
+components:
+  schemas:
+    Customer:
+      properties:
+        name:
+          type: object
+          properties:
+            standardName:
+              type: object
+              properties:
+                firstName: 
+                  type: string
+                lastName: 
+                  type: string
+              required:
+              - firstName
+              - lastName
+            origin:
+              type: string
+        heightMetres:
+          type: number
+      required:
+      - name
+        
