@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.io.IOUtils;
 
+import com.github.davidmoten.guavamini.Preconditions;
 import com.github.davidmoten.guavamini.Sets;
 
 import io.swagger.parser.OpenAPIParser;
@@ -192,11 +194,11 @@ public final class Converter {
         } else if (schema instanceof ComposedSchema) {
             ComposedSchema s = (ComposedSchema) schema;
             if (s.getOneOf() != null) {
-                addInheritance(relationships, name, s.getOneOf(), null, counter, classNames);
+                addInheritance(relationships, name, s.getOneOf(), null, counter, classNames, s.getTitle());
             } else if (s.getAnyOf() != null) {
-                addInheritance(relationships, name, s.getAnyOf(), null, counter, classNames);
+                addInheritance(relationships, name, s.getAnyOf(), null, counter, classNames, s.getTitle());
             } else if (s.getAllOf() != null) {
-                addInheritance(relationships, name, s.getAllOf(), Cardinality.ALL, counter, classNames);
+                addInheritance(relationships, name, s.getAllOf(), Cardinality.ALL, counter, classNames, s.getTitle());
             }
         } else if (schema.getProperties() != null) {
             final Set<String> required;
@@ -285,21 +287,28 @@ public final class Converter {
         return b.toString();
     }
 
-    private static String nextClassName(Set<String> classNames, String candidate) {
-        if (!classNames.contains(candidate)) {
-            classNames.add(candidate);
-            return candidate;
-        } else {
-            int i = 1;
-            while (true) {
-                String className = candidate + "." + i;
-                if (!classNames.contains(className)) {
-                    classNames.add(className);
-                    return className;
-                }
-                i++;
+    private static String nextClassName(Set<String> classNames, List<String> candidates) {
+        Preconditions.checkArgument(!candidates.isEmpty());
+        for (String candidate : candidates) {
+            if (!classNames.contains(candidate)) {
+                classNames.add(candidate);
+                return candidate;
             }
         }
+        int i = 1;
+        String lastCandidate = candidates.get(candidates.size() - 1);
+        while (true) {
+            String className = lastCandidate + "." + i;
+            if (!classNames.contains(className)) {
+                classNames.add(className);
+                return className;
+            }
+            i++;
+        }        
+    }
+    
+    private static String nextClassName(Set<String> classNames, String... candidates) {
+        return nextClassName(classNames, Arrays.asList(candidates));
     }
 
     private static boolean isSimpleArrayType(String s) {
@@ -354,9 +363,9 @@ public final class Converter {
 
     private static void addInheritance(List<String> relationships, String name,
             @SuppressWarnings("rawtypes") List<Schema> schemas, Cardinality cardinality, AtomicLong counter,
-            Set<String> classNames) {
+            Set<String> classNames, String otherClassNamePartCandidate) {
         List<String> otherClassNames = addAnonymousClassesAndReturnOtherClassNames(relationships, name, schemas,
-                counter, classNames, null);
+                counter, classNames, otherClassNamePartCandidate);
         final String s = cardinality == null ? "" : " \"" + cardinality + "\"";
         for (String otherClassName : otherClassNames) {
             relationships.add(quote(name) + s + INHERITANCE_LEFT_ARROW + quote(otherClassName));

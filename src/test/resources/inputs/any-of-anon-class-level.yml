@@ -1,0 +1,25 @@
+openapi: 3.0.1
+components:
+  schemas:
+    employee:
+      anyOf: 
+      - type: object
+        title: nurse
+        properties:
+          employeeType:
+            type: string 
+            enum: ['Nurse']
+          level:
+            type: integer
+        required:
+        - level
+      - type: object
+        title: doctor
+        properties:
+          employeeType:
+            type: string 
+            enum: ['Doctor']
+          income:
+            type: number
+        required:
+        - income
