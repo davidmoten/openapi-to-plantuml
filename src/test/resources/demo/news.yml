@@ -1,0 +1,528 @@
+openapi: 3.0.0
+info:
+  description: >
+    NewsRPM is a Cloud News Platform for the ingestion processing, storing,
+    indexing, and distribution of news articles & other textual content.
+    <br><br>
+    Please see the taxonomy reference for all of the metadata which articles can be queried by<br>
+    <a href="https://docs.google.com/spreadsheets/d/1KaYaFE8mzHlyiPoSX9ImnWzPwy0xeKOdmTR90lArV_E/edit#gid=451665458">Latest Taxonomy</a>
+    <br>
+  version: "2.0.0"
+  title: NewsRPM Platform
+  termsOfService: 'https://www.cloudquote.io/terms/'
+  contact:
+    email: sales@financialcontent.com
+paths:
+  /search/indexedData:
+    post:
+      tags:
+        - Search for Articles
+      summary: >-
+        Searches the article index for articles tagged with certain
+        keywords/topics/ticker symbols/etc.
+      operationId: searchIndexedData
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/multipleArticleResponse'
+        '400':
+          description: Bad Request
+        '403':
+          description: Invalid Authorization
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/indexSearchQuery'
+            examples:
+              fullExample:
+                summary: Full Example Using All Parameter
+                value:
+                  key: NormalizedTicker
+                  value: GOOG
+                  offset: 0
+                  count: 25
+                  minDate: '2020-07-10T12:27:28.000Z'
+                  maxDate: '2020-07-09T12:27:28.000Z'
+                  order: date
+                description: Retrieves all articles for GOOG between two dates
+              searchByTicker:
+                summary: Search By Normalized Ticker
+                value:
+                  key: NormalizedTicker
+                  value: GOOG
+                description: The NormalizedTicker index references articles based upon the Stock Ticker Symbols mentioned in the article, which have been normalized. For US Stock Tickers, the ticker is given explicitly - i.e. GOOG, AAPL, IBM. For International ticker symbols, the ticker symbol is always prefixed - for example, LSE:RDS.A
+              searchByTickerType:
+                summary: Search By Normalized Ticker & Type
+                value:
+                  key: NormalizedTicker-Type
+                  value: GOOG-Press Release
+                description: Works the same as the NormalizedTicker index, except the 'type' field of the article is joined to the end of the value using a '-' character. Common types of articles are Press Release, News, Paid Placement
+              searchByCommodity:
+                summary: Search By Commodity Name
+                value:
+                  key: commodities
+                  value: Coal
+                description: 'Searches for articles mentioning a specific commodity, for example: Coal, Cocoa, Coffee'
+              searchByCurrency:
+                summary: Search By Currency
+                value:
+                  key: currencies
+                  value: USD
+                description: 'Searches for articles mentioning a specific currency, for example: USD, EUR, CHF, etc.'
+              searchByEarnings:
+                summary: Search By Earnings Beat/Miss
+                value:
+                  key: earnings
+                  value: Beat
+                description: Searches for articles indicating a company missed, beat, or matched earnings estimates. Value is either Beat, Match, or Miss
+              searchBySales:
+                summary: Search By Sales Beat/Miss
+                value:
+                  key: sales
+                  value: Beat
+                description: Searches for articles indicating a company missed, beat, or matched sales/revenue estimates. Value is either Beat, Match, or Miss
+              searchByExposure:
+                summary: Search By Risk/Exposure
+                value:
+                  key: exposure
+                  value: Boeing 737
+                description: 'Searches for articles mentioning a risk exposure, for example: Boeing 737, COVID-19, Firearms, Glyphosate'
+              searchByRegion:
+                summary: Search By World Region
+                value: 
+                  key: region
+                  value: Afghanistan
+                description: 'Searches for articles mentioning a certain region, for example: Middle East, Afghanistan, Europe, Russia, etc. More specific regions are also indexed in less specific regions - for example all articles mentioning Germany are also indexed in the Europe region'
+              searchByTopic:
+                summary: Search By Topic
+                value:
+                  key: topic
+                  value: Cannabis
+                description: Searches for articles mentioning a specific topic - for example, Cannabis, Brexit, Product Recall, World Trade
+        description: Search Query
+        required: true
+  /search/article:
+    post:
+      tags:
+        - Search for Articles
+      summary: 'Searches for articles by publisher, type, etc.'
+      operationId: searchArticle
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/multipleArticleResponse'
+        '400':
+          description: Bad Request
+        '403':
+          description: Invalid Authorization
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/articleSearchQuery'
+            examples:
+              searchPressRelease:
+                summary: Searches for the latest 25 press releases
+                value:
+                  type: Press Release
+                  count: 25
+                  offset: 0
+                
+        description: Search Query
+        required: true
+  /article/{slug}:
+    get:
+      tags:
+        - Retrieve Articles
+      summary: 'Retrieves article by the unique slug identifier'
+      operationId: retrieveArticleBySlug
+      parameters:
+        - in: path
+          name: slug
+          schema:
+            type: string
+          required: true
+          description: The unique slug identifier of the article to retrieve
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/singleArticleResponse'
+        '400':
+          description: Bad Request
+        '403':
+          description: Invalid Authorization
+  /article/{id}:
+    get:
+      tags:
+        - Retrieve Articles
+      summary: 'Retrieves article by the local article id number'
+      operationId: retrieveArticleById
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: The unique local identifier of the article to retrieve. This id is not unique, and does not correlate across news engine instances
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/singleArticleResponse'
+        '400':
+          description: Bad Request
+        '403':
+          description: Invalid Authorization
+  '/body/{bodyId}':
+    get:
+      tags:
+        - Retrieve Article Body
+      summary: Retrieves an Article Body, in the providers native format. The article body may be in an arbitrary format such as HTML, NITF, PDF, etc.
+      parameters:
+        - in: path
+          name: bodyId
+          schema:
+            type: string
+          required: true
+          description: Body ID of the article body to retrieve
+      operationId: retrieveBody
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/articleBodyResponse'
+        '400':
+          description: Bad Request
+        '403':
+          description: Invalid Authorization
+  '/body/{bodyId}/render':
+    get:
+      tags:
+        - Retrieve Article Body
+      summary: Retrieves an Article Body, and renders it into HTML if it is in another format such as NITF, PDF, etc.
+      parameters:
+        - in: path
+          name: bodyId
+          schema:
+            type: string
+          required: true
+          description: Body ID of the article body to retrieve
+      operationId: renderBody
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/articleBodyResponse'
+        '400':
+          description: Bad Request
+        '403':
+          description: Invalid Authorization
+  /article:
+    post:
+      tags:
+        - Upload Article [Admin]
+      summary: >-
+        Uploads and article into your news instance
+      operationId: uploadArticle
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: True if the operation was a success
+                  id:
+                    type: integer
+                    description: The local id number the article was assigned in the news instance it was uploaded to
+                required: [success,id]
+        '400':
+          description: Bad Request
+        '403':
+          description: Invalid Authorization
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/article'
+        description: Article to Upload
+        required: true
+security:
+  - private_key_auth: []
+  - public_key_auth: []
+  - header_private_key_auth: []
+  - header_public_key_auth: []
+servers:
+  - url: 'https://api.newsrpm.com'
+  - url: 'http://api.newsrpm.com'
+components:
+  securitySchemes:
+    header_private_key_auth:
+      type: http
+      scheme: privateKey
+    header_public_key_auth:
+      type: http
+      scheme: publicKey
+    public_key_auth:
+      type: apiKey
+      in: query
+      name: P
+    private_key_auth:
+      type: apiKey
+      in: query
+      name: T
+  schemas:
+    indexSearchQuery:
+      type: object
+      required: [key]
+      properties:
+        key:
+          type: string
+          description: An Index Key is a specifier used to identify which index you would like to query from
+        value:
+          oneOf: 
+            - type: string
+            - type: array
+              items: 
+                type: string
+          description: The value to look up in the Index
+        count:
+          type: integer
+          format: int32
+          default: 0
+          description: The number of articles to return
+        offset:
+          type: integer
+          format: int32
+          default: 25
+          description: How many articles to skip before returning results
+        minDate:
+          type: string
+          format: date-time
+          description: The earliest date to return articles for, inclusive
+        maxDate:
+          type: string
+          format: date-time
+          description: The latest date to return articles for, inclusive
+        order:
+          type: string
+          default: date
+          enum:
+            - date
+            - dateWithQuality
+          description: 'Field to sort the results by.<br><br>
+              For Example: <br>
+              - date: Sorts the results by date, newest to oldest<br>
+              - dateWithQuality: Sorts the results by date, re-ordering the results based upon the quality of an article. For each 1.0 point of quality, the article is moved up 1 hour in the index, moving it above newer articles by an hour.
+            '
+    articleSearchQuery:
+      type: object
+      properties:
+        publisher:
+          oneOf: 
+            - type: string
+            - type: array
+              items: 
+                type: string
+          description: The name of the publisher to search for
+        provider:
+          oneOf: 
+            - type: string
+            - type: array
+              items: 
+                type: string
+          description: The name of the provider to search for
+        fullText:
+          type: string
+          description: A full text query to execute against the article headline
+        type:
+          oneOf: 
+            - type: string
+            - type: array
+              items: 
+                type: string
+          description: The type of article to search for
+        count:
+          type: integer
+          format: int32
+          description: The number of articles to return
+        offset:
+          type: integer
+          format: int32
+          description: How many articles to skip before returning results
+        minDate:
+          type: string
+          format: date-time
+          description: The earliest date to return articles for, inclusive
+        maxDate:
+          type: string
+          format: date-time
+          description: The latest date to return articles for, inclusive
+        language:
+          type: string
+          description: Filter results based upon the language the article is in
+    article:
+      type: object
+      required:
+        - provider
+        - headline
+        - slug
+        - date
+        - visibility
+        - quality
+      properties:
+        provider:
+          type: string
+          description: The syndication partner that provided the article
+        publisher:
+          type: string
+          description: The actual publisher of the article if it can be determined
+        headline:
+          type: string
+          description: The headline of the article
+        link:
+          type: string
+          format: url
+          description: The URL of the article
+        date:
+          type: string
+          format: date-time
+          description: The timestamp of the article
+        expires:
+          type: string
+          format: date-time
+          description: The expiration date for the article
+        slug:
+          type: string
+          description: The unique identifier for the article
+        summary:
+          type: string
+          description: The summary of the article
+          format: html
+        firstParagraph:
+          type: string
+          description: The first paragraph of the article
+          format: html
+        bodyId:
+          type: string
+          description: >
+            A unique identifier used to retrieve the article body To retrieve
+            the body of the article, pass this ID to the /body/{bodyId} Endpoint
+        language:
+          type: string
+          description: The language that the article is written in
+        visiblity:
+          type: string
+          enum:
+            - draft
+            - embargo
+            - published
+            - retracted
+          default: published
+          description: >
+            The visiblity of the article Most clients are subscribed only to
+            “published” articles, so this can typically be ignored unless you
+            are specifically looking for hidden articles
+        quality:
+          type: integer
+          description: >
+            A quality score for the article. Quality scores can be used to rank
+            articles against each other, and the algorithm for scoring is
+            customized for each customers use case. The default score is zero,
+            and may be above or below zero depending on the quality algorithm
+            selected, or always zero if no quality score is selected.
+          default: 0.0
+        metaData:
+          type: object
+          description: >
+            A collection of metadata about the article, such as categories,
+            tickers, etc. in a provider specific format
+        normalizedData:
+          type: object
+          description: >
+            A collection of metadata about the article, such as categories,
+            tickers, etc.
+    multipleArticleResponse:
+      type: object
+      required:
+        - success
+        - rows
+      properties:
+        success:
+          type: boolean
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/article'
+    singleArticleResponse:
+      type: object
+      required:
+        - success
+        - doc
+      properties:
+        success:
+          type: boolean
+        doc:
+          $ref: '#/components/schemas/article'
+    articleBodyResponse:
+      type: object
+      required:
+        - success
+        - rows
+      properties:
+        success:
+          type: boolean
+        body:
+          type: object
+          required: [v,chunks]
+          properties:
+            v:
+              type: number
+              description: Version of the article body, 1.0 for this specification of the article body
+            chunks:
+              type: array
+              description: An array of chunks that represent the article body. Chunks should typically be displayed in the order received, although some clients may prefer to rearrange chunks, such as to put any videos or photos at the top of the page
+              items:
+                $ref: '#/components/schemas/articleBodyChunk'
+    articleBodyChunk:
+      type: object
+      description: A named chunk of the article body
+      required: [name,format,content]
+      properties:
+        name:
+          type: string
+          description: The name of the chunk, as determined by the provider
+        format:
+          type: string
+          format: mime-type
+          description: The format of the chunk, expressed as a mime type. Most chunks will have a format of text/html
+        content:
+          type: string
+          description: The content of the chunk. For text/html format, this would be a string containing the HTML for the chunk
