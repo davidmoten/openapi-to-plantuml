@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
@@ -68,6 +69,7 @@ public final class Converter {
         // the parsed POJO
 
         OpenAPI a = result.getOpenAPI();
+        Names names = new Names(a);
         Set<String> classNames = new HashSet<>(a.getComponents().getSchemas().keySet());
         return "@startuml" //
                 + components(a, counter, classNames) //
@@ -90,12 +92,26 @@ public final class Converter {
     }
 
     private static String components(OpenAPI a, AtomicLong counter, Set<String> classNames) {
-        return a.getComponents() //
+        String part1 = a.getComponents() //
                 .getSchemas() //
                 .entrySet() //
                 .stream() //
                 .map(entry -> toPlantUmlClass(entry.getKey(), entry.getValue(), counter, classNames)) //
                 .collect(Collectors.joining());
+        Map<String, RequestBody> requestBodies = a.getComponents().getRequestBodies();
+        final String part2;
+        if (requestBodies != null) {
+            part2 = requestBodies //
+                    .entrySet() //
+                    .stream() //
+                    .map(entry -> toPlantUmlClass(entry.getKey(),
+                            entry.getValue().getContent().entrySet().stream().findFirst().get().getValue().getSchema(),
+                            counter, classNames)) //
+                    .collect(Collectors.joining());
+        } else {
+            part2 = "";
+        }
+        return part1 + part2;
     }
 
     private static String toPlantUmlPath(OpenAPI a, String path, PathItem p, AtomicLong counter,
@@ -127,8 +143,8 @@ public final class Converter {
                                                 : " {O}";
                                         return "\n" + "  " + parameterName + " : " + type + optional;
                                     } else {
-                                        extras.append("\n\n" + quote(className) + CLASS_RELATIONSHIP_RIGHT_ARROW + quote("1")
-                                                + quote(type) + " : " + quote(parameterName));
+                                        extras.append("\n\n" + quote(className) + CLASS_RELATIONSHIP_RIGHT_ARROW
+                                                + quote("1") + quote(type) + " : " + quote(parameterName));
                                         return "";
                                     }
                                 }) //
