@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -24,7 +26,7 @@ public class DemoBatchTest {
         this.input = input;
     }
 
-    @Parameterized.Parameters(name="{0}")
+    @Parameterized.Parameters(name = "{0}")
     public static Collection<?> files() {
         File[] list = inputs.listFiles();
         if (list == null) {
@@ -38,7 +40,16 @@ public class DemoBatchTest {
     public void testBatch() {
         System.out.println("checking " + input);
         try (InputStream in = new FileInputStream(input)) {
-            File svg = new File("target", input.getName().substring(0, input.getName().lastIndexOf('.')) + ".svg");
+            File demos = new File("target/demos");
+            demos.mkdirs();
+            File svg = new File(demos, input.getName().substring(0, input.getName().lastIndexOf('.')) + ".svg");
+            String puml;
+            try (InputStream def = new FileInputStream(input)) {
+                puml = Converter.openApiToPuml(def);
+            }
+            File pumlFile = new File(demos, input.getName().substring(0, input.getName().lastIndexOf('.')) + ".puml");
+            pumlFile.delete();
+            Files.write(pumlFile.toPath(), puml.getBytes(StandardCharsets.UTF_8));
             svg.delete();
             ConverterTest.writeSvg(input, svg.getPath());
         } catch (IOException e) {

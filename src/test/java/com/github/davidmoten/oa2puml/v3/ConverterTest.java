@@ -58,16 +58,20 @@ public class ConverterTest {
     static void writeSvg(File openApiFile, String filename) throws IOException {
         try (InputStream in = new FileInputStream(openApiFile)) {
             String puml = Converter.openApiToPuml(in);
-            SourceStringReader reader = new SourceStringReader(puml);
-            try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
-                // Write the first image to "os"
-                DiagramDescription result = reader.outputImage(os, new FileFormatOption(FileFormat.SVG));
-                System.out.println("  svg result: " + result.getDescription());
+            writeSvgFromPuml(puml, filename);
+        }
+    }
+    
+    static void writeSvgFromPuml(String puml, String filename) throws IOException {
+        SourceStringReader reader = new SourceStringReader(puml);
+        try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+            // Write the first image to "os"
+            DiagramDescription result = reader.outputImage(os, new FileFormatOption(FileFormat.SVG));
+            System.out.println("  svg result: " + result.getDescription());
 
-                File file = new File(filename);
-                file.delete();
-                Files.write(file.toPath(), os.toByteArray());
-            }
+            File file = new File(filename);
+            file.delete();
+            Files.write(file.toPath(), os.toByteArray());
         }
     }
     
