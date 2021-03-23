@@ -43,6 +43,8 @@ class "POST /pets" <<Method>> {
 
 "POST /pets" ..> "Error": default
 
+"POST /pets" --> "NewPet": "<<Request Body>>"
+
 class "GET /pets/{id}" <<Method>> {
   id : integer
 }

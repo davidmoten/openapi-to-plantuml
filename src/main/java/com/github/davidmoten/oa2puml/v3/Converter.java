@@ -26,6 +26,7 @@ import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.BinarySchema;
 import io.swagger.v3.oas.models.media.BooleanSchema;
 import io.swagger.v3.oas.models.media.ComposedSchema;
+import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.DateSchema;
 import io.swagger.v3.oas.models.media.DateTimeSchema;
 import io.swagger.v3.oas.models.media.IntegerSchema;
@@ -36,6 +37,7 @@ import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
+import io.swagger.v3.oas.models.parameters.RequestBody;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.parser.core.models.SwaggerParseResult;
 
@@ -64,7 +66,7 @@ public final class Converter {
         // OpenAPIParser().readContents("./path/to/openapi.yaml", null, null);
 
         // the parsed POJO
-        
+
         OpenAPI a = result.getOpenAPI();
         Set<String> classNames = new HashSet<>(a.getComponents().getSchemas().keySet());
         return "@startuml" //
@@ -141,7 +143,7 @@ public final class Converter {
                                 if (r.getContent() == null) {
                                     return "";
                                 } else {
-                                    Entry<String, MediaType> mediaType = r.getContent().entrySet().parallelStream()
+                                    Entry<String, MediaType> mediaType = r.getContent().entrySet().stream()
                                             .findFirst().get();
                                     Schema<?> sch = mediaType.getValue().getSchema();
                                     final String returnClassName;
@@ -163,7 +165,33 @@ public final class Converter {
                                             + responseCode;
                                 }
                             }).collect(Collectors.joining()));
-                    //TODO support RequestBody (post)
+                    // TODO support RequestBody (post)
+                    RequestBody body = operation.getRequestBody();
+                    if (body != null) {
+                        Content content = body.getContent();
+                        if (content != null) {
+                            Entry<String, MediaType> mediaType = content.entrySet().stream().findFirst().get();
+                            // use the first content entry
+                            final String requestBodyClassName;
+                            final String requestBodyClassDeclaration;
+                            Schema<?> sch = mediaType.getValue().getSchema();
+                            if (sch != null && sch.get$ref() != null) {
+                                requestBodyClassName = refToClassName(sch.get$ref());
+                                requestBodyClassDeclaration = "";
+                            } else {
+                                requestBodyClassName = className + " Request";
+                                if (sch == null) {
+                                    requestBodyClassDeclaration = "";
+                                } else {
+                                    requestBodyClassDeclaration = toPlantUmlClass(requestBodyClassName, sch, counter,
+                                            classNames);
+                                }
+                            }
+                            s.append(requestBodyClassDeclaration + "\n\n" + quote(className)
+                                    + CLASS_RELATIONSHIP_RIGHT_ARROW + quote(requestBodyClassName) + ": "
+                                    + "\"<<Request Body>>\"");
+                        }
+                    }
                     return s.toString();
                 }) //
                 .collect(Collectors.joining()));

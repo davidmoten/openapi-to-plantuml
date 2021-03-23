@@ -1,0 +1,60 @@
+openapi: 3.0.1
+paths:
+  /customer/expired:
+    get:
+      responses:
+        '200':  
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+                  
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                repository_ids:
+                  type: array
+                  items:
+                    type: integer
+  
+components:
+  schemas:
+    Customer:
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        heightMetres:
+          type: number
+        dateOfBirth:
+          type: string
+          format: date
+        lastSessionTime:
+          type: string
+          format: date-time  
+        numberOfChildren:
+          type: integer        
+        alive:
+          type: boolean
+        nicknames:
+          type: array
+          items: 
+            type: string
+        favouriteNumbers:
+          type: array
+          items:
+            type: integer 
+        picture:
+          type: string
+          format: binary
+      required:
+      - firstName
+      - lastName
+      - dateOfBirth
+        

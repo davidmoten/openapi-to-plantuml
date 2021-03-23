@@ -1,0 +1,33 @@
+@startuml
+
+class "Customer" {
+  firstName : string
+  lastName : string
+  heightMetres : decimal {O}
+  dateOfBirth : date
+  lastSessionTime : timestamp {O}
+  numberOfChildren : integer {O}
+  alive : boolean {O}
+  nicknames : string[] {O}
+  favouriteNumbers : integer[] {O}
+  picture : byte[] {O}
+}
+hide <<Method>> circle
+
+class "GET /customer/expired" <<Method>> {
+}
+
+class "GET /customer/expired 200 Return" {
+}
+
+"GET /customer/expired 200 Return" --> "*" "Customer"
+
+"GET /customer/expired" ..> "GET /customer/expired 200 Return": 200
+
+class "GET /customer/expired Request" {
+  repository_ids : integer[] {O}
+}
+
+"GET /customer/expired" --> "GET /customer/expired Request": "<<Request Body>>"
+
+@enduml
