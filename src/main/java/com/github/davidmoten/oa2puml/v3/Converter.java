@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -16,7 +15,6 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.io.IOUtils;
 
-import com.github.davidmoten.guavamini.Preconditions;
 import com.github.davidmoten.guavamini.Sets;
 
 import io.swagger.parser.OpenAPIParser;
@@ -270,8 +268,7 @@ public final class Converter {
         List<String> relationships = new ArrayList<>();
         if (schema.get$ref() != null) {
             // this is an alias case for a schema
-            String ref = schema.get$ref();
-            String otherClassName = names.refToClassName(ref);
+            String otherClassName = names.refToClassName(schema.get$ref());
             relationships.add(quote(name) + CLASS_RELATIONSHIP_RIGHT_ARROW + "\"1\"" + quote(otherClassName));
         } else if (schema instanceof ComposedSchema) {
             ComposedSchema s = (ComposedSchema) schema;
