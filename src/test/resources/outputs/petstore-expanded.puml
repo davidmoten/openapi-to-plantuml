@@ -3,9 +3,9 @@
 class "Pet" {
 }
 
-"Pet" "all" <|-- "NewPet"
+"Pet" --> "1" "NewPet"
 
-"Pet" "all" <|-- "PetId"
+"Pet" --> "1" "PetId"
 
 class "PetId" {
   id : integer

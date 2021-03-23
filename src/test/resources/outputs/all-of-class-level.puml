@@ -3,9 +3,9 @@
 class "employee" {
 }
 
-"employee" "all" <|-- "doctor"
+"employee" --> "1" "doctor"
 
-"employee" "all" <|-- "nurse"
+"employee" --> "1" "nurse"
 
 class "nurse" {
   level : integer

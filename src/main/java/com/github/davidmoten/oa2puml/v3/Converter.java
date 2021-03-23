@@ -143,8 +143,8 @@ public final class Converter {
                                 if (r.getContent() == null) {
                                     return "";
                                 } else {
-                                    Entry<String, MediaType> mediaType = r.getContent().entrySet().stream()
-                                            .findFirst().get();
+                                    Entry<String, MediaType> mediaType = r.getContent().entrySet().stream().findFirst()
+                                            .get();
                                     Schema<?> sch = mediaType.getValue().getSchema();
                                     final String returnClassName;
                                     final String returnClassDeclaration;
@@ -257,7 +257,7 @@ public final class Converter {
             } else if (s.getAnyOf() != null) {
                 addInheritance(relationships, name, s.getAnyOf(), null, counter, classNames);
             } else if (s.getAllOf() != null) {
-                addInheritance(relationships, name, s.getAllOf(), Cardinality.ALL, counter, classNames);
+                addMixedTypeAll(relationships, name, s.getAllOf(), null, counter, classNames);
             } else {
                 throw new RuntimeException("unexpected");
             }
@@ -290,8 +290,12 @@ public final class Converter {
                         cardinality = null;
                     }
                     if (!list.isEmpty()) {
-                        addInheritanceForProperty(relationships, name, list, property, counter, cardinality,
-                                classNames);
+                        if (cardinality == Cardinality.ALL) {
+                            addMixedTypeAll(relationships, name, list, property, counter, classNames);
+                        } else {
+                            addInheritanceForProperty(relationships, name, list, property, counter, cardinality,
+                                    classNames);
+                        }
                     }
                 } else if (entry.getValue().get$ref() != null) {
                     String ref = entry.getValue().get$ref();
@@ -409,7 +413,16 @@ public final class Converter {
         public String toString() {
             return string;
         }
+    }
 
+    private static void addMixedTypeAll(List<String> relationships, String name,
+            @SuppressWarnings("rawtypes") List<Schema> schemas, String propertyName, AtomicLong counter,
+            Set<String> classNames) {
+        List<String> otherClassNames = addAnonymousClassesAndReturnOtherClassNames(relationships, name, schemas,
+                counter, classNames, propertyName);
+        for (String otherClassName : otherClassNames) {
+            addToOne(relationships, name, otherClassName, propertyName, true);
+        }
     }
 
     private static void addInheritanceForProperty(List<String> relationships, String name,
@@ -467,10 +480,11 @@ public final class Converter {
                 + (field == null || field.equals(otherClassName) ? "" : " : " + field));
     }
 
-    private static void addToOne(List<String> relationships, String name, String otherClassName, String field,
+    private static void addToOne(List<String> relationships, String name, String otherClassName, String property,
             boolean isToOne) {
         relationships.add(quote(name) + CLASS_RELATIONSHIP_RIGHT_ARROW + "\"" + (isToOne ? "1" : "0..1") + "\" "
-                + quote(otherClassName) + (field.equals(otherClassName) ? "" : " : " + field));
+                + quote(otherClassName)
+                + (property == null || property.equals(otherClassName) ? "" : " : " + property));
     }
 
     private static void append(StringBuilder b, Set<String> required, String type, String name) {
