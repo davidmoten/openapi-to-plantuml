@@ -27,12 +27,12 @@ class "GET /pets" <<Method>> {
   limit : integer {O}
 }
 
-class "GET /pets 200 Return" {
+class "GET /pets 200 Response" {
 }
 
-"GET /pets 200 Return" --> "*" "Pet"
+"GET /pets 200 Response" --> "*" "Pet"
 
-"GET /pets" ..> "GET /pets 200 Return": 200
+"GET /pets" ..> "GET /pets 200 Response": 200
 
 "GET /pets" ..> "Error": default
 

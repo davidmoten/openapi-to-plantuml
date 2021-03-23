@@ -150,73 +150,80 @@ public final class Converter {
                                 .collect(Collectors.joining()));
                     }
                     s.append("\n}");
-                    s.append(operation //
-                            .getResponses() //
-                            .entrySet() //
-                            .stream() //
-                            .map(ent -> {
-                                // TODO support refs to #/components/responses
-                                String responseCode = ent.getKey();
-                                // TODO only using the first content
-                                ApiResponse r = ent.getValue();
-                                if (r.get$ref() != null) {
-                                    r = a.getComponents().getResponses().get(names.refToClassName(r.get$ref()));
-                                }
-                                if (r.getContent() == null) {
-                                    return "";
-                                } else {
-                                    Entry<String, MediaType> mediaType = r.getContent().entrySet().stream().findFirst()
-                                            .get();
-                                    Schema<?> sch = mediaType.getValue().getSchema();
-                                    final String returnClassName;
-                                    final String returnClassDeclaration;
-                                    if (sch != null && sch.get$ref() != null) {
-                                        returnClassName = names.refToClassName(sch.get$ref());
-                                        returnClassDeclaration = "";
-                                    } else {
-                                        returnClassName = (className + " " + responseCode + " Return");
-                                        if (sch == null) {
-                                            returnClassDeclaration = "";
-                                        } else {
-                                            returnClassDeclaration = toPlantUmlClass(returnClassName, sch, names);
-                                        }
-                                    }
-                                    return returnClassDeclaration + "\n\n" + quote(className)
-                                            + PATH_RELATIONSHIP_RIGHT_ARROW + quote(returnClassName) + ": "
-                                            + responseCode;
-                                }
-                            }).collect(Collectors.joining()));
-                    // TODO support RequestBody (post)
-                    RequestBody body = operation.getRequestBody();
-                    if (body != null) {
-                        Content content = body.getContent();
-                        if (content != null) {
-                            Entry<String, MediaType> mediaType = content.entrySet().stream().findFirst().get();
-                            // use the first content entry
-                            final String requestBodyClassName;
-                            final String requestBodyClassDeclaration;
-                            Schema<?> sch = mediaType.getValue().getSchema();
-                            if (sch != null && sch.get$ref() != null) {
-                                requestBodyClassName = names.refToClassName(sch.get$ref());
-                                requestBodyClassDeclaration = "";
-                            } else {
-                                requestBodyClassName = className + " Request";
-                                if (sch == null) {
-                                    requestBodyClassDeclaration = "";
-                                } else {
-                                    requestBodyClassDeclaration = toPlantUmlClass(requestBodyClassName, sch, names);
-                                }
-                            }
-                            s.append(requestBodyClassDeclaration + "\n\n" + quote(className)
-                                    + CLASS_RELATIONSHIP_RIGHT_ARROW + quote(requestBodyClassName) + " : "
-                                    + quote("<<Request Body>>"));
-                        }
-                    }
+                    s.append(toPlantUmlResponses(a, names, operation, className));
+                    s.append(toPlantUmlRequestBody(className, operation, names));
                     return s.toString();
                 }) //
                 .collect(Collectors.joining()));
         b.append(extras.toString());
         return b.toString();
+    }
+    
+    private static String toPlantUmlRequestBody(String className, Operation operation, Names names) {
+        RequestBody body = operation.getRequestBody();
+        if (body != null) {
+            Content content = body.getContent();
+            if (content != null) {
+                Entry<String, MediaType> mediaType = content.entrySet().stream().findFirst().get();
+                // use the first content entry
+                final String requestBodyClassName;
+                final String requestBodyClassDeclaration;
+                Schema<?> sch = mediaType.getValue().getSchema();
+                if (sch != null && sch.get$ref() != null) {
+                    requestBodyClassName = names.refToClassName(sch.get$ref());
+                    requestBodyClassDeclaration = "";
+                } else {
+                    requestBodyClassName = className + " Request";
+                    if (sch == null) {
+                        requestBodyClassDeclaration = "";
+                    } else {
+                        requestBodyClassDeclaration = toPlantUmlClass(requestBodyClassName, sch, names);
+                    }
+                }
+                return requestBodyClassDeclaration + "\n\n" + quote(className)
+                        + CLASS_RELATIONSHIP_RIGHT_ARROW + quote(requestBodyClassName) + " : "
+                        + quote("<<Request Body>>");
+            }
+        }
+        return "";
+    }
+
+    private static String toPlantUmlResponses(OpenAPI a, Names names, Operation operation, String className) {
+        return operation //
+                .getResponses() //
+                .entrySet() //
+                .stream() //
+                .map(ent -> {
+                    String responseCode = ent.getKey();
+                    // TODO only using the first content
+                    ApiResponse r = ent.getValue();
+                    if (r.get$ref() != null) {
+                        r = a.getComponents().getResponses().get(names.refToClassName(r.get$ref()));
+                    }
+                    if (r.getContent() == null) {
+                        return "";
+                    } else {
+                        Entry<String, MediaType> mediaType = r.getContent().entrySet().stream().findFirst()
+                                .get();
+                        Schema<?> sch = mediaType.getValue().getSchema();
+                        final String returnClassName;
+                        final String returnClassDeclaration;
+                        if (sch != null && sch.get$ref() != null) {
+                            returnClassName = names.refToClassName(sch.get$ref());
+                            returnClassDeclaration = "";
+                        } else {
+                            returnClassName = (className + " " + responseCode + " Response");
+                            if (sch == null) {
+                                returnClassDeclaration = "";
+                            } else {
+                                returnClassDeclaration = toPlantUmlClass(returnClassName, sch, names);
+                            }
+                        }
+                        return returnClassDeclaration + "\n\n" + quote(className)
+                                + PATH_RELATIONSHIP_RIGHT_ARROW + quote(returnClassName) + ": "
+                                + responseCode;
+                    }
+                }).collect(Collectors.joining());
     }
 
     private static String getUmlTypeName(String ref, Schema<?> schema, Names names) {
