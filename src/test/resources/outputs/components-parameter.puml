@@ -1,0 +1,25 @@
+@startuml
+
+class "Customer" {
+  firstName : string {O}
+  lastName : string {O}
+}
+
+class "CustomerId" <<Parameter>> {
+  value : string
+}
+hide <<Method>> circle
+
+class "GET /customer/expired" <<Method>> {
+}
+
+class "GET /customer/expired 200 Response" {
+}
+
+"GET /customer/expired 200 Response" --> "*" "Customer"
+
+"GET /customer/expired" ..> "GET /customer/expired 200 Response": 200
+
+"GET /customer/expired" --> "1""CustomerId" : "parameter1"
+
+@enduml

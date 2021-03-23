@@ -11,11 +11,13 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.IOUtils;
 
+import com.github.davidmoten.guavamini.Preconditions;
 import com.github.davidmoten.guavamini.Sets;
 
 import io.swagger.parser.OpenAPIParser;
@@ -43,6 +45,8 @@ import io.swagger.v3.parser.core.models.SwaggerParseResult;
 
 public final class Converter {
 
+    //TODO make enum
+    private static final String STEREOTYPE_PARAMETER = "<<Parameter>>";
     private static final String PATH_RELATIONSHIP_RIGHT_ARROW = " ..> ";
     private static final String CLASS_RELATIONSHIP_RIGHT_ARROW = " --> ";
     private static final String INHERITANCE_LEFT_ARROW = " <|-- ";
@@ -105,7 +109,7 @@ public final class Converter {
         String part3 = nullToEmpty(a.getComponents().getParameters()) //
                 .entrySet() //
                 .stream() //
-                .map(entry -> toPlantUmlClass(entry.getKey(), entry.getValue().getSchema(), names)) //
+                .map(entry -> toPlantUmlClass(entry.getKey(), entry.getValue().getSchema(), names, STEREOTYPE_PARAMETER)) //
                 .collect(Collectors.joining());
 
         String part4 = nullToEmpty(a.getComponents().getResponses()) //
@@ -142,7 +146,7 @@ public final class Converter {
                                     String parameterName = param.getName() == null ? "parameter" + parameterNo[0]
                                             : param.getName();
                                     if (param.getSchema() != null) {
-                                        toPlantUmlClass(className + "." + parameterName, param.getSchema(), names);
+                                        toPlantUmlClass(className + "." + parameterName, param.getSchema(), names, STEREOTYPE_PARAMETER);
                                     }
                                     final String type = getUmlTypeName(param.get$ref(), param.getSchema(), names);
                                     if (isSimpleType(type)) {
@@ -272,11 +276,20 @@ public final class Converter {
         }
         return type;
     }
-
+    
     private static String toPlantUmlClass(String name, Schema<?> schema, Names names) {
+        return toPlantUmlClass(name, schema, names, Optional.empty());
+    }
+    
+    private static String toPlantUmlClass(String name, Schema<?> schema, Names names, String classStereotype) {
+        Preconditions.checkNotNull(classStereotype);
+        return toPlantUmlClass(name, schema, names, Optional.of(classStereotype));
+    }
+
+    private static String toPlantUmlClass(String name, Schema<?> schema, Names names, Optional<String> classStereotype) {
         StringBuilder b = new StringBuilder();
         List<Entry<String, Schema<?>>> more = new ArrayList<>();
-        b.append("\n\nclass " + quote(name) + " {\n");
+        b.append("\n\nclass " + quote(name) + classStereotype.map(x -> " " + x).orElse("") + " {\n");
         List<String> relationships = new ArrayList<>();
         if (schema.get$ref() != null) {
             // this is an alias case for a schema
