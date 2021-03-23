@@ -1,5 +1,6 @@
 package com.github.davidmoten.oa2puml.v3;
 
+import static com.github.davidmoten.oa2puml.v3.Util.first;
 import static com.github.davidmoten.oa2puml.v3.Util.nullToEmpty;
 
 import java.io.IOException;
@@ -98,8 +99,7 @@ public final class Converter {
                 .entrySet() //
                 .stream() //
                 .map(entry -> toPlantUmlClass(entry.getKey(),
-                        entry.getValue().getContent().entrySet().stream().findFirst().get().getValue().getSchema(),
-                        names)) //
+                        first(entry.getValue().getContent()).get().getValue().getSchema(), names)) //
                 .collect(Collectors.joining());
 
         String part3 = nullToEmpty(a.getComponents().getParameters()) //
@@ -108,7 +108,15 @@ public final class Converter {
                 .map(entry -> toPlantUmlClass(entry.getKey(), entry.getValue().getSchema(), names)) //
                 .collect(Collectors.joining());
 
-        return part1 + part2 + part3;
+        String part4 = nullToEmpty(a.getComponents().getResponses()) //
+                .entrySet() //
+                .stream() //
+                .map(entry -> first(nullToEmpty(entry.getValue().getContent())) //
+                        .map(x -> toPlantUmlClass(entry.getKey(), x.getValue().getSchema(), names)) //
+                        .orElse("")) //
+                .collect(Collectors.joining());
+
+        return part1 + part2 + part3 + part4;
     }
 
     private static String toPlantUmlPath(OpenAPI a, String path, PathItem p, Names names) {
@@ -158,13 +166,13 @@ public final class Converter {
         b.append(extras.toString());
         return b.toString();
     }
-    
+
     private static String toPlantUmlRequestBody(String className, Operation operation, Names names) {
         RequestBody body = operation.getRequestBody();
         if (body != null) {
             Content content = body.getContent();
             if (content != null) {
-                Entry<String, MediaType> mediaType = content.entrySet().stream().findFirst().get();
+                Entry<String, MediaType> mediaType = first(content).get();
                 // use the first content entry
                 final String requestBodyClassName;
                 final String requestBodyClassDeclaration;
@@ -180,9 +188,8 @@ public final class Converter {
                         requestBodyClassDeclaration = toPlantUmlClass(requestBodyClassName, sch, names);
                     }
                 }
-                return requestBodyClassDeclaration + "\n\n" + quote(className)
-                        + CLASS_RELATIONSHIP_RIGHT_ARROW + quote(requestBodyClassName) + " : "
-                        + quote("<<Request Body>>");
+                return requestBodyClassDeclaration + "\n\n" + quote(className) + CLASS_RELATIONSHIP_RIGHT_ARROW
+                        + quote(requestBodyClassName) + " : " + quote("<<Request Body>>");
             }
         }
         return "";
@@ -203,8 +210,7 @@ public final class Converter {
                     if (r.getContent() == null) {
                         return "";
                     } else {
-                        Entry<String, MediaType> mediaType = r.getContent().entrySet().stream().findFirst()
-                                .get();
+                        Entry<String, MediaType> mediaType = first(r.getContent()).get();
                         Schema<?> sch = mediaType.getValue().getSchema();
                         final String returnClassName;
                         final String returnClassDeclaration;
@@ -219,9 +225,8 @@ public final class Converter {
                                 returnClassDeclaration = toPlantUmlClass(returnClassName, sch, names);
                             }
                         }
-                        return returnClassDeclaration + "\n\n" + quote(className)
-                                + PATH_RELATIONSHIP_RIGHT_ARROW + quote(returnClassName) + ": "
-                                + responseCode;
+                        return returnClassDeclaration + "\n\n" + quote(className) + PATH_RELATIONSHIP_RIGHT_ARROW
+                                + quote(returnClassName) + ": " + responseCode;
                     }
                 }).collect(Collectors.joining());
     }
