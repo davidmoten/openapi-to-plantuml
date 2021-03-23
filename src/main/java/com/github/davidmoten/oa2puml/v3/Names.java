@@ -10,6 +10,7 @@ import java.util.Set;
 
 import com.github.davidmoten.guavamini.Preconditions;
 
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 
 public final class Names {
@@ -18,16 +19,40 @@ public final class Names {
     private final Set<String> classNames = new HashSet<>();
 
     public Names(OpenAPI a) {
-        if (a.getComponents() != null) {
-            nullToEmpty(a.getComponents().getSchemas()).keySet().forEach(name -> {
+        Components components = a.getComponents();
+        if (components != null) {
+            // resolve name clashes
+            nullToEmpty(components.getSchemas()).keySet().forEach(name -> {
                 String className = nextClassName(classNames, name);
                 refClassNames.put("#/components/schemas/" + name, className);
             });
-            nullToEmpty(a.getComponents().getRequestBodies()).keySet().forEach(name -> {
+            nullToEmpty(components.getRequestBodies()).keySet().forEach(name -> {
                 String className = nextClassName(classNames, name);
                 refClassNames.put("#/components/requestBodies/" + name, className);
             });
+            nullToEmpty(components.getParameters()).keySet().forEach(name -> {
+                String className = nextClassName(classNames, name);
+                refClassNames.put("#/components/parameters/" + name, className);
+            });
+            nullToEmpty(components.getResponses()).keySet().forEach(name -> {
+                String className = nextClassName(classNames, name);
+                refClassNames.put("#/components/responses/" + name, className);
+            });
         }
+    }
+
+    public String refToClassName(String ref) {
+        Preconditions.checkNotNull(ref);
+        String className = refClassNames.get(ref);
+        if (className == null) {
+            throw new RuntimeException("could not find ref=" + ref);
+        } else {
+            return className;
+        }
+    }
+
+    public String nextClassName(String candidate) {
+        return nextClassName(classNames, candidate);
     }
 
     private static <T, S> Map<T, S> nullToEmpty(Map<T, S> map) {

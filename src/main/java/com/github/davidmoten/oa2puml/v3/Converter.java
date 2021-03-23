@@ -70,14 +70,13 @@ public final class Converter {
 
         OpenAPI a = result.getOpenAPI();
         Names names = new Names(a);
-        Set<String> classNames = new HashSet<>(a.getComponents().getSchemas().keySet());
         return "@startuml" //
-                + components(a, counter, classNames) //
-                + paths(a, counter, classNames) //
+                + components(a, counter, names) //
+                + paths(a, counter, names) //
                 + "\n\n@enduml";
     }
 
-    private static String paths(OpenAPI a, AtomicLong counter, Set<String> classNames) {
+    private static String paths(OpenAPI a, AtomicLong counter, Names names) {
         if (a.getPaths() == null) {
             return "";
         } else {
@@ -86,17 +85,17 @@ public final class Converter {
                             .entrySet() //
                             .stream() //
                             .map(entry -> toPlantUmlPath(a, entry.getKey(), //
-                                    entry.getValue(), counter, classNames))
+                                    entry.getValue(), counter, names))
                             .collect(Collectors.joining());
         }
     }
 
-    private static String components(OpenAPI a, AtomicLong counter, Set<String> classNames) {
+    private static String components(OpenAPI a, AtomicLong counter, Names names) {
         String part1 = a.getComponents() //
                 .getSchemas() //
                 .entrySet() //
                 .stream() //
-                .map(entry -> toPlantUmlClass(entry.getKey(), entry.getValue(), counter, classNames)) //
+                .map(entry -> toPlantUmlClass(entry.getKey(), entry.getValue(), counter, names)) //
                 .collect(Collectors.joining());
         Map<String, RequestBody> requestBodies = a.getComponents().getRequestBodies();
         final String part2;
@@ -106,7 +105,7 @@ public final class Converter {
                     .stream() //
                     .map(entry -> toPlantUmlClass(entry.getKey(),
                             entry.getValue().getContent().entrySet().stream().findFirst().get().getValue().getSchema(),
-                            counter, classNames)) //
+                            counter, names)) //
                     .collect(Collectors.joining());
         } else {
             part2 = "";
@@ -115,7 +114,7 @@ public final class Converter {
     }
 
     private static String toPlantUmlPath(OpenAPI a, String path, PathItem p, AtomicLong counter,
-            Set<String> classNames) {
+            Names names) {
         StringBuilder b = new StringBuilder();
         StringBuilder extras = new StringBuilder();
         // add method class blocks with HTTP verb and parameters
@@ -137,7 +136,7 @@ public final class Converter {
                                     parameterNo[0]++;
                                     String parameterName = param.getName() == null ? "parameter" + parameterNo[0]
                                             : param.getName();
-                                    final String type = getUmlTypeName(param.get$ref(), param.getSchema());
+                                    final String type = getUmlTypeName(param.get$ref(), param.getSchema(), names);
                                     if (isSimpleType(type)) {
                                         final String optional = param.getRequired() != null && param.getRequired() ? ""
                                                 : " {O}";
@@ -161,7 +160,7 @@ public final class Converter {
                                 // TODO only using the first content
                                 ApiResponse r = ent.getValue();
                                 if (r.get$ref() != null) {
-                                    r = a.getComponents().getResponses().get(refToClassName(r.get$ref()));
+                                    r = a.getComponents().getResponses().get(names.refToClassName(r.get$ref()));
                                 }
                                 if (r.getContent() == null) {
                                     return "";
@@ -172,7 +171,7 @@ public final class Converter {
                                     final String returnClassName;
                                     final String returnClassDeclaration;
                                     if (sch != null && sch.get$ref() != null) {
-                                        returnClassName = refToClassName(sch.get$ref());
+                                        returnClassName = names.refToClassName(sch.get$ref());
                                         returnClassDeclaration = "";
                                     } else {
                                         returnClassName = (className + " " + responseCode + " Return");
@@ -180,7 +179,7 @@ public final class Converter {
                                             returnClassDeclaration = "";
                                         } else {
                                             returnClassDeclaration = toPlantUmlClass(returnClassName, sch, counter,
-                                                    classNames);
+                                                    names);
                                         }
                                     }
                                     return returnClassDeclaration + "\n\n" + quote(className)
@@ -199,7 +198,7 @@ public final class Converter {
                             final String requestBodyClassDeclaration;
                             Schema<?> sch = mediaType.getValue().getSchema();
                             if (sch != null && sch.get$ref() != null) {
-                                requestBodyClassName = refToClassName(sch.get$ref());
+                                requestBodyClassName = names.refToClassName(sch.get$ref());
                                 requestBodyClassDeclaration = "";
                             } else {
                                 requestBodyClassName = className + " Request";
@@ -207,7 +206,7 @@ public final class Converter {
                                     requestBodyClassDeclaration = "";
                                 } else {
                                     requestBodyClassDeclaration = toPlantUmlClass(requestBodyClassName, sch, counter,
-                                            classNames);
+                                            names);
                                 }
                             }
                             s.append(requestBodyClassDeclaration + "\n\n" + quote(className)
@@ -222,10 +221,10 @@ public final class Converter {
         return b.toString();
     }
 
-    private static String getUmlTypeName(String ref, Schema<?> schema) {
+    private static String getUmlTypeName(String ref, Schema<?> schema, Names names) {
         final String type;
         if (ref != null) {
-            type = refToClassName(ref);
+            type = names.refToClassName(ref);
         } else if (schema instanceof StringSchema) {
             type = "string";
         } else if (schema instanceof BooleanSchema) {
@@ -240,7 +239,7 @@ public final class Converter {
             type = "integer";
         } else if (schema instanceof ArraySchema) {
             ArraySchema a = (ArraySchema) schema;
-            type = getUmlTypeName(a.getItems().get$ref(), a.getItems()) + "[]";
+            type = getUmlTypeName(a.getItems().get$ref(), a.getItems(), names) + "[]";
         } else if (schema instanceof BinarySchema) {
             type = "byte[]";
         } else if (schema instanceof ObjectSchema) {
@@ -254,7 +253,7 @@ public final class Converter {
         } else if ("string".equals(schema.getType())) {
             type = "string";
         } else if (schema.get$ref() != null) {
-            type = refToClassName(schema.get$ref());
+            type = names.refToClassName(schema.get$ref());
         } else if (schema.getType() == null) {
             // TODO don't display a type with empty
             type = "empty";
@@ -264,7 +263,7 @@ public final class Converter {
         return type;
     }
 
-    private static String toPlantUmlClass(String name, Schema<?> schema, AtomicLong counter, Set<String> classNames) {
+    private static String toPlantUmlClass(String name, Schema<?> schema, AtomicLong counter, Names names) {
         StringBuilder b = new StringBuilder();
         List<Entry<String, Schema<?>>> more = new ArrayList<>();
         b.append("\n\nclass " + quote(name) + " {\n");
@@ -272,16 +271,16 @@ public final class Converter {
         if (schema.get$ref() != null) {
             // this is an alias case for a schema
             String ref = schema.get$ref();
-            String otherClassName = refToClassName(ref);
+            String otherClassName = names.refToClassName(ref);
             relationships.add(quote(name) + CLASS_RELATIONSHIP_RIGHT_ARROW + "\"1\"" + quote(otherClassName));
         } else if (schema instanceof ComposedSchema) {
             ComposedSchema s = (ComposedSchema) schema;
             if (s.getOneOf() != null) {
-                addInheritance(relationships, name, s.getOneOf(), null, counter, classNames);
+                addInheritance(relationships, name, s.getOneOf(), null, counter, names);
             } else if (s.getAnyOf() != null) {
-                addInheritance(relationships, name, s.getAnyOf(), null, counter, classNames);
+                addInheritance(relationships, name, s.getAnyOf(), null, counter, names);
             } else if (s.getAllOf() != null) {
-                addMixedTypeAll(relationships, name, s.getAllOf(), null, counter, classNames);
+                addMixedTypeAll(relationships, name, s.getAllOf(), null, counter, names);
             } else {
                 throw new RuntimeException("unexpected");
             }
@@ -315,28 +314,28 @@ public final class Converter {
                     }
                     if (!list.isEmpty()) {
                         if (cardinality == Cardinality.ALL) {
-                            addMixedTypeAll(relationships, name, list, property, counter, classNames);
+                            addMixedTypeAll(relationships, name, list, property, counter, names);
                         } else {
                             addInheritanceForProperty(relationships, name, list, property, counter, cardinality,
-                                    classNames);
+                                    names);
                         }
                     }
                 } else if (entry.getValue().get$ref() != null) {
                     String ref = entry.getValue().get$ref();
-                    String otherClassName = refToClassName(ref);
+                    String otherClassName = names.refToClassName(ref);
                     addToOne(relationships, name, otherClassName, property, required.contains(entry.getKey()));
                 } else {
-                    String type = getUmlTypeName(entry.getValue().get$ref(), entry.getValue());
+                    String type = getUmlTypeName(entry.getValue().get$ref(), entry.getValue(), names);
                     if (type.startsWith("unknown")) {
                         System.out.println("unknown property:\n" + entry);
                     }
                     if (isComplexArrayType(type)) {
-                        addArray(name, relationships, property, entry.getValue(), counter, classNames);
+                        addArray(name, relationships, property, entry.getValue(), counter, names);
                     } else if (type.equals("object")) {
                         // create anon class
-                        String otherClassName = nextClassName(classNames, name + "." + property);
+                        String otherClassName = names.nextClassName(name + "." + property);
                         relationships
-                                .add(toPlantUmlClass(otherClassName, entry.getValue(), counter, classNames).trim());
+                                .add(toPlantUmlClass(otherClassName, entry.getValue(), counter, names).trim());
                         addToOne(relationships, name, otherClassName, property, required.contains(property));
                     } else {
                         append(b, required, type, entry.getKey());
@@ -349,26 +348,26 @@ public final class Converter {
             String ref = items.get$ref();
             String otherClassName;
             if (ref != null) {
-                otherClassName = refToClassName(ref);
+                otherClassName = names.refToClassName(ref);
             } else {
                 // create anon class
-                otherClassName = nextClassName(classNames, name);
-                relationships.add(toPlantUmlClass(otherClassName, items, counter, classNames).trim());
+                otherClassName = names.nextClassName(name);
+                relationships.add(toPlantUmlClass(otherClassName, items, counter, names).trim());
             }
             addToMany(relationships, name, otherClassName);
         } else if (schema instanceof ObjectSchema) {
             // has no properties so ignore
         } else {
-            String type = getUmlTypeName(schema.get$ref(), schema);
+            String type = getUmlTypeName(schema.get$ref(), schema, names);
             if (isComplexArrayType(type)) {
-                addArray(name, relationships, null, schema, counter, classNames);
+                addArray(name, relationships, null, schema, counter, names);
             } else {
                 append(b, Sets.newHashSet("value"), type, "value");
             }
         }
         b.append("}");
         for (Entry<String, Schema<?>> entry : more) {
-            b.append(toPlantUmlClass(entry.getKey(), entry.getValue(), counter, classNames));
+            b.append(toPlantUmlClass(entry.getKey(), entry.getValue(), counter, names));
         }
         for (String relationship : relationships) {
             b.append("\n\n" + relationship);
@@ -380,47 +379,23 @@ public final class Converter {
         return type.endsWith("[]") && !isSimpleType(type);
     }
 
-    private static String nextClassName(Set<String> classNames, List<String> candidates) {
-        Preconditions.checkArgument(!candidates.isEmpty());
-        for (String candidate : candidates) {
-            if (!classNames.contains(candidate)) {
-                classNames.add(candidate);
-                return candidate;
-            }
-        }
-        int i = 1;
-        String lastCandidate = candidates.get(candidates.size() - 1);
-        while (true) {
-            String className = lastCandidate + "." + i;
-            if (!classNames.contains(className)) {
-                classNames.add(className);
-                return className;
-            }
-            i++;
-        }
-    }
-
-    private static String nextClassName(Set<String> classNames, String... candidates) {
-        return nextClassName(classNames, Arrays.asList(candidates));
-    }
-
     private static boolean isSimpleType(String s) {
         return simpleTypesWithoutBrackets.contains(s.replace("[", "").replace("]", ""));
     }
 
     private static void addArray(String name, List<String> relationships, String property,
-            @SuppressWarnings("rawtypes") Schema schema, AtomicLong counter, Set<String> classNames) {
+            @SuppressWarnings("rawtypes") Schema schema, AtomicLong counter, Names names) {
         // is array of items
         ArraySchema a = (ArraySchema) schema;
         Schema<?> items = a.getItems();
         String ref = items.get$ref();
         final String otherClassName;
         if (ref != null) {
-            otherClassName = refToClassName(ref);
+            otherClassName = names.refToClassName(ref);
         } else {
             // create anon class
-            otherClassName = nextClassName(classNames, name + (property == null ? "" : "." + property));
-            relationships.add(toPlantUmlClass(otherClassName, items, counter, classNames).trim());
+            otherClassName = names.nextClassName(name + (property == null ? "" : "." + property));
+            relationships.add(toPlantUmlClass(otherClassName, items, counter, names).trim());
         }
         addToMany(relationships, name, otherClassName, property);
     }
@@ -441,9 +416,9 @@ public final class Converter {
 
     private static void addMixedTypeAll(List<String> relationships, String name,
             @SuppressWarnings("rawtypes") List<Schema> schemas, String propertyName, AtomicLong counter,
-            Set<String> classNames) {
+            Names names) {
         List<String> otherClassNames = addAnonymousClassesAndReturnOtherClassNames(relationships, name, schemas,
-                counter, classNames, propertyName);
+                counter, names, propertyName);
         for (String otherClassName : otherClassNames) {
             addToOne(relationships, name, otherClassName, propertyName, true);
         }
@@ -451,13 +426,13 @@ public final class Converter {
 
     private static void addInheritanceForProperty(List<String> relationships, String name,
             @SuppressWarnings("rawtypes") List<Schema> schemas, String propertyName, AtomicLong counter,
-            Cardinality cardinality, Set<String> classNames) {
+            Cardinality cardinality, Names names) {
         String label = "anon" + counter.incrementAndGet();
         relationships.add("diamond " + label);
         relationships.add(quote(name) + CLASS_RELATIONSHIP_RIGHT_ARROW + "\"" + cardinality + "\" " + label + ": "
                 + propertyName);
         List<String> otherClassNames = addAnonymousClassesAndReturnOtherClassNames(relationships, name, schemas,
-                counter, classNames, propertyName);
+                counter, names, propertyName);
         for (String otherClassName : otherClassNames) {
             relationships.add(label + INHERITANCE_LEFT_ARROW + quote(otherClassName));
         }
@@ -465,9 +440,9 @@ public final class Converter {
 
     private static void addInheritance(List<String> relationships, String name,
             @SuppressWarnings("rawtypes") List<Schema> schemas, Cardinality cardinality, AtomicLong counter,
-            Set<String> classNames) {
+            Names names) {
         List<String> otherClassNames = addAnonymousClassesAndReturnOtherClassNames(relationships, name, schemas,
-                counter, classNames, null);
+                counter, names, null);
         final String s = cardinality == null ? "" : " \"" + cardinality + "\"";
         for (String otherClassName : otherClassNames) {
             relationships.add(quote(name) + s + INHERITANCE_LEFT_ARROW + quote(otherClassName));
@@ -475,15 +450,15 @@ public final class Converter {
     }
 
     private static List<String> addAnonymousClassesAndReturnOtherClassNames(List<String> relationships, String name,
-            @SuppressWarnings("rawtypes") List<Schema> schemas, AtomicLong counter, Set<String> classNames,
+            @SuppressWarnings("rawtypes") List<Schema> schemas, AtomicLong counter, Names names,
             String property) {
         List<String> otherClassNames = schemas.stream() //
                 .map(s -> {
                     if (s.get$ref() != null) {
-                        return refToClassName(s.get$ref());
+                        return names.refToClassName(s.get$ref());
                     } else {
-                        String className = nextClassName(classNames, name + (property == null ? "" : "." + property));
-                        String classDeclaration = toPlantUmlClass(className, s, counter, classNames);
+                        String className = names.nextClassName(name + (property == null ? "" : "." + property));
+                        String classDeclaration = toPlantUmlClass(className, s, counter, names);
                         relationships.add(classDeclaration);
                         return className;
                     }
@@ -521,10 +496,6 @@ public final class Converter {
         } else {
             return " {O}";
         }
-    }
-
-    private static String refToClassName(String ref) {
-        return ref.substring(ref.lastIndexOf("/") + 1);
     }
 
 }
