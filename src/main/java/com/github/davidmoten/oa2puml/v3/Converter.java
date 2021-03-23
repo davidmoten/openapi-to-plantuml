@@ -104,7 +104,17 @@ public final class Converter {
                         entry.getValue().getContent().entrySet().stream().findFirst().get().getValue().getSchema(),
                         counter, names)) //
                 .collect(Collectors.joining());
-        return part1 + part2;
+
+        String part3 = nullToEmpty(a.getComponents().getParameters()) //
+                .entrySet() //
+                .stream() //
+                .peek(System.out::println) //
+                .map(entry -> toPlantUmlClass(entry.getKey(),
+                        entry.getValue().getSchema(),
+                        counter, names)) //
+                .collect(Collectors.joining());
+
+        return part1 + part2 + part3;
     }
 
     private static String toPlantUmlPath(OpenAPI a, String path, PathItem p, AtomicLong counter, Names names) {
