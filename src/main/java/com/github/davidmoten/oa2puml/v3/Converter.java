@@ -1,5 +1,7 @@
 package com.github.davidmoten.oa2puml.v3;
 
+import static com.github.davidmoten.oa2puml.v3.Util.nullToEmpty;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -89,30 +91,23 @@ public final class Converter {
     }
 
     private static String components(OpenAPI a, AtomicLong counter, Names names) {
-        String part1 = a.getComponents() //
-                .getSchemas() //
+        String part1 = nullToEmpty(a.getComponents().getSchemas()) //
                 .entrySet() //
                 .stream() //
                 .map(entry -> toPlantUmlClass(entry.getKey(), entry.getValue(), counter, names)) //
                 .collect(Collectors.joining());
-        Map<String, RequestBody> requestBodies = a.getComponents().getRequestBodies();
-        final String part2;
-        if (requestBodies != null) {
-            part2 = requestBodies //
-                    .entrySet() //
-                    .stream() //
-                    .map(entry -> toPlantUmlClass(entry.getKey(),
-                            entry.getValue().getContent().entrySet().stream().findFirst().get().getValue().getSchema(),
-                            counter, names)) //
-                    .collect(Collectors.joining());
-        } else {
-            part2 = "";
-        }
+
+        String part2 = nullToEmpty(a.getComponents().getRequestBodies()) //
+                .entrySet() //
+                .stream() //
+                .map(entry -> toPlantUmlClass(entry.getKey(),
+                        entry.getValue().getContent().entrySet().stream().findFirst().get().getValue().getSchema(),
+                        counter, names)) //
+                .collect(Collectors.joining());
         return part1 + part2;
     }
 
-    private static String toPlantUmlPath(OpenAPI a, String path, PathItem p, AtomicLong counter,
-            Names names) {
+    private static String toPlantUmlPath(OpenAPI a, String path, PathItem p, AtomicLong counter, Names names) {
         StringBuilder b = new StringBuilder();
         StringBuilder extras = new StringBuilder();
         // add method class blocks with HTTP verb and parameters
@@ -313,8 +308,7 @@ public final class Converter {
                         if (cardinality == Cardinality.ALL) {
                             addMixedTypeAll(relationships, name, list, property, counter, names);
                         } else {
-                            addInheritanceForProperty(relationships, name, list, property, counter, cardinality,
-                                    names);
+                            addInheritanceForProperty(relationships, name, list, property, counter, cardinality, names);
                         }
                     }
                 } else if (entry.getValue().get$ref() != null) {
@@ -331,8 +325,7 @@ public final class Converter {
                     } else if (type.equals("object")) {
                         // create anon class
                         String otherClassName = names.nextClassName(name + "." + property);
-                        relationships
-                                .add(toPlantUmlClass(otherClassName, entry.getValue(), counter, names).trim());
+                        relationships.add(toPlantUmlClass(otherClassName, entry.getValue(), counter, names).trim());
                         addToOne(relationships, name, otherClassName, property, required.contains(property));
                     } else {
                         append(b, required, type, entry.getKey());
@@ -412,8 +405,7 @@ public final class Converter {
     }
 
     private static void addMixedTypeAll(List<String> relationships, String name,
-            @SuppressWarnings("rawtypes") List<Schema> schemas, String propertyName, AtomicLong counter,
-            Names names) {
+            @SuppressWarnings("rawtypes") List<Schema> schemas, String propertyName, AtomicLong counter, Names names) {
         List<String> otherClassNames = addAnonymousClassesAndReturnOtherClassNames(relationships, name, schemas,
                 counter, names, propertyName);
         for (String otherClassName : otherClassNames) {
@@ -447,8 +439,7 @@ public final class Converter {
     }
 
     private static List<String> addAnonymousClassesAndReturnOtherClassNames(List<String> relationships, String name,
-            @SuppressWarnings("rawtypes") List<Schema> schemas, AtomicLong counter, Names names,
-            String property) {
+            @SuppressWarnings("rawtypes") List<Schema> schemas, AtomicLong counter, Names names, String property) {
         List<String> otherClassNames = schemas.stream() //
                 .map(s -> {
                     if (s.get$ref() != null) {

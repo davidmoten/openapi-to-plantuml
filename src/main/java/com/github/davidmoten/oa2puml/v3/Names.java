@@ -1,7 +1,8 @@
 package com.github.davidmoten.oa2puml.v3;
 
+import static com.github.davidmoten.oa2puml.v3.Util.nullToEmpty;
+
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -53,14 +54,6 @@ public final class Names {
 
     public String nextClassName(String candidate) {
         return nextClassName(classNames, candidate);
-    }
-
-    private static <T, S> Map<T, S> nullToEmpty(Map<T, S> map) {
-        if (map == null) {
-            return Collections.emptyMap();
-        } else {
-            return map;
-        }
     }
 
     private static String nextClassName(Set<String> classNames, String... candidates) {
