@@ -17,14 +17,14 @@ hide <<Method>> circle
 class "GET /customer/expired" <<Method>> {
 }
 
-class "GET /customer/expired 200 Response" {
+class "GET /customer/expired 200 Response" <<Response>> {
 }
 
 "GET /customer/expired 200 Response" --> "*" "Customer"
 
 "GET /customer/expired" ..> "GET /customer/expired 200 Response": 200
 
-class "GET /customer/expired Request" {
+class "GET /customer/expired Request" <<Request Body>> {
   repository_ids : integer[] {O}
 }
 

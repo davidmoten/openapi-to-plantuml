@@ -27,7 +27,7 @@ class "GET /pets" <<Method>> {
   limit : integer {O}
 }
 
-class "GET /pets 200 Response" {
+class "GET /pets 200 Response" <<Response>> {
 }
 
 "GET /pets 200 Response" --> "*" "Pet"

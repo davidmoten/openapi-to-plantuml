@@ -17,7 +17,7 @@ hide <<Method>> circle
 class "GET /customer/expired" <<Method>> {
 }
 
-class "GET /customer/expired 200 Response" {
+class "GET /customer/expired 200 Response" <<Response>> {
 }
 
 "GET /customer/expired 200 Response" --> "*" "Customer"

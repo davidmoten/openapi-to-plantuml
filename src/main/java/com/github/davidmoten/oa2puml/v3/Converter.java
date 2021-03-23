@@ -46,7 +46,6 @@ import io.swagger.v3.parser.core.models.SwaggerParseResult;
 public final class Converter {
 
     //TODO make enum
-    private static final String STEREOTYPE_PARAMETER = "<<Parameter>>";
     private static final String PATH_RELATIONSHIP_RIGHT_ARROW = " ..> ";
     private static final String CLASS_RELATIONSHIP_RIGHT_ARROW = " --> ";
     private static final String INHERITANCE_LEFT_ARROW = " <|-- ";
@@ -76,6 +75,21 @@ public final class Converter {
                 + components(a, names) //
                 + paths(a, names) //
                 + "\n\n@enduml";
+    }
+    
+    private enum Stereotype {
+        PARAMETER("<<Parameter>>"), REQUEST_BODY("<<Request Body>>"), RESPONSE("<<Response>>");
+        
+        private final String name;
+
+        private Stereotype(String name) {
+            this.name = name;
+        }
+        
+        @Override
+        public String toString() {
+            return name;
+        }
     }
 
     private static String paths(OpenAPI a, Names names) {
@@ -109,7 +123,7 @@ public final class Converter {
         String part3 = nullToEmpty(a.getComponents().getParameters()) //
                 .entrySet() //
                 .stream() //
-                .map(entry -> toPlantUmlClass(entry.getKey(), entry.getValue().getSchema(), names, STEREOTYPE_PARAMETER)) //
+                .map(entry -> toPlantUmlClass(entry.getKey(), entry.getValue().getSchema(), names, Stereotype.PARAMETER)) //
                 .collect(Collectors.joining());
 
         String part4 = nullToEmpty(a.getComponents().getResponses()) //
@@ -146,7 +160,7 @@ public final class Converter {
                                     String parameterName = param.getName() == null ? "parameter" + parameterNo[0]
                                             : param.getName();
                                     if (param.getSchema() != null) {
-                                        toPlantUmlClass(className + "." + parameterName, param.getSchema(), names, STEREOTYPE_PARAMETER);
+                                        toPlantUmlClass(className + "." + parameterName, param.getSchema(), names, Stereotype.PARAMETER);
                                     }
                                     final String type = getUmlTypeName(param.get$ref(), param.getSchema(), names);
                                     if (isSimpleType(type)) {
@@ -189,7 +203,7 @@ public final class Converter {
                     if (sch == null) {
                         requestBodyClassDeclaration = "";
                     } else {
-                        requestBodyClassDeclaration = toPlantUmlClass(requestBodyClassName, sch, names);
+                        requestBodyClassDeclaration = toPlantUmlClass(requestBodyClassName, sch, names, Stereotype.REQUEST_BODY);
                     }
                 }
                 return requestBodyClassDeclaration + "\n\n" + quote(className) + CLASS_RELATIONSHIP_RIGHT_ARROW
@@ -226,7 +240,7 @@ public final class Converter {
                             if (sch == null) {
                                 returnClassDeclaration = "";
                             } else {
-                                returnClassDeclaration = toPlantUmlClass(returnClassName, sch, names);
+                                returnClassDeclaration = toPlantUmlClass(returnClassName, sch, names, Stereotype.RESPONSE);
                             }
                         }
                         return returnClassDeclaration + "\n\n" + quote(className) + PATH_RELATIONSHIP_RIGHT_ARROW
@@ -281,12 +295,12 @@ public final class Converter {
         return toPlantUmlClass(name, schema, names, Optional.empty());
     }
     
-    private static String toPlantUmlClass(String name, Schema<?> schema, Names names, String classStereotype) {
+    private static String toPlantUmlClass(String name, Schema<?> schema, Names names, Stereotype classStereotype) {
         Preconditions.checkNotNull(classStereotype);
         return toPlantUmlClass(name, schema, names, Optional.of(classStereotype));
     }
 
-    private static String toPlantUmlClass(String name, Schema<?> schema, Names names, Optional<String> classStereotype) {
+    private static String toPlantUmlClass(String name, Schema<?> schema, Names names, Optional<Stereotype> classStereotype) {
         StringBuilder b = new StringBuilder();
         List<Entry<String, Schema<?>>> more = new ArrayList<>();
         b.append("\n\nclass " + quote(name) + classStereotype.map(x -> " " + x).orElse("") + " {\n");
