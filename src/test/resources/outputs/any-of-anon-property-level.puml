@@ -3,9 +3,9 @@
 class "employee" {
 }
 
-diamond anon1
+diamond anon
 
-"employee" --> "0..1" anon1: role
+"employee" --> "0..1" anon: role
 
 
 
@@ -21,8 +21,8 @@ class "employee.role.1" {
   income : decimal
 }
 
-anon1 <|-- "employee.role"
+anon <|-- "employee.role"
 
-anon1 <|-- "employee.role.1"
+anon <|-- "employee.role.1"
 
 @enduml

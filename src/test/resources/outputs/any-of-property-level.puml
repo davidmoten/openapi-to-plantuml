@@ -3,13 +3,13 @@
 class "employee" {
 }
 
-diamond anon1
+diamond anon
 
-"employee" --> "0..1" anon1: role
+"employee" --> "0..1" anon: role
 
-anon1 <|-- "doctor"
+anon <|-- "doctor"
 
-anon1 <|-- "nurse"
+anon <|-- "nurse"
 
 class "nurse" {
   level : integer
