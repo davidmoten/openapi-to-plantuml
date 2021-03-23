@@ -40,18 +40,21 @@ public class ConverterBatchTest {
     }
 
     @Test
-    public void testBatch() {
+    public void test() {
         System.out.println("checking " + input);
         try (InputStream in = new FileInputStream(input)) {
             String puml = Converter.openApiToPuml(in).trim();
+            File pumlFile = new File("target", input.getName().substring(0, input.getName().lastIndexOf('.')) + ".puml");
+            pumlFile.delete();
+            Files.write(pumlFile.toPath(), puml.getBytes(StandardCharsets.UTF_8));
             File output = new File(outputs, input.getName().substring(0, input.getName().lastIndexOf('.')) + ".puml");
             if (!output.exists()) {
                 output.createNewFile();
                 System.out.println(puml);
             }
             String expected = new String(Files.readAllBytes(output.toPath()), StandardCharsets.UTF_8).trim();
-            assertEquals(expected, puml);
             ConverterTest.writeSvg(input, "target/" + output.getName() + ".svg");
+            assertEquals(expected, puml);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }

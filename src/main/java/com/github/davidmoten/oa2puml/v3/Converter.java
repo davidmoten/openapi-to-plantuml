@@ -46,7 +46,7 @@ public final class Converter {
     private static final String PATH_RELATIONSHIP_RIGHT_ARROW = " ..> ";
     private static final String CLASS_RELATIONSHIP_RIGHT_ARROW = " --> ";
     private static final String INHERITANCE_LEFT_ARROW = " <|-- ";
-    private static final Set<String> simpleTypesWithoutArrayDelimiters = Sets.newHashSet("string", "decimal", "integer",
+    private static final Set<String> simpleTypesWithoutBrackets = Sets.newHashSet("string", "decimal", "integer",
             "byte", "date", "boolean");
 
     private Converter() {
@@ -101,6 +101,7 @@ public final class Converter {
     private static String toPlantUmlPath(OpenAPI a, String path, PathItem p, AtomicLong counter,
             Set<String> classNames) {
         StringBuilder b = new StringBuilder();
+        StringBuilder extras = new StringBuilder();
         // add method class blocks with HTTP verb and parameters
         // add response lines
         b.append(p.readOperationsMap() //
@@ -121,9 +122,15 @@ public final class Converter {
                                     String parameterName = param.getName() == null ? "parameter" + parameterNo[0]
                                             : param.getName();
                                     final String type = getUmlTypeName(param.get$ref(), param.getSchema());
-                                    final String optional = param.getRequired() != null && param.getRequired() ? ""
-                                            : " {O}";
-                                    return "\n" + "  " + parameterName + " : " + type + optional;
+                                    if (isSimpleType(type)) {
+                                        final String optional = param.getRequired() != null && param.getRequired() ? ""
+                                                : " {O}";
+                                        return "\n" + "  " + parameterName + " : " + type + optional;
+                                    } else {
+                                        extras.append("\n\n" + quote(className) + CLASS_RELATIONSHIP_RIGHT_ARROW + quote("1")
+                                                + quote(type) + " : " + quote(parameterName));
+                                        return "";
+                                    }
                                 }) //
                                 .collect(Collectors.joining()));
                     }
@@ -188,13 +195,14 @@ public final class Converter {
                                 }
                             }
                             s.append(requestBodyClassDeclaration + "\n\n" + quote(className)
-                                    + CLASS_RELATIONSHIP_RIGHT_ARROW + quote(requestBodyClassName) + ": "
-                                    + "\"<<Request Body>>\"");
+                                    + CLASS_RELATIONSHIP_RIGHT_ARROW + quote(requestBodyClassName) + " : "
+                                    + quote("<<Request Body>>"));
                         }
                     }
                     return s.toString();
                 }) //
                 .collect(Collectors.joining()));
+        b.append(extras.toString());
         return b.toString();
     }
 
@@ -353,7 +361,7 @@ public final class Converter {
     }
 
     private static boolean isComplexArrayType(String type) {
-        return type.endsWith("[]") && !isSimpleArrayType(type);
+        return type.endsWith("[]") && !isSimpleType(type);
     }
 
     private static String nextClassName(Set<String> classNames, List<String> candidates) {
@@ -380,8 +388,8 @@ public final class Converter {
         return nextClassName(classNames, Arrays.asList(candidates));
     }
 
-    private static boolean isSimpleArrayType(String s) {
-        return simpleTypesWithoutArrayDelimiters.contains(s.replace("[", "").replace("]", ""));
+    private static boolean isSimpleType(String s) {
+        return simpleTypesWithoutBrackets.contains(s.replace("[", "").replace("]", ""));
     }
 
     private static void addArray(String name, List<String> relationships, String property,
