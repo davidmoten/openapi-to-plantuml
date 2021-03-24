@@ -2,6 +2,7 @@
 Java library to generate a [PlantUML](https://plantuml.com) Class Diagram (supplemented with path informations) from an OpenAPI 3.0 definition (YAML or JSON).
 
 **Features**
+
 Supports all features of OpenAPI 3.0 including
 
 * Mixed types (*oneOf*, *anyOf*, *allOf*)  
