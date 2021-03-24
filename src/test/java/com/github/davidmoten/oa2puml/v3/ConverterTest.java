@@ -50,6 +50,21 @@ public class ConverterTest {
     public void testReadString() throws IOException {
         assertFalse(readString("src/test/resources/openapi-example.yml").isEmpty());
     }
+    
+    @Test
+    public void generateExamplesMd() throws IOException {
+        File file = new File("src/docs/examples.md");
+        StringBuilder b = new StringBuilder();
+        b.append("## openapi-to-plantuml examples\n");
+        for (File f: new File("src/test/resources/inputs").listFiles()) {
+            b.append("\n* [" + f.getName() + "](src/test/resources/inputs/" + f.getName() + ")");
+            String svg = f.getName().substring(0, f.getName().lastIndexOf(".")) + ".svg";
+            b.append("\n<img src=\"src/docs/tests/" + svg+ "\"/>");
+        }
+        
+        file.delete();
+        Files.write(file.toPath(), b.toString().getBytes(StandardCharsets.UTF_8));
+    }
 
     private static String readString(String filename) throws IOException {
         return new String(Files.readAllBytes(new File(filename).toPath() ), StandardCharsets.UTF_8);

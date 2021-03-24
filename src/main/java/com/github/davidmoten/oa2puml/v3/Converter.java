@@ -236,9 +236,6 @@ public final class Converter {
                     String responseCode = ent.getKey();
                     // TODO only using the first content
                     ApiResponse r = ent.getValue();
-                    if ("Add a new product".equals(operation.getSummary())) {
-                        System.out.println(r);
-                    }
                     while (r.get$ref() != null) {
                         // get the actual response object
                         r = getResponse(a.getComponents(), r.get$ref());

@@ -32,6 +32,8 @@ String puml = Puml.openApiToPuml(openapi);
 
 ## Examples
 
+Unit test examples are [here](src/docs/examples.md).
+
 [petstore.yml](src/test/resources/inputs/petstore.yml):
 
 <img src="src/docs/tests/petstore-expanded.puml.svg"/>
@@ -48,6 +50,3 @@ String puml = Puml.openApiToPuml(openapi);
 
 <img src="src/docs/tests/banking.puml.svg"/>
 
-[amazon-s3.yml](src/test/resources/inputs/amazon-s3.yml):
-
-<img src="src/docs/tests/amazon-s3.puml.svg"/>
