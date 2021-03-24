@@ -189,6 +189,9 @@ public final class Converter {
     private static String toPlantUmlRequestBody(String className, Operation operation, Names names) {
         RequestBody body = operation.getRequestBody();
         if (body != null) {
+            while (body.get$ref()!= null) {
+                body = getRequestBody(names.components(), body.get$ref()); 
+            }
             Content content = body.getContent();
             if (content != null) {
                 Entry<String, MediaType> mediaType = first(content).get();
@@ -213,6 +216,16 @@ public final class Converter {
         }
         return "";
     }
+    
+    private static RequestBody getRequestBody(Components components, String ref) {
+        Preconditions.checkNotNull(ref);
+        Reference r = new Reference(ref);
+        if ("#/components/requestBodies".equals(r.namespace)) {
+            return components.getRequestBodies().get(r.simpleName);
+        } else {
+            throw new RuntimeException("unexpected");
+        }
+    }
 
     private static String toPlantUmlResponses(OpenAPI a, Names names, Operation operation, String className) {
         return operation //
@@ -226,7 +239,7 @@ public final class Converter {
                     if ("Add a new product".equals(operation.getSummary())) {
                         System.out.println(r);
                     }
-                    if (r.get$ref() != null) {
+                    while (r.get$ref() != null) {
                         // get the actual response object
                         r = getResponse(a.getComponents(), r.get$ref());
                     }

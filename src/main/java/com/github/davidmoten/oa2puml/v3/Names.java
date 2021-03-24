@@ -13,15 +13,18 @@ import com.github.davidmoten.guavamini.Sets;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.Paths;
 
 public final class Names {
 
     public static final String EMPTY_RESPONSE_CLASS_NAME = "Empty Response";
     private final Map<String, String> refClassNames = new HashMap<>();
     private final Set<String> classNames = Sets.newHashSet(EMPTY_RESPONSE_CLASS_NAME);
+    private final OpenAPI openapi;
 
     public Names(OpenAPI a) {
         Components components = a.getComponents();
+        this.openapi = a;
         if (components != null) {
             // resolve name clashes
             nullToEmpty(components.getSchemas()).keySet().forEach(name -> {
@@ -51,6 +54,14 @@ public final class Names {
         } else {
             return className;
         }
+    }
+    
+    public Components components() {
+        return openapi.getComponents();
+    }
+    
+    public Paths paths() {
+        return openapi.getPaths();
     }
 
     public String nextClassName(String candidate) {
