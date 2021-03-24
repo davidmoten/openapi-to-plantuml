@@ -363,8 +363,8 @@ public final class Converter {
     private static String toPlantUmlClass(String name, Schema<?> schema, Names names, List<String> classStereotypes) {
         StringBuilder b = new StringBuilder();
         List<Entry<String, Schema<?>>> more = new ArrayList<>();
-        b.append("\n\nclass " + quote(name) + (classStereotypes.isEmpty() ? "" : SPACE)
-                + classStereotypes.stream().collect(Collectors.joining(SPACE)) + " {\n");
+        b.append("\n\nclass " + quote(name)
+                + classStereotypes.stream().map(x -> SPACE + x).collect(Collectors.joining()) + " {\n");
         List<String> relationships = new ArrayList<>();
         if (schema.get$ref() != null) {
             // this is an alias case for a schema
