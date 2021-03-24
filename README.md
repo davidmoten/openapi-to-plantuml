@@ -40,17 +40,17 @@ Unit test examples are [here](src/docs/examples.md).
 
 [bookstore.yml](src/test/resources/demos/bookstore.yml):
 
-<img src="src/docs/demos/bookstore.puml.svg"/>
+<img src="src/docs/demos/bookstore.svg"/>
 
 [ecommerce.yml](src/test/resources/demos/ecommerce.yml)
 
-<img src="src/docs/demos/ecommerce.puml.svg"/>
+<img src="src/docs/demos/ecommerce.svg"/>
 
 [banking.yml](src/test/resources/demos/banking.yml):
 
-<img src="src/docs/demos/banking.puml.svg"/>
+<img src="src/docs/demos/banking.svg"/>
 
 [news.yml](src/test/resources/demos/news.yml):
 
-<img src="src/docs/demos/news.puml.svg"/>
+<img src="src/docs/demos/news.svg"/>
 
