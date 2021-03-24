@@ -353,19 +353,18 @@ public final class Converter {
     }
 
     private static String toPlantUmlClass(String name, Schema<?> schema, Names names) {
-        return toPlantUmlClass(name, schema, names, Optional.empty());
+        return toPlantUmlClass(name, schema, names, Collections.emptyList());
     }
 
-    private static String toPlantUmlClass(String name, Schema<?> schema, Names names, Stereotype classStereotype) {
-        Preconditions.checkNotNull(classStereotype);
-        return toPlantUmlClass(name, schema, names, Optional.of(classStereotype));
+    private static String toPlantUmlClass(String name, Schema<?> schema, Names names, Stereotype stereotype) {
+        return toPlantUmlClass(name, schema, names, Collections.singletonList(stereotype.toString()));
     }
 
-    private static String toPlantUmlClass(String name, Schema<?> schema, Names names,
-            Optional<Stereotype> classStereotype) {
+    private static String toPlantUmlClass(String name, Schema<?> schema, Names names, List<String> classStereotypes) {
         StringBuilder b = new StringBuilder();
         List<Entry<String, Schema<?>>> more = new ArrayList<>();
-        b.append("\n\nclass " + quote(name) + classStereotype.map(x -> " " + x).orElse("") + " {\n");
+        b.append("\n\nclass " + quote(name) + (classStereotypes.isEmpty() ? "" : SPACE)
+                + classStereotypes.stream().collect(Collectors.joining(SPACE)) + " {\n");
         List<String> relationships = new ArrayList<>();
         if (schema.get$ref() != null) {
             // this is an alias case for a schema
