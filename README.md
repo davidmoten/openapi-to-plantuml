@@ -46,11 +46,11 @@ Unit test examples are [here](src/docs/examples.md).
 
 <img src="src/docs/demos/ecommerce.svg"/>
 
-[banking.yml](src/test/resources/demos/banking.yml):
-
-<img src="src/docs/demos/banking.svg"/>
-
 [news.yml](src/test/resources/demos/news.yml):
 
 <img src="src/docs/demos/news.svg"/>
+
+[banking.yml](src/test/resources/demos/banking.yml):
+
+<img src="src/docs/demos/banking.svg"/>
 
