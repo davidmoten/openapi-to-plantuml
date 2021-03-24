@@ -43,40 +43,40 @@ public class ConverterTest {
     @Test
     @Ignore
     public void updateDocs() throws IOException {
-        writeSvg(OPENAPI_EXAMPLE,"src/docs/openapi-example.svg");
+        writeSvg(OPENAPI_EXAMPLE, "src/docs/openapi-example.svg");
     }
-    
+
     @Test
     public void testReadString() throws IOException {
         assertFalse(readString("src/test/resources/openapi-example.yml").isEmpty());
     }
-    
+
     @Test
     public void generateExamplesMd() throws IOException {
         File file = new File("src/docs/examples.md");
         StringBuilder b = new StringBuilder();
         b.append("## openapi-to-plantuml examples\n");
-        for (File f: new File("src/test/resources/inputs").listFiles()) {
+        for (File f : new File("src/test/resources/inputs").listFiles()) {
             b.append("\n* [" + f.getName() + "](../../src/test/resources/inputs/" + f.getName() + ")");
-            String svg = f.getName().substring(0, f.getName().lastIndexOf(".")) + ".svg";
-            b.append("\n<img src=\"../../src/docs/tests/" + svg+ "\"/>");
+            String svg = f.getName() + ".svg";
+            b.append("\n<img src=\"../../src/docs/tests/" + svg + "\"/>");
         }
-        
+
         file.delete();
         Files.write(file.toPath(), b.toString().getBytes(StandardCharsets.UTF_8));
     }
 
     private static String readString(String filename) throws IOException {
-        return new String(Files.readAllBytes(new File(filename).toPath() ), StandardCharsets.UTF_8);
+        return new String(Files.readAllBytes(new File(filename).toPath()), StandardCharsets.UTF_8);
     }
-    
+
     static void writeSvg(File openApiFile, String filename) throws IOException {
         try (InputStream in = new FileInputStream(openApiFile)) {
             String puml = Converter.openApiToPuml(in);
             writeSvgFromPuml(puml, filename);
         }
     }
-    
+
     static void writeSvgFromPuml(String puml, String filename) throws IOException {
         SourceStringReader reader = new SourceStringReader(puml);
         try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
@@ -89,8 +89,8 @@ public class ConverterTest {
             Files.write(file.toPath(), os.toByteArray());
         }
     }
-    
+
     public static void main(String[] args) throws IOException {
-        writeSvg(new File(System.getProperty("user.home","") +  "/github.yml"), "target/github.yml.svg");
+        writeSvg(new File(System.getProperty("user.home", "") + "/github.yml"), "target/github.yml.svg");
     }
 }
