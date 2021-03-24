@@ -1,4 +1,5 @@
 @startuml
+set namespaceSeparator none
 
 class "Customer" {
   heightMetres : decimal {O}

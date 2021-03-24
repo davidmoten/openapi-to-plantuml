@@ -73,7 +73,6 @@ public class ConverterTest {
     static void writeSvg(File openApiFile, String filename) throws IOException {
         try (InputStream in = new FileInputStream(openApiFile)) {
             String puml = Converter.openApiToPuml(in);
-            System.out.println(puml);
             writeSvgFromPuml(puml, filename);
         }
     }
