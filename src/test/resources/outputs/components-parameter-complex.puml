@@ -22,6 +22,6 @@ class "GET /customer/expired 200 Response" <<Response>> {
 
 "GET /customer/expired" ..> "GET /customer/expired 200 Response": 200
 
-"GET /customer/expired" --> "1""CustomerId" : "customerId"
+"GET /customer/expired" --> "1" "CustomerId" : "customerId"
 
 @enduml

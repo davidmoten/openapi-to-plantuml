@@ -49,6 +49,7 @@ public final class Converter {
     private static final String PATH_RELATIONSHIP_RIGHT_ARROW = " ..> ";
     private static final String CLASS_RELATIONSHIP_RIGHT_ARROW = " --> ";
     private static final String INHERITANCE_LEFT_ARROW = " <|-- ";
+    private static final String SPACE = " ";
 
     // TODO make enum
     private static final Set<String> simpleTypesWithoutBrackets = Sets.newHashSet("string", "decimal", "integer",
@@ -175,7 +176,7 @@ public final class Converter {
                                         return "\n" + "  " + parameterName + " : " + type + optional;
                                     } else {
                                         extras.append("\n\n" + quote(className) + CLASS_RELATIONSHIP_RIGHT_ARROW
-                                                + quote("1") + quote(type) + " : " + quote(parameterName));
+                                                + quote("1") + SPACE + quote(type) + " : " + quote(parameterName));
                                         return "";
                                     }
                                 }) //
