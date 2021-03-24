@@ -578,7 +578,7 @@ public final class Converter {
     }
     
     public static void main(String[] args) {
-        
+        //TODO make command line client
     }
 
 }
