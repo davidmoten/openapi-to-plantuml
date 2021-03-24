@@ -1,7 +1,7 @@
 @startuml
 set namespaceSeparator none
 
-class "Customer" {
+class "My.Customer" {
   firstName : string
   lastName : string
   heightMetres : decimal {O}
