@@ -74,6 +74,7 @@ public final class Converter {
         OpenAPI a = result.getOpenAPI();
         Names names = new Names(a);
         return "@startuml" //
+                + "\nset namespaceSeparator none"
                 + components(names) //
                 + paths(names) //
                 + "\n\n@enduml";
@@ -574,6 +575,10 @@ public final class Converter {
         } else {
             return " {O}";
         }
+    }
+    
+    public static void main(String[] args) {
+        
     }
 
 }

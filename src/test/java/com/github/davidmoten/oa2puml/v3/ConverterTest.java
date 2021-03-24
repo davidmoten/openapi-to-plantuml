@@ -73,6 +73,7 @@ public class ConverterTest {
     static void writeSvg(File openApiFile, String filename) throws IOException {
         try (InputStream in = new FileInputStream(openApiFile)) {
             String puml = Converter.openApiToPuml(in);
+            System.out.println(puml);
             writeSvgFromPuml(puml, filename);
         }
     }
@@ -91,6 +92,6 @@ public class ConverterTest {
     }
 
     public static void main(String[] args) throws IOException {
-        writeSvg(new File(System.getProperty("user.home", "") + "/strava.yml"), "target/strava.yml.svg");
+        writeSvg(new File(System.getProperty("user.home", "") + "/imdb.yml"), "target/imdb.svg");
     }
 }
