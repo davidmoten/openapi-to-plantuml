@@ -57,9 +57,9 @@ public class ConverterTest {
         StringBuilder b = new StringBuilder();
         b.append("## openapi-to-plantuml examples\n");
         for (File f: new File("src/test/resources/inputs").listFiles()) {
-            b.append("\n* [" + f.getName() + "](src/test/resources/inputs/" + f.getName() + ")");
+            b.append("\n* [" + f.getName() + "](../../src/test/resources/inputs/" + f.getName() + ")");
             String svg = f.getName().substring(0, f.getName().lastIndexOf(".")) + ".svg";
-            b.append("\n<img src=\"src/docs/tests/" + svg+ "\"/>");
+            b.append("\n<img src=\"../../src/docs/tests/" + svg+ "\"/>");
         }
         
         file.delete();
