@@ -52,7 +52,3 @@ Unit test examples are [here](src/docs/examples.md).
 
 <img src="src/docs/demos/strava.svg"/>
 
-[banking.yml](src/test/resources/demos/banking.yml):
-
-<img src="src/docs/demos/banking.svg"/>
-
