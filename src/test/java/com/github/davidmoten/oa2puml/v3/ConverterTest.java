@@ -91,6 +91,6 @@ public class ConverterTest {
     }
 
     public static void main(String[] args) throws IOException {
-        writeSvg(new File(System.getProperty("user.home", "") + "/github.yml"), "target/github.yml.svg");
+        writeSvg(new File(System.getProperty("user.home", "") + "/strava.yml"), "target/strava.yml.svg");
     }
 }

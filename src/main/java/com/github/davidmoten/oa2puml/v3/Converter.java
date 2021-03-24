@@ -49,7 +49,7 @@ public final class Converter {
     private static final String PATH_RELATIONSHIP_RIGHT_ARROW = " ..> ";
     private static final String CLASS_RELATIONSHIP_RIGHT_ARROW = " --> ";
     private static final String INHERITANCE_LEFT_ARROW = " <|-- ";
-    
+
     // TODO make enum
     private static final Set<String> simpleTypesWithoutBrackets = Sets.newHashSet("string", "decimal", "integer",
             "byte", "date", "boolean", "timestamp");
@@ -78,16 +78,16 @@ public final class Converter {
                 + paths(names) //
                 + "\n\n@enduml";
     }
-    
+
     private enum Stereotype {
         PARAMETER("<<Parameter>>"), REQUEST_BODY("<<Request Body>>"), RESPONSE("<<Response>>");
-        
+
         private final String name;
 
         private Stereotype(String name) {
             this.name = name;
         }
-        
+
         @Override
         public String toString() {
             return name;
@@ -125,7 +125,8 @@ public final class Converter {
         String part3 = names.parameters() //
                 .entrySet() //
                 .stream() //
-                .map(entry -> toPlantUmlClass(entry.getKey(), entry.getValue().getSchema(), names, Stereotype.PARAMETER)) //
+                .map(entry -> toPlantUmlClass(entry.getKey(), entry.getValue().getSchema(), names,
+                        Stereotype.PARAMETER)) //
                 .collect(Collectors.joining());
 
         String part4 = names.responses() //
@@ -162,7 +163,8 @@ public final class Converter {
                                     String parameterName = param.getName() == null ? "parameter" + parameterNo[0]
                                             : param.getName();
                                     if (param.getSchema() != null) {
-                                        toPlantUmlClass(className + "." + parameterName, param.getSchema(), names, Stereotype.PARAMETER);
+                                        toPlantUmlClass(className + "." + parameterName, param.getSchema(), names,
+                                                Stereotype.PARAMETER);
                                     }
                                     final String type = getUmlTypeName(param.get$ref(), param.getSchema(), names);
                                     if (isSimpleType(type)) {
@@ -190,8 +192,8 @@ public final class Converter {
     private static String toPlantUmlRequestBody(String className, Operation operation, Names names) {
         RequestBody body = operation.getRequestBody();
         if (body != null) {
-            while (body.get$ref()!= null) {
-                body = getRequestBody(names.components(), body.get$ref()); 
+            while (body.get$ref() != null) {
+                body = getRequestBody(names.components(), body.get$ref());
             }
             Content content = body.getContent();
             if (content != null) {
@@ -208,7 +210,8 @@ public final class Converter {
                     if (sch == null) {
                         requestBodyClassDeclaration = "";
                     } else {
-                        requestBodyClassDeclaration = toPlantUmlClass(requestBodyClassName, sch, names, Stereotype.REQUEST_BODY);
+                        requestBodyClassDeclaration = toPlantUmlClass(requestBodyClassName, sch, names,
+                                Stereotype.REQUEST_BODY);
                     }
                 }
                 return requestBodyClassDeclaration + "\n\n" + quote(className) + CLASS_RELATIONSHIP_RIGHT_ARROW
@@ -217,7 +220,7 @@ public final class Converter {
         }
         return "";
     }
-    
+
     private static RequestBody getRequestBody(Components components, String ref) {
         Preconditions.checkNotNull(ref);
         Reference r = new Reference(ref);
@@ -245,28 +248,33 @@ public final class Converter {
                     final String returnClassName;
                     final String returnClassDeclaration;
                     if (r.getContent() == null) {
-                        returnClassDeclaration =  "\nclass " + quote(newReturnClassName) + "{}";
+                        returnClassDeclaration = "\nclass " + quote(newReturnClassName) + "{}";
                         returnClassName = newReturnClassName;
                     } else {
-                        Entry<String, MediaType> mediaType = first(r.getContent()).get();
-                        Schema<?> sch = mediaType.getValue().getSchema();
-                        if (sch != null && sch.get$ref() != null) {
-                            returnClassName = names.refToClassName(sch.get$ref());
-                            returnClassDeclaration = "";
-                        } else {
-                            returnClassName = newReturnClassName;
-                            if (sch == null) {
+                        Optional<Entry<String, MediaType>> mediaType = first(r.getContent());
+                        if (mediaType.isPresent()) {
+                            Schema<?> sch = mediaType.get().getValue().getSchema();
+                            if (sch != null && sch.get$ref() != null) {
+                                returnClassName = names.refToClassName(sch.get$ref());
                                 returnClassDeclaration = "";
                             } else {
-                                returnClassDeclaration = toPlantUmlClass(returnClassName, sch, names, Stereotype.RESPONSE);
+                                returnClassName = newReturnClassName;
+                                if (sch == null) {
+                                    returnClassDeclaration = "";
+                                } else {
+                                    returnClassDeclaration = toPlantUmlClass(returnClassName, sch, names,
+                                            Stereotype.RESPONSE);
+                                }
                             }
+                        } else {
+                            return "";
                         }
                     }
                     return returnClassDeclaration + "\n\n" + quote(className) + PATH_RELATIONSHIP_RIGHT_ARROW
                             + quote(returnClassName) + ": " + responseCode;
                 }).collect(Collectors.joining());
     }
-    
+
     private static final class Reference {
         final String namespace;
         final String simpleName;
@@ -328,17 +336,18 @@ public final class Converter {
         }
         return type;
     }
-    
+
     private static String toPlantUmlClass(String name, Schema<?> schema, Names names) {
         return toPlantUmlClass(name, schema, names, Optional.empty());
     }
-    
+
     private static String toPlantUmlClass(String name, Schema<?> schema, Names names, Stereotype classStereotype) {
         Preconditions.checkNotNull(classStereotype);
         return toPlantUmlClass(name, schema, names, Optional.of(classStereotype));
     }
 
-    private static String toPlantUmlClass(String name, Schema<?> schema, Names names, Optional<Stereotype> classStereotype) {
+    private static String toPlantUmlClass(String name, Schema<?> schema, Names names,
+            Optional<Stereotype> classStereotype) {
         StringBuilder b = new StringBuilder();
         List<Entry<String, Schema<?>>> more = new ArrayList<>();
         b.append("\n\nclass " + quote(name) + classStereotype.map(x -> " " + x).orElse("") + " {\n");
