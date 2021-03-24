@@ -3,8 +3,7 @@ paths:
   /customer/expired:
     get:
       parameters:
-      - $ref: '#/components/schemas/CustomerId'
-      - $ref: '#/components/schemas/CustomerId'
+      - $ref: '#/components/parameters/CustomerId'
       responses:
         '200':  
           content:
@@ -21,5 +20,16 @@ components:
           type: string
         lastName:
           type: string
+  parameters:
     CustomerId:
-      type: string                   
+      name: customerId
+      in: query
+      description: Unique identification of customer resource
+      required: true
+      schema:
+        properties:
+          id:
+            type: string
+            pattern: '^([a-zA-Z0-9 /\-?:\()\.,'']{1,35})$'
+          prefix:
+            type: string

@@ -23,7 +23,7 @@ components:
   parameters:
     CustomerId:
       name: customerId
-      in: path
+      in: query
       description: Unique identification of customer resource
       required: true
       schema:

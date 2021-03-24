@@ -7,7 +7,8 @@ class "Customer" {
 }
 
 class "CustomerId" <<Parameter>> {
-  value : string
+  id : string {O}
+  prefix : string {O}
 }
 hide <<Method>> circle
 

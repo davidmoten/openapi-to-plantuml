@@ -155,22 +155,20 @@ public final class Converter {
                     StringBuilder s = new StringBuilder();
                     s.append("\n\nclass " + quote(className) + " <<Method>> {");
                     List<Parameter> parameters = operation.getParameters();
-                    int[] parameterNo = new int[1];
                     if (parameters != null) {
                         s.append(parameters //
                                 .stream()//
                                 .map(param -> {
-                                    parameterNo[0]++;
-                                    String parameterName = param.getName() == null ? "parameter" + parameterNo[0]
-                                            : param.getName();
+                                    final String type = getUmlTypeName(param.get$ref(), param.getSchema(), names);
                                     while (param.get$ref() != null) {
                                         param  = getParameter(names.components(), param.get$ref());
                                     }
+                                    String parameterName = param.getName();
                                     if (param.getSchema() != null) {
                                         toPlantUmlClass(className + "." + parameterName, param.getSchema(), names,
                                                 Stereotype.PARAMETER);
                                     }
-                                    final String type = getUmlTypeName(param.get$ref(), param.getSchema(), names);
+                                    // TODO else get schema from content 
                                     if (isSimpleType(type)) {
                                         final String optional = param.getRequired() != null && param.getRequired() ? ""
                                                 : " {O}";
