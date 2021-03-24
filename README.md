@@ -1,11 +1,15 @@
 # openapi-to-plantuml
 Java library to generate a [PlantUML](https://plantuml.com) Class Diagram (supplemented with path informations) from an OpenAPI 3.0 definition (YAML or JSON).
 
-Limitations
+**Features**
+Supports all features of OpenAPI 3.0 including
+
+* Mixed types (*oneOf*, *anyOf*, *allOf*)  
+
+**Limitations**
 
 * It only consumes the first response content (but uses all responses).
-* Only handles internal references  
-
+* Only handles internal references ("#/*")  
 
 [openapi-example.yml](src/test/resources/openapi-example.yml): 
 

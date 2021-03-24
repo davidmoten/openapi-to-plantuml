@@ -2,11 +2,13 @@ package com.github.davidmoten.oa2puml.v3;
 
 import static org.junit.Assert.assertFalse;
 
-import java.io.ByteArrayOutputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
@@ -78,15 +80,12 @@ public class ConverterTest {
     }
 
     static void writeSvgFromPuml(String puml, String filename) throws IOException {
+        File file = new File(filename);
         SourceStringReader reader = new SourceStringReader(puml);
-        try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+        try (OutputStream os = new BufferedOutputStream(new FileOutputStream(file))) {
             // Write the first image to "os"
             DiagramDescription result = reader.outputImage(os, new FileFormatOption(FileFormat.SVG));
             System.out.println("  svg result: " + result.getDescription());
-
-            File file = new File(filename);
-            file.delete();
-            Files.write(file.toPath(), os.toByteArray());
         }
     }
 
