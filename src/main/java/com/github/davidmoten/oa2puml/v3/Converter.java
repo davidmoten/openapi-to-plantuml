@@ -51,7 +51,7 @@ public final class Converter {
     private static final String CLASS_RELATIONSHIP_RIGHT_ARROW = " --> ";
     private static final String INHERITANCE_LEFT_ARROW = " <|-- ";
     private static final Set<String> simpleTypesWithoutBrackets = Sets.newHashSet("string", "decimal", "integer",
-            "byte", "date", "boolean");
+            "byte", "date", "boolean", "timestamp");
 
     private Converter() {
         // prevent instantiation
