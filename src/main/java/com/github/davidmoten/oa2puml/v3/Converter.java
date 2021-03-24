@@ -21,6 +21,7 @@ import com.github.davidmoten.guavamini.Preconditions;
 import com.github.davidmoten.guavamini.Sets;
 
 import io.swagger.parser.OpenAPIParser;
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
@@ -222,31 +223,57 @@ public final class Converter {
                     String responseCode = ent.getKey();
                     // TODO only using the first content
                     ApiResponse r = ent.getValue();
-                    if (r.get$ref() != null) {
-                        r = a.getComponents().getResponses().get(names.refToClassName(r.get$ref()));
+                    if ("Add a new product".equals(operation.getSummary())) {
+                        System.out.println(r);
                     }
+                    if (r.get$ref() != null) {
+                        // get the actual response object
+                        r = getResponse(a.getComponents(), r.get$ref());
+                    }
+                    final String newReturnClassName = className + " " + responseCode + " Response";
+                    final String returnClassName;
+                    final String returnClassDeclaration;
                     if (r.getContent() == null) {
-                        return "";
+                        returnClassDeclaration =  "\nclass " + quote(newReturnClassName) + "{}";
+                        returnClassName = newReturnClassName;
                     } else {
                         Entry<String, MediaType> mediaType = first(r.getContent()).get();
                         Schema<?> sch = mediaType.getValue().getSchema();
-                        final String returnClassName;
-                        final String returnClassDeclaration;
                         if (sch != null && sch.get$ref() != null) {
                             returnClassName = names.refToClassName(sch.get$ref());
                             returnClassDeclaration = "";
                         } else {
-                            returnClassName = (className + " " + responseCode + " Response");
+                            returnClassName = newReturnClassName;
                             if (sch == null) {
                                 returnClassDeclaration = "";
                             } else {
                                 returnClassDeclaration = toPlantUmlClass(returnClassName, sch, names, Stereotype.RESPONSE);
                             }
                         }
-                        return returnClassDeclaration + "\n\n" + quote(className) + PATH_RELATIONSHIP_RIGHT_ARROW
-                                + quote(returnClassName) + ": " + responseCode;
                     }
+                    return returnClassDeclaration + "\n\n" + quote(className) + PATH_RELATIONSHIP_RIGHT_ARROW
+                            + quote(returnClassName) + ": " + responseCode;
                 }).collect(Collectors.joining());
+    }
+    
+    private static final class Reference {
+        final String namespace;
+        final String simpleName;
+
+        Reference(String ref) {
+            this.namespace = ref.substring(0, ref.lastIndexOf("/"));
+            this.simpleName = ref.substring(ref.lastIndexOf("/") + 1);
+        }
+    }
+
+    private static ApiResponse getResponse(Components components, String ref) {
+        Preconditions.checkNotNull(ref);
+        Reference r = new Reference(ref);
+        if ("#/components/responses".equals(r.namespace)) {
+            return components.getResponses().get(r.simpleName);
+        } else {
+            throw new RuntimeException("unexpected");
+        }
     }
 
     private static String getUmlTypeName(String ref, Schema<?> schema, Names names) {

@@ -56,6 +56,9 @@ class "GET /pets/{id}" <<Method>> {
 class "DELETE /pets/{id}" <<Method>> {
   id : integer
 }
+class "DELETE /pets/{id} 204 Response"{}
+
+"DELETE /pets/{id}" ..> "DELETE /pets/{id} 204 Response": 204
 
 "DELETE /pets/{id}" ..> "Error": default
 

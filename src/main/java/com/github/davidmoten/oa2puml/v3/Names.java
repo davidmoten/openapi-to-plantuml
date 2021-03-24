@@ -4,20 +4,21 @@ import static com.github.davidmoten.oa2puml.v3.Util.nullToEmpty;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import com.github.davidmoten.guavamini.Preconditions;
+import com.github.davidmoten.guavamini.Sets;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 
 public final class Names {
 
+    public static final String EMPTY_RESPONSE_CLASS_NAME = "Empty Response";
     private final Map<String, String> refClassNames = new HashMap<>();
-    private final Set<String> classNames = new HashSet<>();
+    private final Set<String> classNames = Sets.newHashSet(EMPTY_RESPONSE_CLASS_NAME);
 
     public Names(OpenAPI a) {
         Components components = a.getComponents();

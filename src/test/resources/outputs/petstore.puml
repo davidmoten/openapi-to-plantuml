@@ -27,6 +27,9 @@ class "GET /pets" <<Method>> {
 
 class "POST /pets" <<Method>> {
 }
+class "POST /pets 201 Response"{}
+
+"POST /pets" ..> "POST /pets 201 Response": 201
 
 "POST /pets" ..> "Error": default
 
