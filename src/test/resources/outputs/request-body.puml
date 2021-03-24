@@ -29,6 +29,6 @@ class "GET /customer/expired Request" <<Request Body>> {
   repository_ids : integer[] {O}
 }
 
-"GET /customer/expired" --> "GET /customer/expired Request" : "<<Request Body>>"
+"GET /customer/expired" --> "GET /customer/expired Request"
 
 @enduml

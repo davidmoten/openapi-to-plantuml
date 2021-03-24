@@ -6,12 +6,13 @@ class "Customer" {
   lastName : string {O}
 }
 
-class "CustomerId" {
+class "CustomerId" <<Parameter>> {
   value : string
 }
 hide <<Method>> circle
 
 class "GET /customer/expired" <<Method>> {
+  customerId : string
 }
 
 class "GET /customer/expired 200 Response" <<Response>> {
@@ -20,9 +21,5 @@ class "GET /customer/expired 200 Response" <<Response>> {
 "GET /customer/expired 200 Response" --> "*" "Customer"
 
 "GET /customer/expired" ..> "GET /customer/expired 200 Response": 200
-
-"GET /customer/expired" --> "1""CustomerId" : "parameter1"
-
-"GET /customer/expired" --> "1""CustomerId" : "parameter2"
 
 @enduml

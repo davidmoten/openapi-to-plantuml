@@ -230,7 +230,7 @@ public final class Converter {
                     }
                 }
                 return requestBodyClassDeclaration + "\n\n" + quote(className) + CLASS_RELATIONSHIP_RIGHT_ARROW
-                        + quote(requestBodyClassName) + " : " + quote("<<Request Body>>");
+                        + quote(requestBodyClassName);
             }
         }
         return "";
