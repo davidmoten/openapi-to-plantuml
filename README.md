@@ -57,6 +57,10 @@ Unit test examples are [here](src/docs/examples.md).
 
 <img src="src/docs/demos/strava.svg"/>
 
+[twitter.yml](src/test/resources/demos/twitter.yml):
+
+<img src="src/docs/demos/twitter.svg"/>
+
 [ebay.yml](src/test/resources/demos/ebay.yml):
 
 <img src="src/docs/demos/ebay.svg"/>
