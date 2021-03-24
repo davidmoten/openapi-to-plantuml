@@ -1,4 +1,7 @@
 openapi: 3.0.1
+info:
+  title: unit test
+  version: 0.0.1
 components:
   schemas:
     # in plantuml need to set namespaceChar none so that grouping doesn't happen on the dot in class name
