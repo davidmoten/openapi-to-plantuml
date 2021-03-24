@@ -3,6 +3,9 @@ package com.github.davidmoten.oas3.puml;
 import static com.github.davidmoten.oas3.puml.Util.first;
 import static com.github.davidmoten.oas3.puml.Util.nullListToEmpty;
 import static com.github.davidmoten.oas3.puml.Util.nullMapToEmpty;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.joining;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -106,7 +109,7 @@ public final class Converter {
                             .stream() //
                             .map(entry -> toPlantUmlPath(entry.getKey(), //
                                     entry.getValue(), names))
-                            .collect(Collectors.joining());
+                            .collect(joining());
         }
     }
 
@@ -115,29 +118,30 @@ public final class Converter {
                 .entrySet() //
                 .stream() //
                 .map(entry -> toPlantUmlClass(entry.getKey(), entry.getValue(), names)) //
-                .collect(Collectors.joining());
+                .collect(joining());
 
         String part2 = names.requestBodies() //
                 .entrySet() //
                 .stream() //
                 .map(entry -> toPlantUmlClass(entry.getKey(),
                         first(entry.getValue().getContent()).get().getValue().getSchema(), names)) //
-                .collect(Collectors.joining());
+                .collect(joining());
 
         String part3 = names.parameters() //
                 .entrySet() //
                 .stream() //
                 .map(entry -> toPlantUmlClass(entry.getKey(), entry.getValue().getSchema(), names,
                         Stereotype.PARAMETER)) //
-                .collect(Collectors.joining());
+                .collect(joining());
 
         String part4 = names.responses() //
                 .entrySet() //
                 .stream() //
                 .map(entry -> first(nullMapToEmpty(entry.getValue().getContent())) //
-                        .map(x -> toPlantUmlClass(entry.getKey(), x.getValue().getSchema(), names)) //
+                        .map(x -> toPlantUmlClass(entry.getKey(), x.getValue().getSchema(), names,
+                                singletonList(Stereotype.RESPONSE.toString()), singletonList(x.getKey()))) //
                         .orElse("")) //
-                .collect(Collectors.joining());
+                .collect(joining());
 
         return part1 + part2 + part3 + part4;
     }
@@ -161,7 +165,7 @@ public final class Converter {
                     s.append(toPlantUmlRequestBody(className, operation, names));
                     return s.toString();
                 }) //
-                .collect(Collectors.joining()));
+                .collect(joining()));
         b.append(extras.toString());
         return b.toString();
     }
@@ -171,7 +175,7 @@ public final class Converter {
         return nullListToEmpty(parameters) //
                 .stream()//
                 .map(param -> toPlantUmlParameter(names, extras, className, param)) //
-                .collect(Collectors.joining());
+                .collect(joining());
     }
 
     private static String toPlantUmlParameter(Names names, StringBuilder extras, String className, Parameter param) {
@@ -255,39 +259,40 @@ public final class Converter {
                     String responseCode = ent.getKey();
                     // TODO only using the first content
                     ApiResponse r = ent.getValue();
-                    while (r.get$ref() != null) {
-                        // get the actual response object
-                        r = getResponse(names.components(), r.get$ref());
-                    }
-                    final String newReturnClassName = className + " " + responseCode + " Response";
                     final String returnClassName;
                     final String returnClassDeclaration;
-                    if (r.getContent() == null) {
-                        returnClassDeclaration = "\nclass " + quote(newReturnClassName) + "{}";
-                        returnClassName = newReturnClassName;
+                    if (r.get$ref() != null) {
+                        returnClassName = names.refToClassName(r.get$ref());
+                        returnClassDeclaration = "";
                     } else {
-                        Optional<Entry<String, MediaType>> mediaType = first(r.getContent());
-                        if (mediaType.isPresent()) {
-                            Schema<?> sch = mediaType.get().getValue().getSchema();
-                            if (sch != null && sch.get$ref() != null) {
-                                returnClassName = names.refToClassName(sch.get$ref());
-                                returnClassDeclaration = "";
-                            } else {
-                                returnClassName = newReturnClassName;
-                                if (sch == null) {
+                        final String newReturnClassName = className + " " + responseCode + " Response";
+                        if (r.getContent() == null) {
+                            returnClassDeclaration = "\nclass " + quote(newReturnClassName) + "{}";
+                            returnClassName = newReturnClassName;
+                        } else {
+                            Optional<Entry<String, MediaType>> mediaType = first(r.getContent());
+                            if (mediaType.isPresent()) {
+                                Schema<?> sch = mediaType.get().getValue().getSchema();
+                                if (sch != null && sch.get$ref() != null) {
+                                    returnClassName = names.refToClassName(sch.get$ref());
                                     returnClassDeclaration = "";
                                 } else {
-                                    returnClassDeclaration = toPlantUmlClass(returnClassName, sch, names,
-                                            Stereotype.RESPONSE);
+                                    returnClassName = newReturnClassName;
+                                    if (sch == null) {
+                                        returnClassDeclaration = "";
+                                    } else {
+                                        returnClassDeclaration = toPlantUmlClass(returnClassName, sch, names,
+                                                Stereotype.RESPONSE);
+                                    }
                                 }
+                            } else {
+                                return "";
                             }
-                        } else {
-                            return "";
                         }
                     }
                     return returnClassDeclaration + "\n\n" + quote(className) + PATH_RELATIONSHIP_RIGHT_ARROW
                             + quote(returnClassName) + ": " + responseCode;
-                }).collect(Collectors.joining());
+                }).collect(joining());
     }
 
     private static final class Reference {
@@ -353,18 +358,19 @@ public final class Converter {
     }
 
     private static String toPlantUmlClass(String name, Schema<?> schema, Names names) {
-        return toPlantUmlClass(name, schema, names, Collections.emptyList());
+        return toPlantUmlClass(name, schema, names, emptyList(), emptyList());
     }
 
     private static String toPlantUmlClass(String name, Schema<?> schema, Names names, Stereotype stereotype) {
-        return toPlantUmlClass(name, schema, names, Collections.singletonList(stereotype.toString()));
+        return toPlantUmlClass(name, schema, names, Collections.singletonList(stereotype.toString()), emptyList());
     }
 
-    private static String toPlantUmlClass(String name, Schema<?> schema, Names names, List<String> classStereotypes) {
+    private static String toPlantUmlClass(String name, Schema<?> schema, Names names, List<String> classStereotypes,
+            List<String> extraLinesInClass) {
         StringBuilder b = new StringBuilder();
         List<Entry<String, Schema<?>>> more = new ArrayList<>();
-        b.append("\n\nclass " + quote(name)
-                + classStereotypes.stream().map(x -> SPACE + x).collect(Collectors.joining()) + " {\n");
+        b.append(
+                "\n\nclass " + quote(name) + classStereotypes.stream().map(x -> SPACE + x).collect(joining()) + " {\n");
         List<String> relationships = new ArrayList<>();
         if (schema.get$ref() != null) {
             // this is an alias case for a schema
@@ -406,7 +412,7 @@ public final class Converter {
                         list = s.getAllOf();
                         cardinality = Cardinality.ALL;
                     } else {
-                        list = Collections.emptyList();
+                        list = emptyList();
                         cardinality = null;
                     }
                     if (!list.isEmpty()) {
@@ -460,6 +466,7 @@ public final class Converter {
                 append(b, Sets.newHashSet("value"), type, "value");
             }
         }
+        b.append(extraLinesInClass.stream().map(line -> "  --\n" + "<i>" + line + "</i>" + "\n").collect(joining()));
         b.append("}");
         for (Entry<String, Schema<?>> entry : more) {
             b.append(toPlantUmlClass(entry.getKey(), entry.getValue(), names));

@@ -57,6 +57,10 @@
 
 <img src="../../src/docs/tests/anon-property-required.puml.svg"/>
 
+* [path-returns-ref.yml](../../src/test/resources/inputs/path-returns-ref.yml)
+
+<img src="../../src/docs/tests/path-returns-ref.puml.svg"/>
+
 * [anon-nested-class-level.yml](../../src/test/resources/inputs/anon-nested-class-level.yml)
 
 <img src="../../src/docs/tests/anon-nested-class-level.puml.svg"/>
