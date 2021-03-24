@@ -1,6 +1,6 @@
 package com.github.davidmoten.oas3.puml;
 
-import static com.github.davidmoten.oas3.puml.Util.nullToEmpty;
+import static com.github.davidmoten.oas3.puml.Util.nullMapToEmpty;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -32,19 +32,19 @@ public final class Names {
         this.openapi = a;
         if (components != null) {
             // resolve name clashes
-            nullToEmpty(components.getSchemas()).keySet().forEach(name -> {
+            nullMapToEmpty(components.getSchemas()).keySet().forEach(name -> {
                 String className = nextClassName(classNames, name);
                 refClassNames.put("#/components/schemas/" + name, className);
             });
-            nullToEmpty(components.getRequestBodies()).keySet().forEach(name -> {
+            nullMapToEmpty(components.getRequestBodies()).keySet().forEach(name -> {
                 String className = nextClassName(classNames, name);
                 refClassNames.put("#/components/requestBodies/" + name, className);
             });
-            nullToEmpty(components.getParameters()).keySet().forEach(name -> {
+            nullMapToEmpty(components.getParameters()).keySet().forEach(name -> {
                 String className = nextClassName(classNames, name);
                 refClassNames.put("#/components/parameters/" + name, className);
             });
-            nullToEmpty(components.getResponses()).keySet().forEach(name -> {
+            nullMapToEmpty(components.getResponses()).keySet().forEach(name -> {
                 String className = nextClassName(classNames, name);
                 refClassNames.put("#/components/responses/" + name, className);
             });
@@ -102,7 +102,7 @@ public final class Names {
         if (openapi.getComponents() == null) {
             return Collections.emptyMap();
         } else {
-            return nullToEmpty(openapi.getComponents().getSchemas());
+            return nullMapToEmpty(openapi.getComponents().getSchemas());
         }
     }
 
@@ -110,7 +110,7 @@ public final class Names {
         if (openapi.getComponents() == null) {
             return Collections.emptyMap();
         } else {
-            return nullToEmpty(openapi.getComponents().getRequestBodies());
+            return nullMapToEmpty(openapi.getComponents().getRequestBodies());
         }
     }
 
@@ -118,7 +118,7 @@ public final class Names {
         if (openapi.getComponents() == null) {
             return Collections.emptyMap();
         } else {
-            return nullToEmpty(openapi.getComponents().getParameters());
+            return nullMapToEmpty(openapi.getComponents().getParameters());
         }
     }
 
@@ -126,7 +126,7 @@ public final class Names {
         if (openapi.getComponents() == null) {
             return Collections.emptyMap();
         } else {
-            return nullToEmpty(openapi.getComponents().getResponses());
+            return nullMapToEmpty(openapi.getComponents().getResponses());
         }
     }
 }

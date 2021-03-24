@@ -1,7 +1,8 @@
 package com.github.davidmoten.oas3.puml;
 
 import static com.github.davidmoten.oas3.puml.Util.first;
-import static com.github.davidmoten.oas3.puml.Util.nullToEmpty;
+import static com.github.davidmoten.oas3.puml.Util.nullListToEmpty;
+import static com.github.davidmoten.oas3.puml.Util.nullMapToEmpty;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -75,8 +76,7 @@ public final class Converter {
         OpenAPI a = result.getOpenAPI();
         Names names = new Names(a);
         return "@startuml" //
-                + "\nset namespaceSeparator none"
-                + components(names) //
+                + "\nset namespaceSeparator none" + components(names) //
                 + paths(names) //
                 + "\n\n@enduml";
     }
@@ -134,7 +134,7 @@ public final class Converter {
         String part4 = names.responses() //
                 .entrySet() //
                 .stream() //
-                .map(entry -> first(nullToEmpty(entry.getValue().getContent())) //
+                .map(entry -> first(nullMapToEmpty(entry.getValue().getContent())) //
                         .map(x -> toPlantUmlClass(entry.getKey(), x.getValue().getSchema(), names)) //
                         .orElse("")) //
                 .collect(Collectors.joining());
@@ -155,33 +155,7 @@ public final class Converter {
                     String className = entry.getKey() + " " + path;
                     StringBuilder s = new StringBuilder();
                     s.append("\n\nclass " + quote(className) + " <<Method>> {");
-                    List<Parameter> parameters = operation.getParameters();
-                    if (parameters != null) {
-                        s.append(parameters //
-                                .stream()//
-                                .map(param -> {
-                                    final String type = getUmlTypeName(param.get$ref(), param.getSchema(), names);
-                                    while (param.get$ref() != null) {
-                                        param  = getParameter(names.components(), param.get$ref());
-                                    }
-                                    String parameterName = param.getName();
-                                    if (param.getSchema() != null) {
-                                        toPlantUmlClass(className + "." + parameterName, param.getSchema(), names,
-                                                Stereotype.PARAMETER);
-                                    }
-                                    // TODO else get schema from content 
-                                    if (isSimpleType(type)) {
-                                        final String optional = param.getRequired() != null && param.getRequired() ? ""
-                                                : " {O}";
-                                        return "\n" + "  " + parameterName + " : " + type + optional;
-                                    } else {
-                                        extras.append("\n\n" + quote(className) + CLASS_RELATIONSHIP_RIGHT_ARROW
-                                                + quote("1") + SPACE + quote(type) + " : " + quote(parameterName));
-                                        return "";
-                                    }
-                                }) //
-                                .collect(Collectors.joining()));
-                    }
+                    s.append(toPlantUmlParameters(names, extras, className, operation.getParameters()));
                     s.append("\n}");
                     s.append(toPlantUmlResponses(names, operation, className));
                     s.append(toPlantUmlRequestBody(className, operation, names));
@@ -191,7 +165,35 @@ public final class Converter {
         b.append(extras.toString());
         return b.toString();
     }
-    
+
+    private static String toPlantUmlParameters(Names names, StringBuilder extras, String className,
+            List<Parameter> parameters) {
+        return nullListToEmpty(parameters) //
+                .stream()//
+                .map(param -> toPlantUmlParameter(names, extras, className, param)) //
+                .collect(Collectors.joining());
+    }
+
+    private static String toPlantUmlParameter(Names names, StringBuilder extras, String className, Parameter param) {
+        final String type = getUmlTypeName(param.get$ref(), param.getSchema(), names);
+        while (param.get$ref() != null) {
+            param = getParameter(names.components(), param.get$ref());
+        }
+        String parameterName = param.getName();
+        if (param.getSchema() != null) {
+            toPlantUmlClass(className + "." + parameterName, param.getSchema(), names, Stereotype.PARAMETER);
+        }
+        // TODO else get schema from content
+        if (isSimpleType(type)) {
+            final String optional = param.getRequired() != null && param.getRequired() ? "" : " {O}";
+            return "\n" + "  " + parameterName + " : " + type + optional;
+        } else {
+            extras.append("\n\n" + quote(className) + CLASS_RELATIONSHIP_RIGHT_ARROW + quote("1") + SPACE + quote(type)
+                    + " : " + quote(parameterName));
+            return "";
+        }
+    }
+
     private static Parameter getParameter(Components components, String ref) {
         Preconditions.checkNotNull(ref);
         Reference r = new Reference(ref);
@@ -588,9 +590,9 @@ public final class Converter {
             return " {O}";
         }
     }
-    
+
     public static void main(String[] args) {
-        //TODO make command line client
+        // TODO make command line client
     }
 
 }
