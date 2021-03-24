@@ -3,7 +3,9 @@ package com.github.davidmoten.oa2puml.v3;
 import static com.github.davidmoten.oa2puml.v3.Util.nullToEmpty;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,6 +16,11 @@ import com.github.davidmoten.guavamini.Sets;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Paths;
+import io.swagger.v3.oas.models.media.MediaType;
+import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.parameters.Parameter;
+import io.swagger.v3.oas.models.parameters.RequestBody;
+import io.swagger.v3.oas.models.responses.ApiResponse;
 
 public final class Names {
 
@@ -55,11 +62,11 @@ public final class Names {
             return className;
         }
     }
-    
+
     public Components components() {
         return openapi.getComponents();
     }
-    
+
     public Paths paths() {
         return openapi.getPaths();
     }
@@ -89,6 +96,39 @@ public final class Names {
                 return className;
             }
             i++;
+        }
+    }
+
+    @SuppressWarnings("rawtypes")
+    public Map<String, Schema> schemas() {
+        if (openapi.getComponents() == null) {
+            return Collections.emptyMap();
+        } else {
+            return nullToEmpty(openapi.getComponents().getSchemas());
+        }
+    }
+
+    public Map<String, RequestBody> requestBodies() {
+        if (openapi.getComponents() == null) {
+            return Collections.emptyMap();
+        } else {
+            return nullToEmpty(openapi.getComponents().getRequestBodies());
+        }
+    }
+
+    public Map<String, Parameter> parameters() {
+        if (openapi.getComponents() == null) {
+            return Collections.emptyMap();
+        } else {
+            return nullToEmpty(openapi.getComponents().getParameters());
+        }
+    }
+
+    public Map<String, ApiResponse> responses() {
+        if (openapi.getComponents() == null) {
+            return Collections.emptyMap();
+        } else {
+            return nullToEmpty(openapi.getComponents().getResponses());
         }
     }
 }

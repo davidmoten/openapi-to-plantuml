@@ -74,8 +74,8 @@ public final class Converter {
         OpenAPI a = result.getOpenAPI();
         Names names = new Names(a);
         return "@startuml" //
-                + components(a, names) //
-                + paths(a, names) //
+                + components(names) //
+                + paths(names) //
                 + "\n\n@enduml";
     }
     
@@ -94,41 +94,41 @@ public final class Converter {
         }
     }
 
-    private static String paths(OpenAPI a, Names names) {
-        if (a.getPaths() == null) {
+    private static String paths(Names names) {
+        if (names.paths() == null) {
             return "";
         } else {
             return "\nhide <<Method>> circle" //
-                    + a.getPaths() //
+                    + names.paths() //
                             .entrySet() //
                             .stream() //
-                            .map(entry -> toPlantUmlPath(a, entry.getKey(), //
+                            .map(entry -> toPlantUmlPath(entry.getKey(), //
                                     entry.getValue(), names))
                             .collect(Collectors.joining());
         }
     }
 
-    private static String components(OpenAPI a, Names names) {
-        String part1 = nullToEmpty(a.getComponents().getSchemas()) //
+    private static String components(Names names) {
+        String part1 = names.schemas() //
                 .entrySet() //
                 .stream() //
                 .map(entry -> toPlantUmlClass(entry.getKey(), entry.getValue(), names)) //
                 .collect(Collectors.joining());
 
-        String part2 = nullToEmpty(a.getComponents().getRequestBodies()) //
+        String part2 = names.requestBodies() //
                 .entrySet() //
                 .stream() //
                 .map(entry -> toPlantUmlClass(entry.getKey(),
                         first(entry.getValue().getContent()).get().getValue().getSchema(), names)) //
                 .collect(Collectors.joining());
 
-        String part3 = nullToEmpty(a.getComponents().getParameters()) //
+        String part3 = names.parameters() //
                 .entrySet() //
                 .stream() //
                 .map(entry -> toPlantUmlClass(entry.getKey(), entry.getValue().getSchema(), names, Stereotype.PARAMETER)) //
                 .collect(Collectors.joining());
 
-        String part4 = nullToEmpty(a.getComponents().getResponses()) //
+        String part4 = names.responses() //
                 .entrySet() //
                 .stream() //
                 .map(entry -> first(nullToEmpty(entry.getValue().getContent())) //
@@ -139,7 +139,7 @@ public final class Converter {
         return part1 + part2 + part3 + part4;
     }
 
-    private static String toPlantUmlPath(OpenAPI a, String path, PathItem p, Names names) {
+    private static String toPlantUmlPath(String path, PathItem p, Names names) {
         StringBuilder b = new StringBuilder();
         StringBuilder extras = new StringBuilder();
         // add method class blocks with HTTP verb and parameters
@@ -178,7 +178,7 @@ public final class Converter {
                                 .collect(Collectors.joining()));
                     }
                     s.append("\n}");
-                    s.append(toPlantUmlResponses(a, names, operation, className));
+                    s.append(toPlantUmlResponses(names, operation, className));
                     s.append(toPlantUmlRequestBody(className, operation, names));
                     return s.toString();
                 }) //
@@ -228,7 +228,7 @@ public final class Converter {
         }
     }
 
-    private static String toPlantUmlResponses(OpenAPI a, Names names, Operation operation, String className) {
+    private static String toPlantUmlResponses(Names names, Operation operation, String className) {
         return operation //
                 .getResponses() //
                 .entrySet() //
@@ -239,7 +239,7 @@ public final class Converter {
                     ApiResponse r = ent.getValue();
                     while (r.get$ref() != null) {
                         // get the actual response object
-                        r = getResponse(a.getComponents(), r.get$ref());
+                        r = getResponse(names.components(), r.get$ref());
                     }
                     final String newReturnClassName = className + " " + responseCode + " Response";
                     final String returnClassName;
