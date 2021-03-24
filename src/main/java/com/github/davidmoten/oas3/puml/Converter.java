@@ -163,6 +163,9 @@ public final class Converter {
                                     parameterNo[0]++;
                                     String parameterName = param.getName() == null ? "parameter" + parameterNo[0]
                                             : param.getName();
+                                    while (param.get$ref() != null) {
+                                        param  = getParameter(names.components(), param.get$ref());
+                                    }
                                     if (param.getSchema() != null) {
                                         toPlantUmlClass(className + "." + parameterName, param.getSchema(), names,
                                                 Stereotype.PARAMETER);
@@ -188,6 +191,16 @@ public final class Converter {
                 .collect(Collectors.joining()));
         b.append(extras.toString());
         return b.toString();
+    }
+    
+    private static Parameter getParameter(Components components, String ref) {
+        Preconditions.checkNotNull(ref);
+        Reference r = new Reference(ref);
+        if ("#/components/parameters".equals(r.namespace)) {
+            return components.getParameters().get(r.simpleName);
+        } else {
+            throw new RuntimeException("unexpected");
+        }
     }
 
     private static String toPlantUmlRequestBody(String className, Operation operation, Names names) {
