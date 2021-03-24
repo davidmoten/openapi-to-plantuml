@@ -1,4 +1,4 @@
-package com.github.davidmoten.oa2puml.v3;
+package com.github.davidmoten.oas3.puml;
 
 import static org.junit.Assert.assertFalse;
 
@@ -14,6 +14,8 @@ import java.nio.file.Files;
 
 import org.junit.Ignore;
 import org.junit.Test;
+
+import com.github.davidmoten.oas3.puml.Converter;
 
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;

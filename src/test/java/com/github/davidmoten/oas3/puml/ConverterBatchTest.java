@@ -1,4 +1,4 @@
-package com.github.davidmoten.oa2puml.v3;
+package com.github.davidmoten.oas3.puml;
 
 import static org.junit.Assert.assertEquals;
 
@@ -16,6 +16,8 @@ import java.util.Collections;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+
+import com.github.davidmoten.oas3.puml.Converter;
 
 @RunWith(Parameterized.class)
 public class ConverterBatchTest {

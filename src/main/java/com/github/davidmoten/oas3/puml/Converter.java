@@ -1,7 +1,7 @@
-package com.github.davidmoten.oa2puml.v3;
+package com.github.davidmoten.oas3.puml;
 
-import static com.github.davidmoten.oa2puml.v3.Util.first;
-import static com.github.davidmoten.oa2puml.v3.Util.nullToEmpty;
+import static com.github.davidmoten.oas3.puml.Util.first;
+import static com.github.davidmoten.oas3.puml.Util.nullToEmpty;
 
 import java.io.IOException;
 import java.io.InputStream;

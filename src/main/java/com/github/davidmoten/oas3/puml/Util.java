@@ -1,4 +1,4 @@
-package com.github.davidmoten.oa2puml.v3;
+package com.github.davidmoten.oas3.puml;
 
 import java.util.Collections;
 import java.util.Map;

@@ -30,7 +30,8 @@ Add this dependency to your pom.xml:
 ## Usage
 
 ```java
-String puml = Puml.openApiToPuml(openapi);
+import 
+String puml = Convertor.openApiToPuml(openapi);
 ```
 
 ## Examples
