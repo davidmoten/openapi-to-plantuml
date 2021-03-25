@@ -85,6 +85,10 @@
 
 <img src="../../src/docs/tests/array-class-level.puml.svg"/>
 
+* [parameter-ref-ref.yml](../../src/test/resources/inputs/parameter-ref-ref.yml)
+
+<img src="../../src/docs/tests/parameter-ref-ref.puml.svg"/>
+
 * [any-of-anon-class-level.yml](../../src/test/resources/inputs/any-of-anon-class-level.yml)
 
 <img src="../../src/docs/tests/any-of-anon-class-level.puml.svg"/>

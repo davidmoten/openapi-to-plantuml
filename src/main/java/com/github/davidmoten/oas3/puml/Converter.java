@@ -132,6 +132,7 @@ public final class Converter {
         String part3 = names.parameters() //
                 .entrySet() //
                 .stream() //
+                .filter(entry -> entry.getValue().getSchema() != null) //
                 .map(entry -> toPlantUmlClass(names.parameterClassName(entry.getKey()), entry.getValue().getSchema(),
                         names, Stereotype.PARAMETER)) //
                 .collect(joining());
@@ -181,15 +182,30 @@ public final class Converter {
     }
 
     private static String toPlantUmlParameter(Names names, StringBuilder extras, String className, Parameter param) {
-        final String type = getUmlTypeName(param.get$ref(), param.getSchema(), names);
-        while (param.get$ref() != null) {
-            param = getParameter(names.components(), param.get$ref());
+
+        String ref = param.get$ref();
+        Parameter p = param;
+        String previousClass = className;
+        while (p.get$ref() != null) {
+            String r = p.get$ref();
+            p = getParameter(names.components(), r);
+            extras.append("\n\n" + quote(previousClass) + CLASS_RELATIONSHIP_RIGHT_ARROW + quote("1") + SPACE
+                    + quote(names.refToClassName(r)));
+            if (p.get$ref() != null) {
+                previousClass = names.refToClassName(p.get$ref());
+            } 
         }
-        String parameterName = param.getName();
+        String parameterName = p.getName();
+        if (ref != null) {
+//            extras.append("\n\n" + quote(className) + CLASS_RELATIONSHIP_RIGHT_ARROW + quote("1") + SPACE
+//                    + quote(names.refToClassName(ref)) + " : " + quote(parameterName));
+//            return "";
+        }
         if (param.getSchema() != null) {
             toPlantUmlClass(className + "." + parameterName, param.getSchema(), names, Stereotype.PARAMETER);
         }
         // TODO else get schema from content
+        final String type = getUmlTypeName(param.get$ref(), param.getSchema(), names);
         if (isSimpleType(type)) {
             final String optional = param.getRequired() != null && param.getRequired() ? "" : " {O}";
             return "\n" + "  " + parameterName + " : " + type + optional;

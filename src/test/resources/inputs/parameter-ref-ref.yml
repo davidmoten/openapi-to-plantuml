@@ -25,9 +25,11 @@ components:
           type: string
   parameters:
     CustomerId:
-      name: customerId
+      $ref: '#/components/parameters/Id'
+    Id:
+      name: id
       in: query
-      description: Unique identification of customer resource
+      description: Unique identification of resource
       required: true
       schema:
         type: string
