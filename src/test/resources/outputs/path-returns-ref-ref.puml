@@ -1,0 +1,35 @@
+@startuml
+set namespaceSeparator none
+
+class "Customers" {
+}
+
+"Customers" --> "*" "Customer"
+
+class "Customer" {
+  firstName : string
+  lastName : string
+  heightMetres : decimal {O}
+  dateOfBirth : date
+  lastSessionTime : timestamp {O}
+  numberOfChildren : integer {O}
+  alive : boolean {O}
+  nicknames : string[] {O}
+  favouriteNumbers : integer[] {O}
+  picture : byte[] {O}
+}
+
+class "Customers.1" <<Response>> {
+  --
+<i>application/json</i>
+}
+
+"Customers.1" --> "*" "Customer"
+hide <<Method>> circle
+
+class "GET /customer/expired" <<Method>> {
+}
+
+"GET /customer/expired" ..> "Customers.1": 200
+
+@enduml
