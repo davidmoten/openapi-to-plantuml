@@ -182,19 +182,25 @@ public final class Converter {
     }
 
     private static String toPlantUmlParameter(Names names, StringBuilder extras, String className, Parameter param) {
-
         String ref = param.get$ref();
         Parameter p = param;
         String previousClass = className;
-        while (p.get$ref() != null) {
-            String r = p.get$ref();
-            p = getParameter(names.components(), r);
-            extras.append("\n\n" + quote(previousClass) + CLASS_RELATIONSHIP_RIGHT_ARROW + quote("1") + SPACE
-                    + quote(names.refToClassName(r)));
-            if (p.get$ref() != null) {
-                previousClass = names.refToClassName(p.get$ref());
-            } 
+        if (p.get$ref() != null) {
+            while (p.get$ref() != null) {
+                System.out.println(p);
+                String r = p.get$ref();
+                p = getParameter(names.components(), r);
+                extras.append("\n\n" + quote(previousClass) + CLASS_RELATIONSHIP_RIGHT_ARROW + quote("1") + SPACE
+                        + quote(names.refToClassName(r)));
+                if (p.get$ref() != null) {
+                    previousClass = names.refToClassName(p.get$ref());
+                } else {
+                    extras.append("\n\n" + quote(previousClass) + CLASS_RELATIONSHIP_RIGHT_ARROW + quote("1") + SPACE
+                            + quote(names.parameterClassName(p)));
+                }
+            }
         }
+        // end of parameter ref chain will have the parameter name
         String parameterName = p.getName();
         if (ref != null) {
 //            extras.append("\n\n" + quote(className) + CLASS_RELATIONSHIP_RIGHT_ARROW + quote("1") + SPACE
@@ -207,11 +213,11 @@ public final class Converter {
         // TODO else get schema from content
         final String type = getUmlTypeName(param.get$ref(), param.getSchema(), names);
         if (isSimpleType(type)) {
-            final String optional = param.getRequired() != null && param.getRequired() ? "" : " {O}";
+            final String optional = p.getRequired() != null && p.getRequired() ? "" : " {O}";
             return "\n" + "  " + parameterName + " : " + type + optional;
         } else {
-            extras.append("\n\n" + quote(className) + CLASS_RELATIONSHIP_RIGHT_ARROW + quote("1") + SPACE + quote(type)
-                    + " : " + quote(parameterName));
+            extras.append("\n\n" + quote(previousClass) + CLASS_RELATIONSHIP_RIGHT_ARROW + quote("1") + SPACE
+                    + quote(type) + " : " + quote(parameterName));
             return "";
         }
     }
