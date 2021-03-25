@@ -132,9 +132,19 @@ public final class Converter {
         String part3 = names.parameters() //
                 .entrySet() //
                 .stream() //
-                .filter(entry -> entry.getValue().getSchema() != null) //
-                .map(entry -> toPlantUmlClass(names.parameterClassName(entry.getKey()), entry.getValue().getSchema(),
-                        names, Stereotype.PARAMETER)) //
+                .map(entry -> {
+                    Parameter p = entry.getValue();
+                    String className = names.parameterClassName(p);
+                    String ref = p.get$ref();
+                    if (ref != null) {
+                        String otherClassName = names.refToClassName(ref);
+                        System.out.println(className + "->" + otherClassName);
+                        return "\n" + quote(className) + CLASS_RELATIONSHIP_RIGHT_ARROW + SPACE + quote("1") + SPACE + quote(otherClassName);
+                    } else {
+                        System.out.println("parameter " + className);
+                        return toPlantUmlClass(className, p.getSchema(), names, Stereotype.PARAMETER);
+                    }
+                }) //
                 .collect(joining());
 
         String part4 = names.responses() //
@@ -183,29 +193,25 @@ public final class Converter {
 
     private static String toPlantUmlParameter(Names names, StringBuilder extras, String className, Parameter param) {
         String ref = param.get$ref();
-        Parameter p = param;
-        String previousClass = className;
-        if (p.get$ref() != null) {
+        String parameterName = param.getName();
+        Boolean required = param.getRequired();
+        if (ref != null) {
+            // resolve the parameter ref chain so we can get the parameter `name` and
+            // `required` fields
+            Parameter p = param;
             while (p.get$ref() != null) {
-                System.out.println(p);
                 String r = p.get$ref();
                 p = getParameter(names.components(), r);
-                extras.append("\n\n" + quote(previousClass) + CLASS_RELATIONSHIP_RIGHT_ARROW + quote("1") + SPACE
-                        + quote(names.refToClassName(r)));
-                if (p.get$ref() != null) {
-                    previousClass = names.refToClassName(p.get$ref());
-                } else {
-                    extras.append("\n\n" + quote(previousClass) + CLASS_RELATIONSHIP_RIGHT_ARROW + quote("1") + SPACE
-                            + quote(names.parameterClassName(p)));
-                }
             }
+            // override name with name from last ref
+            parameterName = p.getName();
+            required = p.getRequired();
         }
-        // end of parameter ref chain will have the parameter name
-        String parameterName = p.getName();
+
         if (ref != null) {
-//            extras.append("\n\n" + quote(className) + CLASS_RELATIONSHIP_RIGHT_ARROW + quote("1") + SPACE
-//                    + quote(names.refToClassName(ref)) + " : " + quote(parameterName));
-//            return "";
+            extras.append("\n\n" + quote(className) + CLASS_RELATIONSHIP_RIGHT_ARROW + quote("1") + SPACE
+                    + quote(names.refToClassName(ref)) + " : " + quote(parameterName));
+            return "";
         }
         if (param.getSchema() != null) {
             toPlantUmlClass(className + "." + parameterName, param.getSchema(), names, Stereotype.PARAMETER);
@@ -213,11 +219,11 @@ public final class Converter {
         // TODO else get schema from content
         final String type = getUmlTypeName(param.get$ref(), param.getSchema(), names);
         if (isSimpleType(type)) {
-            final String optional = p.getRequired() != null && p.getRequired() ? "" : " {O}";
+            final String optional = required != null && required ? "" : " {O}";
             return "\n" + "  " + parameterName + " : " + type + optional;
         } else {
-            extras.append("\n\n" + quote(previousClass) + CLASS_RELATIONSHIP_RIGHT_ARROW + quote("1") + SPACE
-                    + quote(type) + " : " + quote(parameterName));
+            extras.append("\n\n" + quote(className) + CLASS_RELATIONSHIP_RIGHT_ARROW + quote("1") + SPACE + quote(type)
+                    + " : " + quote(parameterName));
             return "";
         }
     }
