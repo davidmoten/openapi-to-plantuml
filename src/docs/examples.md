@@ -57,6 +57,10 @@
 
 <img src="../../src/docs/tests/all-of-class-level.puml.svg"/>
 
+* [path-returns-ref-ref2.yml](../../src/test/resources/inputs/path-returns-ref-ref2.yml)
+
+<img src="../../src/docs/tests/path-returns-ref-ref2.puml.svg"/>
+
 * [anon-property-required.yml](../../src/test/resources/inputs/anon-property-required.yml)
 
 <img src="../../src/docs/tests/anon-property-required.puml.svg"/>
