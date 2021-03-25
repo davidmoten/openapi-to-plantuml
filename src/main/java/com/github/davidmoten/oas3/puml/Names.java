@@ -50,7 +50,22 @@ public final class Names {
             });
         }
     }
-
+    
+    public String schemaClassName(String simpleName) {
+        return refToClassName("#/components/schemas/" + simpleName);
+    }
+    
+    public String requestBodyClassName(String simpleName) {
+        return refToClassName("#/components/requestBodies/" + simpleName);
+    }
+    
+    public String responseClassName(String simpleName) {
+        return refToClassName("#/components/responses/" + simpleName);
+    }
+    public String parameterClassName(String simpleName) {
+        return refToClassName("#/components/parameters/" + simpleName);
+    }
+    
     public String refToClassName(String ref) {
         Preconditions.checkNotNull(ref);
         String className = refClassNames.get(ref);

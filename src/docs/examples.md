@@ -25,6 +25,10 @@
 
 <img src="../../src/docs/tests/any-of-anon-property-level.puml.svg"/>
 
+* [path-returns-ref-ref.yml](../../src/test/resources/inputs/path-returns-ref-ref.yml)
+
+<img src="../../src/docs/tests/path-returns-ref-ref.puml.svg"/>
+
 * [simple-has-refs.yml](../../src/test/resources/inputs/simple-has-refs.yml)
 
 <img src="../../src/docs/tests/simple-has-refs.puml.svg"/>

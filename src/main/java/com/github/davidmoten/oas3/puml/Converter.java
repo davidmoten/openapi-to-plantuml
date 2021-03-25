@@ -117,29 +117,30 @@ public final class Converter {
         String part1 = names.schemas() //
                 .entrySet() //
                 .stream() //
-                .map(entry -> toPlantUmlClass(entry.getKey(), entry.getValue(), names)) //
+                .map(entry -> toPlantUmlClass(names.schemaClassName(entry.getKey()),
+                        entry.getValue(), names)) //
                 .collect(joining());
 
         String part2 = names.requestBodies() //
                 .entrySet() //
                 .stream() //
-                .map(entry -> toPlantUmlClass(entry.getKey(),
+                .map(entry -> toPlantUmlClass(names.requestBodyClassName(entry.getKey()),
                         first(entry.getValue().getContent()).get().getValue().getSchema(), names)) //
                 .collect(joining());
 
         String part3 = names.parameters() //
                 .entrySet() //
                 .stream() //
-                .map(entry -> toPlantUmlClass(entry.getKey(), entry.getValue().getSchema(), names,
-                        Stereotype.PARAMETER)) //
+                .map(entry -> toPlantUmlClass(names.parameterClassName(entry.getKey()), entry.getValue().getSchema(),
+                        names, Stereotype.PARAMETER)) //
                 .collect(joining());
 
         String part4 = names.responses() //
                 .entrySet() //
                 .stream() //
                 .map(entry -> first(nullMapToEmpty(entry.getValue().getContent())) //
-                        .map(x -> toPlantUmlClass(entry.getKey(), x.getValue().getSchema(), names,
-                                singletonList(Stereotype.RESPONSE.toString()), singletonList(x.getKey()))) //
+                        .map(x -> toPlantUmlClass(names.responseClassName(entry.getKey()), x.getValue().getSchema(),
+                                names, singletonList(Stereotype.RESPONSE.toString()), singletonList(x.getKey()))) //
                         .orElse("")) //
                 .collect(joining());
 
