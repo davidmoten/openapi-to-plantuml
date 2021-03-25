@@ -1,4 +1,7 @@
 @startuml
+hide <<Method>> circle
+hide empty methods
+hide empty fields
 set namespaceSeparator none
 
 class "Pet" {
@@ -16,7 +19,6 @@ class "Error" {
   code : integer
   message : string
 }
-hide <<Method>> circle
 
 class "GET /pets" <<Method>> {
   limit : integer {O}

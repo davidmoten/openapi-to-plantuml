@@ -1,4 +1,7 @@
 @startuml
+hide <<Method>> circle
+hide empty methods
+hide empty fields
 set namespaceSeparator none
 
 class "Customer" {
@@ -20,7 +23,6 @@ class "Customers" <<Response>> {
 }
 
 "Customers" --> "*" "Customer"
-hide <<Method>> circle
 
 class "GET /customer/expired" <<Method>> {
 }

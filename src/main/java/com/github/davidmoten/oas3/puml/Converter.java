@@ -79,6 +79,9 @@ public final class Converter {
         OpenAPI a = result.getOpenAPI();
         Names names = new Names(a);
         return "@startuml" //
+                + "\nhide <<Method>> circle" //
+                + "\nhide empty methods" //
+                + "\nhide empty fields" //
                 + "\nset namespaceSeparator none" + components(names) //
                 + paths(names) //
                 + "\n\n@enduml";
@@ -103,13 +106,12 @@ public final class Converter {
         if (names.paths() == null) {
             return "";
         } else {
-            return "\nhide <<Method>> circle" //
-                    + names.paths() //
-                            .entrySet() //
-                            .stream() //
-                            .map(entry -> toPlantUmlPath(entry.getKey(), //
-                                    entry.getValue(), names))
-                            .collect(joining());
+            return names.paths() //
+                    .entrySet() //
+                    .stream() //
+                    .map(entry -> toPlantUmlPath(entry.getKey(), //
+                            entry.getValue(), names))
+                    .collect(joining());
         }
     }
 
@@ -117,8 +119,7 @@ public final class Converter {
         String part1 = names.schemas() //
                 .entrySet() //
                 .stream() //
-                .map(entry -> toPlantUmlClass(names.schemaClassName(entry.getKey()),
-                        entry.getValue(), names)) //
+                .map(entry -> toPlantUmlClass(names.schemaClassName(entry.getKey()), entry.getValue(), names)) //
                 .collect(joining());
 
         String part2 = names.requestBodies() //
@@ -303,16 +304,6 @@ public final class Converter {
         Reference(String ref) {
             this.namespace = ref.substring(0, ref.lastIndexOf("/"));
             this.simpleName = ref.substring(ref.lastIndexOf("/") + 1);
-        }
-    }
-
-    private static ApiResponse getResponse(Components components, String ref) {
-        Preconditions.checkNotNull(ref);
-        Reference r = new Reference(ref);
-        if ("#/components/responses".equals(r.namespace)) {
-            return components.getResponses().get(r.simpleName);
-        } else {
-            throw new RuntimeException("unexpected");
         }
     }
 
