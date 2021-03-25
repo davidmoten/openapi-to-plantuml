@@ -61,6 +61,10 @@
 
 <img src="../../src/docs/tests/path-returns-ref-ref2.puml.svg"/>
 
+* [parameter-ref-complex.yml](../../src/test/resources/inputs/parameter-ref-complex.yml)
+
+<img src="../../src/docs/tests/parameter-ref-complex.puml.svg"/>
+
 * [anon-property-required.yml](../../src/test/resources/inputs/anon-property-required.yml)
 
 <img src="../../src/docs/tests/anon-property-required.puml.svg"/>
@@ -72,10 +76,6 @@
 * [anon-nested-class-level.yml](../../src/test/resources/inputs/anon-nested-class-level.yml)
 
 <img src="../../src/docs/tests/anon-nested-class-level.puml.svg"/>
-
-* [components-parameter.yml](../../src/test/resources/inputs/components-parameter.yml)
-
-<img src="../../src/docs/tests/components-parameter.puml.svg"/>
 
 * [petstore.yml](../../src/test/resources/inputs/petstore.yml)
 
@@ -89,10 +89,10 @@
 
 <img src="../../src/docs/tests/any-of-anon-class-level.puml.svg"/>
 
+* [parameter-ref.yml](../../src/test/resources/inputs/parameter-ref.yml)
+
+<img src="../../src/docs/tests/parameter-ref.puml.svg"/>
+
 * [any-of-property-level.yml](../../src/test/resources/inputs/any-of-property-level.yml)
 
 <img src="../../src/docs/tests/any-of-property-level.puml.svg"/>
-
-* [components-parameter-complex.yml](../../src/test/resources/inputs/components-parameter-complex.yml)
-
-<img src="../../src/docs/tests/components-parameter-complex.puml.svg"/>
