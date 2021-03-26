@@ -168,6 +168,7 @@ public final class Converter {
         String part4 = names.responses() //
                 .entrySet() //
                 .stream() //
+                //TODO handle ref responses as per parameters and request bodies above
                 .map(entry -> first(nullMapToEmpty(entry.getValue().getContent())) //
                         .map(x -> toPlantUmlClass(names.responseClassName(entry.getKey()), x.getValue().getSchema(),
                                 names, singletonList(Stereotype.RESPONSE.toString()), singletonList(x.getKey()))) //
