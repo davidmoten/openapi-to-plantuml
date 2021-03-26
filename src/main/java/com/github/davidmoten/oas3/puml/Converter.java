@@ -134,9 +134,9 @@ public final class Converter {
                     String ref = b.get$ref();
                     if (ref != null) {
                         String otherClassName = names.refToClassName(ref);
-                        String classDefinition = NL + "class "+ quote(className) + Stereotype.REQUEST_BODY + "{}";
-                        return classDefinition + NL + quote(className) + CLASS_RELATIONSHIP_RIGHT_ARROW + SPACE + quote("1") + SPACE
-                                + quote(otherClassName);
+                        String classDefinition = NL + "class " + quote(className) + Stereotype.REQUEST_BODY + "{}";
+                        return classDefinition + NL + quote(className) + CLASS_RELATIONSHIP_RIGHT_ARROW + SPACE
+                                + quote("1") + SPACE + quote(otherClassName);
                     } else {
                         return toPlantUmlClass(names.requestBodyClassName(entry.getKey()),
                                 first(entry.getValue().getContent()).get().getValue().getSchema(), names,
@@ -153,9 +153,12 @@ public final class Converter {
                     String className = names.parameterClassName(p);
                     String ref = p.get$ref();
                     if (ref != null) {
+                        String classDefinition = NL + NL + "class " + quote(className) + SPACE + Stereotype.PARAMETER
+                                + "{}";
                         String otherClassName = names.refToClassName(ref);
-                        return "\n" + quote(className) + CLASS_RELATIONSHIP_RIGHT_ARROW + SPACE + quote("1") + SPACE
-                                + quote(otherClassName);
+                        String relationship = NL + NL + quote(className) + CLASS_RELATIONSHIP_RIGHT_ARROW + SPACE
+                                + quote("1") + SPACE + quote(otherClassName);
+                        return classDefinition + relationship;
                     } else {
                         return toPlantUmlClass(className, p.getSchema(), names, Stereotype.PARAMETER);
                     }

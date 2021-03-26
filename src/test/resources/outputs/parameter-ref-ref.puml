@@ -8,6 +8,9 @@ class "Customer" {
   firstName : string {O}
   lastName : string {O}
 }
+
+class "CustomerId" <<Parameter>>{}
+
 "CustomerId" -->  "1" "Id"
 
 class "Id" <<Parameter>> {
