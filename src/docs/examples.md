@@ -5,6 +5,10 @@
 
 <img src="../../src/docs/tests/petstore-expanded.puml.svg"/>
 
+* [request-body-ref.yml](../../src/test/resources/inputs/request-body-ref.yml)
+
+<img src="../../src/docs/tests/request-body-ref.puml.svg"/>
+
 * [any-of-class-level.yml](../../src/test/resources/inputs/any-of-class-level.yml)
 
 <img src="../../src/docs/tests/any-of-class-level.puml.svg"/>

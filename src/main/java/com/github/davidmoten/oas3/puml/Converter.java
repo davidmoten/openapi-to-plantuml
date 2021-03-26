@@ -54,6 +54,8 @@ public final class Converter {
     private static final String CLASS_RELATIONSHIP_RIGHT_ARROW = " --> ";
     private static final String INHERITANCE_LEFT_ARROW = " <|-- ";
     private static final String SPACE = " ";
+    private static final String ONE = " \"1\" ";
+    private static final String NL = "\n";
 
     // TODO make enum
     private static final Set<String> simpleTypesWithoutBrackets = Sets.newHashSet("string", "decimal", "integer",
@@ -126,7 +128,8 @@ public final class Converter {
                 .entrySet() //
                 .stream() //
                 .map(entry -> toPlantUmlClass(names.requestBodyClassName(entry.getKey()),
-                        first(entry.getValue().getContent()).get().getValue().getSchema(), names)) //
+                        first(entry.getValue().getContent()).get().getValue().getSchema(), names,
+                        singletonList(Stereotype.REQUEST_BODY.toString()), Collections.emptyList())) //
                 .collect(joining());
 
         String part3 = names.parameters() //
@@ -139,7 +142,8 @@ public final class Converter {
                     if (ref != null) {
                         String otherClassName = names.refToClassName(ref);
                         System.out.println(className + "->" + otherClassName);
-                        return "\n" + quote(className) + CLASS_RELATIONSHIP_RIGHT_ARROW + SPACE + quote("1") + SPACE + quote(otherClassName);
+                        return "\n" + quote(className) + CLASS_RELATIONSHIP_RIGHT_ARROW + SPACE + quote("1") + SPACE
+                                + quote(otherClassName);
                     } else {
                         System.out.println("parameter " + className);
                         return toPlantUmlClass(className, p.getSchema(), names, Stereotype.PARAMETER);
@@ -241,8 +245,9 @@ public final class Converter {
     private static String toPlantUmlRequestBody(String className, Operation operation, Names names) {
         RequestBody body = operation.getRequestBody();
         if (body != null) {
-            while (body.get$ref() != null) {
-                body = getRequestBody(names.components(), body.get$ref());
+            String ref = body.get$ref();
+            if (ref != null) {
+                return NL + quote(className) + CLASS_RELATIONSHIP_RIGHT_ARROW + ONE + quote(names.refToClassName(ref));
             }
             Content content = body.getContent();
             if (content != null) {
@@ -268,16 +273,6 @@ public final class Converter {
             }
         }
         return "";
-    }
-
-    private static RequestBody getRequestBody(Components components, String ref) {
-        Preconditions.checkNotNull(ref);
-        Reference r = new Reference(ref);
-        if ("#/components/requestBodies".equals(r.namespace)) {
-            return components.getRequestBodies().get(r.simpleName);
-        } else {
-            throw new RuntimeException("unexpected");
-        }
     }
 
     private static String toPlantUmlResponses(Names names, Operation operation, String className) {
@@ -395,7 +390,7 @@ public final class Converter {
         if (schema.get$ref() != null) {
             // this is an alias case for a schema
             String otherClassName = names.refToClassName(schema.get$ref());
-            relationships.add(quote(name) + CLASS_RELATIONSHIP_RIGHT_ARROW + "\"1\"" + quote(otherClassName));
+            relationships.add(quote(name) + CLASS_RELATIONSHIP_RIGHT_ARROW + ONE + quote(otherClassName));
         } else if (schema instanceof ComposedSchema) {
             ComposedSchema s = (ComposedSchema) schema;
             if (s.getOneOf() != null) {
