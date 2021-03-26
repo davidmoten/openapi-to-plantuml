@@ -77,6 +77,10 @@
 
 <img src="../../src/docs/tests/path-returns-ref.puml.svg"/>
 
+* [request-body-ref-ref.yml](../../src/test/resources/inputs/request-body-ref-ref.yml)
+
+<img src="../../src/docs/tests/request-body-ref-ref.puml.svg"/>
+
 * [anon-nested-class-level.yml](../../src/test/resources/inputs/anon-nested-class-level.yml)
 
 <img src="../../src/docs/tests/anon-nested-class-level.puml.svg"/>

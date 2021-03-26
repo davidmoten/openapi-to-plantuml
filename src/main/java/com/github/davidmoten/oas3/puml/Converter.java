@@ -84,7 +84,8 @@ public final class Converter {
                 + "\nhide <<Method>> circle" //
                 + "\nhide empty methods" //
                 + "\nhide empty fields" //
-                + "\nset namespaceSeparator none" + components(names) //
+                + "\nset namespaceSeparator none" //
+                + components(names) //
                 + paths(names) //
                 + "\n\n@enduml";
     }
@@ -127,9 +128,21 @@ public final class Converter {
         String part2 = names.requestBodies() //
                 .entrySet() //
                 .stream() //
-                .map(entry -> toPlantUmlClass(names.requestBodyClassName(entry.getKey()),
-                        first(entry.getValue().getContent()).get().getValue().getSchema(), names,
-                        singletonList(Stereotype.REQUEST_BODY.toString()), Collections.emptyList())) //
+                .map(entry -> {
+                    RequestBody b = entry.getValue();
+                    String className = names.requestBodyClassName(b);
+                    String ref = b.get$ref();
+                    if (ref != null) {
+                        String otherClassName = names.refToClassName(ref);
+                        String classDefinition = NL + "class "+ quote(className) + Stereotype.REQUEST_BODY + "{}";
+                        return classDefinition + NL + quote(className) + CLASS_RELATIONSHIP_RIGHT_ARROW + SPACE + quote("1") + SPACE
+                                + quote(otherClassName);
+                    } else {
+                        return toPlantUmlClass(names.requestBodyClassName(entry.getKey()),
+                                first(entry.getValue().getContent()).get().getValue().getSchema(), names,
+                                singletonList(Stereotype.REQUEST_BODY.toString()), Collections.emptyList());
+                    }
+                }) //
                 .collect(joining());
 
         String part3 = names.parameters() //
@@ -141,11 +154,9 @@ public final class Converter {
                     String ref = p.get$ref();
                     if (ref != null) {
                         String otherClassName = names.refToClassName(ref);
-                        System.out.println(className + "->" + otherClassName);
                         return "\n" + quote(className) + CLASS_RELATIONSHIP_RIGHT_ARROW + SPACE + quote("1") + SPACE
                                 + quote(otherClassName);
                     } else {
-                        System.out.println("parameter " + className);
                         return toPlantUmlClass(className, p.getSchema(), names, Stereotype.PARAMETER);
                     }
                 }) //

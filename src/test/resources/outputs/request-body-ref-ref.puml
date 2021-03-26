@@ -1,0 +1,37 @@
+@startuml
+hide <<Method>> circle
+hide empty methods
+hide empty fields
+set namespaceSeparator none
+
+class "Customer" {
+  firstName : string
+  lastName : string
+  heightMetres : decimal {O}
+  dateOfBirth : date
+  lastSessionTime : timestamp {O}
+  numberOfChildren : integer {O}
+  alive : boolean {O}
+  nicknames : string[] {O}
+  favouriteNumbers : integer[] {O}
+  picture : byte[] {O}
+}
+class "repositories"<<Request Body>>{}
+"repositories" -->  "1" "repositoriesAlt"
+
+class "repositoriesAlt" <<Request Body>> {
+  repository_ids : integer[] {O}
+}
+
+class "GET /customer/expired" <<Method>> {
+}
+
+class "GET /customer/expired 200 Response" <<Response>> {
+}
+
+"GET /customer/expired 200 Response" --> "*" "Customer"
+
+"GET /customer/expired" ..> "GET /customer/expired 200 Response": 200
+"GET /customer/expired" -->  "1" "repositories"
+
+@enduml

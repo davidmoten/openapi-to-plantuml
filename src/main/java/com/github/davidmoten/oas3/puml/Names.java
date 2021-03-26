@@ -66,13 +66,23 @@ public final class Names {
     public String parameterClassName(String simpleName) {
         return refToClassName("#/components/parameters/" + simpleName);
     }
+    
+    public String requestBodyClassName(RequestBody b) {
+        return nullMapToEmpty(components().getRequestBodies()) //
+                .entrySet() //
+                .stream() //
+                .filter(entry -> entry.getValue() == b) //
+                .map(entry -> requestBodyClassName(entry.getKey())) //
+                .findFirst() //
+                .orElseThrow(() -> new RuntimeException("cound not find " + b));
+    }
 
     public String parameterClassName(Parameter p) {
         return nullMapToEmpty(components().getParameters()) //
                 .entrySet() //
                 .stream() //
                 .filter(entry -> entry.getValue() == p) //
-                .map(entry -> refToClassName("#/components/parameters/" + entry.getKey())) //
+                .map(entry -> parameterClassName(entry.getKey())) //
                 .findFirst() //
                 .orElseThrow(() -> new RuntimeException("cound not find " + p));
     }
