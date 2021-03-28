@@ -32,5 +32,9 @@ public final class Util {
     public static <T, S> Optional<Entry<T, S>> first(Map<T, S> map) {
         return map.entrySet().stream().findFirst();
     }
+    
+    public static String quote(String s) {
+        return "\"" + s + "\"";
+    }
 
 }
