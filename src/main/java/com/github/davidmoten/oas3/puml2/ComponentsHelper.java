@@ -19,7 +19,7 @@ public final class ComponentsHelper {
                 .entrySet() //
                 .stream() //
                 .map(entry -> Common.toModelClass(names.schemaClassName(entry.getKey()),
-                        entry.getValue(), names)) //
+                        entry.getValue(), names, ClassType.SCHEMA)) //
                 .reduce(Model.EMPTY, (a, b) -> a.add(b));
 
         Model part2 = names.requestBodies() //
@@ -38,7 +38,7 @@ public final class ComponentsHelper {
                     } else {
                         return Common.toModelClass(names.requestBodyClassName(entry.getKey()),
                                 first(entry.getValue().getContent()).get().getValue().getSchema(),
-                                names, Stereotype.REQUEST_BODY);
+                                names, ClassType.REQUEST_BODY);
                     }
                 }) //
                 .reduce(Model.EMPTY,(a, b) -> a.add(b));
@@ -57,7 +57,7 @@ public final class ComponentsHelper {
                         return new Model(c, a);
                     } else {
                         return Common.toModelClass(className, p.getSchema(), names,
-                                Stereotype.PARAMETER);
+                                ClassType.PARAMETER);
                     }
                 }) //
                 .reduce(Model.EMPTY,(a,b) -> a.add(b));
@@ -69,7 +69,7 @@ public final class ComponentsHelper {
                 .map(entry -> first(nullMapToEmpty(entry.getValue().getContent())) //
                         .map(x -> Common.toModelClass(names.responseClassName(entry.getKey()),
                                 x.getValue().getSchema(), names,
-                                Stereotype.RESPONSE)) //
+                                ClassType.RESPONSE)) //
                         .orElse(Model.EMPTY)) //
                 .reduce(Model.EMPTY,(a,b)-> a.add(b));
         return part1.add(part2).add(part3).add(part4);

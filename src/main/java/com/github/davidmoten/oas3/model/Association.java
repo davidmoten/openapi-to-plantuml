@@ -14,7 +14,7 @@ public final class Association implements Relationship {
         this.type = type;
         this.label = label;
     }
-    
+
     public String from() {
         return from;
     }
@@ -30,7 +30,7 @@ public final class Association implements Relationship {
     public Optional<String> label() {
         return label;
     }
-    
+
     @Override
     public String toString() {
         StringBuilder b = new StringBuilder();
@@ -56,8 +56,10 @@ public final class Association implements Relationship {
         private String to;
         public AssociationType type;
         public Optional<String> label = Optional.empty();
+        public Optional<String> responseCode = Optional.empty();
+        public Optional<String> responseContentType;
 
-        public Builder(String from) {
+        Builder(String from) {
             this.from = from;
         }
 
@@ -72,7 +74,7 @@ public final class Association implements Relationship {
 
         private final Builder b;
 
-        public Builder2(Builder b) {
+        Builder2(Builder b) {
             this.b = b;
         }
 
@@ -99,7 +101,7 @@ public final class Association implements Relationship {
 
         private final Builder b;
 
-        public Builder3(Builder b) {
+        Builder3(Builder b) {
             this.b = b;
         }
 
@@ -107,13 +109,24 @@ public final class Association implements Relationship {
             return new Association(b.from, b.to, b.type, b.label);
         }
 
-        public Builder3 label(String label) {
-            return label(Optional.of(label));
+        public Builder3 propertyOrParameterName(String label) {
+            return propertyOrParameterName(Optional.of(label));
         }
 
-        public Builder3 label(Optional<String> label) {
+        public Builder3 responseCode(String responseCode) {
+            b.responseCode = Optional.of(responseCode);
+            return this;
+        }
+
+        public Builder3 responseContentType(String responseContentType) {
+            b.responseContentType = Optional.of(responseContentType);
+            return this;
+        }
+
+        public Builder3 propertyOrParameterName(Optional<String> label) {
             b.label = label;
             return this;
         }
     }
+
 }

@@ -39,16 +39,8 @@ public class Common {
     private static final Set<String> simpleTypesWithoutBrackets = Sets.newHashSet("string",
             "decimal", "integer", "byte", "date", "boolean", "timestamp");
 
-    static Model toModelClass(String name, Schema<?> schema, Names names) {
-        return toModelClass(name, schema, names, Optional.empty());
-    }
-
-    static Model toModelClass(String name, Schema<?> schema, Names names, Stereotype stereotype) {
-        return toModelClass(name, schema, names, Optional.of(stereotype.toString()));
-    }
-
     static Model toModelClass(String name, Schema<?> schema, Names names,
-            Optional<String> classStereotype) {
+            ClassType classType) {
         List<Field> fields = new ArrayList<>();
 
         List<Relationship> relationships = new ArrayList<>();
@@ -122,7 +114,7 @@ public class Common {
                     } else if (type.equals("object")) {
                         // create anon class
                         String otherClassName = names.nextClassName(name + "." + property);
-                        Model m = toModelClass(otherClassName, entry.getValue(), names);
+                        Model m = toModelClass(otherClassName, entry.getValue(), names, ClassType.SCHEMA);
                         classes.addAll(m.classes());
                         relationships.addAll(m.relationships());
                         addToOne(relationships, name, otherClassName, property,
@@ -143,7 +135,7 @@ public class Common {
             } else {
                 // create anon class
                 otherClassName = names.nextClassName(name);
-                Model m = toModelClass(otherClassName, items, names);
+                Model m = toModelClass(otherClassName, items, names, ClassType.SCHEMA);
                 classes.addAll(m.classes());
                 relationships.addAll(m.relationships());
             }
@@ -182,7 +174,7 @@ public class Common {
         } else {
             // create anon class
             otherClassName = names.nextClassName(name + (property == null ? "" : "." + property));
-            Model m = toModelClass(otherClassName, items, names);
+            Model m = toModelClass(otherClassName, items, names,ClassType.SCHEMA);
             classes.addAll(m.classes());
             relationships.addAll(m.relationships());
         }
@@ -228,7 +220,7 @@ public class Common {
                     } else {
                         String className = names
                                 .nextClassName(name + (property == null ? "" : "." + property));
-                        Model m = toModelClass(className, s, names);
+                        Model m = toModelClass(className, s, names, ClassType.SCHEMA);
                         classes.addAll(m.classes());
                         relationships.addAll(m.relationships());
                         return className;
@@ -243,9 +235,9 @@ public class Common {
     }
 
     private static void addToMany(List<Relationship> relationships, String name,
-            String otherClassName, String field) {
+            String otherClassName, String property) {
         relationships.add(Association.from(name).to(otherClassName).type(AssociationType.MANY)
-                .label(Optional.ofNullable(field)).build());
+                .propertyOrParameterName(Optional.ofNullable(property)).build());
     }
 
     private static void addToOne(List<Relationship> relationships, String name,
@@ -254,7 +246,7 @@ public class Common {
                 .from(name) //
                 .to(otherClassName) //
                 .type(isToOne ? AssociationType.ONE : AssociationType.ZERO_ONE) //
-                .label((property == null || property.equals(otherClassName)) ? Optional.empty()
+                .propertyOrParameterName((property == null || property.equals(otherClassName)) ? Optional.empty()
                         : Optional.of(property)) //
                 .build());
     }

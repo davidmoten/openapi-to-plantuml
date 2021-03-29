@@ -29,6 +29,10 @@ import io.swagger.v3.oas.models.responses.ApiResponse;
 
 public final class PathsHelper {
 
+    private PathsHelper() {
+        // prevent instantiation
+    }
+
     public static Model toModel(Names names) {
         return paths(names);
     }
@@ -55,8 +59,7 @@ public final class PathsHelper {
                 .map(entry -> {
                     Operation operation = entry.getValue();
                     String className = entry.getKey() + " " + path;
-                    FieldsWithModel f = toPlantUmlParameters(names, className,
-                            operation.getParameters());
+                    FieldsWithModel f = toPlantUmlParameters(names, className, operation.getParameters());
                     Model m = new Model(new Class(className, ClassType.METHOD, f.fields));
                     m = m.add(toPlantUmlResponses(names, operation, className));
                     return m.add(toPlantUmlRequestBody(className, operation, names));
@@ -64,8 +67,7 @@ public final class PathsHelper {
                 .reduce(Model.EMPTY, (a, b) -> a.add(b));
     }
 
-    private static FieldsWithModel toPlantUmlParameters(Names names, String className,
-            List<Parameter> parameters) {
+    private static FieldsWithModel toPlantUmlParameters(Names names, String className, List<Parameter> parameters) {
         return nullListToEmpty(parameters) //
                 .stream()//
                 .map(param -> toPlantUmlParameter(names, className, param)) //
@@ -73,8 +75,7 @@ public final class PathsHelper {
     }
 
     private static final class FieldsWithModel {
-        private static final FieldsWithModel EMPTY = new FieldsWithModel(Collections.emptyList(),
-                Model.EMPTY);
+        private static final FieldsWithModel EMPTY = new FieldsWithModel(Collections.emptyList(), Model.EMPTY);
         private final List<Field> fields;
         private final Model model;
 
@@ -90,8 +91,7 @@ public final class PathsHelper {
         }
     }
 
-    private static FieldsWithModel toPlantUmlParameter(Names names, String className,
-            Parameter param) {
+    private static FieldsWithModel toPlantUmlParameter(Names names, String className, Parameter param) {
         String ref = param.get$ref();
         String parameterName = param.getName();
         Boolean required = param.getRequired();
@@ -108,15 +108,13 @@ public final class PathsHelper {
             required = p.getRequired();
         }
         if (ref != null) {
-            return new FieldsWithModel(Collections.emptyList(),
-                    new Model(Association.from(className).to(names.refToClassName(ref)).one()
-                            .label(parameterName).build()));
+            return new FieldsWithModel(Collections.emptyList(), new Model(Association.from(className)
+                    .to(names.refToClassName(ref)).one().propertyOrParameterName(parameterName).build()));
         }
         Optional<Field> field = Optional.empty();
         Model model;
         if (param.getSchema() != null) {
-            model = Common.toModelClass(className + "." + parameterName, param.getSchema(),
-                    names, Stereotype.PARAMETER);
+            model = Common.toModelClass(className + "." + parameterName, param.getSchema(), names, ClassType.PARAMETER);
         } else {
             model = Model.EMPTY;
         }
@@ -127,11 +125,9 @@ public final class PathsHelper {
             field = Optional.of(new Field(parameterName, type, type.endsWith("]"), required));
         } else {
             model = model
-                    .add(Association.from(className).to(type).one().label(parameterName).build());
+                    .add(Association.from(className).to(type).one().propertyOrParameterName(parameterName).build());
         }
-        return new FieldsWithModel(
-                field.map(x -> Collections.singletonList(x)).orElse(Collections.emptyList()),
-                model);
+        return new FieldsWithModel(field.map(x -> Collections.singletonList(x)).orElse(Collections.emptyList()), model);
     }
 
     private static Parameter getParameter(Components components, String ref) {
@@ -149,8 +145,7 @@ public final class PathsHelper {
         if (body != null) {
             String ref = body.get$ref();
             if (ref != null) {
-                return new Model(
-                        Association.from(className).to(names.refToClassName(ref)).one().build());
+                return new Model(Association.from(className).to(names.refToClassName(ref)).one().build());
             }
             Content content = body.getContent();
             if (content != null) {
@@ -167,8 +162,7 @@ public final class PathsHelper {
                     if (sch == null) {
                         model = Model.EMPTY;
                     } else {
-                        model = Common.toModelClass(requestBodyClassName, sch, names,
-                                Stereotype.REQUEST_BODY);
+                        model = Common.toModelClass(requestBodyClassName, sch, names, ClassType.REQUEST_BODY);
                     }
                 }
                 Association a = Association.from(className).to(requestBodyClassName).one().build();
@@ -187,42 +181,45 @@ public final class PathsHelper {
                     String responseCode = ent.getKey();
                     // TODO only using the first content
                     ApiResponse r = ent.getValue();
-                    final String returnClassName;
                     final Model model;
                     if (r.get$ref() != null) {
-                        returnClassName = names.refToClassName(r.get$ref());
-                        model = Model.EMPTY;
+                        String returnClassName = names.refToClassName(r.get$ref());
+                        model = new Model(Association.from(className).to(returnClassName).one()
+                                .responseCode(responseCode).build());
                     } else {
-                        final String newReturnClassName = className + " " + responseCode
-                                + " Response";
+
                         if (r.getContent() == null) {
-                            model = new Model(new com.github.davidmoten.oas3.model.Class(
-                                    newReturnClassName, ClassType.RESPONSE));
-                            returnClassName = newReturnClassName;
+                            final String newReturnClassName = className + " " + responseCode;
+                            Model m = new Model(
+                                    new com.github.davidmoten.oas3.model.Class(newReturnClassName, ClassType.RESPONSE));
+                            String returnClassName = newReturnClassName;
+                            model = m.add(Association.from(className).to(returnClassName).one()
+                                    .responseCode(responseCode).build());
                         } else {
-                            Optional<Entry<String, MediaType>> mediaType = first(r.getContent());
-                            if (mediaType.isPresent()) {
-                                Schema<?> sch = mediaType.get().getValue().getSchema();
-                                if (sch != null && sch.get$ref() != null) {
-                                    returnClassName = names.refToClassName(sch.get$ref());
-                                    model = Model.EMPTY;
+                            Model m = Model.EMPTY;
+                            for (Entry<String, MediaType> contentEntry : r.getContent().entrySet()) {
+                                String contentType = contentEntry.getKey();
+                                final String newReturnClassName = className + " " + responseCode + " " + contentType;
+                                MediaType mediaType = contentEntry.getValue();
+                                Schema<?> sch = mediaType.getSchema();
+                                if (sch == null) {
+                                    // TODO
+                                } else if (sch.get$ref() != null) {
+                                    String returnClassName = names.refToClassName(sch.get$ref());
+                                    m = m.add(Association.from(className).to(returnClassName).one()
+                                            .responseCode(responseCode).responseContentType(contentType).build());
                                 } else {
-                                    returnClassName = newReturnClassName;
-                                    if (sch == null) {
-                                        model = null;
-                                    } else {
-                                        model = Common.toModelClass(returnClassName, sch, names,
-                                                Stereotype.RESPONSE);
-                                    }
+                                    String returnClassName = newReturnClassName;
+                                    m = m.add(Common.toModelClass(returnClassName, sch, names, ClassType.RESPONSE));
+                                    m = m.add(Association.from(className).to(returnClassName).one()
+                                            .responseCode(responseCode).responseContentType(contentType).build());
                                 }
-                            } else {
-                                return Model.EMPTY;
+
                             }
+                            model = m;
                         }
                     }
-                    Association rel = Association.from(className).to(returnClassName).one()
-                            .label(responseCode + "").build();
-                    return model.add(rel);
+                    return model;
                 }).reduce(Model.EMPTY, (a, b) -> a.add(b));
     }
 
