@@ -69,7 +69,7 @@ public class Converter {
                         .stream() //
                         .filter(x -> x.equals(a.from())) //
                         .findFirst() //
-                        .get();
+                        .orElseThrow(()-> new RuntimeException("could not find class " + a.from()));
                 final String arrow;
                 if (c.type() == ClassType.METHOD) {
                     arrow = "..>";

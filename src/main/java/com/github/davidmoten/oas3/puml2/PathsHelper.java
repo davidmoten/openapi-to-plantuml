@@ -59,8 +59,7 @@ public final class PathsHelper {
                             operation.getParameters());
                     Model m = new Model(new Class(className, ClassType.METHOD, f.fields));
                     m = m.add(toPlantUmlResponses(names, operation, className));
-                    m = m.add(toPlantUmlRequestBody(className, operation, names));
-                    return m;
+                    return m.add(toPlantUmlRequestBody(className, operation, names));
                 }) //
                 .reduce(Model.EMPTY, (a, b) -> a.add(b));
     }
