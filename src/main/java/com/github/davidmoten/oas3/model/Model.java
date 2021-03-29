@@ -1,5 +1,6 @@
 package com.github.davidmoten.oas3.model;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -8,7 +9,7 @@ import com.github.davidmoten.guavamini.Lists;
 public class Model {
 
     public static final Model EMPTY = new Model(Collections.emptyList(), Collections.emptyList());
-    
+
     private final List<Class> classes;
     private final List<Relationship> relationships;
 
@@ -16,9 +17,17 @@ public class Model {
         this.classes = classes;
         this.relationships = relationships;
     }
-    
+
     public Model(Class cls, Relationship r) {
         this(Collections.singletonList(cls), Collections.singletonList(r));
+    }
+
+    public Model(Class cls) {
+        this(Collections.singletonList(cls), Collections.emptyList());
+    }
+    
+    public Model(Relationship r) {
+        this(Collections.emptyList(), Collections.singletonList(r));
     }
 
     public Model add(Model model) {
@@ -29,11 +38,17 @@ public class Model {
         return new Model(c, r);
     }
     
+    public Model add(Relationship r) {
+        List<Relationship> list = new ArrayList<>(relationships);
+        list.add(r);
+        return new Model(classes, list);
+    }
+
     public List<Class> classes() {
         return classes;
     }
-    
-    public List<Relationship>  relationships() {
+
+    public List<Relationship> relationships() {
         return relationships;
     }
 

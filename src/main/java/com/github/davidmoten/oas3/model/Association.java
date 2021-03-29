@@ -8,7 +8,7 @@ public final class Association implements Relationship {
     private final AssociationType type;
     private final Optional<String> label;
 
-    public Association(String from, String to, AssociationType type, Optional<String> label) {
+    private Association(String from, String to, AssociationType type, Optional<String> label) {
         this.from = from;
         this.to = to;
         this.type = type;

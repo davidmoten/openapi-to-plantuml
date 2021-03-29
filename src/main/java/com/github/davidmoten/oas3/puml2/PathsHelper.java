@@ -1,20 +1,20 @@
 package com.github.davidmoten.oas3.puml2;
 
-import static com.github.davidmoten.oas3.puml.Constants.CLASS_RELATIONSHIP_RIGHT_ARROW;
-import static com.github.davidmoten.oas3.puml.Constants.NL;
-import static com.github.davidmoten.oas3.puml.Constants.ONE;
-import static com.github.davidmoten.oas3.puml.Constants.PATH_RELATIONSHIP_RIGHT_ARROW;
-import static com.github.davidmoten.oas3.puml.Constants.SPACE;
 import static com.github.davidmoten.oas3.puml.Util.first;
 import static com.github.davidmoten.oas3.puml.Util.nullListToEmpty;
 import static com.github.davidmoten.oas3.puml.Util.quote;
 import static java.util.stream.Collectors.joining;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Optional;
 
 import com.github.davidmoten.guavamini.Preconditions;
+import com.github.davidmoten.oas3.model.Association;
+import com.github.davidmoten.oas3.model.ClassType;
+import com.github.davidmoten.oas3.model.Field;
 import com.github.davidmoten.oas3.model.Model;
 import com.github.davidmoten.oas3.puml.Names;
 
@@ -30,13 +30,13 @@ import io.swagger.v3.oas.models.responses.ApiResponse;
 
 public final class PathsHelper {
 
-    public static String toPlantUml(Names names) {
+    public static Model toModel(Names names) {
         return paths(names);
     }
-    
-    private static String paths(Names names) {
+
+    private static Model paths(Names names) {
         if (names.paths() == null) {
-            return "";
+            return Model.EMPTY;
         } else {
             return names.paths() //
                     .entrySet() //
@@ -47,13 +47,10 @@ public final class PathsHelper {
         }
     }
 
-
-    private static String toPlantUmlPath(String path, PathItem p, Names names) {
-        StringBuilder b = new StringBuilder();
-        StringBuilder extras = new StringBuilder();
+    private static Model toPlantUmlPath(String path, PathItem p, Names names) {
         // add method class blocks with HTTP verb and parameters
         // add response lines
-        b.append(p.readOperationsMap() //
+        Model m = p.readOperationsMap() //
                 .entrySet() //
                 .stream() //
                 .map(entry -> {
@@ -61,26 +58,46 @@ public final class PathsHelper {
                     String className = entry.getKey() + " " + path;
                     StringBuilder s = new StringBuilder();
                     s.append("\n\nclass " + quote(className) + " <<Method>> {");
-                    s.append(toPlantUmlParameters(names, extras, className, operation.getParameters()));
+                    s.append(toPlantUmlParameters(names, extras, className,
+                            operation.getParameters()));
                     s.append("\n}");
                     s.append(toPlantUmlResponses(names, operation, className));
                     s.append(toPlantUmlRequestBody(className, operation, names));
                     return s.toString();
                 }) //
-                .collect(joining()));
+                .reduce((a, b) -> a.add(b));
         b.append(extras.toString());
         return b.toString();
     }
 
-    private static String toPlantUmlParameters(Names names, StringBuilder extras, String className,
-            List<Parameter> parameters) {
+    private static FieldsWithModel toPlantUmlParameters(Names names, StringBuilder extras,
+            String className, List<Parameter> parameters) {
         return nullListToEmpty(parameters) //
                 .stream()//
                 .map(param -> toPlantUmlParameter(names, extras, className, param)) //
-                .collect(joining());
+                .reduce(FieldsWithModel.EMPTY, (a, b) -> a.add(b));
     }
 
-    private static String toPlantUmlParameter(Names names, StringBuilder extras, String className, Parameter param) {
+    private static final class FieldsWithModel {
+        private static final FieldsWithModel EMPTY = new FieldsWithModel(Collections.emptyList(),
+                Model.EMPTY);
+        private final List<Field> fields;
+        private final Model model;
+
+        FieldsWithModel(List<Field> fields, Model model) {
+            this.fields = fields;
+            this.model = model;
+        }
+
+        FieldsWithModel add(FieldsWithModel f) {
+            List<Field> list = new ArrayList<>(fields);
+            list.addAll(f.fields);
+            return new FieldsWithModel(list, model.add(f.model));
+        }
+    }
+
+    private static FieldsWithModel toPlantUmlParameter(Names names, StringBuilder extras,
+            String className, Parameter param) {
         String ref = param.get$ref();
         String parameterName = param.getName();
         Boolean required = param.getRequired();
@@ -96,25 +113,31 @@ public final class PathsHelper {
             parameterName = p.getName();
             required = p.getRequired();
         }
-
         if (ref != null) {
-            extras.append("\n\n" + quote(className) + CLASS_RELATIONSHIP_RIGHT_ARROW + quote("1") + SPACE
-                    + quote(names.refToClassName(ref)) + " : " + quote(parameterName));
-            return "";
+            return new FieldsWithModel(Collections.emptyList(),
+                    new Model(Association.from(className).to(names.refToClassName(ref)).one()
+                            .label(parameterName).build()));
         }
+        Optional<Field> field = Optional.empty();
+        Model model;
         if (param.getSchema() != null) {
-            Common.toPlantUmlClass(className + "." + parameterName, param.getSchema(), names, Stereotype.PARAMETER);
+            model = Common.toPlantUmlClass(className + "." + parameterName, param.getSchema(),
+                    names, Stereotype.PARAMETER);
+        } else {
+            model = Model.EMPTY;
         }
         // TODO else get schema from content
+
+        List<Field> fields = new ArrayList<>();
         final String type = Common.getUmlTypeName(param.get$ref(), param.getSchema(), names);
         if (Common.isSimpleType(type)) {
-            final String optional = required != null && required ? "" : " {O}";
-            return "\n" + "  " + parameterName + " : " + type + optional;
+            field = Optional.of(new Field(parameterName, type, type.endsWith("]"), required));
         } else {
-            extras.append("\n\n" + quote(className) + CLASS_RELATIONSHIP_RIGHT_ARROW + quote("1") + SPACE + quote(type)
-                    + " : " + quote(parameterName));
-            return "";
+            model.add(Association.from(className).to(type).one().label(parameterName).build());
         }
+        return new FieldsWithModel(
+                field.map(x -> Collections.singletonList(x)).orElse(Collections.emptyList()),
+                model);
     }
 
     private static Parameter getParameter(Components components, String ref) {
@@ -127,40 +150,41 @@ public final class PathsHelper {
         }
     }
 
-    private static String toPlantUmlRequestBody(String className, Operation operation, Names names) {
+    private static Model toPlantUmlRequestBody(String className, Operation operation, Names names) {
         RequestBody body = operation.getRequestBody();
         if (body != null) {
             String ref = body.get$ref();
             if (ref != null) {
-                return NL + quote(className) + CLASS_RELATIONSHIP_RIGHT_ARROW + ONE + quote(names.refToClassName(ref));
+                return new Model(
+                        Association.from(className).to(names.refToClassName(ref)).one().build());
             }
             Content content = body.getContent();
             if (content != null) {
                 Entry<String, MediaType> mediaType = first(content).get();
                 // use the first content entry
                 final String requestBodyClassName;
-                final String requestBodyClassDeclaration;
+                final Model model;
                 Schema<?> sch = mediaType.getValue().getSchema();
                 if (sch != null && sch.get$ref() != null) {
                     requestBodyClassName = names.refToClassName(sch.get$ref());
-                    requestBodyClassDeclaration = "";
+                    model = Model.EMPTY;
                 } else {
                     requestBodyClassName = className + " Request";
                     if (sch == null) {
-                        requestBodyClassDeclaration = "";
+                        model = Model.EMPTY;
                     } else {
-                        requestBodyClassDeclaration = Common.toPlantUmlClass(requestBodyClassName, sch, names,
+                        model = Common.toPlantUmlClass(requestBodyClassName, sch, names,
                                 Stereotype.REQUEST_BODY);
                     }
                 }
-                return requestBodyClassDeclaration + "\n\n" + quote(className) + CLASS_RELATIONSHIP_RIGHT_ARROW
-                        + quote(requestBodyClassName);
+                Association a = Association.from(className).to(requestBodyClassName).one().build();
+                return model.add(a);
             }
         }
-        return "";
+        return Model.EMPTY;
     }
 
-    private static String toPlantUmlResponses(Names names, Operation operation, String className) {
+    private static Model toPlantUmlResponses(Names names, Operation operation, String className) {
         return operation //
                 .getResponses() //
                 .entrySet() //
@@ -170,14 +194,16 @@ public final class PathsHelper {
                     // TODO only using the first content
                     ApiResponse r = ent.getValue();
                     final String returnClassName;
-                    final String returnClassDeclaration;
+                    final Model model;
                     if (r.get$ref() != null) {
                         returnClassName = names.refToClassName(r.get$ref());
-                        returnClassDeclaration = "";
+                        model = Model.EMPTY;
                     } else {
-                        final String newReturnClassName = className + " " + responseCode + " Response";
+                        final String newReturnClassName = className + " " + responseCode
+                                + " Response";
                         if (r.getContent() == null) {
-                            returnClassDeclaration = "\nclass " + quote(newReturnClassName) + "{}";
+                            model = new Model(new com.github.davidmoten.oas3.model.Class(
+                                    newReturnClassName, ClassType.RESPONSE));
                             returnClassName = newReturnClassName;
                         } else {
                             Optional<Entry<String, MediaType>> mediaType = first(r.getContent());
@@ -185,24 +211,25 @@ public final class PathsHelper {
                                 Schema<?> sch = mediaType.get().getValue().getSchema();
                                 if (sch != null && sch.get$ref() != null) {
                                     returnClassName = names.refToClassName(sch.get$ref());
-                                    returnClassDeclaration = "";
+                                    model = Model.EMPTY;
                                 } else {
                                     returnClassName = newReturnClassName;
                                     if (sch == null) {
-                                        returnClassDeclaration = "";
+                                        model = null;
                                     } else {
-                                        returnClassDeclaration = Common.toPlantUmlClass(returnClassName, sch, names,
+                                        model = Common.toPlantUmlClass(returnClassName, sch, names,
                                                 Stereotype.RESPONSE);
                                     }
                                 }
                             } else {
-                                return "";
+                                return Model.EMPTY;
                             }
                         }
                     }
-                    return returnClassDeclaration + "\n\n" + quote(className) + PATH_RELATIONSHIP_RIGHT_ARROW
-                            + quote(returnClassName) + ": " + responseCode;
-                }).collect(joining());
+                    Association rel = Association.from(className).to(returnClassName).one()
+                            .label(responseCode + "").build();
+                    return model.add(rel);
+                }).reduce(Model.EMPTY, (a, b) -> a.add(b));
     }
 
     private static final class Reference {
@@ -213,11 +240,6 @@ public final class PathsHelper {
             this.namespace = ref.substring(0, ref.lastIndexOf("/"));
             this.simpleName = ref.substring(ref.lastIndexOf("/") + 1);
         }
-    }
-
-    public static Model toModel(Names names) {
-        // TODO Auto-generated method stub
-        return null;
     }
 
 }
