@@ -1,5 +1,5 @@
 # openapi-to-plantuml
-Java library to generate a [PlantUML](https://plantuml.com) Class Diagram (supplemented with path informations) from an OpenAPI 3.0 definition (YAML or JSON).
+Java library to generate a [PlantUML](https://plantuml.com) Class Diagram (supplemented with path information) from an OpenAPI 3.0 definition (YAML or JSON).
 
 **Features**
 
