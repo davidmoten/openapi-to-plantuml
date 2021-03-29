@@ -12,12 +12,11 @@ import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-
-import com.github.davidmoten.oas3.puml.Converter;
 
 @RunWith(Parameterized.class)
 public class ConverterBatchTest {
@@ -37,7 +36,9 @@ public class ConverterBatchTest {
         if (list == null) {
             return Collections.emptyList();
         } else {
-            return Arrays.asList(list);
+            List<File> result = Arrays.asList(list);
+            Collections.sort(result, (a, b) -> a.getName().compareTo(b.getName()));
+            return result;
         }
     }
 

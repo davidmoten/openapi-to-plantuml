@@ -18,7 +18,7 @@ public final class ComponentsHelper {
         Model part1 = names.schemas() //
                 .entrySet() //
                 .stream() //
-                .map(entry -> Common.toPlantUmlClass(names.schemaClassName(entry.getKey()),
+                .map(entry -> Common.toModelClass(names.schemaClassName(entry.getKey()),
                         entry.getValue(), names)) //
                 .reduce(Model.EMPTY, (a, b) -> a.add(b));
 
@@ -36,7 +36,7 @@ public final class ComponentsHelper {
                                 .build();
                         return new Model(c, a);
                     } else {
-                        return Common.toPlantUmlClass(names.requestBodyClassName(entry.getKey()),
+                        return Common.toModelClass(names.requestBodyClassName(entry.getKey()),
                                 first(entry.getValue().getContent()).get().getValue().getSchema(),
                                 names, Stereotype.REQUEST_BODY);
                     }
@@ -56,7 +56,7 @@ public final class ComponentsHelper {
                         Association a = Association.from(className).to(otherClassName).one().build();
                         return new Model(c, a);
                     } else {
-                        return Common.toPlantUmlClass(className, p.getSchema(), names,
+                        return Common.toModelClass(className, p.getSchema(), names,
                                 Stereotype.PARAMETER);
                     }
                 }) //
@@ -67,7 +67,7 @@ public final class ComponentsHelper {
                 .stream() //
                 // TODO handle ref responses as per parameters and request bodies above
                 .map(entry -> first(nullMapToEmpty(entry.getValue().getContent())) //
-                        .map(x -> Common.toPlantUmlClass(names.responseClassName(entry.getKey()),
+                        .map(x -> Common.toModelClass(names.responseClassName(entry.getKey()),
                                 x.getValue().getSchema(), names,
                                 Stereotype.RESPONSE)) //
                         .orElse(Model.EMPTY)) //

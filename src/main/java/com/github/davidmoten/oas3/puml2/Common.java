@@ -14,6 +14,7 @@ import com.github.davidmoten.guavamini.Sets;
 import com.github.davidmoten.oas3.model.Association;
 import com.github.davidmoten.oas3.model.AssociationType;
 import com.github.davidmoten.oas3.model.Class;
+import com.github.davidmoten.oas3.model.ClassType;
 import com.github.davidmoten.oas3.model.Field;
 import com.github.davidmoten.oas3.model.Inheritance;
 import com.github.davidmoten.oas3.model.Model;
@@ -38,16 +39,15 @@ public class Common {
     private static final Set<String> simpleTypesWithoutBrackets = Sets.newHashSet("string",
             "decimal", "integer", "byte", "date", "boolean", "timestamp");
 
-    static Model toPlantUmlClass(String name, Schema<?> schema, Names names) {
-        return toPlantUmlClass(name, schema, names, Optional.empty());
+    static Model toModelClass(String name, Schema<?> schema, Names names) {
+        return toModelClass(name, schema, names, Optional.empty());
     }
 
-    static Model toPlantUmlClass(String name, Schema<?> schema, Names names,
-            Stereotype stereotype) {
-        return toPlantUmlClass(name, schema, names, Optional.of(stereotype.toString()));
+    static Model toModelClass(String name, Schema<?> schema, Names names, Stereotype stereotype) {
+        return toModelClass(name, schema, names, Optional.of(stereotype.toString()));
     }
 
-    static Model toPlantUmlClass(String name, Schema<?> schema, Names names,
+    static Model toModelClass(String name, Schema<?> schema, Names names,
             Optional<String> classStereotype) {
         List<Field> fields = new ArrayList<>();
 
@@ -64,7 +64,7 @@ public class Common {
             } else if (s.getAnyOf() != null) {
                 addInheritance(classes, relationships, name, s.getAnyOf(), names);
             } else if (s.getAllOf() != null) {
-                addMixedTypeAll(classes, relationships, name, s.getAllOf(), null,  names);
+                addMixedTypeAll(classes, relationships, name, s.getAllOf(), null, names);
             } else {
                 throw new RuntimeException("unexpected");
             }
@@ -122,7 +122,7 @@ public class Common {
                     } else if (type.equals("object")) {
                         // create anon class
                         String otherClassName = names.nextClassName(name + "." + property);
-                        Model m = toPlantUmlClass(otherClassName, entry.getValue(), names);
+                        Model m = toModelClass(otherClassName, entry.getValue(), names);
                         classes.addAll(m.classes());
                         relationships.addAll(m.relationships());
                         addToOne(relationships, name, otherClassName, property,
@@ -143,7 +143,7 @@ public class Common {
             } else {
                 // create anon class
                 otherClassName = names.nextClassName(name);
-                Model m = toPlantUmlClass(otherClassName, items, names);
+                Model m = toModelClass(otherClassName, items, names);
                 classes.addAll(m.classes());
                 relationships.addAll(m.relationships());
             }
@@ -158,6 +158,7 @@ public class Common {
                 fields.add(new Field("value", type, type.endsWith("]"), true));
             }
         }
+        classes.add(new Class(name, ClassType.SCHEMA, fields));
         return new Model(classes, relationships);
     }
 
@@ -181,7 +182,7 @@ public class Common {
         } else {
             // create anon class
             otherClassName = names.nextClassName(name + (property == null ? "" : "." + property));
-            Model m = toPlantUmlClass(otherClassName, items, names);
+            Model m = toModelClass(otherClassName, items, names);
             classes.addAll(m.classes());
             relationships.addAll(m.relationships());
         }
@@ -227,7 +228,7 @@ public class Common {
                     } else {
                         String className = names
                                 .nextClassName(name + (property == null ? "" : "." + property));
-                        Model m = toPlantUmlClass(className, s, names);
+                        Model m = toModelClass(className, s, names);
                         classes.addAll(m.classes());
                         relationships.addAll(m.relationships());
                         return className;

@@ -2,6 +2,17 @@ package com.github.davidmoten.oas3.model;
 
 public enum ClassType {
     
-    SCHEMA, PARAMETER, REQUEST_BODY, RESPONSE, METHOD; 
+    SCHEMA("Schema"), PARAMETER("Parameter"), REQUEST_BODY("RequestBody"), RESPONSE("Response"), METHOD("Method"); 
 
+    private final String name;
+
+    private ClassType(String name) {
+        this.name = name;
+    }
+    
+    @Override
+    public String toString() {
+        return name;
+    }
+    
 }

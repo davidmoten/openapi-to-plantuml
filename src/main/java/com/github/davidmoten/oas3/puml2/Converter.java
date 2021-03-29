@@ -42,8 +42,9 @@ public class Converter {
         Model model = ComponentsHelper //
                 .toModel(names) //
                 .add(PathsHelper.toModel(names));
+        System.out.println(model);
         return "@startuml" //
-                + "\nhide " + toStereotype(ClassType.METHOD) + " circle" //
+                + "\nhide <<" + toStereotype(ClassType.METHOD).get() + ">> circle" //
                 + "\nhide empty methods" //
                 + "\nhide empty fields" //
                 + "\nset namespaceSeparator none" //
@@ -54,22 +55,25 @@ public class Converter {
     private static String toPlantUml(Model model) {
         StringBuilder b = new StringBuilder();
         for (Class cls : model.classes()) {
+            System.out.println(cls.name());
             b.append("\n\nclass " + Util.quote(cls.name())
                     + toStereotype(cls.type()).map(x -> " <<" + x + ">>").orElse("") + " {");
             cls.fields().stream().forEach(f -> {
-                b.append("\n  " + f.name() + " : " + f.type());
+                b.append("\n  " + f.name() + " : " + f.type() + (f.isRequired() ? "" : " {O}"));
             });
             b.append("\n}");
         }
+        
         for (Relationship r : model.relationships()) {
             if (r instanceof Association) {
                 Association a = (Association) r;
                 Class c = model //
                         .classes() //
                         .stream() //
-                        .filter(x -> x.equals(a.from())) //
+                        .filter(x -> x.name().equals(a.from())) //
                         .findFirst() //
-                        .orElseThrow(()-> new RuntimeException("could not find class " + a.from()));
+                        .orElseThrow(
+                                () -> new RuntimeException("could not find class " + a.from()));
                 final String arrow;
                 if (c.type() == ClassType.METHOD) {
                     arrow = "..>";

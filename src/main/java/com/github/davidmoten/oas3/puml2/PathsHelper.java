@@ -115,7 +115,7 @@ public final class PathsHelper {
         Optional<Field> field = Optional.empty();
         Model model;
         if (param.getSchema() != null) {
-            model = Common.toPlantUmlClass(className + "." + parameterName, param.getSchema(),
+            model = Common.toModelClass(className + "." + parameterName, param.getSchema(),
                     names, Stereotype.PARAMETER);
         } else {
             model = Model.EMPTY;
@@ -167,7 +167,7 @@ public final class PathsHelper {
                     if (sch == null) {
                         model = Model.EMPTY;
                     } else {
-                        model = Common.toPlantUmlClass(requestBodyClassName, sch, names,
+                        model = Common.toModelClass(requestBodyClassName, sch, names,
                                 Stereotype.REQUEST_BODY);
                     }
                 }
@@ -211,7 +211,7 @@ public final class PathsHelper {
                                     if (sch == null) {
                                         model = null;
                                     } else {
-                                        model = Common.toPlantUmlClass(returnClassName, sch, names,
+                                        model = Common.toModelClass(returnClassName, sch, names,
                                                 Stereotype.RESPONSE);
                                     }
                                 }

@@ -30,5 +30,22 @@ public final class Field {
     public boolean isRequired() {
         return required;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder b = new StringBuilder();
+        b.append("Field [name=");
+        b.append(name);
+        b.append(", type=");
+        b.append(type);
+        b.append(", isArray=");
+        b.append(isArray);
+        b.append(", required=");
+        b.append(required);
+        b.append("]");
+        return b.toString();
+    }
+    
+    
     
 }

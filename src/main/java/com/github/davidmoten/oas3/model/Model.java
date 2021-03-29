@@ -1,8 +1,11 @@
 package com.github.davidmoten.oas3.model;
 
+import static java.util.stream.Collectors.joining;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.github.davidmoten.guavamini.Lists;
 
@@ -51,5 +54,18 @@ public class Model {
     public List<Relationship> relationships() {
         return relationships;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder b = new StringBuilder();
+        b.append("Model [classes=");
+        b.append(classes.stream().map(x -> "\n" + x).collect(joining()));
+        b.append(", relationships=");
+        b.append(relationships.stream().map(x -> "\n" + x).collect(joining()));
+        b.append("]");
+        return b.toString();
+    }
+    
+    
 
 }

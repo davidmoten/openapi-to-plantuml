@@ -31,5 +31,20 @@ public final class Class {
     public List<Field> fields() {
         return fields;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder b = new StringBuilder();
+        b.append("Class [name=");
+        b.append(name);
+        b.append(", type=");
+        b.append(type);
+        b.append(", fields=");
+        b.append(fields);
+        b.append("]");
+        return b.toString();
+    }
+    
+    
     
 }

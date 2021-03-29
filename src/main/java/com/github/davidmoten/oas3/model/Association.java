@@ -30,6 +30,21 @@ public final class Association implements Relationship {
     public Optional<String> label() {
         return label;
     }
+    
+    @Override
+    public String toString() {
+        StringBuilder b = new StringBuilder();
+        b.append("Association [from=");
+        b.append(from);
+        b.append(", to=");
+        b.append(to);
+        b.append(", type=");
+        b.append(type);
+        b.append(", label=");
+        b.append(label);
+        b.append("]");
+        return b.toString();
+    }
 
     public static Builder from(String from) {
         return new Builder(from);

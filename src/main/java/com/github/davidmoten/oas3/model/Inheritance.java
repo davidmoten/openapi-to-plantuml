@@ -15,4 +15,21 @@ public class Inheritance implements Relationship{
         this.type = type;
         this.label = label;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder b = new StringBuilder();
+        b.append("Inheritance [from=");
+        b.append(from);
+        b.append(", to=");
+        b.append(to);
+        b.append(", type=");
+        b.append(type);
+        b.append(", label=");
+        b.append(label);
+        b.append("]");
+        return b.toString();
+    }
+    
+    
 }
