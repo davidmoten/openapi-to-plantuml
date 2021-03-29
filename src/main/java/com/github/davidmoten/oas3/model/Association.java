@@ -14,6 +14,22 @@ public final class Association implements Relationship {
         this.type = type;
         this.label = label;
     }
+    
+    public String from() {
+        return from;
+    }
+
+    public String to() {
+        return to;
+    }
+
+    public AssociationType type() {
+        return type;
+    }
+
+    public Optional<String> label() {
+        return label;
+    }
 
     public static Builder from(String from) {
         return new Builder(from);

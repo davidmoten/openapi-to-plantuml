@@ -1,5 +1,8 @@
 package com.github.davidmoten.oas3.puml2;
 
+import static com.github.davidmoten.oas3.puml2.Constants.SPACE;
+import static com.github.davidmoten.oas3.puml2.Util.quote;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -7,11 +10,13 @@ import java.util.Optional;
 
 import org.apache.commons.io.IOUtils;
 
+import com.github.davidmoten.oas3.model.Association;
+import com.github.davidmoten.oas3.model.AssociationType;
+import com.github.davidmoten.oas3.model.Class;
 import com.github.davidmoten.oas3.model.ClassType;
 import com.github.davidmoten.oas3.model.Model;
 import com.github.davidmoten.oas3.model.Relationship;
 import com.github.davidmoten.oas3.puml.Names;
-import com.github.davidmoten.oas3.puml.Util;
 
 import io.swagger.parser.OpenAPIParser;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -48,7 +53,7 @@ public class Converter {
 
     private static String toPlantUml(Model model) {
         StringBuilder b = new StringBuilder();
-        for (com.github.davidmoten.oas3.model.Class cls : model.classes()) {
+        for (Class cls : model.classes()) {
             b.append("\n\nclass " + Util.quote(cls.name())
                     + toStereotype(cls.type()).map(x -> " <<" + x + ">>").orElse("") + " {");
             cls.fields().stream().forEach(f -> {
@@ -57,7 +62,32 @@ public class Converter {
             b.append("\n}");
         }
         for (Relationship r : model.relationships()) {
+            if (r instanceof Association) {
+                Association a = (Association) r;
+                Class c = model //
+                        .classes() //
+                        .stream() //
+                        .filter(x -> x.equals(a.from())) //
+                        .findFirst() //
+                        .get();
+                final String arrow;
+                if (c.type() == ClassType.METHOD) {
+                    arrow = "..>";
+                } else {
+                    arrow = "-->";
+                }
+                final String mult;
+                if (a.type() == AssociationType.ONE) {
+                    mult = "1";
+                } else if (a.type() == AssociationType.ZERO_ONE) {
+                    mult = "0..1";
+                } else {
+                    mult = "*";
+                }
 
+                b.append("\n\n" + quote(a.from()) + SPACE + arrow + SPACE + quote(mult) + SPACE
+                        + a.to() + a.label().map(x -> " : " + quote(x)).orElse(""));
+            }
         }
         return b.toString();
     }
