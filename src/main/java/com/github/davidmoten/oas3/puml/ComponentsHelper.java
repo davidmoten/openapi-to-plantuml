@@ -24,7 +24,7 @@ public final class ComponentsHelper {
 
         String part2 = names.requestBodies() //
                 .entrySet() //
-                .stream() //
+                .stream() //    
                 .map(entry -> {
                     RequestBody b = entry.getValue();
                     String className = names.requestBodyClassName(b);
