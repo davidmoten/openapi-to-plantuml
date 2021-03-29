@@ -1,6 +1,5 @@
 package com.github.davidmoten.oas3.puml2;
 
-import static com.github.davidmoten.oas3.puml2.Constants.SPACE;
 import static com.github.davidmoten.oas3.puml2.Util.quote;
 
 import java.io.IOException;
@@ -22,7 +21,9 @@ import io.swagger.parser.OpenAPIParser;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.parser.core.models.SwaggerParseResult;
 
-public class Converter {
+public final class Converter {
+    
+    private static final String SPACE = " ";
 
     public static String openApiToPuml(InputStream in) throws IOException {
         return openApiToPuml(IOUtils.toString(in, StandardCharsets.UTF_8));
