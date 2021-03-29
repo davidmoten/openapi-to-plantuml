@@ -2,8 +2,6 @@ package com.github.davidmoten.oas3.puml2;
 
 import static com.github.davidmoten.oas3.puml.Util.first;
 import static com.github.davidmoten.oas3.puml.Util.nullListToEmpty;
-import static com.github.davidmoten.oas3.puml.Util.quote;
-import static java.util.stream.Collectors.joining;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,6 +11,7 @@ import java.util.Optional;
 
 import com.github.davidmoten.guavamini.Preconditions;
 import com.github.davidmoten.oas3.model.Association;
+import com.github.davidmoten.oas3.model.Class;
 import com.github.davidmoten.oas3.model.ClassType;
 import com.github.davidmoten.oas3.model.Field;
 import com.github.davidmoten.oas3.model.Model;
@@ -43,38 +42,34 @@ public final class PathsHelper {
                     .stream() //
                     .map(entry -> toPlantUmlPath(entry.getKey(), //
                             entry.getValue(), names))
-                    .collect(joining());
+                    .reduce(Model.EMPTY, (a, b) -> a.add(b));
         }
     }
 
     private static Model toPlantUmlPath(String path, PathItem p, Names names) {
         // add method class blocks with HTTP verb and parameters
         // add response lines
-        Model m = p.readOperationsMap() //
+        return p.readOperationsMap() //
                 .entrySet() //
                 .stream() //
                 .map(entry -> {
                     Operation operation = entry.getValue();
                     String className = entry.getKey() + " " + path;
-                    StringBuilder s = new StringBuilder();
-                    s.append("\n\nclass " + quote(className) + " <<Method>> {");
-                    s.append(toPlantUmlParameters(names, extras, className,
-                            operation.getParameters()));
-                    s.append("\n}");
-                    s.append(toPlantUmlResponses(names, operation, className));
-                    s.append(toPlantUmlRequestBody(className, operation, names));
-                    return s.toString();
+                    FieldsWithModel f = toPlantUmlParameters(names, className,
+                            operation.getParameters());
+                    Model m = new Model(new Class(className, ClassType.METHOD, f.fields));
+                    m = m.add(toPlantUmlResponses(names, operation, className));
+                    m = m.add(toPlantUmlRequestBody(className, operation, names));
+                    return m;
                 }) //
-                .reduce((a, b) -> a.add(b));
-        b.append(extras.toString());
-        return b.toString();
+                .reduce(Model.EMPTY, (a, b) -> a.add(b));
     }
 
-    private static FieldsWithModel toPlantUmlParameters(Names names, StringBuilder extras,
-            String className, List<Parameter> parameters) {
+    private static FieldsWithModel toPlantUmlParameters(Names names, String className,
+            List<Parameter> parameters) {
         return nullListToEmpty(parameters) //
                 .stream()//
-                .map(param -> toPlantUmlParameter(names, extras, className, param)) //
+                .map(param -> toPlantUmlParameter(names, className, param)) //
                 .reduce(FieldsWithModel.EMPTY, (a, b) -> a.add(b));
     }
 
@@ -96,8 +91,8 @@ public final class PathsHelper {
         }
     }
 
-    private static FieldsWithModel toPlantUmlParameter(Names names, StringBuilder extras,
-            String className, Parameter param) {
+    private static FieldsWithModel toPlantUmlParameter(Names names, String className,
+            Parameter param) {
         String ref = param.get$ref();
         String parameterName = param.getName();
         Boolean required = param.getRequired();
@@ -128,12 +123,12 @@ public final class PathsHelper {
         }
         // TODO else get schema from content
 
-        List<Field> fields = new ArrayList<>();
         final String type = Common.getUmlTypeName(param.get$ref(), param.getSchema(), names);
         if (Common.isSimpleType(type)) {
             field = Optional.of(new Field(parameterName, type, type.endsWith("]"), required));
         } else {
-            model.add(Association.from(className).to(type).one().label(parameterName).build());
+            model = model
+                    .add(Association.from(className).to(type).one().label(parameterName).build());
         }
         return new FieldsWithModel(
                 field.map(x -> Collections.singletonList(x)).orElse(Collections.emptyList()),
