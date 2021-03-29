@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,7 +33,9 @@ public class DemoBatchTest {
         if (list == null) {
             return Collections.emptyList();
         } else {
-            return Arrays.asList(list);
+            List<File> x = Arrays.asList(list);
+            Collections.sort(x, (a, b) -> a.getName().compareTo(b.getName()));
+            return x;
         }
     }
 
@@ -42,12 +45,14 @@ public class DemoBatchTest {
         try (InputStream in = new FileInputStream(input)) {
             File demos = new File("target/demos");
             demos.mkdirs();
-            File svg = new File(demos, input.getName().substring(0, input.getName().lastIndexOf('.')) + ".svg");
+            File svg = new File(demos,
+                    input.getName().substring(0, input.getName().lastIndexOf('.')) + ".svg");
             String puml;
             try (InputStream def = new FileInputStream(input)) {
                 puml = com.github.davidmoten.oas3.puml2.Converter.openApiToPuml(def);
             }
-            File pumlFile = new File(demos, input.getName().substring(0, input.getName().lastIndexOf('.')) + ".puml");
+            File pumlFile = new File(demos,
+                    input.getName().substring(0, input.getName().lastIndexOf('.')) + ".puml");
             pumlFile.delete();
             Files.write(pumlFile.toPath(), puml.getBytes(StandardCharsets.UTF_8));
             svg.delete();

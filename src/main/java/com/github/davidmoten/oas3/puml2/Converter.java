@@ -43,7 +43,6 @@ public final class Converter {
         Model model = ComponentsHelper //
                 .toModel(names) //
                 .add(PathsHelper.toModel(names));
-        System.out.println(model);
         return "@startuml" //
                 + "\nhide <<" + toStereotype(ClassType.METHOD).get() + ">> circle" //
                 + "\nhide empty methods" //
