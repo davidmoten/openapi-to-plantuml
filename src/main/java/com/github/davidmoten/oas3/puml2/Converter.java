@@ -89,7 +89,7 @@ public class Converter {
                 }
 
                 b.append("\n\n" + quote(a.from()) + SPACE + arrow + SPACE + quote(mult) + SPACE
-                        + a.to() + a.label().map(x -> " : " + quote(x)).orElse(""));
+                        + quote(a.to()) + a.label().map(x -> " : " + quote(x)).orElse(""));
             }
         }
         return b.toString();
