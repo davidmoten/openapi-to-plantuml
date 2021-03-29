@@ -12,6 +12,6 @@ class "Customer" {
   lastName : string
 }
 
-"Customers" --> "*" Customer
+"Customers" --> "*" "Customer"
 
 @enduml

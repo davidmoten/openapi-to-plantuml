@@ -43,28 +43,28 @@ class "DELETE /pets/{id}" <<Method>> {
 class "DELETE /pets/{id} 204 Response" <<Response>> {
 }
 
-"Pet" --> "1" NewPet
+"Pet" --> "1" "NewPet"
 
-"Pet" --> "1" PetId
+"Pet" --> "1" "PetId"
 
-"GET /pets 200 Response" --> "*" Pet
+"GET /pets 200 Response" --> "*" "Pet"
 
-"GET /pets" ..> "1" GET /pets 200 Response : "200"
+"GET /pets" ..> "1" "GET /pets 200 Response" : "200"
 
-"GET /pets" ..> "1" Error : "default"
+"GET /pets" ..> "1" "Error" : "default"
 
-"POST /pets" ..> "1" Pet : "200"
+"POST /pets" ..> "1" "Pet" : "200"
 
-"POST /pets" ..> "1" Error : "default"
+"POST /pets" ..> "1" "Error" : "default"
 
-"POST /pets" ..> "1" NewPet
+"POST /pets" ..> "1" "NewPet"
 
-"GET /pets/{id}" ..> "1" Pet : "200"
+"GET /pets/{id}" ..> "1" "Pet" : "200"
 
-"GET /pets/{id}" ..> "1" Error : "default"
+"GET /pets/{id}" ..> "1" "Error" : "default"
 
-"DELETE /pets/{id}" ..> "1" DELETE /pets/{id} 204 Response : "204"
+"DELETE /pets/{id}" ..> "1" "DELETE /pets/{id} 204 Response" : "204"
 
-"DELETE /pets/{id}" ..> "1" Error : "default"
+"DELETE /pets/{id}" ..> "1" "Error" : "default"
 
 @enduml

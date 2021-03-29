@@ -15,8 +15,8 @@ class "doctor" {
   income : decimal
 }
 
-"employee" --> "1" doctor
+"employee" --> "1" "doctor"
 
-"employee" --> "1" nurse
+"employee" --> "1" "nurse"
 
 @enduml

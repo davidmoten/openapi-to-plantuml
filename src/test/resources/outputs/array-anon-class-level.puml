@@ -12,6 +12,6 @@ class "Customers.1" {
 class "Customers" {
 }
 
-"Customers" --> "*" Customers.1
+"Customers" --> "*" "Customers.1"
 
 @enduml

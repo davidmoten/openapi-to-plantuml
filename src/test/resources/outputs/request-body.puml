@@ -27,10 +27,10 @@ class "GET /customer/expired Request" {
   repository_ids : integer[] {O}
 }
 
-"GET /customer/expired 200 Response" --> "*" Customer
+"GET /customer/expired 200 Response" --> "*" "Customer"
 
-"GET /customer/expired" ..> "1" GET /customer/expired 200 Response : "200"
+"GET /customer/expired" ..> "1" "GET /customer/expired 200 Response" : "200"
 
-"GET /customer/expired" ..> "1" GET /customer/expired Request
+"GET /customer/expired" ..> "1" "GET /customer/expired Request"
 
 @enduml

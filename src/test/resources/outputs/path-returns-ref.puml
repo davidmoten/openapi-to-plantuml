@@ -23,8 +23,8 @@ class "Customers" {
 class "GET /customer/expired" <<Method>> {
 }
 
-"Customers" --> "*" Customer
+"Customers" --> "*" "Customer"
 
-"GET /customer/expired" ..> "1" Customers : "200"
+"GET /customer/expired" ..> "1" "Customers" : "200"
 
 @enduml
