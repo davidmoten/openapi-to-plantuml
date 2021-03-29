@@ -2,7 +2,6 @@ package com.github.davidmoten.oas3.model;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 public final class Class {
     private final String name;
