@@ -55,7 +55,6 @@ public class Converter {
     private static String toPlantUml(Model model) {
         StringBuilder b = new StringBuilder();
         for (Class cls : model.classes()) {
-            System.out.println(cls.name());
             b.append("\n\nclass " + Util.quote(cls.name())
                     + toStereotype(cls.type()).map(x -> " <<" + x + ">>").orElse("") + " {");
             cls.fields().stream().forEach(f -> {

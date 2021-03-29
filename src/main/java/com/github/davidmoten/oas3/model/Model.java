@@ -5,7 +5,6 @@ import static java.util.stream.Collectors.joining;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.github.davidmoten.guavamini.Lists;
 

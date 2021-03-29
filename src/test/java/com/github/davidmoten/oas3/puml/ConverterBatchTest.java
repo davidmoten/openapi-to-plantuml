@@ -18,6 +18,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import com.github.davidmoten.oas3.puml2.Converter;
+
 @RunWith(Parameterized.class)
 public class ConverterBatchTest {
 
@@ -46,7 +48,7 @@ public class ConverterBatchTest {
     public void test() {
         System.out.println("checking " + input);
         try (InputStream in = new FileInputStream(input)) {
-            String puml = com.github.davidmoten.oas3.puml2.Converter.openApiToPuml(in).trim();
+            String puml = Converter.openApiToPuml(in).trim();
             File pumlFile = new File("target/outputs", input.getName().substring(0, input.getName().lastIndexOf('.')) + ".puml");
             pumlFile.getParentFile().mkdirs();
             pumlFile.delete();

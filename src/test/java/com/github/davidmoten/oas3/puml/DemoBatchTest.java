@@ -15,8 +15,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import com.github.davidmoten.oas3.puml.Converter;
-
 @RunWith(Parameterized.class)
 public class DemoBatchTest {
 
@@ -47,7 +45,7 @@ public class DemoBatchTest {
             File svg = new File(demos, input.getName().substring(0, input.getName().lastIndexOf('.')) + ".svg");
             String puml;
             try (InputStream def = new FileInputStream(input)) {
-                puml = Converter.openApiToPuml(def);
+                puml = com.github.davidmoten.oas3.puml2.Converter.openApiToPuml(def);
             }
             File pumlFile = new File(demos, input.getName().substring(0, input.getName().lastIndexOf('.')) + ".puml");
             pumlFile.delete();
