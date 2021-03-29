@@ -7,10 +7,6 @@ set namespaceSeparator none
 class "Pet" {
 }
 
-"Pet" --> "1" "NewPet"
-
-"Pet" --> "1" "PetId"
-
 class "PetId" {
   id : integer
 }
@@ -30,39 +26,45 @@ class "GET /pets" <<Method>> {
   limit : integer {O}
 }
 
-class "GET /pets 200 Response" <<Response>> {
+class "GET /pets 200 Response" {
 }
-
-"GET /pets 200 Response" --> "*" "Pet"
-
-"GET /pets" ..> "GET /pets 200 Response": 200
-
-"GET /pets" ..> "Error": default
 
 class "POST /pets" <<Method>> {
 }
-
-"POST /pets" ..> "Pet": 200
-
-"POST /pets" ..> "Error": default
-
-"POST /pets" --> "NewPet"
 
 class "GET /pets/{id}" <<Method>> {
   id : integer
 }
 
-"GET /pets/{id}" ..> "Pet": 200
-
-"GET /pets/{id}" ..> "Error": default
-
 class "DELETE /pets/{id}" <<Method>> {
   id : integer
 }
-class "DELETE /pets/{id} 204 Response"{}
 
-"DELETE /pets/{id}" ..> "DELETE /pets/{id} 204 Response": 204
+class "DELETE /pets/{id} 204 Response" <<Response>> {
+}
 
-"DELETE /pets/{id}" ..> "Error": default
+"Pet" --> "1" NewPet
+
+"Pet" --> "1" PetId
+
+"GET /pets 200 Response" --> "*" Pet
+
+"GET /pets" ..> "1" GET /pets 200 Response : "200"
+
+"GET /pets" ..> "1" Error : "default"
+
+"POST /pets" ..> "1" Pet : "200"
+
+"POST /pets" ..> "1" Error : "default"
+
+"POST /pets" ..> "1" NewPet
+
+"GET /pets/{id}" ..> "1" Pet : "200"
+
+"GET /pets/{id}" ..> "1" Error : "default"
+
+"DELETE /pets/{id}" ..> "1" DELETE /pets/{id} 204 Response : "204"
+
+"DELETE /pets/{id}" ..> "1" Error : "default"
 
 @enduml

@@ -13,8 +13,6 @@ class "Pet" {
 class "Pets" {
 }
 
-"Pets" --> "*" "Pet"
-
 class "Error" {
   code : integer
   message : string
@@ -24,24 +22,28 @@ class "GET /pets" <<Method>> {
   limit : integer {O}
 }
 
-"GET /pets" ..> "Pets": 200
-
-"GET /pets" ..> "Error": default
-
 class "POST /pets" <<Method>> {
 }
-class "POST /pets 201 Response"{}
 
-"POST /pets" ..> "POST /pets 201 Response": 201
-
-"POST /pets" ..> "Error": default
+class "POST /pets 201 Response" <<Response>> {
+}
 
 class "GET /pets/{petId}" <<Method>> {
   petId : string
 }
 
-"GET /pets/{petId}" ..> "Pet": 200
+"Pets" --> "*" Pet
 
-"GET /pets/{petId}" ..> "Error": default
+"GET /pets" ..> "1" Pets : "200"
+
+"GET /pets" ..> "1" Error : "default"
+
+"POST /pets" ..> "1" POST /pets 201 Response : "201"
+
+"POST /pets" ..> "1" Error : "default"
+
+"GET /pets/{petId}" ..> "1" Pet : "200"
+
+"GET /pets/{petId}" ..> "1" Error : "default"
 
 @enduml

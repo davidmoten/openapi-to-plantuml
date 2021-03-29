@@ -17,19 +17,20 @@ class "Customer" {
   picture : byte[] {O}
 }
 
-class "repositories" <<Request Body>> {
+class "repositories" {
   repository_ids : integer[] {O}
 }
 
 class "GET /customer/expired" <<Method>> {
 }
 
-class "GET /customer/expired 200 Response" <<Response>> {
+class "GET /customer/expired 200 Response" {
 }
 
-"GET /customer/expired 200 Response" --> "*" "Customer"
+"GET /customer/expired 200 Response" --> "*" Customer
 
-"GET /customer/expired" ..> "GET /customer/expired 200 Response": 200
-"GET /customer/expired" -->  "1" "repositories"
+"GET /customer/expired" ..> "1" GET /customer/expired 200 Response : "200"
+
+"GET /customer/expired" ..> "1" repositories
 
 @enduml

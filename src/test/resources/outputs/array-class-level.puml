@@ -7,11 +7,11 @@ set namespaceSeparator none
 class "Customers" {
 }
 
-"Customers" --> "*" "Customer"
-
 class "Customer" {
   firstName : string
   lastName : string
 }
+
+"Customers" --> "*" Customer
 
 @enduml

@@ -7,8 +7,6 @@ set namespaceSeparator none
 class "Customers" {
 }
 
-"Customers" --> "*" "Customer"
-
 class "Customer" {
   firstName : string
   lastName : string
@@ -22,16 +20,16 @@ class "Customer" {
   picture : byte[] {O}
 }
 
-class "Customers.1" <<Response>> {
-  --
-<i>application/json</i>
+class "Customers.1" {
 }
-
-"Customers.1" --> "*" "Customer"
 
 class "GET /customer/expired" <<Method>> {
 }
 
-"GET /customer/expired" ..> "Customers.1": 200
+"Customers" --> "*" Customer
+
+"Customers.1" --> "*" Customer
+
+"GET /customer/expired" ..> "1" Customers.1 : "200"
 
 @enduml

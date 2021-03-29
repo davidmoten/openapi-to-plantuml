@@ -7,10 +7,6 @@ set namespaceSeparator none
 class "employee" {
 }
 
-"employee" --> "1" "doctor"
-
-"employee" --> "1" "nurse"
-
 class "nurse" {
   level : integer
 }
@@ -18,5 +14,9 @@ class "nurse" {
 class "doctor" {
   income : decimal
 }
+
+"employee" --> "1" doctor
+
+"employee" --> "1" nurse
 
 @enduml

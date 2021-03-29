@@ -4,14 +4,14 @@ hide empty methods
 hide empty fields
 set namespaceSeparator none
 
-class "Customers" {
-}
-
 class "Customers.1" {
   firstName : string
   lastName : string
 }
 
-"Customers" --> "*" "Customers.1"
+class "Customers" {
+}
+
+"Customers" --> "*" Customers.1
 
 @enduml

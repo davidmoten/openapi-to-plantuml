@@ -9,7 +9,7 @@ class "Customer" {
   lastName : string {O}
 }
 
-class "CustomerId" <<Parameter>> {
+class "CustomerId" {
   id : string {O}
   prefix : string {O}
 }
@@ -17,13 +17,11 @@ class "CustomerId" <<Parameter>> {
 class "GET /customer/expired" <<Method>> {
 }
 
-class "GET /customer/expired 200 Response" <<Response>> {
+class "GET /customer/expired 200 Response" {
 }
 
-"GET /customer/expired 200 Response" --> "*" "Customer"
+"GET /customer/expired 200 Response" --> "*" Customer
 
-"GET /customer/expired" ..> "GET /customer/expired 200 Response": 200
-
-"GET /customer/expired" --> "1" "CustomerId" : "customerId"
+"GET /customer/expired" ..> "1" GET /customer/expired 200 Response : "200"
 
 @enduml

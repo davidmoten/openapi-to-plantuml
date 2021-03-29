@@ -12,6 +12,6 @@ class "Customer" {
 class "Client" {
 }
 
-"Client" -->  "1" "Customer"
+"Client" --> "1" Customer
 
 @enduml

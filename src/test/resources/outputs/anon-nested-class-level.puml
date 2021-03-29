@@ -4,21 +4,21 @@ hide empty methods
 hide empty fields
 set namespaceSeparator none
 
-class "Customer" {
-  heightMetres : decimal {O}
+class "Customer.name.standardName" {
+  firstName : string
+  lastName : string
 }
 
 class "Customer.name" {
   origin : string {O}
 }
 
-class "Customer.name.standardName" {
-  firstName : string
-  lastName : string
+class "Customer" {
+  heightMetres : decimal {O}
 }
 
-"Customer.name" --> "0..1" "Customer.name.standardName" : standardName
+"Customer.name" --> "0..1" Customer.name.standardName : "standardName"
 
-"Customer" --> "1" "Customer.name" : name
+"Customer" --> "1" Customer.name : "name"
 
 @enduml

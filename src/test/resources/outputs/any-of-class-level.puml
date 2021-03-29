@@ -7,10 +7,6 @@ set namespaceSeparator none
 class "employee" {
 }
 
-"employee" <|-- "doctor"
-
-"employee" <|-- "nurse"
-
 class "nurse" {
   level : integer
 }

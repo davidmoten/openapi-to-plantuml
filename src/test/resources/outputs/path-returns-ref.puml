@@ -17,16 +17,14 @@ class "Customer" {
   picture : byte[] {O}
 }
 
-class "Customers" <<Response>> {
-  --
-<i>application/json</i>
+class "Customers" {
 }
-
-"Customers" --> "*" "Customer"
 
 class "GET /customer/expired" <<Method>> {
 }
 
-"GET /customer/expired" ..> "Customers": 200
+"Customers" --> "*" Customer
+
+"GET /customer/expired" ..> "1" Customers : "200"
 
 @enduml

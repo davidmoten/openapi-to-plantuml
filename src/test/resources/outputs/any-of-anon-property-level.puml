@@ -4,29 +4,17 @@ hide empty methods
 hide empty fields
 set namespaceSeparator none
 
-class "employee" {
-}
-
-diamond anon
-
-"employee" --> "0..1" anon: role
-
-
-
 class "employee.role" {
   employeeType : string {O}
   level : integer
 }
-
-
 
 class "employee.role.1" {
   employeeType : string {O}
   income : decimal
 }
 
-anon <|-- "employee.role"
-
-anon <|-- "employee.role.1"
+class "employee" {
+}
 
 @enduml

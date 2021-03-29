@@ -7,14 +7,6 @@ set namespaceSeparator none
 class "employee" {
 }
 
-diamond anon
-
-"employee" --> "0..1" anon: role
-
-anon <|-- "doctor"
-
-anon <|-- "nurse"
-
 class "nurse" {
   level : integer
 }
