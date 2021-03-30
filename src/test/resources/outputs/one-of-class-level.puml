@@ -17,12 +17,8 @@ class "doctor" {
   income : decimal
 }
 
-diamond anon1
+"doctor" --|> "employee"
 
-"employee" --> "anon1"
-
-"doctor" --|> "anon1"
-
-"nurse" --|> "anon1"
+"nurse" --|> "employee"
 
 @enduml
