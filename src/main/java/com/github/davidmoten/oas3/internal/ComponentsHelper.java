@@ -13,6 +13,10 @@ import io.swagger.v3.oas.models.parameters.RequestBody;
 
 public final class ComponentsHelper {
 
+    private ComponentsHelper() {
+        // prevent instantiation
+    }
+
     public static Model toModel(Names names) {
         Model part1 = names.schemas() //
                 .entrySet() //

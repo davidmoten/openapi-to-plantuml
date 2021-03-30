@@ -8,7 +8,7 @@ import java.util.List;
 
 import com.github.davidmoten.guavamini.Lists;
 
-public class Model {
+public final class Model {
 
     public static final Model EMPTY = new Model(Collections.emptyList(), Collections.emptyList());
 

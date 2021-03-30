@@ -3,7 +3,7 @@ package com.github.davidmoten.oas3.internal.model;
 import java.util.List;
 import java.util.Optional;
 
-public class Inheritance implements Relationship {
+public final class Inheritance implements Relationship {
     private final String from;
     private final List<String> to;
     private final AssociationType type;

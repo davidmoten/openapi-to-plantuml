@@ -33,7 +33,11 @@ import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 
-public class Common {
+public final class Common {
+    
+    private Common() {
+        // prevent instantiation
+    }
 
     private static final Set<String> simpleTypesWithoutBrackets = Sets.newHashSet("string",
             "decimal", "integer", "byte", "date", "boolean", "timestamp");
