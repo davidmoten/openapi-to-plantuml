@@ -57,11 +57,10 @@ public final class Model {
     @Override
     public String toString() {
         StringBuilder b = new StringBuilder();
-        b.append("Model [classes=");
-        b.append(classes.stream().map(x -> "\n" + x).collect(joining()));
-        b.append(", relationships=");
-        b.append(relationships.stream().map(x -> "\n" + x).collect(joining()));
-        b.append("]");
+        b.append("Model [");
+        b.append(classes.stream().map(x -> "\n  " + x).collect(joining(",")));
+        b.append(relationships.stream().map(x -> "\n  " + x).collect(joining(",")));
+        b.append("\n]");
         return b.toString();
     }
 

@@ -54,13 +54,17 @@ public final class Association implements Relationship {
         b.append(", type=");
         b.append(type);
         b.append(", responseCode=");
-        b.append(responseCode);
+        b.append(str(responseCode));
         b.append(", responseContentType=");
-        b.append(responseContentType);
+        b.append(str(responseContentType));
         b.append(", propertyOrParameterName=");
-        b.append(propertyOrParameterName);
+        b.append(str(propertyOrParameterName));
         b.append("]");
         return b.toString();
+    }
+
+    private static String str(Optional<?> o) {
+        return o.map(x -> x.toString()).orElse("");
     }
 
     public static Builder from(String from) {
