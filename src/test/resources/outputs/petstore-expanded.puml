@@ -26,6 +26,17 @@ class "GET /pets" <<Method>> {
   limit : integer {O}
 }
 
+class "GET /pets.tags" {
+  value : string
+}
+
+class "GET /pets.tags" {
+}
+
+class "GET /pets.limit" {
+  value : integer
+}
+
 class "GET /pets 200 application/json" {
 }
 
@@ -36,8 +47,16 @@ class "GET /pets/{id}" <<Method>> {
   id : integer
 }
 
+class "GET /pets/{id}.id" {
+  value : integer
+}
+
 class "DELETE /pets/{id}" <<Method>> {
   id : integer
+}
+
+class "DELETE /pets/{id}.id" {
+  value : integer
 }
 
 class "DELETE /pets/{id} 204" <<Response>> {
@@ -46,6 +65,8 @@ class "DELETE /pets/{id} 204" <<Response>> {
 "Pet" --> "1" "NewPet"
 
 "Pet" --> "1" "PetId"
+
+"GET /pets.tags" --> "*" "GET /pets.tags"
 
 "GET /pets 200 application/json" --> "*" "Pet"
 

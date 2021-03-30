@@ -24,6 +24,8 @@ class "GET /customer/expired 200 application/json" {
 
 "CustomerId" --> "1" "Id"
 
+"GET /customer/expired" ..> "1" "CustomerId" : "id"
+
 "GET /customer/expired 200 application/json" --> "*" "Customer"
 
 "GET /customer/expired" ..> "1" "GET /customer/expired 200 application/json"

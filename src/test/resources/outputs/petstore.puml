@@ -22,6 +22,10 @@ class "GET /pets" <<Method>> {
   limit : integer {O}
 }
 
+class "GET /pets.limit" {
+  value : integer
+}
+
 class "POST /pets" <<Method>> {
 }
 
@@ -30,6 +34,10 @@ class "POST /pets 201" <<Response>> {
 
 class "GET /pets/{petId}" <<Method>> {
   petId : string
+}
+
+class "GET /pets/{petId}.petId" {
+  value : string
 }
 
 "Pets" --> "*" "Pet"
