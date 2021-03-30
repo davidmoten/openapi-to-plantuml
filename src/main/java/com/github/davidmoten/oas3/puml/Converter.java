@@ -50,8 +50,6 @@ public final class Converter {
                 .toModel(names) //
                 .add(PathsHelper.toModel(names));
         
-        System.out.println(model);
-
         return "@startuml" //
                 + "\nhide <<" + toStereotype(ClassType.METHOD).get() + ">> circle" //
                 + "\nhide <<" + toStereotype(ClassType.RESPONSE).get() + ">> circle" //

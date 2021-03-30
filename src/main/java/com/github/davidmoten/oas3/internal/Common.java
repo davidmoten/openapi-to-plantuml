@@ -23,24 +23,29 @@ import com.github.davidmoten.oas3.internal.model.Relationship;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.BinarySchema;
 import io.swagger.v3.oas.models.media.BooleanSchema;
+import io.swagger.v3.oas.models.media.ByteArraySchema;
 import io.swagger.v3.oas.models.media.ComposedSchema;
 import io.swagger.v3.oas.models.media.DateSchema;
 import io.swagger.v3.oas.models.media.DateTimeSchema;
+import io.swagger.v3.oas.models.media.EmailSchema;
+import io.swagger.v3.oas.models.media.FileSchema;
 import io.swagger.v3.oas.models.media.IntegerSchema;
 import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.NumberSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
+import io.swagger.v3.oas.models.media.PasswordSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
+import io.swagger.v3.oas.models.media.UUIDSchema;
 
 public final class Common {
-    
+
     private Common() {
         // prevent instantiation
     }
 
-    private static final Set<String> simpleTypesWithoutBrackets = Sets.newHashSet("string",
-            "decimal", "integer", "byte", "date", "boolean", "timestamp");
+    private static final Set<String> simpleTypesWithoutBrackets = Sets.newHashSet("string", "decimal", "integer",
+            "byte", "date", "boolean", "timestamp");
 
     static Model toModelClass(String name, Schema<?> schema, Names names, ClassType classType) {
         List<Field> fields = new ArrayList<>();
@@ -71,8 +76,9 @@ public final class Common {
             }
             schema.getProperties().entrySet().forEach(entry -> {
                 String property = entry.getKey();
-                if (entry.getValue() instanceof ComposedSchema) {
-                    ComposedSchema s = (ComposedSchema) entry.getValue();
+                Schema<?> sch = entry.getValue();
+                if (sch instanceof ComposedSchema) {
+                    ComposedSchema s = (ComposedSchema) sch;
                     @SuppressWarnings("rawtypes")
                     final List<Schema> list;
                     final AssociationType associationType;
@@ -96,34 +102,31 @@ public final class Common {
                         if (isAll) {
                             addMixedTypeAll(classes, relationships, name, list, property, names);
                         } else {
-                            addInheritanceForProperty(classes, relationships, name, list, property,
-                                    associationType, names);
+                            addInheritanceForProperty(classes, relationships, name, list, property, associationType,
+                                    names);
                         }
                     }
-                } else if (entry.getValue().get$ref() != null) {
-                    String ref = entry.getValue().get$ref();
+                } else if (sch.get$ref() != null) {
+                    String ref = sch.get$ref();
                     String otherClassName = names.refToClassName(ref);
-                    addToOne(relationships, name, otherClassName, property,
-                            required.contains(entry.getKey()));
+                    addToOne(relationships, name, otherClassName, property, required.contains(entry.getKey()));
                 } else {
-                    String type = getUmlTypeName(entry.getValue().get$ref(), entry.getValue(),
-                            names);
+                    String type = getUmlTypeName(sch.get$ref(), sch, names);
                     if (type.startsWith("unknown")) {
                         System.out.println("unknown property:\n" + entry);
                     }
                     if (isComplexArrayType(type)) {
-                        addArray(name, classes, relationships, property, entry.getValue(), names);
+                        addArray(name, classes, relationships, property, sch, names);
                     } else if (type.equals("object")) {
                         // create anon class
                         String otherClassName = names.nextClassName(name + "." + property);
-                        Model m = toModelClass(otherClassName, entry.getValue(), names, classType);
+                        Model m = toModelClass(otherClassName, sch, names, classType);
                         classes.addAll(m.classes());
                         relationships.addAll(m.relationships());
-                        addToOne(relationships, name, otherClassName, property,
-                                required.contains(property));
+                        addToOne(relationships, name, otherClassName, property, required.contains(property));
                     } else {
-                        fields.add(new Field(entry.getKey(), type, type.endsWith("]"),
-                                required.contains(entry.getKey())));
+                        fields.add(
+                                new Field(entry.getKey(), type, type.endsWith("]"), required.contains(entry.getKey())));
                     }
                 }
             });
@@ -164,8 +167,8 @@ public final class Common {
         return simpleTypesWithoutBrackets.contains(s.replace("[", "").replace("]", ""));
     }
 
-    private static void addArray(String name, List<Class> classes, List<Relationship> relationships,
-            String property, @SuppressWarnings("rawtypes") Schema schema, Names names) {
+    private static void addArray(String name, List<Class> classes, List<Relationship> relationships, String property,
+            @SuppressWarnings("rawtypes") Schema schema, Names names) {
         // is array of items
         ArraySchema a = (ArraySchema) schema;
         Schema<?> items = a.getItems();
@@ -183,45 +186,40 @@ public final class Common {
         addToMany(relationships, name, otherClassName, property);
     }
 
-    private static void addMixedTypeAll(List<Class> classes, List<Relationship> relationships,
-            String name, @SuppressWarnings("rawtypes") List<Schema> schemas, String propertyName,
-            Names names) {
-        List<String> otherClassNames = addAnonymousClassesAndReturnOtherClassNames(classes,
-                relationships, name, schemas, names, propertyName);
+    private static void addMixedTypeAll(List<Class> classes, List<Relationship> relationships, String name,
+            @SuppressWarnings("rawtypes") List<Schema> schemas, String propertyName, Names names) {
+        List<String> otherClassNames = addAnonymousClassesAndReturnOtherClassNames(classes, relationships, name,
+                schemas, names, propertyName);
         for (String otherClassName : otherClassNames) {
             addToOne(relationships, name, otherClassName, propertyName, true);
         }
     }
 
-    private static void addInheritanceForProperty(List<Class> classes,
-            List<Relationship> relationships, String name,
-            @SuppressWarnings("rawtypes") List<Schema> schemas, String propertyName,
-            AssociationType associationType, Names names) {
-        List<String> otherClassNames = addAnonymousClassesAndReturnOtherClassNames(classes,
-                relationships, name, schemas, names, propertyName);
-        Inheritance inheritance = new Inheritance(name, otherClassNames, associationType,
-                Optional.of(propertyName));
+    private static void addInheritanceForProperty(List<Class> classes, List<Relationship> relationships, String name,
+            @SuppressWarnings("rawtypes") List<Schema> schemas, String propertyName, AssociationType associationType,
+            Names names) {
+        List<String> otherClassNames = addAnonymousClassesAndReturnOtherClassNames(classes, relationships, name,
+                schemas, names, propertyName);
+        Inheritance inheritance = new Inheritance(name, otherClassNames, associationType, Optional.of(propertyName));
         relationships.add(inheritance);
     }
 
-    private static void addInheritance(List<Class> classes, List<Relationship> relationships,
-            String name, @SuppressWarnings("rawtypes") List<Schema> schemas, Names names) {
-        List<String> otherClassNames = addAnonymousClassesAndReturnOtherClassNames(classes,
-                relationships, name, schemas, names, null);
-        relationships
-                .add(new Inheritance(name, otherClassNames, AssociationType.ONE, Optional.empty()));
+    private static void addInheritance(List<Class> classes, List<Relationship> relationships, String name,
+            @SuppressWarnings("rawtypes") List<Schema> schemas, Names names) {
+        List<String> otherClassNames = addAnonymousClassesAndReturnOtherClassNames(classes, relationships, name,
+                schemas, names, null);
+        relationships.add(new Inheritance(name, otherClassNames, AssociationType.ONE, Optional.empty()));
     }
 
     private static List<String> addAnonymousClassesAndReturnOtherClassNames(List<Class> classes,
-            List<Relationship> relationships, String name,
-            @SuppressWarnings("rawtypes") List<Schema> schemas, Names names, String property) {
+            List<Relationship> relationships, String name, @SuppressWarnings("rawtypes") List<Schema> schemas,
+            Names names, String property) {
         List<String> otherClassNames = schemas.stream() //
                 .map(s -> {
                     if (s.get$ref() != null) {
                         return names.refToClassName(s.get$ref());
                     } else {
-                        String className = names
-                                .nextClassName(name + (property == null ? "" : "." + property));
+                        String className = names.nextClassName(name + (property == null ? "" : "." + property));
                         Model m = toModelClass(className, s, names, ClassType.SCHEMA);
                         classes.addAll(m.classes());
                         relationships.addAll(m.relationships());
@@ -231,26 +229,24 @@ public final class Common {
         return otherClassNames;
     }
 
-    private static void addToMany(List<Relationship> relationships, String name,
-            String otherClassName) {
+    private static void addToMany(List<Relationship> relationships, String name, String otherClassName) {
         addToMany(relationships, name, otherClassName, null);
     }
 
-    private static void addToMany(List<Relationship> relationships, String name,
-            String otherClassName, String property) {
-        relationships.add(Association.from(name).to(otherClassName).type(AssociationType.MANY)
+    private static void addToMany(List<Relationship> relationships, String name, String otherClassName,
+            String property) {
+        relationships.add(Association.from(name).to(otherClassName).many()
                 .propertyOrParameterName(Optional.ofNullable(property)).build());
     }
 
-    private static void addToOne(List<Relationship> relationships, String name,
-            String otherClassName, String property, boolean isToOne) {
+    private static void addToOne(List<Relationship> relationships, String name, String otherClassName, String property,
+            boolean isToOne) {
         relationships.add(Association //
                 .from(name) //
                 .to(otherClassName) //
                 .type(isToOne ? AssociationType.ONE : AssociationType.ZERO_ONE) //
-                .propertyOrParameterName(
-                        (property == null || property.equals(otherClassName)) ? Optional.empty()
-                                : Optional.of(property)) //
+                .propertyOrParameterName((property == null || property.equals(otherClassName)) ? Optional.empty()
+                        : Optional.of(property)) //
                 .build());
     }
 
@@ -275,14 +271,24 @@ public final class Common {
             type = getUmlTypeName(a.getItems().get$ref(), a.getItems(), names) + "[]";
         } else if (schema instanceof BinarySchema) {
             type = "byte[]";
+        } else if (schema instanceof ByteArraySchema) {
+            type = "byte[]";
         } else if (schema instanceof ObjectSchema) {
             type = "object";
+        } else if (schema instanceof FileSchema) {
+            type = "string";
+        } else if (schema instanceof PasswordSchema) {
+            type = "string";
+        } else if (schema instanceof EmailSchema) {
+            type = "string";
+        } else if (schema instanceof UUIDSchema) {
+            type = "string";
         } else if (schema instanceof MapSchema) {
             // TODO handle MapSchema
-            return "map";
+            return "string";
         } else if (schema instanceof ComposedSchema) {
             // TODO handle ComposedSchema
-            return "composed";
+            return "string";
         } else if ("string".equals(schema.getType())) {
             type = "string";
         } else if (schema.get$ref() != null) {
