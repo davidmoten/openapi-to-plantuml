@@ -9,6 +9,8 @@ Supports all features of OpenAPI 3.0 including
 * Multiple levels of indirection (`$ref` -> `$ref` for example) 
 * Multiple response content types
 
+**Status:** in development (first release soonh)
+
 **Limitations**
 
 * Only handles internal references ("#/*"), that is the yaml file should be self-contained
