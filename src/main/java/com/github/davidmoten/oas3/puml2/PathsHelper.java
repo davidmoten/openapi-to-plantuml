@@ -11,6 +11,7 @@ import java.util.Optional;
 
 import com.github.davidmoten.guavamini.Preconditions;
 import com.github.davidmoten.oas3.model.Association;
+import com.github.davidmoten.oas3.model.AssociationType;
 import com.github.davidmoten.oas3.model.Class;
 import com.github.davidmoten.oas3.model.ClassType;
 import com.github.davidmoten.oas3.model.Field;
@@ -121,8 +122,12 @@ public final class PathsHelper {
             Optional<Field> field = Optional.empty();
             Model model;
             if (param.getSchema() != null) {
-                model = Common.toModelClass(className + "." + parameterName, param.getSchema(),
-                        names, ClassType.PARAMETER);
+                String anonClassName = className + "." + parameterName;
+                model = Common
+                        .toModelClass(anonClassName, param.getSchema(), names, ClassType.PARAMETER)
+                        .add(Association.from(className).to(anonClassName)
+                                .type(required ? AssociationType.ONE : AssociationType.ZERO_ONE)
+                                .propertyOrParameterName(parameterName).build());
             } else {
                 model = Model.EMPTY;
             }

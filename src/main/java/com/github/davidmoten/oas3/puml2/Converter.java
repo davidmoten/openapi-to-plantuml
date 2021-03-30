@@ -68,14 +68,10 @@ public final class Converter {
         for (Relationship r : model.relationships()) {
             if (r instanceof Association) {
                 Association a = (Association) r;
-                Class c = model //
-                        .classes() //
-                        .stream() //
-                        .filter(x -> x.name().equals(a.from())) //
-                        .findFirst() //
-                        .orElseThrow(() -> new RuntimeException("could not find class " + a.from()));
+                Class fromClass = getClass(model, a.from());
+                Class toClass = getClass(model, a.to());
                 final String arrow;
-                if (c.type() == ClassType.METHOD) {
+                if (fromClass.type() == ClassType.METHOD && toClass.type() == ClassType.RESPONSE) {
                     arrow = "..>";
                 } else {
                     arrow = "-->";
@@ -89,20 +85,31 @@ public final class Converter {
                     mult = "*";
                 }
 
-                b.append("\n\n" + quote(a.from()) + SPACE + arrow + SPACE + quote(mult) + SPACE + quote(a.to())
-                        + a.label().map(x -> " : " + quote(x)).orElse(""));
+                b.append("\n\n" + quote(a.from()) + SPACE + arrow + SPACE + quote(mult) + SPACE
+                        + quote(a.to()) + a.label().map(x -> " : " + quote(x)).orElse(""));
             } else {
                 Inheritance a = (Inheritance) r;
                 anonNumber++;
                 String diamond = "anon" + anonNumber;
                 b.append("\n\ndiamond " + diamond);
-                b.append("\n\n" + quote(a.from()) + SPACE + "-->" + SPACE + quote(diamond) + a.label().map(x -> " : " + x).orElse(""));
+                b.append("\n\n" + quote(a.from()) + SPACE + "-->" + SPACE + quote(diamond)
+                        + a.label().map(x -> " : " + x).orElse(""));
                 for (String otherClassName : a.to()) {
-                    b.append("\n\n" + quote(otherClassName) + SPACE + "--|>"  + SPACE + quote(diamond));
+                    b.append("\n\n" + quote(otherClassName) + SPACE + "--|>" + SPACE
+                            + quote(diamond));
                 }
             }
         }
         return b.toString();
+    }
+
+    private static Class getClass(Model model, String name) {
+        return model //
+                .classes() //
+                .stream() //
+                .filter(x -> x.name().equals(name)) //
+                .findFirst() //
+                .orElseThrow(() -> new RuntimeException("could not find class " + name));
     }
 
     private static Optional<String> toStereotype(ClassType type) {

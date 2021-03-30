@@ -150,7 +150,7 @@ public class Common {
                 fields.add(new Field("value", type, type.endsWith("]"), true));
             }
         }
-        classes.add(new Class(name, ClassType.SCHEMA, fields));
+        classes.add(new Class(name, classType, fields));
         return new Model(classes, relationships);
     }
 

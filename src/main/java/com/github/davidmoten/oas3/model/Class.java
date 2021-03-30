@@ -3,20 +3,24 @@ package com.github.davidmoten.oas3.model;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.common.base.Preconditions;
+
 public final class Class {
     private final String name;
     private final ClassType type;
     private final List<Field> fields;
 
-    public Class(String name, ClassType classType, 
-            List<Field> fields) {
+    public Class(String name, ClassType type, List<Field> fields) {
+        Preconditions.checkNotNull(name);
+        Preconditions.checkNotNull(type);
+        Preconditions.checkNotNull(fields);
         this.name = name;
-        this.type = classType;
+        this.type = type;
         this.fields = fields;
     }
-    
-    public Class(String name, ClassType classType) {
-        this(name, classType, Collections.emptyList());
+
+    public Class(String name, ClassType type) {
+        this(name, type, Collections.emptyList());
     }
 
     public String name() {
@@ -43,7 +47,5 @@ public final class Class {
         b.append("]");
         return b.toString();
     }
-    
-    
-    
+
 }
