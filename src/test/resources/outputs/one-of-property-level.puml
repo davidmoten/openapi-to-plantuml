@@ -15,4 +15,12 @@ class "doctor" {
   income : decimal
 }
 
+diamond anon1
+
+"employee" --> "anon1" : role
+
+"doctor" --|> "anon1"
+
+"nurse" --|> "anon1"
+
 @enduml

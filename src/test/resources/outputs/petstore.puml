@@ -25,7 +25,7 @@ class "GET /pets" <<Method>> {
 class "POST /pets" <<Method>> {
 }
 
-class "POST /pets 201 Response" <<Response>> {
+class "POST /pets 201" <<Response>> {
 }
 
 class "GET /pets/{petId}" <<Method>> {
@@ -34,16 +34,16 @@ class "GET /pets/{petId}" <<Method>> {
 
 "Pets" --> "*" "Pet"
 
-"GET /pets" ..> "1" "Pets" : "200"
+"GET /pets" ..> "1" "Pets"
 
-"GET /pets" ..> "1" "Error" : "default"
+"GET /pets" ..> "1" "Error"
 
-"POST /pets" ..> "1" "POST /pets 201 Response" : "201"
+"POST /pets" ..> "1" "POST /pets 201"
 
-"POST /pets" ..> "1" "Error" : "default"
+"POST /pets" ..> "1" "Error"
 
-"GET /pets/{petId}" ..> "1" "Pet" : "200"
+"GET /pets/{petId}" ..> "1" "Pet"
 
-"GET /pets/{petId}" ..> "1" "Error" : "default"
+"GET /pets/{petId}" ..> "1" "Error"
 
 @enduml

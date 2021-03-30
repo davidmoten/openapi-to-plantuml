@@ -20,16 +20,16 @@ class "Customer" {
 class "GET /customer/expired" <<Method>> {
 }
 
-class "GET /customer/expired 200 Response" {
+class "GET /customer/expired 200 application/json" {
 }
 
 class "GET /customer/expired Request" {
   repository_ids : integer[] {O}
 }
 
-"GET /customer/expired 200 Response" --> "*" "Customer"
+"GET /customer/expired 200 application/json" --> "*" "Customer"
 
-"GET /customer/expired" ..> "1" "GET /customer/expired 200 Response" : "200"
+"GET /customer/expired" ..> "1" "GET /customer/expired 200 application/json"
 
 "GET /customer/expired" ..> "1" "GET /customer/expired Request"
 

@@ -25,6 +25,6 @@ class "GET /customer/expired" <<Method>> {
 
 "Customers" --> "*" "Customer"
 
-"GET /customer/expired" ..> "1" "Customers" : "200"
+"GET /customer/expired" ..> "1" "Customers"
 
 @enduml

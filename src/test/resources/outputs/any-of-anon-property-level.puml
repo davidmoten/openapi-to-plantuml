@@ -17,4 +17,12 @@ class "employee.role.1" {
 class "employee" {
 }
 
+diamond anon1
+
+"employee" --> "anon1" : role
+
+"employee.role" --|> "anon1"
+
+"employee.role.1" --|> "anon1"
+
 @enduml
