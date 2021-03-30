@@ -22,7 +22,7 @@ class "GET /pets" <<Method>> {
   limit : integer {O}
 }
 
-class "GET /pets.limit" {
+class "GET /pets.limit" <<Parameter>> {
   value : integer
 }
 
@@ -36,22 +36,26 @@ class "GET /pets/{petId}" <<Method>> {
   petId : string
 }
 
-class "GET /pets/{petId}.petId" {
+class "GET /pets/{petId}.petId" <<Parameter>> {
   value : string
 }
 
 "Pets" --> "*" "Pet"
 
-"GET /pets" ..> "1" "Pets"
+"GET /pets" --> "0..1" "GET /pets.limit" : "limit"
 
-"GET /pets" ..> "1" "Error"
+"GET /pets" --> "1" "Pets"
+
+"GET /pets" --> "1" "Error"
 
 "POST /pets" ..> "1" "POST /pets 201"
 
-"POST /pets" ..> "1" "Error"
+"POST /pets" --> "1" "Error"
 
-"GET /pets/{petId}" ..> "1" "Pet"
+"GET /pets/{petId}" --> "1" "GET /pets/{petId}.petId" : "petId"
 
-"GET /pets/{petId}" ..> "1" "Error"
+"GET /pets/{petId}" --> "1" "Pet"
+
+"GET /pets/{petId}" --> "1" "Error"
 
 @enduml

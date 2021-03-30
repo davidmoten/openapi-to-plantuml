@@ -20,7 +20,7 @@ class "Customer" {
   picture : byte[] {O}
 }
 
-class "Customers.1" {
+class "Customers.1" <<Response>> {
 }
 
 class "GET /customer/expired" <<Method>> {

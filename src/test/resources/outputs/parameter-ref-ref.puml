@@ -12,19 +12,19 @@ class "Customer" {
 class "CustomerId" <<Parameter>> {
 }
 
-class "Id" {
+class "Id" <<Parameter>> {
   value : string
 }
 
 class "GET /customer/expired" <<Method>> {
 }
 
-class "GET /customer/expired 200 application/json" {
+class "GET /customer/expired 200 application/json" <<Response>> {
 }
 
 "CustomerId" --> "1" "Id"
 
-"GET /customer/expired" ..> "1" "CustomerId" : "id"
+"GET /customer/expired" --> "1" "CustomerId" : "id"
 
 "GET /customer/expired 200 application/json" --> "*" "Customer"
 

@@ -9,17 +9,17 @@ class "Customer" {
   lastName : string {O}
 }
 
-class "CustomerId" {
+class "CustomerId" <<Parameter>> {
   value : string
 }
 
 class "GET /customer/expired" <<Method>> {
 }
 
-class "GET /customer/expired 200 application/json" {
+class "GET /customer/expired 200 application/json" <<Response>> {
 }
 
-"GET /customer/expired" ..> "1" "CustomerId" : "customerId"
+"GET /customer/expired" --> "1" "CustomerId" : "customerId"
 
 "GET /customer/expired 200 application/json" --> "*" "Customer"
 

@@ -20,7 +20,7 @@ class "Customer" {
 class "GET /customer/expired" <<Method>> {
 }
 
-class "GET /customer/expired 200 application/json" {
+class "GET /customer/expired 200 application/json" <<Response>> {
 }
 
 "GET /customer/expired 200 application/json" --> "*" "Customer"

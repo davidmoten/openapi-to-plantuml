@@ -20,10 +20,10 @@ class "Customer" {
 class "GET /customer/expired" <<Method>> {
 }
 
-class "GET /customer/expired 200 application/json" {
+class "GET /customer/expired 200 application/json" <<Response>> {
 }
 
-class "GET /customer/expired Request" {
+class "GET /customer/expired Request" <<RequestBody>> {
   repository_ids : integer[] {O}
 }
 
@@ -31,6 +31,6 @@ class "GET /customer/expired Request" {
 
 "GET /customer/expired" ..> "1" "GET /customer/expired 200 application/json"
 
-"GET /customer/expired" ..> "1" "GET /customer/expired Request"
+"GET /customer/expired" --> "1" "GET /customer/expired Request"
 
 @enduml
