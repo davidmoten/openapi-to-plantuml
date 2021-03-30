@@ -30,7 +30,7 @@ public class ConverterBatchTest {
         this.input = input;
     }
 
-    @Parameterized.Parameters(name="{0}")
+    @Parameterized.Parameters(name = "{0}")
     public static Collection<?> files() {
         File[] list = inputs.listFiles();
         if (list == null) {
@@ -47,7 +47,8 @@ public class ConverterBatchTest {
         System.out.println("checking " + input);
         try (InputStream in = new FileInputStream(input)) {
             String puml = Converter.openApiToPuml(in).trim();
-            File pumlFile = new File("target/outputs", input.getName().substring(0, input.getName().lastIndexOf('.')) + ".puml");
+            File pumlFile = new File("target/outputs",
+                    input.getName().substring(0, input.getName().lastIndexOf('.')) + ".puml");
             pumlFile.getParentFile().mkdirs();
             pumlFile.delete();
             Files.write(pumlFile.toPath(), puml.getBytes(StandardCharsets.UTF_8));

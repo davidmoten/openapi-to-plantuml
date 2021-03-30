@@ -24,7 +24,10 @@
 
         <slf4j.version>1.7.28</slf4j.version>
         <checkstyle.version>3.1.2</checkstyle.version>
-        <findbugs.version>2.5.4</findbugs.version>
+        <checkstyle.xml>src/main/checkstyle/checkstyle.xml</checkstyle.xml>
+        <checkstyle.suppressions.xml>src/main/checkstyle/suppressions.xml</checkstyle.suppressions.xml>
+        <checkstyle.core.version>8.40</checkstyle.core.version>
+        <spotbugs.version>4.2.0</spotbugs.version>
         <javadoc.version>3.2.0</javadoc.version>
         <pmd.version>3.14.0</pmd.version>
         <jdepend.version>2.0</jdepend.version>
@@ -172,6 +175,55 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${checkstyle.version}</version>
+                <configuration>
+                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                    <configLocation>${checkstyle.xml}</configLocation>
+                    <encoding>UTF-8</encoding>
+                    <consoleOutput>true</consoleOutput>
+                    <failsOnError>true</failsOnError>
+                    <linkXRef>false</linkXRef>
+                    <suppressionsLocation>${checkstyle.suppressions.xml}</suppressionsLocation>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>${checkstyle.core.version}</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>validate</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
+           <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>${spotbugs.version}</version>
+                <configuration>
+                    <effort>Max</effort>
+                    <threshold>Low</threshold>
+                    <xmlOutput>true</xmlOutput>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
                 <!-- NOTE: We don't need a groupId specification because 
                     the group is org.apache.maven.plugins ...which is assumed by default. -->
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -243,9 +295,6 @@
                     <aggregate>true</aggregate>
                 </configuration>
             </plugin>
-            <!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>findbugs-maven-plugin</artifactId> 
-                <version>${findbugs.version}</version> <configuration> <xmlOutput>true</xmlOutput> 
-                <effort>Max</effort> </configuration> </plugin> -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jdepend-maven-plugin</artifactId>

@@ -21,8 +21,8 @@ public final class ComponentsHelper {
         Model part1 = names.schemas() //
                 .entrySet() //
                 .stream() //
-                .map(entry -> Common.toModelClass(names.schemaClassName(entry.getKey()),
-                        entry.getValue(), names, ClassType.SCHEMA)) //
+                .map(entry -> Common.toModelClass(names.schemaClassName(entry.getKey()), entry.getValue(), names,
+                        ClassType.SCHEMA)) //
                 .reduce(Model.EMPTY, (a, b) -> a.add(b));
 
         Model part2 = names.requestBodies() //
@@ -35,13 +35,12 @@ public final class ComponentsHelper {
                     if (ref != null) {
                         String otherClassName = names.refToClassName(ref);
                         Class c = new Class(className, ClassType.REQUEST_BODY);
-                        Association a = Association.from(className).to(otherClassName).one()
-                                .build();
+                        Association a = Association.from(className).to(otherClassName).one().build();
                         return new Model(c, a);
                     } else {
                         return Common.toModelClass(names.requestBodyClassName(entry.getKey()),
-                                first(entry.getValue().getContent()).get().getValue().getSchema(),
-                                names, ClassType.REQUEST_BODY);
+                                first(entry.getValue().getContent()).get().getValue().getSchema(), names,
+                                ClassType.REQUEST_BODY);
                     }
                 }) //
                 .reduce(Model.EMPTY, (a, b) -> a.add(b));
@@ -56,12 +55,10 @@ public final class ComponentsHelper {
                     if (ref != null) {
                         Class c = new Class(className, ClassType.PARAMETER);
                         String otherClassName = names.refToClassName(ref);
-                        Association a = Association.from(className).to(otherClassName).one()
-                                .build();
+                        Association a = Association.from(className).to(otherClassName).one().build();
                         return new Model(c, a);
                     } else {
-                        return Common.toModelClass(className, p.getSchema(), names,
-                                ClassType.PARAMETER);
+                        return Common.toModelClass(className, p.getSchema(), names, ClassType.PARAMETER);
                     }
                 }) //
                 .reduce(Model.EMPTY, (a, b) -> a.add(b));
@@ -71,10 +68,9 @@ public final class ComponentsHelper {
                 .stream() //
                 // TODO handle ref responses as per parameters and request bodies above
                 .map(entry -> first(nullMapToEmpty(entry.getValue().getContent())) //
-                        .map(x -> Common.toModelClass(names.responseClassName(entry.getKey()),
-                                x.getValue().getSchema(), names, ClassType.RESPONSE)) //
-                        .orElse(new Model(new Class(names.responseClassName(entry.getKey()),
-                                ClassType.RESPONSE)))) //
+                        .map(x -> Common.toModelClass(names.responseClassName(entry.getKey()), x.getValue().getSchema(),
+                                names, ClassType.RESPONSE)) //
+                        .orElse(new Model(new Class(names.responseClassName(entry.getKey()), ClassType.RESPONSE)))) //
                 .reduce(Model.EMPTY, (a, b) -> a.add(b));
         return part1.add(part2).add(part3).add(part4);
     }

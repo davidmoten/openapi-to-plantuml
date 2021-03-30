@@ -21,12 +21,11 @@ public class ModelTest {
                 Lists.newArrayList( //
                         Association.from("Thing").to("Stuff").zeroOne().build(), //
                         Association.from("Thing").to("Other").one().build()));
-        assertEquals("Model [\n" + 
-                "  Class [name=Thing, type=Schema, fields=[]],\n" + 
-                "  Class [name=Stuff, type=Schema, fields=[]]\n" + 
-                "  Association [from=Thing, to=Stuff, type=ZERO_ONE, responseCode=, responseContentType=, propertyOrParameterName=],\n" + 
-                "  Association [from=Thing, to=Other, type=ONE, responseCode=, responseContentType=, propertyOrParameterName=]\n" + 
-                "]", model.toString());
+        assertEquals("Model [\n" + "  Class [name=Thing, type=Schema, fields=[]],\n"
+                + "  Class [name=Stuff, type=Schema, fields=[]]\n"
+                + "  Association [from=Thing, to=Stuff, type=ZERO_ONE, responseCode=, responseContentType=, propertyOrParameterName=],\n"
+                + "  Association [from=Thing, to=Other, type=ONE, responseCode=, responseContentType=, propertyOrParameterName=]\n"
+                + "]", model.toString());
     }
 
 }

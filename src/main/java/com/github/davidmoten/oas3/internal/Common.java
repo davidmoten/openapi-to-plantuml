@@ -44,7 +44,7 @@ public final class Common {
         // prevent instantiation
     }
 
-    private static final Set<String> simpleTypesWithoutBrackets = Sets.newHashSet("string", "decimal", "integer",
+    private static final Set<String> SIMPLE_TYPES_WITHOUT_BRACKETS = Sets.newHashSet("string", "decimal", "integer",
             "byte", "date", "boolean", "timestamp");
 
     static Model toModelClass(String name, Schema<?> schema, Names names, ClassType classType) {
@@ -164,7 +164,7 @@ public final class Common {
     }
 
     static boolean isSimpleType(String s) {
-        return simpleTypesWithoutBrackets.contains(s.replace("[", "").replace("]", ""));
+        return SIMPLE_TYPES_WITHOUT_BRACKETS.contains(s.replace("[", "").replace("]", ""));
     }
 
     private static void addArray(String name, List<Class> classes, List<Relationship> relationships, String property,

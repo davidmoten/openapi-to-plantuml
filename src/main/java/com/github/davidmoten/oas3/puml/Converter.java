@@ -49,7 +49,7 @@ public final class Converter {
         Model model = ComponentsHelper //
                 .toModel(names) //
                 .add(PathsHelper.toModel(names));
-        
+
         return "@startuml" //
                 + "\nhide <<" + toStereotype(ClassType.METHOD).get() + ">> circle" //
                 + "\nhide <<" + toStereotype(ClassType.RESPONSE).get() + ">> circle" //
@@ -91,14 +91,12 @@ public final class Converter {
                 if (a.responseCode().isPresent()) {
                     arrow = "..>";
                     label = a.responseCode().get() + a.responseContentType()
-                            .filter(x -> !"application/json".equalsIgnoreCase(x))
-                            .map(x -> SPACE + x).orElse("");
+                            .filter(x -> !"application/json".equalsIgnoreCase(x)).map(x -> SPACE + x).orElse("");
                 } else {
                     arrow = "-->";
                     label = a.propertyOrParameterName().orElse("");
                 }
-                b.append("\n\n" + quote(a.from()) + SPACE + arrow + SPACE + quote(mult) + SPACE
-                        + quote(a.to())
+                b.append("\n\n" + quote(a.from()) + SPACE + arrow + SPACE + quote(mult) + SPACE + quote(a.to())
                         + (label.equals("") ? "" : SPACE + COLON + SPACE + quote(label)));
             } else {
                 Inheritance a = (Inheritance) r;
@@ -109,13 +107,11 @@ public final class Converter {
                     b.append("\n\n" + quote(a.from()) + SPACE + "-->" + SPACE + quote(diamond)
                             + a.label().map(x -> COLON + quote(x)).orElse(""));
                     for (String otherClassName : a.to()) {
-                        b.append("\n\n" + quote(otherClassName) + SPACE + "--|>" + SPACE
-                                + quote(diamond));
+                        b.append("\n\n" + quote(otherClassName) + SPACE + "--|>" + SPACE + quote(diamond));
                     }
                 } else {
                     for (String otherClassName : a.to()) {
-                        b.append("\n\n" + quote(otherClassName) + SPACE + "--|>" + SPACE
-                                + quote(a.from()));
+                        b.append("\n\n" + quote(otherClassName) + SPACE + "--|>" + SPACE + quote(a.from()));
                     }
                 }
             }
