@@ -9,7 +9,7 @@ Supports all features of OpenAPI 3.0 including
 * Multiple levels of indirection (`$ref` -> `$ref` for example) 
 * Multiple response content types
 
-**Status:** in development (first release soonh)
+**Status:** in development (first release to Maven Central mid-April 2021)
 
 **Limitations**
 
