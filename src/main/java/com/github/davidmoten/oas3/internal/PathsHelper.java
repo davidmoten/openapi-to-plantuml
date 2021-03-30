@@ -213,6 +213,7 @@ public final class PathsHelper {
                                 Schema<?> sch = mediaType.getSchema();
                                 if (sch == null) {
                                     // TODO
+                                    System.out.println("TODO handle null schema in response");
                                 } else if (sch.get$ref() != null) {
                                     String returnClassName = names.refToClassName(sch.get$ref());
                                     m = m.add(Association.from(className).to(returnClassName).one()
@@ -233,10 +234,10 @@ public final class PathsHelper {
     }
 
     private static final class Reference {
-        final String namespace;
-        final String simpleName;
+        private final String namespace;
+        private final String simpleName;
 
-        Reference(String ref) {
+        private Reference(String ref) {
             this.namespace = ref.substring(0, ref.lastIndexOf("/"));
             this.simpleName = ref.substring(ref.lastIndexOf("/") + 1);
         }

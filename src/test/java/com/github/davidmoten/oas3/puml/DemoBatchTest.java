@@ -20,7 +20,7 @@ import org.junit.runners.Parameterized;
 @RunWith(Parameterized.class)
 public class DemoBatchTest {
 
-    private static final File inputs = new File("src/test/resources/demo/");
+    private static final File INPUTS = new File("src/test/resources/demo/");
 
     private final File input;
 
@@ -30,7 +30,7 @@ public class DemoBatchTest {
 
     @Parameterized.Parameters(name = "{0}")
     public static Collection<?> files() {
-        File[] list = inputs.listFiles();
+        File[] list = INPUTS.listFiles();
         if (list == null) {
             return Collections.emptyList();
         } else {

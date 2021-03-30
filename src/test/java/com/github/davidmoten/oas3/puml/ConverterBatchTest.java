@@ -21,8 +21,8 @@ import org.junit.runners.Parameterized;
 @RunWith(Parameterized.class)
 public class ConverterBatchTest {
 
-    private static final File inputs = new File("src/test/resources/inputs/");
-    private static final File outputs = new File("src/test/resources/outputs/");
+    private static final File INPUTS = new File("src/test/resources/inputs/");
+    private static final File OUTPUTS = new File("src/test/resources/outputs/");
 
     private final File input;
 
@@ -32,7 +32,7 @@ public class ConverterBatchTest {
 
     @Parameterized.Parameters(name = "{0}")
     public static Collection<?> files() {
-        File[] list = inputs.listFiles();
+        File[] list = INPUTS.listFiles();
         if (list == null) {
             return Collections.emptyList();
         } else {
@@ -52,7 +52,7 @@ public class ConverterBatchTest {
             pumlFile.getParentFile().mkdirs();
             pumlFile.delete();
             Files.write(pumlFile.toPath(), puml.getBytes(StandardCharsets.UTF_8));
-            File output = new File(outputs, input.getName().substring(0, input.getName().lastIndexOf('.')) + ".puml");
+            File output = new File(OUTPUTS, input.getName().substring(0, input.getName().lastIndexOf('.')) + ".puml");
             if (!output.exists()) {
                 output.createNewFile();
                 System.out.println(puml);

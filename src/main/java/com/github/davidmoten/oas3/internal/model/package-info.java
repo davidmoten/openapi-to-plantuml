@@ -1,5 +1,5 @@
 /**
- * classes to support conversion of OpenAPI to Model
+ * classes to support conversion of OpenAPI to Model.
  *
  * @since 1.0
  * @see java.awt

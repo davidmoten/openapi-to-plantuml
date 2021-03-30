@@ -1,5 +1,5 @@
 /**
- * Converts OpenAPI to PlantUML
+ * Converts OpenAPI to PlantUML.
  *
  * @since 1.0
  * @see java.awt

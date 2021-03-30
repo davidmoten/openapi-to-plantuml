@@ -12,9 +12,8 @@ public class AssociationTest {
     public void testToString() {
         Association a = Association.from("thing").to("stuff").zeroOne().propertyOrParameterName("hello")
                 .responseCode("200").responseContentType("application/json").build();
-        assertEquals(
-                "Association [from=thing, to=stuff, type=ZERO_ONE, responseCode=200, responseContentType=application/json, propertyOrParameterName=hello]",
-                a.toString());
+        assertEquals("Association [from=thing, to=stuff, type=ZERO_ONE, responseCode=200, "
+                + "responseContentType=application/json, propertyOrParameterName=hello]", a.toString());
     }
 
 }

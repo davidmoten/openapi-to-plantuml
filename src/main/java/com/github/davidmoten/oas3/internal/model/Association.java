@@ -75,10 +75,10 @@ public final class Association implements Relationship {
 
         private final String from;
         private String to;
-        public AssociationType type;
-        public Optional<String> propertyOrParameterName = Optional.empty();
-        public Optional<String> responseCode = Optional.empty();
-        public Optional<String> responseContentType = Optional.empty();
+        private AssociationType type;
+        private Optional<String> propertyOrParameterName = Optional.empty();
+        private Optional<String> responseCode = Optional.empty();
+        private Optional<String> responseContentType = Optional.empty();
 
         Builder(String from) {
             this.from = from;

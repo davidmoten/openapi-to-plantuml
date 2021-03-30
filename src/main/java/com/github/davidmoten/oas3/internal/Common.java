@@ -145,9 +145,8 @@ public final class Common {
                 relationships.addAll(m.relationships());
             }
             addToMany(relationships, name, otherClassName);
-        } else if (schema instanceof ObjectSchema) {
-            // has no properties so ignore
-        } else {
+        } else if (!(schema instanceof ObjectSchema)) {
+            // has no properties so ignore ObjectSchema
             String type = getUmlTypeName(schema.get$ref(), schema, names);
             if (isComplexArrayType(type)) {
                 addArray(name, classes, relationships, null, schema, names);
@@ -245,8 +244,8 @@ public final class Common {
                 .from(name) //
                 .to(otherClassName) //
                 .type(isToOne ? AssociationType.ONE : AssociationType.ZERO_ONE) //
-                .propertyOrParameterName(
-                        property == null || property.equals(otherClassName) ? Optional.empty() : Optional.of(property)) //
+                .propertyOrParameterName(property == null || property.equals(otherClassName) ? //
+                        Optional.empty() : Optional.of(property))
                 .build());
     }
 
