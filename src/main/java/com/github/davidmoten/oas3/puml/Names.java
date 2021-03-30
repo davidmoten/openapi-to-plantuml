@@ -76,7 +76,7 @@ public final class Names {
                 .findFirst() //
                 .orElseThrow(() -> new RuntimeException("cound not find " + b));
     }
-
+    
     public String parameterClassName(Parameter p) {
         return nullMapToEmpty(components().getParameters()) //
                 .entrySet() //

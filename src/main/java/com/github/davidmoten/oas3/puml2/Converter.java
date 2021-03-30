@@ -24,6 +24,7 @@ import io.swagger.v3.parser.core.models.SwaggerParseResult;
 
 public final class Converter {
 
+    private static final String COLON = " : ";
     private static final String SPACE = " ";
 
     public static String openApiToPuml(InputStream in) throws IOException {
@@ -46,6 +47,8 @@ public final class Converter {
                 .add(PathsHelper.toModel(names));
         return "@startuml" //
                 + "\nhide <<" + toStereotype(ClassType.METHOD).get() + ">> circle" //
+                + "\nhide <<" + toStereotype(ClassType.RESPONSE).get() + ">> circle" //
+                + "\nhide <<" + toStereotype(ClassType.PARAMETER).get() + ">> circle" //
                 + "\nhide empty methods" //
                 + "\nhide empty fields" //
                 + "\nset namespaceSeparator none" //
@@ -60,7 +63,7 @@ public final class Converter {
             b.append("\n\nclass " + Util.quote(cls.name())
                     + toStereotype(cls.type()).map(x -> " <<" + x + ">>").orElse("") + " {");
             cls.fields().stream().forEach(f -> {
-                b.append("\n  " + f.name() + " : " + f.type() + (f.isRequired() ? "" : " {O}"));
+                b.append("\n  " + f.name() + COLON + f.type() + (f.isRequired() ? "" : " {O}"));
             });
             b.append("\n}");
         }
@@ -68,14 +71,7 @@ public final class Converter {
         for (Relationship r : model.relationships()) {
             if (r instanceof Association) {
                 Association a = (Association) r;
-                Class fromClass = getClass(model, a.from());
-                Class toClass = getClass(model, a.to());
-                final String arrow;
-                if (fromClass.type() == ClassType.METHOD && toClass.type() == ClassType.RESPONSE) {
-                    arrow = "..>";
-                } else {
-                    arrow = "-->";
-                }
+
                 final String mult;
                 if (a.type() == AssociationType.ONE) {
                     mult = "1";
@@ -85,15 +81,26 @@ public final class Converter {
                     mult = "*";
                 }
 
+                final String label;
+                final String arrow;
+                if (a.responseCode().isPresent()) {
+                    arrow = "..>";
+                    label = a.responseCode().get()
+                            + a.responseContentType().filter(x -> !"application/json".equalsIgnoreCase(x)).map(x -> SPACE + x).orElse("");
+                } else {
+                    arrow = "-->";
+                    label = a.propertyOrParameterName().orElse("");
+                }
                 b.append("\n\n" + quote(a.from()) + SPACE + arrow + SPACE + quote(mult) + SPACE
-                        + quote(a.to()) + a.label().map(x -> " : " + quote(x)).orElse(""));
+                        + quote(a.to())
+                        + (label.equals("") ? "" : SPACE + COLON + SPACE + quote(label)));
             } else {
                 Inheritance a = (Inheritance) r;
                 anonNumber++;
                 String diamond = "anon" + anonNumber;
                 b.append("\n\ndiamond " + diamond);
                 b.append("\n\n" + quote(a.from()) + SPACE + "-->" + SPACE + quote(diamond)
-                        + a.label().map(x -> " : " + x).orElse(""));
+                        + a.label().map(x -> COLON + quote(x)).orElse(""));
                 for (String otherClassName : a.to()) {
                     b.append("\n\n" + quote(otherClassName) + SPACE + "--|>" + SPACE
                             + quote(diamond));

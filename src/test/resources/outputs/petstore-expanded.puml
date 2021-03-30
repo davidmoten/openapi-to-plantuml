@@ -1,5 +1,7 @@
 @startuml
 hide <<Method>> circle
+hide <<Response>> circle
+hide <<Parameter>> circle
 hide empty methods
 hide empty fields
 set namespaceSeparator none
@@ -26,17 +28,6 @@ class "GET /pets" <<Method>> {
   limit : integer {O}
 }
 
-class "GET /pets.tags" {
-  value : string
-}
-
-class "GET /pets.tags" <<Parameter>> {
-}
-
-class "GET /pets.limit" <<Parameter>> {
-  value : integer
-}
-
 class "GET /pets 200 application/json" <<Response>> {
 }
 
@@ -47,16 +38,8 @@ class "GET /pets/{id}" <<Method>> {
   id : integer
 }
 
-class "GET /pets/{id}.id" <<Parameter>> {
-  value : integer
-}
-
 class "DELETE /pets/{id}" <<Method>> {
   id : integer
-}
-
-class "DELETE /pets/{id}.id" <<Parameter>> {
-  value : integer
 }
 
 class "DELETE /pets/{id} 204" <<Response>> {
@@ -66,34 +49,24 @@ class "DELETE /pets/{id} 204" <<Response>> {
 
 "Pet" --> "1" "PetId"
 
-"GET /pets.tags" --> "*" "GET /pets.tags"
-
-"GET /pets" --> "0..1" "GET /pets.tags" : "tags"
-
-"GET /pets" --> "0..1" "GET /pets.limit" : "limit"
-
 "GET /pets 200 application/json" --> "*" "Pet"
 
-"GET /pets" ..> "1" "GET /pets 200 application/json"
+"GET /pets" ..> "1" "GET /pets 200 application/json"  :  "200"
 
-"GET /pets" --> "1" "Error"
+"GET /pets" ..> "1" "Error"  :  "default"
 
-"POST /pets" --> "1" "Pet"
+"POST /pets" ..> "1" "Pet"  :  "200"
 
-"POST /pets" --> "1" "Error"
+"POST /pets" ..> "1" "Error"  :  "default"
 
 "POST /pets" --> "1" "NewPet"
 
-"GET /pets/{id}" --> "1" "GET /pets/{id}.id" : "id"
+"GET /pets/{id}" ..> "1" "Pet"  :  "200"
 
-"GET /pets/{id}" --> "1" "Pet"
+"GET /pets/{id}" ..> "1" "Error"  :  "default"
 
-"GET /pets/{id}" --> "1" "Error"
+"DELETE /pets/{id}" ..> "1" "DELETE /pets/{id} 204"  :  "204"
 
-"DELETE /pets/{id}" --> "1" "DELETE /pets/{id}.id" : "id"
-
-"DELETE /pets/{id}" ..> "1" "DELETE /pets/{id} 204"
-
-"DELETE /pets/{id}" --> "1" "Error"
+"DELETE /pets/{id}" ..> "1" "Error"  :  "default"
 
 @enduml

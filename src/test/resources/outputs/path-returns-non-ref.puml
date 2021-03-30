@@ -1,5 +1,7 @@
 @startuml
 hide <<Method>> circle
+hide <<Response>> circle
+hide <<Parameter>> circle
 hide empty methods
 hide empty fields
 set namespaceSeparator none
@@ -25,6 +27,6 @@ class "GET /customer/expired 200 application/json" <<Response>> {
 
 "GET /customer/expired 200 application/json" --> "*" "Customer"
 
-"GET /customer/expired" ..> "1" "GET /customer/expired 200 application/json"
+"GET /customer/expired" ..> "1" "GET /customer/expired 200 application/json"  :  "200"
 
 @enduml

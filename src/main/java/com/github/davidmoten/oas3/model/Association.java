@@ -6,13 +6,18 @@ public final class Association implements Relationship {
     private final String from;
     private final String to;
     private final AssociationType type;
-    private final Optional<String> label;
+    private final Optional<String> responseCode;
+    private final Optional<String> responseContentType;
+    private final Optional<String> propertyOrParameterName;
 
-    private Association(String from, String to, AssociationType type, Optional<String> label) {
+    private Association(String from, String to, AssociationType type, Optional<String> responseCode,
+            Optional<String> responseContentType, Optional<String> propertyOrParameterName) {
         this.from = from;
         this.to = to;
         this.type = type;
-        this.label = label;
+        this.responseCode = responseCode;
+        this.responseContentType = responseContentType;
+        this.propertyOrParameterName = propertyOrParameterName;
     }
 
     public String from() {
@@ -27,8 +32,16 @@ public final class Association implements Relationship {
         return type;
     }
 
-    public Optional<String> label() {
-        return label;
+    public Optional<String> responseCode() {
+        return responseCode;
+    }
+
+    public Optional<String> responseContentType() {
+        return responseContentType;
+    }
+
+    public Optional<String> propertyOrParameterName() {
+        return propertyOrParameterName;
     }
 
     @Override
@@ -40,8 +53,12 @@ public final class Association implements Relationship {
         b.append(to);
         b.append(", type=");
         b.append(type);
-        b.append(", label=");
-        b.append(label);
+        b.append(", responseCode=");
+        b.append(responseCode);
+        b.append(", responseContentType=");
+        b.append(responseContentType);
+        b.append(", propertyOrParameterName=");
+        b.append(propertyOrParameterName);
         b.append("]");
         return b.toString();
     }
@@ -55,9 +72,9 @@ public final class Association implements Relationship {
         private final String from;
         private String to;
         public AssociationType type;
-        public Optional<String> label = Optional.empty();
+        public Optional<String> propertyOrParameterName = Optional.empty();
         public Optional<String> responseCode = Optional.empty();
-        public Optional<String> responseContentType;
+        public Optional<String> responseContentType= Optional.empty();
 
         Builder(String from) {
             this.from = from;
@@ -106,7 +123,8 @@ public final class Association implements Relationship {
         }
 
         public Association build() {
-            return new Association(b.from, b.to, b.type, b.label);
+            return new Association(b.from, b.to, b.type, b.responseCode, b.responseContentType,
+                    b.propertyOrParameterName);
         }
 
         public Builder3 propertyOrParameterName(String label) {
@@ -123,8 +141,8 @@ public final class Association implements Relationship {
             return this;
         }
 
-        public Builder3 propertyOrParameterName(Optional<String> label) {
-            b.label = label;
+        public Builder3 propertyOrParameterName(Optional<String> propertyOrParameterName) {
+            b.propertyOrParameterName = propertyOrParameterName;
             return this;
         }
     }

@@ -1,5 +1,7 @@
 @startuml
 hide <<Method>> circle
+hide <<Response>> circle
+hide <<Parameter>> circle
 hide empty methods
 hide empty fields
 set namespaceSeparator none
@@ -13,6 +15,6 @@ class "Customer" {
   heightMetres : decimal {O}
 }
 
-"Customer" --> "0..1" "Customer.name" : "name"
+"Customer" --> "0..1" "Customer.name"  :  "name"
 
 @enduml

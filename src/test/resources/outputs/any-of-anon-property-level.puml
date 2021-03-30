@@ -1,5 +1,7 @@
 @startuml
 hide <<Method>> circle
+hide <<Response>> circle
+hide <<Parameter>> circle
 hide empty methods
 hide empty fields
 set namespaceSeparator none
@@ -19,7 +21,7 @@ class "employee" {
 
 diamond anon1
 
-"employee" --> "anon1" : role
+"employee" --> "anon1" : "role"
 
 "employee.role" --|> "anon1"
 

@@ -114,7 +114,7 @@ public class Common {
                     } else if (type.equals("object")) {
                         // create anon class
                         String otherClassName = names.nextClassName(name + "." + property);
-                        Model m = toModelClass(otherClassName, entry.getValue(), names, ClassType.SCHEMA);
+                        Model m = toModelClass(otherClassName, entry.getValue(), names, classType);
                         classes.addAll(m.classes());
                         relationships.addAll(m.relationships());
                         addToOne(relationships, name, otherClassName, property,
@@ -135,7 +135,7 @@ public class Common {
             } else {
                 // create anon class
                 otherClassName = names.nextClassName(name);
-                Model m = toModelClass(otherClassName, items, names, ClassType.SCHEMA);
+                Model m = toModelClass(otherClassName, items, names, classType);
                 classes.addAll(m.classes());
                 relationships.addAll(m.relationships());
             }

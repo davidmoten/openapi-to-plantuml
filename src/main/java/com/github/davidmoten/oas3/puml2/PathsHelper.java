@@ -116,34 +116,36 @@ public final class PathsHelper {
         if (ref != null) {
             Model model = new Model(Association.from(className).to(names.refToClassName(ref)).one()
                     .propertyOrParameterName(parameterName).build());
-            System.out.println(model);
             return new FieldsWithModel(Collections.emptyList(), model);
         } else {
             Optional<Field> field = Optional.empty();
             Model model;
-            if (param.getSchema() != null) {
-                String anonClassName = className + "." + parameterName;
-                model = Common
-                        .toModelClass(anonClassName, param.getSchema(), names, ClassType.PARAMETER)
-                        .add(Association.from(className).to(anonClassName)
-                                .type(required ? AssociationType.ONE : AssociationType.ZERO_ONE)
-                                .propertyOrParameterName(parameterName).build());
-            } else {
-                model = Model.EMPTY;
-            }
-            // TODO else get schema from content?
-
             final String type = Common.getUmlTypeName(param.get$ref(), param.getSchema(), names);
             if (Common.isSimpleType(type)) {
                 field = Optional.of(new Field(parameterName, type, type.endsWith("]"), required));
+                model = Model.EMPTY;
             } else {
+                if (param.getSchema() != null) {
+                    String anonClassName = className + "." + parameterName;
+                    model = Common
+                            .toModelClass(anonClassName, param.getSchema(), names,
+                                    ClassType.PARAMETER)
+                            .add(Association.from(className).to(anonClassName)
+                                    .type(required ? AssociationType.ONE : AssociationType.ZERO_ONE)
+                                    .propertyOrParameterName(parameterName).build());
+                } else {
+                    model = Model.EMPTY;
+                }
                 model = model.add(Association.from(className).to(type).one()
                         .propertyOrParameterName(parameterName).build());
             }
+            // TODO else get schema from content?
+
             return new FieldsWithModel(
                     field.map(x -> Collections.singletonList(x)).orElse(Collections.emptyList()),
                     model);
         }
+
     }
 
     private static Parameter getParameter(Components components, String ref) {

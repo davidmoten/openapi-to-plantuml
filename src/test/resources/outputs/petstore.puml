@@ -1,5 +1,7 @@
 @startuml
 hide <<Method>> circle
+hide <<Response>> circle
+hide <<Parameter>> circle
 hide empty methods
 hide empty fields
 set namespaceSeparator none
@@ -22,10 +24,6 @@ class "GET /pets" <<Method>> {
   limit : integer {O}
 }
 
-class "GET /pets.limit" <<Parameter>> {
-  value : integer
-}
-
 class "POST /pets" <<Method>> {
 }
 
@@ -36,26 +34,18 @@ class "GET /pets/{petId}" <<Method>> {
   petId : string
 }
 
-class "GET /pets/{petId}.petId" <<Parameter>> {
-  value : string
-}
-
 "Pets" --> "*" "Pet"
 
-"GET /pets" --> "0..1" "GET /pets.limit" : "limit"
+"GET /pets" ..> "1" "Pets"  :  "200"
 
-"GET /pets" --> "1" "Pets"
+"GET /pets" ..> "1" "Error"  :  "default"
 
-"GET /pets" --> "1" "Error"
+"POST /pets" ..> "1" "POST /pets 201"  :  "201"
 
-"POST /pets" ..> "1" "POST /pets 201"
+"POST /pets" ..> "1" "Error"  :  "default"
 
-"POST /pets" --> "1" "Error"
+"GET /pets/{petId}" ..> "1" "Pet"  :  "200"
 
-"GET /pets/{petId}" --> "1" "GET /pets/{petId}.petId" : "petId"
-
-"GET /pets/{petId}" --> "1" "Pet"
-
-"GET /pets/{petId}" --> "1" "Error"
+"GET /pets/{petId}" ..> "1" "Error"  :  "default"
 
 @enduml
