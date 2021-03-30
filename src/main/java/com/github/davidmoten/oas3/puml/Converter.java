@@ -102,14 +102,21 @@ public final class Converter {
                         + (label.equals("") ? "" : SPACE + COLON + SPACE + quote(label)));
             } else {
                 Inheritance a = (Inheritance) r;
-                anonNumber++;
-                String diamond = "anon" + anonNumber;
-                b.append("\n\ndiamond " + diamond);
-                b.append("\n\n" + quote(a.from()) + SPACE + "-->" + SPACE + quote(diamond)
-                        + a.label().map(x -> COLON + quote(x)).orElse(""));
-                for (String otherClassName : a.to()) {
-                    b.append("\n\n" + quote(otherClassName) + SPACE + "--|>" + SPACE
-                            + quote(diamond));
+                if (a.label().isPresent()) {
+                    anonNumber++;
+                    String diamond = "anon" + anonNumber;
+                    b.append("\n\ndiamond " + diamond);
+                    b.append("\n\n" + quote(a.from()) + SPACE + "-->" + SPACE + quote(diamond)
+                            + a.label().map(x -> COLON + quote(x)).orElse(""));
+                    for (String otherClassName : a.to()) {
+                        b.append("\n\n" + quote(otherClassName) + SPACE + "--|>" + SPACE
+                                + quote(diamond));
+                    }
+                } else {
+                    for (String otherClassName : a.to()) {
+                        b.append("\n\n" + quote(otherClassName) + SPACE + "--|>" + SPACE
+                                + quote(a.from()));
+                    }
                 }
             }
         }
