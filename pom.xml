@@ -12,6 +12,7 @@
     <artifactId>openapi-to-plantuml</artifactId>
     <version>0.1-SNAPSHOT</version>
     <name>${project.artifactId}</name>
+    <description>Generates PlantUML file from an OpenAPI 3.0 Definition</description>
     <packaging>jar</packaging>
 
     <url>http://github.com/davidmoten/openapi-to-plantuml</url>
