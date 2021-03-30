@@ -13,6 +13,7 @@ import com.github.davidmoten.oas3.model.Association;
 import com.github.davidmoten.oas3.model.AssociationType;
 import com.github.davidmoten.oas3.model.Class;
 import com.github.davidmoten.oas3.model.ClassType;
+import com.github.davidmoten.oas3.model.Inheritance;
 import com.github.davidmoten.oas3.model.Model;
 import com.github.davidmoten.oas3.model.Relationship;
 import com.github.davidmoten.oas3.puml.Names;
@@ -22,7 +23,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.parser.core.models.SwaggerParseResult;
 
 public final class Converter {
-    
+
     private static final String SPACE = " ";
 
     public static String openApiToPuml(InputStream in) throws IOException {
@@ -53,6 +54,7 @@ public final class Converter {
     }
 
     private static String toPlantUml(Model model) {
+        int anonNumber = 0;
         StringBuilder b = new StringBuilder();
         for (Class cls : model.classes()) {
             b.append("\n\nclass " + Util.quote(cls.name())
@@ -62,7 +64,7 @@ public final class Converter {
             });
             b.append("\n}");
         }
-        
+
         for (Relationship r : model.relationships()) {
             if (r instanceof Association) {
                 Association a = (Association) r;
@@ -71,8 +73,7 @@ public final class Converter {
                         .stream() //
                         .filter(x -> x.name().equals(a.from())) //
                         .findFirst() //
-                        .orElseThrow(
-                                () -> new RuntimeException("could not find class " + a.from()));
+                        .orElseThrow(() -> new RuntimeException("could not find class " + a.from()));
                 final String arrow;
                 if (c.type() == ClassType.METHOD) {
                     arrow = "..>";
@@ -88,8 +89,17 @@ public final class Converter {
                     mult = "*";
                 }
 
-                b.append("\n\n" + quote(a.from()) + SPACE + arrow + SPACE + quote(mult) + SPACE
-                        + quote(a.to()) + a.label().map(x -> " : " + quote(x)).orElse(""));
+                b.append("\n\n" + quote(a.from()) + SPACE + arrow + SPACE + quote(mult) + SPACE + quote(a.to())
+                        + a.label().map(x -> " : " + quote(x)).orElse(""));
+            } else {
+                Inheritance a = (Inheritance) r;
+                anonNumber++;
+                String diamond = "anon" + anonNumber;
+                b.append("\n\ndiamond " + diamond);
+                b.append("\n\n" + quote(a.from()) + SPACE + "-->" + SPACE + quote(diamond) + a.label().map(x -> " : " + x).orElse(""));
+                for (String otherClassName : a.to()) {
+                    b.append("\n\n" + quote(otherClassName) + SPACE + "--|>"  + SPACE + quote(diamond));
+                }
             }
         }
         return b.toString();

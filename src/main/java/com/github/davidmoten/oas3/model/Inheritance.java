@@ -15,6 +15,22 @@ public class Inheritance implements Relationship{
         this.type = type;
         this.label = label;
     }
+    
+    public String from() {
+        return from;
+    }
+
+    public List<String> to() {
+        return to;
+    }
+
+    public AssociationType type() {
+        return type;
+    }
+
+    public Optional<String> label() {
+        return label;
+    }
 
     @Override
     public String toString() {
