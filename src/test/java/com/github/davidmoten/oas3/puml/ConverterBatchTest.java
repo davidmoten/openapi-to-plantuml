@@ -18,8 +18,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import com.github.davidmoten.oas3.puml.Converter;
-
 @RunWith(Parameterized.class)
 public class ConverterBatchTest {
 

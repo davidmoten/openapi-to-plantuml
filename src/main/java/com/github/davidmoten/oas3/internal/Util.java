@@ -19,7 +19,7 @@ public final class Util {
             return map;
         }
     }
-    
+
     public static <T> List<T> nullListToEmpty(List<T> list) {
         if (list == null) {
             return Collections.emptyList();
@@ -28,11 +28,10 @@ public final class Util {
         }
     }
 
-
     public static <T, S> Optional<Entry<T, S>> first(Map<T, S> map) {
         return map.entrySet().stream().findFirst();
     }
-    
+
     public static String quote(String s) {
         return "\"" + s + "\"";
     }

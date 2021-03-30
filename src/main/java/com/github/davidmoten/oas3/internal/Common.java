@@ -38,8 +38,7 @@ public class Common {
     private static final Set<String> simpleTypesWithoutBrackets = Sets.newHashSet("string",
             "decimal", "integer", "byte", "date", "boolean", "timestamp");
 
-    static Model toModelClass(String name, Schema<?> schema, Names names,
-            ClassType classType) {
+    static Model toModelClass(String name, Schema<?> schema, Names names, ClassType classType) {
         List<Field> fields = new ArrayList<>();
 
         List<Relationship> relationships = new ArrayList<>();
@@ -173,7 +172,7 @@ public class Common {
         } else {
             // create anon class
             otherClassName = names.nextClassName(name + (property == null ? "" : "." + property));
-            Model m = toModelClass(otherClassName, items, names,ClassType.SCHEMA);
+            Model m = toModelClass(otherClassName, items, names, ClassType.SCHEMA);
             classes.addAll(m.classes());
             relationships.addAll(m.relationships());
         }
@@ -245,8 +244,9 @@ public class Common {
                 .from(name) //
                 .to(otherClassName) //
                 .type(isToOne ? AssociationType.ONE : AssociationType.ZERO_ONE) //
-                .propertyOrParameterName((property == null || property.equals(otherClassName)) ? Optional.empty()
-                        : Optional.of(property)) //
+                .propertyOrParameterName(
+                        (property == null || property.equals(otherClassName)) ? Optional.empty()
+                                : Optional.of(property)) //
                 .build());
     }
 

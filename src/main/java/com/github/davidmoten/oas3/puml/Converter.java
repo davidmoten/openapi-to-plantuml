@@ -30,24 +30,26 @@ public final class Converter {
     private static final String COLON = " : ";
     private static final String SPACE = " ";
 
+    private Converter() {
+        // prevent instantiation
+    }
+
     public static String openApiToPuml(InputStream in) throws IOException {
         return openApiToPuml(IOUtils.toString(in, StandardCharsets.UTF_8));
     }
 
     public static String openApiToPuml(String openApi) {
         SwaggerParseResult result = new OpenAPIParser().readContents(openApi, null, null);
+        return openApiToPuml(result.getOpenAPI());
+    }
 
-        // or from a file
-        // SwaggerParseResult result = new
-        // OpenAPIParser().readContents("./path/to/openapi.yaml" null, null);
+    public static String openApiToPuml(OpenAPI a) {
 
-        // the parsed POJO
-
-        OpenAPI a = result.getOpenAPI();
         Names names = new Names(a);
         Model model = ComponentsHelper //
                 .toModel(names) //
                 .add(PathsHelper.toModel(names));
+
         return "@startuml" //
                 + "\nhide <<" + toStereotype(ClassType.METHOD).get() + ">> circle" //
                 + "\nhide <<" + toStereotype(ClassType.RESPONSE).get() + ">> circle" //
@@ -88,8 +90,9 @@ public final class Converter {
                 final String arrow;
                 if (a.responseCode().isPresent()) {
                     arrow = "..>";
-                    label = a.responseCode().get()
-                            + a.responseContentType().filter(x -> !"application/json".equalsIgnoreCase(x)).map(x -> SPACE + x).orElse("");
+                    label = a.responseCode().get() + a.responseContentType()
+                            .filter(x -> !"application/json".equalsIgnoreCase(x))
+                            .map(x -> SPACE + x).orElse("");
                 } else {
                     arrow = "-->";
                     label = a.propertyOrParameterName().orElse("");

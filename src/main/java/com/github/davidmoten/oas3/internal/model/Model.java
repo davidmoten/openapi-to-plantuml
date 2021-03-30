@@ -27,7 +27,7 @@ public class Model {
     public Model(Class cls) {
         this(Collections.singletonList(cls), Collections.emptyList());
     }
-    
+
     public Model(Relationship r) {
         this(Collections.emptyList(), Collections.singletonList(r));
     }
@@ -39,7 +39,7 @@ public class Model {
         r.addAll(model.relationships);
         return new Model(c, r);
     }
-    
+
     public Model add(Relationship r) {
         List<Relationship> list = new ArrayList<>(relationships);
         list.add(r);
@@ -64,7 +64,5 @@ public class Model {
         b.append("]");
         return b.toString();
     }
-    
-    
 
 }

@@ -3,7 +3,7 @@ package com.github.davidmoten.oas3.internal.model;
 public final class Field {
 
     private final String name;
-    //TODO convert to simpleType
+    // TODO convert to simpleType
     private final String type;
     private final boolean isArray;
     private final boolean required;
@@ -45,7 +45,5 @@ public final class Field {
         b.append("]");
         return b.toString();
     }
-    
-    
-    
+
 }
