@@ -245,8 +245,8 @@ public final class Common {
                 .from(name) //
                 .to(otherClassName) //
                 .type(isToOne ? AssociationType.ONE : AssociationType.ZERO_ONE) //
-                .propertyOrParameterName((property == null || property.equals(otherClassName)) ? Optional.empty()
-                        : Optional.of(property)) //
+                .propertyOrParameterName(
+                        property == null || property.equals(otherClassName) ? Optional.empty() : Optional.of(property)) //
                 .build());
     }
 

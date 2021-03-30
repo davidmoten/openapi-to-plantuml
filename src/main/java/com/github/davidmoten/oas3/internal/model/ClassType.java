@@ -7,7 +7,7 @@ public enum ClassType {
 
     private final String name;
 
-    private ClassType(String name) {
+    ClassType(String name) {
         this.name = name;
     }
 
