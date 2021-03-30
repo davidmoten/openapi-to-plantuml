@@ -1,4 +1,4 @@
-package com.github.davidmoten.oas3.puml2;
+package com.github.davidmoten.oas3.internal;
 
 import java.util.Collections;
 import java.util.List;

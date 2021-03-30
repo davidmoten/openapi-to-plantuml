@@ -5,12 +5,14 @@ Java library to generate a [PlantUML](https://plantuml.com) Class Diagram (suppl
 
 Supports all features of OpenAPI 3.0 including
 
-* Mixed types (*oneOf*, *anyOf*, *allOf*)  
+* Mixed types (*oneOf*, *anyOf*, *allOf*) 
+* Multiple levels of indirection (`$ref` -> `$ref` for example) 
+* Multiple response content types
 
 **Limitations**
 
-* It only consumes the first response content (but uses all responses).
-* Only handles internal references ("#/*")  
+* Only handles internal references ("#/*"), that is the yaml file should be self-contained
+* Doesn't model *Callbacks* or *Links*
 
 [openapi-example.yml](src/test/resources/openapi-example.yml): 
 

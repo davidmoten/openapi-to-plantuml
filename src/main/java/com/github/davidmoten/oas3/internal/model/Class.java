@@ -1,4 +1,4 @@
-package com.github.davidmoten.oas3.model;
+package com.github.davidmoten.oas3.internal.model;
 
 import java.util.Collections;
 import java.util.List;

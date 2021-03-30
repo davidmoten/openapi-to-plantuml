@@ -1,7 +1,7 @@
-package com.github.davidmoten.oas3.puml2;
+package com.github.davidmoten.oas3.internal;
 
-import static com.github.davidmoten.oas3.puml.Util.first;
-import static com.github.davidmoten.oas3.puml.Util.nullListToEmpty;
+import static com.github.davidmoten.oas3.internal.Util.first;
+import static com.github.davidmoten.oas3.internal.Util.nullListToEmpty;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,13 +10,12 @@ import java.util.Map.Entry;
 import java.util.Optional;
 
 import com.github.davidmoten.guavamini.Preconditions;
-import com.github.davidmoten.oas3.model.Association;
-import com.github.davidmoten.oas3.model.AssociationType;
-import com.github.davidmoten.oas3.model.Class;
-import com.github.davidmoten.oas3.model.ClassType;
-import com.github.davidmoten.oas3.model.Field;
-import com.github.davidmoten.oas3.model.Model;
-import com.github.davidmoten.oas3.puml.Names;
+import com.github.davidmoten.oas3.internal.model.Association;
+import com.github.davidmoten.oas3.internal.model.AssociationType;
+import com.github.davidmoten.oas3.internal.model.Class;
+import com.github.davidmoten.oas3.internal.model.ClassType;
+import com.github.davidmoten.oas3.internal.model.Field;
+import com.github.davidmoten.oas3.internal.model.Model;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.Operation;
@@ -210,7 +209,7 @@ public final class PathsHelper {
 
                         if (r.getContent() == null) {
                             final String newReturnClassName = className + " " + responseCode;
-                            Model m = new Model(new com.github.davidmoten.oas3.model.Class(
+                            Model m = new Model(new com.github.davidmoten.oas3.internal.model.Class(
                                     newReturnClassName, ClassType.RESPONSE));
                             String returnClassName = newReturnClassName;
                             model = m.add(Association.from(className).to(returnClassName).one()

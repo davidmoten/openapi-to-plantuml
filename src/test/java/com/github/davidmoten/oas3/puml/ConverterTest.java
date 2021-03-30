@@ -15,7 +15,7 @@ import java.nio.file.Files;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.github.davidmoten.oas3.puml2.Converter;
+import com.github.davidmoten.oas3.puml.Converter;
 
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;

@@ -1,6 +1,6 @@
-package com.github.davidmoten.oas3.puml;
+package com.github.davidmoten.oas3.internal;
 
-import static com.github.davidmoten.oas3.puml.Util.nullMapToEmpty;
+import static com.github.davidmoten.oas3.internal.Util.nullMapToEmpty;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -66,7 +66,7 @@ public final class Names {
     public String parameterClassName(String simpleName) {
         return refToClassName("#/components/parameters/" + simpleName);
     }
-    
+
     public String requestBodyClassName(RequestBody b) {
         return nullMapToEmpty(components().getRequestBodies()) //
                 .entrySet() //
@@ -76,7 +76,7 @@ public final class Names {
                 .findFirst() //
                 .orElseThrow(() -> new RuntimeException("cound not find " + b));
     }
-    
+
     public String parameterClassName(Parameter p) {
         return nullMapToEmpty(components().getParameters()) //
                 .entrySet() //

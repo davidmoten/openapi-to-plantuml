@@ -1,20 +1,19 @@
-package com.github.davidmoten.oas3.puml2;
+package com.github.davidmoten.oas3.internal;
 
-import static com.github.davidmoten.oas3.puml.Util.first;
-import static com.github.davidmoten.oas3.puml.Util.nullMapToEmpty;
+import static com.github.davidmoten.oas3.internal.Util.first;
+import static com.github.davidmoten.oas3.internal.Util.nullMapToEmpty;
 
-import com.github.davidmoten.oas3.model.Association;
-import com.github.davidmoten.oas3.model.Class;
-import com.github.davidmoten.oas3.model.ClassType;
-import com.github.davidmoten.oas3.model.Model;
-import com.github.davidmoten.oas3.puml.Names;
+import com.github.davidmoten.oas3.internal.model.Association;
+import com.github.davidmoten.oas3.internal.model.Class;
+import com.github.davidmoten.oas3.internal.model.ClassType;
+import com.github.davidmoten.oas3.internal.model.Model;
 
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 
 public final class ComponentsHelper {
 
-    static Model toModel(Names names) {
+    public static Model toModel(Names names) {
         Model part1 = names.schemas() //
                 .entrySet() //
                 .stream() //
