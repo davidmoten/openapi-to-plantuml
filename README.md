@@ -1,4 +1,8 @@
 # openapi-to-plantuml
+<a href="https://travis-ci.com/davidmoten/openapi-to-plantuml"><img src="https://travis-ci.com/davidmoten/openapi-to-plantuml.svg"/></a><br/>
+[![codecov](https://codecov.io/gh/davidmoten/openapi-to-plantuml/branch/master/graph/badge.svg)](https://codecov.io/gh/davidmoten/openapi-to-plantuml)<br/>
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.davidmoten/openapi-to-plantuml/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/com.github.davidmoten/openapi-to-plantuml)<br/>
+
 Java library to generate a [PlantUML](https://plantuml.com) Class Diagram (supplemented with path information) from an OpenAPI 3.0 definition (YAML or JSON).
 
 **Features**
