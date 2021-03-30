@@ -110,15 +110,6 @@ public final class Converter {
         return b.toString();
     }
 
-    private static Class getClass(Model model, String name) {
-        return model //
-                .classes() //
-                .stream() //
-                .filter(x -> x.name().equals(name)) //
-                .findFirst() //
-                .orElseThrow(() -> new RuntimeException("could not find class " + name));
-    }
-
     private static Optional<String> toStereotype(ClassType type) {
         final String result;
         if (type == ClassType.METHOD) {

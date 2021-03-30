@@ -26,12 +26,12 @@ class "repositories" <<RequestBody>> {
 class "GET /customer/expired" <<Method>> {
 }
 
-class "GET /customer/expired 200 application/json" <<Response>> {
+class "GET /customer/expired 200" <<Response>> {
 }
 
-"GET /customer/expired 200 application/json" --> "*" "Customer"
+"GET /customer/expired 200" --> "*" "Customer"
 
-"GET /customer/expired" ..> "1" "GET /customer/expired 200 application/json"  :  "200"
+"GET /customer/expired" ..> "1" "GET /customer/expired 200"  :  "200"
 
 "GET /customer/expired" --> "1" "repositories"
 

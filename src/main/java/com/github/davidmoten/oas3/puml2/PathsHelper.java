@@ -221,7 +221,8 @@ public final class PathsHelper {
                                     .entrySet()) {
                                 String contentType = contentEntry.getKey();
                                 final String newReturnClassName = className + " " + responseCode
-                                        + " " + contentType;
+                                        + ("application/json".equals(contentType) ? ""
+                                                : " " + contentType);
                                 MediaType mediaType = contentEntry.getValue();
                                 Schema<?> sch = mediaType.getSchema();
                                 if (sch == null) {

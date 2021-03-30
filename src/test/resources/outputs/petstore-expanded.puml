@@ -28,7 +28,7 @@ class "GET /pets" <<Method>> {
   limit : integer {O}
 }
 
-class "GET /pets 200 application/json" <<Response>> {
+class "GET /pets 200" <<Response>> {
 }
 
 class "POST /pets" <<Method>> {
@@ -49,9 +49,9 @@ class "DELETE /pets/{id} 204" <<Response>> {
 
 "Pet" --> "1" "PetId"
 
-"GET /pets 200 application/json" --> "*" "Pet"
+"GET /pets 200" --> "*" "Pet"
 
-"GET /pets" ..> "1" "GET /pets 200 application/json"  :  "200"
+"GET /pets" ..> "1" "GET /pets 200"  :  "200"
 
 "GET /pets" ..> "1" "Error"  :  "default"
 
