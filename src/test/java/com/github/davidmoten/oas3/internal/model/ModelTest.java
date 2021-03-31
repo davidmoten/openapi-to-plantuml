@@ -1,4 +1,4 @@
-package com.github.davidmoten.oas3;
+package com.github.davidmoten.oas3.internal.model;
 
 import static org.junit.Assert.assertEquals;
 

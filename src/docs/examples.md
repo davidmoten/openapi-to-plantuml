@@ -45,6 +45,10 @@
 
 <img src="../../src/docs/tests/one-of-class-level-empty.puml.svg"/>
 
+* [empty.yml](../../src/test/resources/inputs/empty.yml)
+
+<img src="../../src/docs/tests/empty.puml.svg"/>
+
 * [simple-types-and-arrays.yml](../../src/test/resources/inputs/simple-types-and-arrays.yml)
 
 <img src="../../src/docs/tests/simple-types-and-arrays.puml.svg"/>

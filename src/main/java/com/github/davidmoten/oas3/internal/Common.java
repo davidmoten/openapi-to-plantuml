@@ -10,6 +10,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.github.davidmoten.guavamini.Preconditions;
 import com.github.davidmoten.guavamini.Sets;
 import com.github.davidmoten.oas3.internal.model.Association;
 import com.github.davidmoten.oas3.internal.model.AssociationType;
@@ -151,11 +152,7 @@ public final class Common {
             Optional<String> t = getUmlTypeName(schema.get$ref(), schema, names);
             if (t.isPresent()) {
                 String type = t.get();
-                if (isComplexArrayType(type)) {
-                    addArray(name, classes, relationships, null, (ArraySchema) schema, names);
-                } else {
-                    fields.add(new Field("value", type, type.endsWith("]"), true));
-                }
+                fields.add(new Field("value", type, type.endsWith("]"), true));
             }
         }
         classes.add(new Class(name, classType, fields));
@@ -172,6 +169,7 @@ public final class Common {
 
     private static void addArray(String name, List<Class> classes, List<Relationship> relationships, String property,
             ArraySchema a, Names names) {
+        Preconditions.checkNotNull(property);
         // is array of items
         Schema<?> items = a.getItems();
         String ref = items.get$ref();
@@ -180,7 +178,7 @@ public final class Common {
             otherClassName = names.refToClassName(ref);
         } else {
             // create anon class
-            otherClassName = names.nextClassName(name + (property == null ? "" : "." + property));
+            otherClassName = names.nextClassName(name + "." + property);
             Model m = toModelClass(otherClassName, items, names, ClassType.SCHEMA);
             classes.addAll(m.classes());
             relationships.addAll(m.relationships());

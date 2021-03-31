@@ -1,0 +1,9 @@
+@startuml
+hide <<Method>> circle
+hide <<Response>> circle
+hide <<Parameter>> circle
+hide empty methods
+hide empty fields
+set namespaceSeparator none
+
+@enduml
