@@ -15,13 +15,9 @@ class "GET /customer/expired" <<Method>> {
 }
 
 class "GET /customer/expired.offset" <<Parameter>> {
-  min : integer {O}
-  max : integer {O}
 }
 
 class "GET /customer/expired.limit" <<Parameter>> {
-  min : integer {O}
-  max : integer {O}
 }
 
 class "GET /customer/expired 200" <<Response>> {

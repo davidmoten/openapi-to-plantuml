@@ -21,6 +21,10 @@
 
 <img src="../../src/docs/tests/request-body-ref-ref.puml.svg"/>
 
+* [parameter-anon-empty-object.yml](../../src/test/resources/inputs/parameter-anon-empty-object.yml)
+
+<img src="../../src/docs/tests/parameter-anon-empty-object.puml.svg"/>
+
 * [anon-nested-class-level.yml](../../src/test/resources/inputs/anon-nested-class-level.yml)
 
 <img src="../../src/docs/tests/anon-nested-class-level.puml.svg"/>
