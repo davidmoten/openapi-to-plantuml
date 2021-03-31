@@ -144,11 +144,12 @@ public final class Common {
             addToMany(relationships, name, otherClassName);
         } else if (!(schema instanceof ObjectSchema)) {
             // has no properties so ignore ObjectSchema
-            String type = getUmlTypeName(schema.get$ref(), schema, names).orElse("empty");
-            if (isComplexArrayType(type)) {
-                addArray(name, classes, relationships, null, (ArraySchema) schema, names);
-            } else {
-                if (!type.equals("empty")) {
+            Optional<String> t = getUmlTypeName(schema.get$ref(), schema, names);
+            if (t.isPresent()) {
+                String type = t.get();
+                if (isComplexArrayType(type)) {
+                    addArray(name, classes, relationships, null, (ArraySchema) schema, names);
+                } else {
                     fields.add(new Field("value", type, type.endsWith("]"), true));
                 }
             }
@@ -294,7 +295,6 @@ public final class Common {
         } else if (schema.get$ref() != null) {
             type = names.refToClassName(schema.get$ref());
         } else if (schema.getType() == null) {
-            // TODO don't display a type with empty
             type = null;
         } else {
             throw new RuntimeException("not expected" + schema);
