@@ -21,7 +21,7 @@ class "employee" {
 
 diamond anon1
 
-"employee" --> "anon1" : "role"
+"employee" -->"0..1" "anon1" : "role"
 
 "employee.role" --|> "anon1"
 

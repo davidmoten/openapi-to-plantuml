@@ -1,0 +1,28 @@
+openapi: 3.0.1
+info:
+  title: unit test
+  version: 0.0.1
+components:
+  schemas:
+    employee:
+     properties:
+       role:
+         oneOf: 
+         - $ref: "#/components/schemas/doctor"
+         - $ref: "#/components/schemas/nurse"
+     required:
+     - role
+      
+    nurse:
+      properties:
+        level:
+          type: integer
+      required:
+      - level
+      
+    doctor:
+      properties:
+        income:
+          type: number
+      required:
+      - income

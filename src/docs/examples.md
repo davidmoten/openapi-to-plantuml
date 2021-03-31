@@ -45,6 +45,10 @@
 
 <img src="../../src/docs/tests/request-body.puml.svg"/>
 
+* [one-of-property-level-required.yml](../../src/test/resources/inputs/one-of-property-level-required.yml)
+
+<img src="../../src/docs/tests/one-of-property-level-required.puml.svg"/>
+
 * [path-returns-non-ref.yml](../../src/test/resources/inputs/path-returns-non-ref.yml)
 
 <img src="../../src/docs/tests/path-returns-non-ref.puml.svg"/>

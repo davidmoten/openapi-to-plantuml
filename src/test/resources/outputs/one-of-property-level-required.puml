@@ -19,7 +19,7 @@ class "doctor" {
 
 diamond anon1
 
-"employee" -->"0..1" "anon1" : "role"
+"employee" -->"1" "anon1" : "role"
 
 "doctor" --|> "anon1"
 
