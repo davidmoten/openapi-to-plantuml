@@ -10,14 +10,10 @@ paths:
           in: query
           required: true
           description: The number of items to skip before starting to collect the result set
-          schema:
-            type: object
         - name: limit
           in: query
           required: false
           description: The number of items to skip before starting to collect the result set
-          schema:
-            type: object
       responses:
         '200':  
           content:

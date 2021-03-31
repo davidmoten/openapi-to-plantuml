@@ -45,8 +45,8 @@ public final class Common {
         // prevent instantiation
     }
 
-    private static final Set<String> SIMPLE_TYPES_WITHOUT_BRACKETS = Sets.newHashSet("string", "decimal", "integer",
-            "byte", "date", "boolean", "timestamp");
+    private static final Set<String> SIMPLE_TYPES_WITHOUT_BRACKETS = Sets.newHashSet("string",
+            "decimal", "integer", "byte", "date", "boolean", "timestamp");
 
     static Model toModelClass(String name, Schema<?> schema, Names names, ClassType classType) {
         List<Field> fields = new ArrayList<>();
@@ -104,27 +104,30 @@ public final class Common {
                         if (isAll) {
                             addMixedTypeAll(classes, relationships, name, list, property, names);
                         } else {
-                            addInheritanceForProperty(classes, relationships, name, list, property, associationType,
-                                    names);
+                            addInheritanceForProperty(classes, relationships, name, list, property,
+                                    associationType, names);
                         }
                     }
                 } else if (sch.get$ref() != null) {
                     String ref = sch.get$ref();
                     String otherClassName = names.refToClassName(ref);
-                    addToOne(relationships, name, otherClassName, property, required.contains(entry.getKey()));
+                    addToOne(relationships, name, otherClassName, property,
+                            required.contains(entry.getKey()));
                 } else {
                     Optional<String> t = getUmlTypeName(sch.get$ref(), sch, names);
                     if (t.isPresent()) {
                         String type = t.get();
                         if (isComplexArrayType(type)) {
-                            addArray(name, classes, relationships, property, (ArraySchema) sch, names);
+                            addArray(name, classes, relationships, property, (ArraySchema) sch,
+                                    names);
                         } else if (type.equals("object")) {
                             // create anon class
                             String otherClassName = names.nextClassName(name + "." + property);
                             Model m = toModelClass(otherClassName, sch, names, classType);
                             classes.addAll(m.classes());
                             relationships.addAll(m.relationships());
-                            addToOne(relationships, name, otherClassName, property, required.contains(property));
+                            addToOne(relationships, name, otherClassName, property,
+                                    required.contains(property));
                         } else {
                             fields.add(new Field(entry.getKey(), type, type.endsWith("]"),
                                     required.contains(entry.getKey())));
@@ -167,8 +170,8 @@ public final class Common {
         return SIMPLE_TYPES_WITHOUT_BRACKETS.contains(s.replace("[", "").replace("]", ""));
     }
 
-    private static void addArray(String name, List<Class> classes, List<Relationship> relationships, String property,
-            ArraySchema a, Names names) {
+    private static void addArray(String name, List<Class> classes, List<Relationship> relationships,
+            String property, ArraySchema a, Names names) {
         Preconditions.checkNotNull(property);
         // is array of items
         Schema<?> items = a.getItems();
@@ -186,40 +189,45 @@ public final class Common {
         addToMany(relationships, name, otherClassName, property);
     }
 
-    private static void addMixedTypeAll(List<Class> classes, List<Relationship> relationships, String name,
-            @SuppressWarnings("rawtypes") List<Schema> schemas, String propertyName, Names names) {
-        List<String> otherClassNames = addAnonymousClassesAndReturnOtherClassNames(classes, relationships, name,
-                schemas, names, propertyName);
+    private static void addMixedTypeAll(List<Class> classes, List<Relationship> relationships,
+            String name, @SuppressWarnings("rawtypes") List<Schema> schemas, String propertyName,
+            Names names) {
+        List<String> otherClassNames = addAnonymousClassesAndReturnOtherClassNames(classes,
+                relationships, name, schemas, names, propertyName);
         for (String otherClassName : otherClassNames) {
             addToOne(relationships, name, otherClassName, propertyName, true);
         }
     }
 
-    private static void addInheritanceForProperty(List<Class> classes, List<Relationship> relationships, String name,
-            @SuppressWarnings("rawtypes") List<Schema> schemas, String propertyName, AssociationType associationType,
-            Names names) {
-        List<String> otherClassNames = addAnonymousClassesAndReturnOtherClassNames(classes, relationships, name,
-                schemas, names, propertyName);
-        Inheritance inheritance = new Inheritance(name, otherClassNames, associationType, Optional.of(propertyName));
+    private static void addInheritanceForProperty(List<Class> classes,
+            List<Relationship> relationships, String name,
+            @SuppressWarnings("rawtypes") List<Schema> schemas, String propertyName,
+            AssociationType associationType, Names names) {
+        List<String> otherClassNames = addAnonymousClassesAndReturnOtherClassNames(classes,
+                relationships, name, schemas, names, propertyName);
+        Inheritance inheritance = new Inheritance(name, otherClassNames, associationType,
+                Optional.of(propertyName));
         relationships.add(inheritance);
     }
 
-    private static void addInheritance(List<Class> classes, List<Relationship> relationships, String name,
-            @SuppressWarnings("rawtypes") List<Schema> schemas, Names names) {
-        List<String> otherClassNames = addAnonymousClassesAndReturnOtherClassNames(classes, relationships, name,
-                schemas, names, null);
-        relationships.add(new Inheritance(name, otherClassNames, AssociationType.ONE, Optional.empty()));
+    private static void addInheritance(List<Class> classes, List<Relationship> relationships,
+            String name, @SuppressWarnings("rawtypes") List<Schema> schemas, Names names) {
+        List<String> otherClassNames = addAnonymousClassesAndReturnOtherClassNames(classes,
+                relationships, name, schemas, names, null);
+        relationships
+                .add(new Inheritance(name, otherClassNames, AssociationType.ONE, Optional.empty()));
     }
 
     private static List<String> addAnonymousClassesAndReturnOtherClassNames(List<Class> classes,
-            List<Relationship> relationships, String name, @SuppressWarnings("rawtypes") List<Schema> schemas,
-            Names names, String property) {
+            List<Relationship> relationships, String name,
+            @SuppressWarnings("rawtypes") List<Schema> schemas, Names names, String property) {
         List<String> otherClassNames = schemas.stream() //
                 .map(s -> {
                     if (s.get$ref() != null) {
                         return names.refToClassName(s.get$ref());
                     } else {
-                        String className = names.nextClassName(name + (property == null ? "" : "." + property));
+                        String className = names
+                                .nextClassName(name + (property == null ? "" : "." + property));
                         Model m = toModelClass(className, s, names, ClassType.SCHEMA);
                         classes.addAll(m.classes());
                         relationships.addAll(m.relationships());
@@ -229,24 +237,26 @@ public final class Common {
         return otherClassNames;
     }
 
-    private static void addToMany(List<Relationship> relationships, String name, String otherClassName) {
+    private static void addToMany(List<Relationship> relationships, String name,
+            String otherClassName) {
         addToMany(relationships, name, otherClassName, null);
     }
 
-    private static void addToMany(List<Relationship> relationships, String name, String otherClassName,
-            String property) {
+    private static void addToMany(List<Relationship> relationships, String name,
+            String otherClassName, String property) {
         relationships.add(Association.from(name).to(otherClassName).many()
                 .propertyOrParameterName(Optional.ofNullable(property)).build());
     }
 
-    private static void addToOne(List<Relationship> relationships, String name, String otherClassName, String property,
-            boolean isToOne) {
+    private static void addToOne(List<Relationship> relationships, String name,
+            String otherClassName, String property, boolean isToOne) {
         relationships.add(Association //
                 .from(name) //
                 .to(otherClassName) //
                 .type(isToOne ? AssociationType.ONE : AssociationType.ZERO_ONE) //
                 .propertyOrParameterName(//
-                        property == null || property.equals(otherClassName) ? Optional.empty() : Optional.of(property))
+                        property == null || property.equals(otherClassName) ? Optional.empty()
+                                : Optional.of(property))
                 .build());
     }
 
@@ -254,6 +264,8 @@ public final class Common {
         final String type;
         if (ref != null) {
             type = names.refToClassName(ref);
+        } else if (schema == null) {
+            type = null;
         } else if (schema instanceof StringSchema) {
             type = "string";
         } else if (schema instanceof BooleanSchema) {

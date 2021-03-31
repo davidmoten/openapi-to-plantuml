@@ -59,15 +59,18 @@ public final class PathsHelper {
                 .map(entry -> {
                     Operation operation = entry.getValue();
                     String className = entry.getKey() + " " + path;
-                    FieldsWithModel f = toModelParameters(names, className, operation.getParameters());
-                    Model m = new Model(new Class(className, ClassType.METHOD, f.fields)).add(f.model);
+                    FieldsWithModel f = toModelParameters(names, className,
+                            operation.getParameters());
+                    Model m = new Model(new Class(className, ClassType.METHOD, f.fields))
+                            .add(f.model);
                     m = m.add(toModelResponses(names, operation, className));
                     return m.add(toModelRequestBody(className, operation, names));
                 }) //
                 .reduce(Model.EMPTY, (a, b) -> a.add(b));
     }
 
-    private static FieldsWithModel toModelParameters(Names names, String className, List<Parameter> parameters) {
+    private static FieldsWithModel toModelParameters(Names names, String className,
+            List<Parameter> parameters) {
         return nullListToEmpty(parameters) //
                 .stream()//
                 .map(param -> toModelParameter(names, className, param)) //
@@ -75,7 +78,8 @@ public final class PathsHelper {
     }
 
     private static final class FieldsWithModel {
-        private static final FieldsWithModel EMPTY = new FieldsWithModel(Collections.emptyList(), Model.EMPTY);
+        private static final FieldsWithModel EMPTY = new FieldsWithModel(Collections.emptyList(),
+                Model.EMPTY);
         private final List<Field> fields;
         private final Model model;
 
@@ -91,7 +95,8 @@ public final class PathsHelper {
         }
     }
 
-    private static FieldsWithModel toModelParameter(Names names, String className, Parameter param) {
+    private static FieldsWithModel toModelParameter(Names names, String className,
+            Parameter param) {
         String ref = param.get$ref();
         String parameterName = param.getName();
         Boolean required = param.getRequired();
@@ -117,25 +122,30 @@ public final class PathsHelper {
             return new FieldsWithModel(Collections.emptyList(), model);
         } else {
             Optional<Field> field = Optional.empty();
-            Model model;
-            final String type = Common.getUmlTypeName(param.get$ref(), param.getSchema(), names).orElse("empty");
-            if (Common.isSimpleType(type)) {
-                field = Optional.of(new Field(parameterName, type, type.endsWith("]"), required));
+            final Model model;
+            final Optional<String> type = Common.getUmlTypeName(param.get$ref(), param.getSchema(),
+                    names);
+            if (type.isPresent() && Common.isSimpleType(type.get())) {
+                field = Optional.of(
+                        new Field(parameterName, type.get(), type.get().endsWith("]"), required));
                 model = Model.EMPTY;
             } else {
+                String anonClassName = names.nextClassName(className + "." + parameterName);
+                final Model m;
                 if (param.getSchema() != null) {
-                    String anonClassName = names.nextClassName(className + "." + parameterName);
-                    model = Common.toModelClass(anonClassName, param.getSchema(), names, ClassType.PARAMETER)
-                            .add(Association.from(className).to(anonClassName)
-                                    .type(required ? AssociationType.ONE : AssociationType.ZERO_ONE)
-                                    .propertyOrParameterName(parameterName).build());
+                    m = Common.toModelClass(anonClassName, param.getSchema(), names,
+                            ClassType.PARAMETER);
                 } else {
-                    model = Model.EMPTY;
+                    m = new Model(new Class(anonClassName, ClassType.PARAMETER));
                 }
+                model = m.add(Association.from(className).to(anonClassName)
+                        .type(required ? AssociationType.ONE : AssociationType.ZERO_ONE)
+                        .propertyOrParameterName(parameterName).build());
             }
             // TODO else get schema from content?
 
-            return new FieldsWithModel(field.map(x -> Collections.singletonList(x)).orElse(Collections.emptyList()),
+            return new FieldsWithModel(
+                    field.map(x -> Collections.singletonList(x)).orElse(Collections.emptyList()),
                     model);
         }
 
@@ -156,7 +166,8 @@ public final class PathsHelper {
         if (body != null) {
             String ref = body.get$ref();
             if (ref != null) {
-                return new Model(Association.from(className).to(names.refToClassName(ref)).one().build());
+                return new Model(
+                        Association.from(className).to(names.refToClassName(ref)).one().build());
             }
             Content content = body.getContent();
             if (content != null) {
@@ -173,7 +184,8 @@ public final class PathsHelper {
                     if (sch == null) {
                         model = Model.EMPTY;
                     } else {
-                        model = Common.toModelClass(requestBodyClassName, sch, names, ClassType.REQUEST_BODY);
+                        model = Common.toModelClass(requestBodyClassName, sch, names,
+                                ClassType.REQUEST_BODY);
                     }
                 }
                 Association a = Association.from(className).to(requestBodyClassName).one().build();
@@ -207,10 +219,12 @@ public final class PathsHelper {
                                     .responseCode(responseCode).build());
                         } else {
                             Model m = Model.EMPTY;
-                            for (Entry<String, MediaType> contentEntry : r.getContent().entrySet()) {
+                            for (Entry<String, MediaType> contentEntry : r.getContent()
+                                    .entrySet()) {
                                 String contentType = contentEntry.getKey();
                                 final String newReturnClassName = className + " " + responseCode
-                                        + ("application/json".equals(contentType) ? "" : " " + contentType);
+                                        + ("application/json".equals(contentType) ? ""
+                                                : " " + contentType);
                                 MediaType mediaType = contentEntry.getValue();
                                 Schema<?> sch = mediaType.getSchema();
                                 if (sch == null) {
@@ -219,12 +233,15 @@ public final class PathsHelper {
                                 } else if (sch.get$ref() != null) {
                                     String returnClassName = names.refToClassName(sch.get$ref());
                                     m = m.add(Association.from(className).to(returnClassName).one()
-                                            .responseCode(responseCode).responseContentType(contentType).build());
+                                            .responseCode(responseCode)
+                                            .responseContentType(contentType).build());
                                 } else {
                                     String returnClassName = newReturnClassName;
-                                    m = m.add(Common.toModelClass(returnClassName, sch, names, ClassType.RESPONSE));
+                                    m = m.add(Common.toModelClass(returnClassName, sch, names,
+                                            ClassType.RESPONSE));
                                     m = m.add(Association.from(className).to(returnClassName).one()
-                                            .responseCode(responseCode).responseContentType(contentType).build());
+                                            .responseCode(responseCode)
+                                            .responseContentType(contentType).build());
                                 }
 
                             }
