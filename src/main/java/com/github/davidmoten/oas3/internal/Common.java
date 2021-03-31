@@ -95,6 +95,7 @@ public final class Common {
                         isAll = true;
                         associationType = null;
                     } else {
+                        // don't expect this path but be defensive
                         list = emptyList();
                         associationType = null;
                     }

@@ -1,0 +1,21 @@
+openapi: 3.0.1
+info:
+  title: unit test
+  version: 0.0.1
+components:
+  schemas:
+  
+    Customers:
+      properties:
+        names:
+          type: array
+          items:
+            type: object
+            properties:
+              firstName:
+                type: string
+              lastName:
+                type: string
+            required:
+            - firstName
+            - lastName

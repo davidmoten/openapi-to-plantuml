@@ -29,6 +29,10 @@
 
 <img src="../../src/docs/tests/any-of-anon-property-level.puml.svg"/>
 
+* [array-anon-property-level.yml](../../src/test/resources/inputs/array-anon-property-level.yml)
+
+<img src="../../src/docs/tests/array-anon-property-level.puml.svg"/>
+
 * [path-returns-ref-ref.yml](../../src/test/resources/inputs/path-returns-ref-ref.yml)
 
 <img src="../../src/docs/tests/path-returns-ref-ref.puml.svg"/>
