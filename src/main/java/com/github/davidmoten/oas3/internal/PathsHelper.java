@@ -114,7 +114,7 @@ public final class PathsHelper {
         } else {
             Optional<Field> field = Optional.empty();
             Model model;
-            final String type = Common.getUmlTypeName(param.get$ref(), param.getSchema(), names);
+            final String type = Common.getUmlTypeName(param.get$ref(), param.getSchema(), names).orElse("empty");
             if (Common.isSimpleType(type)) {
                 field = Optional.of(new Field(parameterName, type, type.endsWith("]"), required));
                 model = Model.EMPTY;

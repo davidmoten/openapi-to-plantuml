@@ -111,7 +111,7 @@ public final class Common {
                     String otherClassName = names.refToClassName(ref);
                     addToOne(relationships, name, otherClassName, property, required.contains(entry.getKey()));
                 } else {
-                    String type = getUmlTypeName(sch.get$ref(), sch, names);
+                    String type = getUmlTypeName(sch.get$ref(), sch, names).orElse("empty");
                     if (isComplexArrayType(type)) {
                         addArray(name, classes, relationships, property, (ArraySchema) sch, names);
                     } else if (type.equals("object")) {
@@ -144,11 +144,13 @@ public final class Common {
             addToMany(relationships, name, otherClassName);
         } else if (!(schema instanceof ObjectSchema)) {
             // has no properties so ignore ObjectSchema
-            String type = getUmlTypeName(schema.get$ref(), schema, names);
+            String type = getUmlTypeName(schema.get$ref(), schema, names).orElse("empty");
             if (isComplexArrayType(type)) {
                 addArray(name, classes, relationships, null, (ArraySchema) schema, names);
             } else {
-                fields.add(new Field("value", type, type.endsWith("]"), true));
+                if (!type.equals("empty")) {
+                    fields.add(new Field("value", type, type.endsWith("]"), true));
+                }
             }
         }
         classes.add(new Class(name, classType, fields));
@@ -245,7 +247,7 @@ public final class Common {
                 .build());
     }
 
-    static String getUmlTypeName(String ref, Schema<?> schema, Names names) {
+    static Optional<String> getUmlTypeName(String ref, Schema<?> schema, Names names) {
         final String type;
         if (ref != null) {
             type = names.refToClassName(ref);
@@ -263,7 +265,10 @@ public final class Common {
             type = "integer";
         } else if (schema instanceof ArraySchema) {
             ArraySchema a = (ArraySchema) schema;
-            type = getUmlTypeName(a.getItems().get$ref(), a.getItems(), names) + "[]";
+            type = getUmlTypeName(a.getItems().get$ref(), a.getItems(), names) //
+                    .orElseThrow(() -> {
+                        throw new RuntimeException("unexpected");
+                    }) + "[]";
         } else if (schema instanceof BinarySchema) {
             type = "byte[]";
         } else if (schema instanceof ByteArraySchema) {
@@ -280,21 +285,21 @@ public final class Common {
             type = "string";
         } else if (schema instanceof MapSchema) {
             // TODO handle MapSchema
-            return "string";
+            type = "string";
         } else if (schema instanceof ComposedSchema) {
             // TODO handle ComposedSchema
-            return "string";
+            type = "string";
         } else if ("string".equals(schema.getType())) {
             type = "string";
         } else if (schema.get$ref() != null) {
             type = names.refToClassName(schema.get$ref());
         } else if (schema.getType() == null) {
             // TODO don't display a type with empty
-            type = "empty";
+            type = null;
         } else {
             throw new RuntimeException("not expected" + schema);
         }
-        return type;
+        return Optional.ofNullable(type);
     }
 
 }
