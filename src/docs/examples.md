@@ -89,6 +89,10 @@
 
 <img src="../../src/docs/tests/anon-nested-class-level.puml.svg"/>
 
+* [all-of-property-level.yml](../../src/test/resources/inputs/all-of-property-level.yml)
+
+<img src="../../src/docs/tests/all-of-property-level.puml.svg"/>
+
 * [petstore.yml](../../src/test/resources/inputs/petstore.yml)
 
 <img src="../../src/docs/tests/petstore.puml.svg"/>
