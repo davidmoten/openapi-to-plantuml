@@ -97,6 +97,10 @@
 
 <img src="../../src/docs/tests/array-class-level.puml.svg"/>
 
+* [array-property-level.yml](../../src/test/resources/inputs/array-property-level.yml)
+
+<img src="../../src/docs/tests/array-property-level.puml.svg"/>
+
 * [parameter-ref-ref.yml](../../src/test/resources/inputs/parameter-ref-ref.yml)
 
 <img src="../../src/docs/tests/parameter-ref-ref.puml.svg"/>

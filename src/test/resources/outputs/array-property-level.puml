@@ -1,0 +1,19 @@
+@startuml
+hide <<Method>> circle
+hide <<Response>> circle
+hide <<Parameter>> circle
+hide empty methods
+hide empty fields
+set namespaceSeparator none
+
+class "Customers" {
+}
+
+class "Customer" {
+  firstName : string
+  lastName : string
+}
+
+"Customers" --> "*" "Customer"  :  "group"
+
+@enduml

@@ -112,9 +112,6 @@ public final class Common {
                     addToOne(relationships, name, otherClassName, property, required.contains(entry.getKey()));
                 } else {
                     String type = getUmlTypeName(sch.get$ref(), sch, names);
-                    if (type.startsWith("unknown")) {
-                        System.out.println("unknown property:\n" + entry);
-                    }
                     if (isComplexArrayType(type)) {
                         addArray(name, classes, relationships, property, (ArraySchema) sch, names);
                     } else if (type.equals("object")) {
