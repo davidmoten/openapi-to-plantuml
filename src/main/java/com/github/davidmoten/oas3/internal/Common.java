@@ -116,7 +116,7 @@ public final class Common {
                         System.out.println("unknown property:\n" + entry);
                     }
                     if (isComplexArrayType(type)) {
-                        addArray(name, classes, relationships, property, sch, names);
+                        addArray(name, classes, relationships, property, (ArraySchema) sch, names);
                     } else if (type.equals("object")) {
                         // create anon class
                         String otherClassName = names.nextClassName(name + "." + property);
@@ -149,7 +149,7 @@ public final class Common {
             // has no properties so ignore ObjectSchema
             String type = getUmlTypeName(schema.get$ref(), schema, names);
             if (isComplexArrayType(type)) {
-                addArray(name, classes, relationships, null, schema, names);
+                addArray(name, classes, relationships, null, (ArraySchema) schema, names);
             } else {
                 fields.add(new Field("value", type, type.endsWith("]"), true));
             }
@@ -167,9 +167,8 @@ public final class Common {
     }
 
     private static void addArray(String name, List<Class> classes, List<Relationship> relationships, String property,
-            @SuppressWarnings("rawtypes") Schema schema, Names names) {
+            ArraySchema a, Names names) {
         // is array of items
-        ArraySchema a = (ArraySchema) schema;
         Schema<?> items = a.getItems();
         String ref = items.get$ref();
         final String otherClassName;
@@ -244,8 +243,8 @@ public final class Common {
                 .from(name) //
                 .to(otherClassName) //
                 .type(isToOne ? AssociationType.ONE : AssociationType.ZERO_ONE) //
-                .propertyOrParameterName(property == null || property.equals(otherClassName) ? //
-                        Optional.empty() : Optional.of(property))
+                .propertyOrParameterName(//
+                        property == null || property.equals(otherClassName) ? Optional.empty() : Optional.of(property))
                 .build());
     }
 

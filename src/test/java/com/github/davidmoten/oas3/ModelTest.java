@@ -15,17 +15,18 @@ public class ModelTest {
     @Test
     public void testToString() {
         Model model = new Model(//
-                Lists.newArrayList( //
+                Lists.newArrayList(//
                         new Class("Thing", ClassType.SCHEMA), //
                         new Class("Stuff", ClassType.SCHEMA)),
-                Lists.newArrayList( //
+                Lists.newArrayList(//
                         Association.from("Thing").to("Stuff").zeroOne().build(), //
                         Association.from("Thing").to("Other").one().build()));
         assertEquals("Model [\n" + "  Class [name=Thing, type=Schema, fields=[]],\n"
                 + "  Class [name=Stuff, type=Schema, fields=[]]\n"
-                + "  Association [from=Thing, to=Stuff, type=ZERO_ONE, responseCode=, responseContentType=, propertyOrParameterName=],\n"
-                + "  Association [from=Thing, to=Other, type=ONE, responseCode=, responseContentType=, propertyOrParameterName=]\n"
-                + "]", model.toString());
+                + "  Association [from=Thing, to=Stuff, type=ZERO_ONE, responseCode=, "
+                + "responseContentType=, propertyOrParameterName=],\n"
+                + "  Association [from=Thing, to=Other, type=ONE, responseCode=, "
+                + "responseContentType=, propertyOrParameterName=]\n" + "]", model.toString());
     }
 
 }
