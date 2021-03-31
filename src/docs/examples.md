@@ -21,6 +21,10 @@
 
 <img src="../../src/docs/tests/request-body-ref-ref.puml.svg"/>
 
+* [request-body-empty.yml](../../src/test/resources/inputs/request-body-empty.yml)
+
+<img src="../../src/docs/tests/request-body-empty.puml.svg"/>
+
 * [parameter-anon-empty-object.yml](../../src/test/resources/inputs/parameter-anon-empty-object.yml)
 
 <img src="../../src/docs/tests/parameter-anon-empty-object.puml.svg"/>

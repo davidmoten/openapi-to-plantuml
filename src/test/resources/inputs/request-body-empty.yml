@@ -1,0 +1,18 @@
+openapi: 3.0.1
+info:
+  title: unit test
+  version: 0.0.1
+paths:
+  /customer/expired:
+    get:
+      responses:
+        '200':  
+          content:
+            application/json:
+              schema:
+                type: string
+      requestBody:
+        content:
+          application/json:
+            
+         

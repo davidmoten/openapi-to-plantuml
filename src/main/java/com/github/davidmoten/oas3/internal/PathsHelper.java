@@ -176,17 +176,15 @@ public final class PathsHelper {
                 final String requestBodyClassName;
                 final Model model;
                 Schema<?> sch = mediaType.getValue().getSchema();
-                if (sch != null && sch.get$ref() != null) {
+                // note that sch cannot be null because the parser sets the
+                // response body to null if schema is missing
+                if (sch.get$ref() != null) {
                     requestBodyClassName = names.refToClassName(sch.get$ref());
                     model = Model.EMPTY;
                 } else {
                     requestBodyClassName = className + " Request";
-                    if (sch == null) {
-                        model = Model.EMPTY;
-                    } else {
-                        model = Common.toModelClass(requestBodyClassName, sch, names,
-                                ClassType.REQUEST_BODY);
-                    }
+                    model = Common.toModelClass(requestBodyClassName, sch, names,
+                            ClassType.REQUEST_BODY);
                 }
                 Association a = Association.from(className).to(requestBodyClassName).one().build();
                 return model.add(a);

@@ -41,7 +41,6 @@ public class DemoBatchTest {
     }
 
     @Test
-    @Ignore
     public void testBatch() {
         if (!"true".equalsIgnoreCase(System.getProperty("demo", "true"))) {
             return;

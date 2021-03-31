@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="58px" preserveAspectRatio="none" style="width:168px;height:58px;" version="1.1" viewBox="0 0 168 58" width="168px" zoomAndPan="magnify"><defs><filter height="300%" id="f1cp435ojg38jy" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[872165f8b1007cfce347e18ce10edd44]
+class GET /customer/expired--><rect codeLine="8" fill="#FEFECE" filter="url(#f1cp435ojg38jy)" height="37.9375" id="GET /customer/expired" style="stroke:#A80036;stroke-width:1.5;" width="147" x="7" y="7"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="61" x="50" y="23.1387">«Method»</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="141" x="10" y="37.1074">GET /customer/expired</text><!--MD5=[cc1f6cc859ff0c7d27f0dddad37fbd97]
+@startuml
+hide <<Method>> circle
+hide <<Response>> circle
+hide <<Parameter>> circle
+hide empty methods
+hide empty fields
+set namespaceSeparator none
+
+class "GET /customer/expired" <<Method>> {
+}
+
+@enduml
+
+PlantUML version 1.2021.2(Sun Mar 07 22:10:27 AEDT 2021)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: AU
+--></g></svg>
