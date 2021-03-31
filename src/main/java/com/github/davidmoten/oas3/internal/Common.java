@@ -111,19 +111,22 @@ public final class Common {
                     String otherClassName = names.refToClassName(ref);
                     addToOne(relationships, name, otherClassName, property, required.contains(entry.getKey()));
                 } else {
-                    String type = getUmlTypeName(sch.get$ref(), sch, names).orElse("empty");
-                    if (isComplexArrayType(type)) {
-                        addArray(name, classes, relationships, property, (ArraySchema) sch, names);
-                    } else if (type.equals("object")) {
-                        // create anon class
-                        String otherClassName = names.nextClassName(name + "." + property);
-                        Model m = toModelClass(otherClassName, sch, names, classType);
-                        classes.addAll(m.classes());
-                        relationships.addAll(m.relationships());
-                        addToOne(relationships, name, otherClassName, property, required.contains(property));
-                    } else {
-                        fields.add(
-                                new Field(entry.getKey(), type, type.endsWith("]"), required.contains(entry.getKey())));
+                    Optional<String> t = getUmlTypeName(sch.get$ref(), sch, names);
+                    if (t.isPresent()) {
+                        String type = t.get();
+                        if (isComplexArrayType(type)) {
+                            addArray(name, classes, relationships, property, (ArraySchema) sch, names);
+                        } else if (type.equals("object")) {
+                            // create anon class
+                            String otherClassName = names.nextClassName(name + "." + property);
+                            Model m = toModelClass(otherClassName, sch, names, classType);
+                            classes.addAll(m.classes());
+                            relationships.addAll(m.relationships());
+                            addToOne(relationships, name, otherClassName, property, required.contains(property));
+                        } else {
+                            fields.add(new Field(entry.getKey(), type, type.endsWith("]"),
+                                    required.contains(entry.getKey())));
+                        }
                     }
                 }
             });
