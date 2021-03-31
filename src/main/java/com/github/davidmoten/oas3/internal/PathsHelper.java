@@ -108,8 +108,12 @@ public final class PathsHelper {
             required = p.getRequired();
         }
         if (ref != null) {
-            Model model = new Model(Association.from(className).to(names.refToClassName(ref)).one()
-                    .propertyOrParameterName(parameterName).build());
+            Model model = new Model(Association //
+                    .from(className) //
+                    .to(names.refToClassName(ref)) //
+                    .one() //
+                    .propertyOrParameterName(parameterName) //
+                    .build());
             return new FieldsWithModel(Collections.emptyList(), model);
         } else {
             Optional<Field> field = Optional.empty();
@@ -120,7 +124,7 @@ public final class PathsHelper {
                 model = Model.EMPTY;
             } else {
                 if (param.getSchema() != null) {
-                    String anonClassName = className + "." + parameterName;
+                    String anonClassName = names.nextClassName(className + "." + parameterName);
                     model = Common.toModelClass(anonClassName, param.getSchema(), names, ClassType.PARAMETER)
                             .add(Association.from(className).to(anonClassName)
                                     .type(required ? AssociationType.ONE : AssociationType.ZERO_ONE)
@@ -128,8 +132,6 @@ public final class PathsHelper {
                 } else {
                     model = Model.EMPTY;
                 }
-                model = model
-                        .add(Association.from(className).to(type).one().propertyOrParameterName(parameterName).build());
             }
             // TODO else get schema from content?
 
