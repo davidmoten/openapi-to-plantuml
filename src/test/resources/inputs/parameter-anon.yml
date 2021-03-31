@@ -1,0 +1,47 @@
+openapi: 3.0.1
+info:
+  title: unit test
+  version: 0.0.1
+paths:
+  /customer/expired:
+    get:
+      parameters:
+        - name: offset
+          in: query
+          required: true
+          description: The number of items to skip before starting to collect the result set
+          schema:
+            type: object
+            properties:
+              min:
+                type: integer
+              max:
+                type: integer
+        - name: limit
+          in: query
+          required: false
+          description: The number of items to skip before starting to collect the result set
+          schema:
+            type: object
+            properties:
+              min:
+                type: integer
+              max:
+                type: integer
+      responses:
+        '200':  
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+components:
+  schemas:
+    Customer:
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+  

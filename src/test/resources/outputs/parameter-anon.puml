@@ -1,0 +1,42 @@
+@startuml
+hide <<Method>> circle
+hide <<Response>> circle
+hide <<Parameter>> circle
+hide empty methods
+hide empty fields
+set namespaceSeparator none
+
+class "Customer" {
+  firstName : string {O}
+  lastName : string {O}
+}
+
+class "GET /customer/expired" <<Method>> {
+}
+
+class "GET /customer/expired.offset" <<Parameter>> {
+  min : integer {O}
+  max : integer {O}
+}
+
+class "GET /customer/expired.limit" <<Parameter>> {
+  min : integer {O}
+  max : integer {O}
+}
+
+class "GET /customer/expired 200" <<Response>> {
+}
+
+"GET /customer/expired" --> "1" "GET /customer/expired.offset"  :  "offset"
+
+"GET /customer/expired" --> "1" "object"  :  "offset"
+
+"GET /customer/expired" --> "0..1" "GET /customer/expired.limit"  :  "limit"
+
+"GET /customer/expired" --> "1" "object"  :  "limit"
+
+"GET /customer/expired 200" --> "*" "Customer"
+
+"GET /customer/expired" ..> "1" "GET /customer/expired 200"  :  "200"
+
+@enduml

@@ -43,6 +43,9 @@ public class DemoBatchTest {
     @Test
     @Ignore
     public void testBatch() {
+        if (!"true".equalsIgnoreCase(System.getProperty("demo", "true"))) {
+            return;
+        }
         System.out.println("checking " + input);
         try (InputStream in = new FileInputStream(input)) {
             File demos = new File("target/demos");
