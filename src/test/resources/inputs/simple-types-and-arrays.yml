@@ -11,6 +11,15 @@ components:
           type: string
         lastName:
           type: string
+        secret:
+          type: string
+          format: password
+        email:
+          type: string
+          format: email
+        id:
+          type: string
+          format: uuid
         heightMetres:
           type: number
         dateOfBirth:

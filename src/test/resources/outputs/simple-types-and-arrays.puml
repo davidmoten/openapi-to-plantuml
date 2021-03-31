@@ -9,6 +9,9 @@ set namespaceSeparator none
 class "My.Customer" {
   firstName : string
   lastName : string
+  secret : string {O}
+  email : string {O}
+  id : string {O}
   heightMetres : decimal {O}
   dateOfBirth : date
   lastSessionTime : timestamp {O}
