@@ -20,6 +20,12 @@ components:
         id:
           type: string
           format: uuid
+        history:
+          type: string
+          format: binary
+        history2:
+          type: string
+          format: byte
         heightMetres:
           type: number
         dateOfBirth:

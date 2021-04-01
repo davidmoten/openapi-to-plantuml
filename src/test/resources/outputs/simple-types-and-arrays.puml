@@ -12,6 +12,8 @@ class "My.Customer" {
   secret : string {O}
   email : string {O}
   id : string {O}
+  history : byte[] {O}
+  history2 : byte[] {O}
   heightMetres : decimal {O}
   dateOfBirth : date
   lastSessionTime : timestamp {O}
