@@ -1,5 +1,5 @@
 # openapi-to-plantuml
-<a href="https://travis-ci.com/davidmoten/openapi-to-plantuml"><img src="https://travis-ci.com/davidmoten/openapi-to-plantuml.svg"/></a><br/>
+<a href="https://github.com/davidmoten/openapi-to-plantuml/actions/workflows/ci.yml"><img src="https://github.com/davidmoten/openapi-to-plantuml/actions/workflows/ci.yml/badge.svg"/></a><br/>
 [![codecov](https://codecov.io/gh/davidmoten/openapi-to-plantuml/branch/master/graph/badge.svg)](https://codecov.io/gh/davidmoten/openapi-to-plantuml)<br/>
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.davidmoten/openapi-to-plantuml/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/com.github.davidmoten/openapi-to-plantuml)<br/>
 
