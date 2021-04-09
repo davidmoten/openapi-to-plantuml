@@ -259,7 +259,7 @@ public final class Common {
                                 : Optional.of(property))
                 .build());
     }
-    
+
     static Optional<String> getUmlTypeName(Schema<?> schema, Names names) {
         return getUmlTypeName(schema.get$ref(), schema, names);
     }

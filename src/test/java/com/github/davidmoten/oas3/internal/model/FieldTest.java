@@ -5,8 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.github.davidmoten.oas3.internal.model.Field;
-
 public class FieldTest {
 
     @Test

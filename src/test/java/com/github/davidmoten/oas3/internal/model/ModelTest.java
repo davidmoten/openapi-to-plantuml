@@ -5,10 +5,6 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.github.davidmoten.guavamini.Lists;
-import com.github.davidmoten.oas3.internal.model.Association;
-import com.github.davidmoten.oas3.internal.model.Class;
-import com.github.davidmoten.oas3.internal.model.ClassType;
-import com.github.davidmoten.oas3.internal.model.Model;
 
 public class ModelTest {
 

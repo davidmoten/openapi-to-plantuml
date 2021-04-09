@@ -7,8 +7,6 @@ import java.util.Optional;
 import org.junit.Test;
 
 import com.github.davidmoten.guavamini.Lists;
-import com.github.davidmoten.oas3.internal.model.AssociationType;
-import com.github.davidmoten.oas3.internal.model.Inheritance;
 
 public class InheritanceTest {
 

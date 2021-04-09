@@ -4,8 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.github.davidmoten.oas3.internal.model.Association;
-
 public class AssociationTest {
 
     @Test
