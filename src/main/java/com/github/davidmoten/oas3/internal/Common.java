@@ -285,7 +285,7 @@ public final class Common {
         } else if (schema instanceof ArraySchema) {
             ArraySchema a = (ArraySchema) schema;
             type = getUmlTypeName(a.getItems(), names) //
-                    .orElseThrow(RuntimeException::new) + "[]";
+                    .orElseThrow(() -> new RuntimeException("unexpected")) + "[]";
         } else if (schema instanceof BinarySchema) {
             type = "byte[]";
         } else if (schema instanceof ByteArraySchema) {
