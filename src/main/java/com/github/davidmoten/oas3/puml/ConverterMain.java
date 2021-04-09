@@ -22,8 +22,13 @@ public final class ConverterMain {
             File out = new File(args[2]);
             if (format.equals("PUML")) {
                 Files.write(out.toPath(), puml.getBytes(StandardCharsets.UTF_8));
-            } else {
+            } else if (format.equals("SVG")) {
                 // TODO
+                throw new UnsupportedOperationException();
+            } else if (format.equals("PNG")) {
+                throw new UnsupportedOperationException();
+            } else {
+                throw new IllegalArgumentException(usage);
             }
         }
     }

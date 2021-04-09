@@ -40,7 +40,7 @@ public final class Converter {
     public static String openApiToPuml(InputStream in) throws IOException {
         return openApiToPuml(IOUtils.toString(in, StandardCharsets.UTF_8));
     }
-    
+
     public static String openApiToPuml(File file) throws IOException {
         try (InputStream in = new BufferedInputStream(new FileInputStream(file))) {
             return openApiToPuml(in);
