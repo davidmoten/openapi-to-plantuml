@@ -2,6 +2,9 @@ package com.github.davidmoten.oas3.puml;
 
 import static com.github.davidmoten.oas3.internal.Util.quote;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -36,6 +39,12 @@ public final class Converter {
 
     public static String openApiToPuml(InputStream in) throws IOException {
         return openApiToPuml(IOUtils.toString(in, StandardCharsets.UTF_8));
+    }
+    
+    public static String openApiToPuml(File file) throws IOException {
+        try (InputStream in = new BufferedInputStream(new FileInputStream(file))) {
+            return openApiToPuml(in);
+        }
     }
 
     public static String openApiToPuml(String openApi) {
