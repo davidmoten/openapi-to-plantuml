@@ -114,7 +114,7 @@ public final class Common {
                     addToOne(relationships, name, otherClassName, property,
                             required.contains(entry.getKey()));
                 } else {
-                    Optional<String> t = getUmlTypeName(sch.get$ref(), sch, names);
+                    Optional<String> t = getUmlTypeName(sch, names);
                     if (t.isPresent()) {
                         String type = t.get();
                         if (isComplexArrayType(type)) {
@@ -152,7 +152,7 @@ public final class Common {
             addToMany(relationships, name, otherClassName);
         } else if (!(schema instanceof ObjectSchema)) {
             // has no properties so ignore ObjectSchema
-            Optional<String> t = getUmlTypeName(schema.get$ref(), schema, names);
+            Optional<String> t = getUmlTypeName(schema, names);
             if (t.isPresent()) {
                 String type = t.get();
                 fields.add(new Field("value", type, type.endsWith("]"), true));
@@ -259,6 +259,10 @@ public final class Common {
                                 : Optional.of(property))
                 .build());
     }
+    
+    static Optional<String> getUmlTypeName(Schema<?> schema, Names names) {
+        return getUmlTypeName(schema.get$ref(), schema, names);
+    }
 
     static Optional<String> getUmlTypeName(String ref, Schema<?> schema, Names names) {
         final String type;
@@ -280,7 +284,7 @@ public final class Common {
             type = "integer";
         } else if (schema instanceof ArraySchema) {
             ArraySchema a = (ArraySchema) schema;
-            type = getUmlTypeName(a.getItems().get$ref(), a.getItems(), names) //
+            type = getUmlTypeName(a.getItems(), names) //
                     .orElseThrow(() -> {
                         throw new RuntimeException("unexpected");
                     }) + "[]";
