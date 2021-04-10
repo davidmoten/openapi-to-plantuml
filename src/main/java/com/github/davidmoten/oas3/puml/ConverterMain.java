@@ -34,7 +34,7 @@ public final class ConverterMain {
     public static void main(String[] args) throws IOException {
         String usage = "Usage: java -jar openapi-to-plantuml-all.jar <OPENAPI_FILE> <FILE_FORMAT> <OUTPUT_FILE>"
                 + "\n  File formats are:\n  PUML\n" + Arrays.stream(FileFormat.values())
-                        .map(x -> "  " + x + "\n").collect(Collectors.joining());
+                        .map(x -> "    " + x + "\n").collect(Collectors.joining());
         if (args.length != 3) {
             System.out.println(usage);
             throw new IllegalArgumentException("must pass 3 arguments");

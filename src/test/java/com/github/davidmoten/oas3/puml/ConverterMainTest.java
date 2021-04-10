@@ -32,7 +32,7 @@ public class ConverterMainTest {
         ConverterMain.main(args);
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testWrongNumberOfArgs() throws IOException {
         ConverterMain.main(new String[] {"a"});
     }

@@ -30,7 +30,7 @@ public class ConverterTest {
     public void testIsUtility() {
         Asserts.assertIsUtilityClass(Converter.class);
     }
-    
+
     @Test
     public void testConvert() {
         String openapi = "openapi: 3.0.1\n" + "components:\n" + "  schemas:\n" + "    CustomerType:\n"
