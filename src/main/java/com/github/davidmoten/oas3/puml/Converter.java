@@ -65,6 +65,8 @@ public final class Converter {
                 + "\nhide <<" + toStereotype(ClassType.PARAMETER).get() + ">> circle" //
                 + "\nhide empty methods" //
                 + "\nhide empty fields" //
+                // make sure that periods in class names aren't interpreted as namespace
+                // separators (which results in recursive boxing)
                 + "\nset namespaceSeparator none" //
                 + toPlantUml(model) //
                 + "\n\n@enduml";
@@ -93,12 +95,14 @@ public final class Converter {
                 if (a.responseCode().isPresent()) {
                     arrow = "..>";
                     label = a.responseCode().get() + a.responseContentType()
-                            .filter(x -> !"application/json".equalsIgnoreCase(x)).map(x -> SPACE + x).orElse("");
+                            .filter(x -> !"application/json".equalsIgnoreCase(x))
+                            .map(x -> SPACE + x).orElse("");
                 } else {
                     arrow = "-->";
                     label = a.propertyOrParameterName().orElse("");
                 }
-                b.append("\n\n" + quote(a.from()) + SPACE + arrow + SPACE + quote(mult) + SPACE + quote(a.to())
+                b.append("\n\n" + quote(a.from()) + SPACE + arrow + SPACE + quote(mult) + SPACE
+                        + quote(a.to())
                         + (label.equals("") ? "" : SPACE + COLON + SPACE + quote(label)));
             } else {
                 Inheritance a = (Inheritance) r;
@@ -107,14 +111,16 @@ public final class Converter {
                     anonNumber++;
                     String diamond = "anon" + anonNumber;
                     b.append("\n\ndiamond " + diamond);
-                    b.append("\n\n" + quote(a.from()) + SPACE + "-->" + quote(mult) + SPACE + quote(diamond)
-                            + a.label().map(x -> COLON + quote(x)).orElse(""));
+                    b.append("\n\n" + quote(a.from()) + SPACE + "-->" + quote(mult) + SPACE
+                            + quote(diamond) + a.label().map(x -> COLON + quote(x)).orElse(""));
                     for (String otherClassName : a.to()) {
-                        b.append("\n\n" + quote(otherClassName) + SPACE + "--|>" + SPACE + quote(diamond));
+                        b.append("\n\n" + quote(otherClassName) + SPACE + "--|>" + SPACE
+                                + quote(diamond));
                     }
                 } else {
                     for (String otherClassName : a.to()) {
-                        b.append("\n\n" + quote(otherClassName) + SPACE + "--|>" + SPACE + quote(a.from()));
+                        b.append("\n\n" + quote(otherClassName) + SPACE + "--|>" + SPACE
+                                + quote(a.from()));
                     }
                 }
             }

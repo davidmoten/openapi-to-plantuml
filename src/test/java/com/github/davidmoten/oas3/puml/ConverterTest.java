@@ -15,6 +15,8 @@ import java.nio.file.Files;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.github.davidmoten.junit.Asserts;
+
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.SourceStringReader;
@@ -24,6 +26,11 @@ public class ConverterTest {
 
     private static final File OPENAPI_EXAMPLE = new File("src/test/resources/openapi-example.yml");
 
+    @Test
+    public void testIsUtility() {
+        Asserts.assertIsUtilityClass(Converter.class);
+    }
+    
     @Test
     public void testConvert() {
         String openapi = "openapi: 3.0.1\n" + "components:\n" + "  schemas:\n" + "    CustomerType:\n"
