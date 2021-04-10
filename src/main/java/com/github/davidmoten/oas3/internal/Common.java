@@ -3,6 +3,7 @@ package com.github.davidmoten.oas3.internal;
 import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -11,7 +12,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.github.davidmoten.guavamini.Preconditions;
-import com.github.davidmoten.guavamini.Sets;
 import com.github.davidmoten.oas3.internal.model.Association;
 import com.github.davidmoten.oas3.internal.model.AssociationType;
 import com.github.davidmoten.oas3.internal.model.Class;
@@ -20,6 +20,7 @@ import com.github.davidmoten.oas3.internal.model.Field;
 import com.github.davidmoten.oas3.internal.model.Inheritance;
 import com.github.davidmoten.oas3.internal.model.Model;
 import com.github.davidmoten.oas3.internal.model.Relationship;
+import com.github.davidmoten.oas3.internal.model.SimpleType;
 
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.BinarySchema;
@@ -45,8 +46,10 @@ public final class Common {
         // prevent instantiation
     }
 
-    private static final Set<String> SIMPLE_TYPES_WITHOUT_BRACKETS = Sets.newHashSet("string",
-            "decimal", "integer", "byte", "date", "boolean", "timestamp");
+    private static final Set<String> SIMPLE_TYPES_WITHOUT_BRACKETS = Arrays
+            .stream(SimpleType.values()) //
+            .map(x -> x.toString().replace("[]", "")) //
+            .collect(Collectors.toSet());
 
     static Model toModelClass(String name, Schema<?> schema, Names names, ClassType classType) {
         List<Field> fields = new ArrayList<>();
@@ -302,7 +305,7 @@ public final class Common {
             type = "string";
         } else if (schema instanceof MapSchema) {
             // TODO handle MapSchema
-            type = "string";
+            type = "map";
         } else if (schema instanceof ComposedSchema) {
             // TODO handle ComposedSchema
             type = "string";
