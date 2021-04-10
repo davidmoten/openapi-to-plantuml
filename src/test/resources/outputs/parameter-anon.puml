@@ -1,5 +1,5 @@
 @startuml
-hide <<Method>> circle
+hide <<Path>> circle
 hide <<Response>> circle
 hide <<Parameter>> circle
 hide empty methods
@@ -11,7 +11,7 @@ class "Customer" {
   lastName : string {O}
 }
 
-class "GET /customer/expired" <<Method>> {
+class "GET /customer/expired" <<Path>> {
 }
 
 class "GET /customer/expired.offset" <<Parameter>> {

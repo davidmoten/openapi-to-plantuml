@@ -1,5 +1,5 @@
 @startuml
-hide <<Method>> circle
+hide <<Path>> circle
 hide <<Response>> circle
 hide <<Parameter>> circle
 hide empty methods
@@ -19,7 +19,7 @@ class "Customer" {
   picture : byte[] {O}
 }
 
-class "GET /customer/expired" <<Method>> {
+class "GET /customer/expired" <<Path>> {
 }
 
 class "GET /customer/expired 200" <<Response>> {

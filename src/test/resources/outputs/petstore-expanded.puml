@@ -1,5 +1,5 @@
 @startuml
-hide <<Method>> circle
+hide <<Path>> circle
 hide <<Response>> circle
 hide <<Parameter>> circle
 hide empty methods
@@ -23,7 +23,7 @@ class "Error" {
   message : string
 }
 
-class "GET /pets" <<Method>> {
+class "GET /pets" <<Path>> {
   tags : string[] {O}
   limit : integer {O}
 }
@@ -31,14 +31,14 @@ class "GET /pets" <<Method>> {
 class "GET /pets 200" <<Response>> {
 }
 
-class "POST /pets" <<Method>> {
+class "POST /pets" <<Path>> {
 }
 
-class "GET /pets/{id}" <<Method>> {
+class "GET /pets/{id}" <<Path>> {
   id : integer
 }
 
-class "DELETE /pets/{id}" <<Method>> {
+class "DELETE /pets/{id}" <<Path>> {
   id : integer
 }
 

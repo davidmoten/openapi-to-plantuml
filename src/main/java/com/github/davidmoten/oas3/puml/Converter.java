@@ -143,7 +143,7 @@ public final class Converter {
     private static Optional<String> toStereotype(ClassType type) {
         final String result;
         if (type == ClassType.METHOD) {
-            result = "Method";
+            result = "Path";
         } else if (type == ClassType.PARAMETER) {
             result = "Parameter";
         } else if (type == ClassType.REQUEST_BODY) {
