@@ -18,7 +18,10 @@ Supports all features of OpenAPI 3.0 including
 **Limitations**
 
 * Only handles internal references ("#/*"), that is the yaml file should be self-contained
-* Doesn't model *Callbacks*, *additionalProperties*
+
+**TODO**
+* Model *Callbacks*
+* Model *additionalProperties*
 
 [openapi-example.yml](src/test/resources/openapi-example.yml): 
 
