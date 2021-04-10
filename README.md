@@ -26,6 +26,11 @@ Supports all features of OpenAPI 3.0 including
 [openapi-example.yml](src/test/resources/openapi-example.yml): 
 
 <img style="background-color:white" src="src/docs/openapi-example.svg"/>
+## How to build
+
+```bash
+mvn clean install
+```
 
 ## Getting started
 Add this dependency to your pom.xml:
@@ -36,6 +41,12 @@ Add this dependency to your pom.xml:
   <artifactId>openapi-to-plantuml</artifactId>
   <version>VERSION_HERE</version>
 </dependency>
+```
+
+Or use the standalone *jar-with-dependencies* artifact from Maven Central (or from the `target` directory if you have built the project locally):
+
+```bash
+java -jar openapi-to-plantuml-VERSION_HERE-jar-with-dependencies.jar openapi.yaml PNG openapi.png
 ```
 
 ## Usage
