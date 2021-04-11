@@ -13,7 +13,7 @@ Supports all features of OpenAPI 3.0 including
 * Multiple levels of indirection (`$ref` -> `$ref` for example) 
 * Multiple response content types
 
-**Status:** in development (first release to Maven Central mid-April 2021)
+**Status:** Released to Maven Central 
 
 **Limitations**
 
@@ -43,7 +43,7 @@ Add this dependency to your pom.xml:
 </dependency>
 ```
 
-Or use the standalone *jar-with-dependencies* artifact from Maven Central (or from the `target` directory if you have built the project locally):
+Or use the standalone *jar-with-dependencies* artifact from [Maven Central](https://search.maven.org/search?q=g:com.github.davidmoten%20AND%20a:openapi-to-plantuml) (or from the `target` directory if you have built the project locally):
 
 ```bash
 java -jar openapi-to-plantuml-VERSION_HERE-jar-with-dependencies.jar openapi.yaml PNG openapi.png
