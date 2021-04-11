@@ -22,7 +22,7 @@ import io.swagger.v3.oas.models.responses.ApiResponse;
 
 public final class Names {
 
-    public static final String EMPTY_RESPONSE_CLASS_NAME = "Empty Response";
+    private static final String EMPTY_RESPONSE_CLASS_NAME = "Empty Response";
     private final Map<String, String> refClassNames = new HashMap<>();
     private final Set<String> classNames = Sets.newHashSet(EMPTY_RESPONSE_CLASS_NAME);
     private final OpenAPI openapi;
@@ -51,23 +51,23 @@ public final class Names {
         }
     }
 
-    public String schemaClassName(String simpleName) {
+    String schemaClassName(String simpleName) {
         return refToClassName("#/components/schemas/" + simpleName);
     }
 
-    public String requestBodyClassName(String simpleName) {
+    String requestBodyClassName(String simpleName) {
         return refToClassName("#/components/requestBodies/" + simpleName);
     }
 
-    public String responseClassName(String simpleName) {
+    String responseClassName(String simpleName) {
         return refToClassName("#/components/responses/" + simpleName);
     }
 
-    public String parameterClassName(String simpleName) {
+    private String parameterClassName(String simpleName) {
         return refToClassName("#/components/parameters/" + simpleName);
     }
 
-    public String requestBodyClassName(RequestBody b) {
+    String requestBodyClassName(RequestBody b) {
         return nullMapToEmpty(components().getRequestBodies()) //
                 .entrySet() //
                 .stream() //
@@ -77,7 +77,7 @@ public final class Names {
                 .orElseThrow(() -> new RuntimeException("cound not find " + b));
     }
 
-    public String parameterClassName(Parameter p) {
+    String parameterClassName(Parameter p) {
         return nullMapToEmpty(components().getParameters()) //
                 .entrySet() //
                 .stream() //
@@ -87,7 +87,7 @@ public final class Names {
                 .orElseThrow(() -> new RuntimeException("cound not find " + p));
     }
 
-    public String refToClassName(String ref) {
+    String refToClassName(String ref) {
         Preconditions.checkNotNull(ref);
         String className = refClassNames.get(ref);
         if (className == null) {
@@ -97,15 +97,15 @@ public final class Names {
         }
     }
 
-    public Components components() {
+    Components components() {
         return openapi.getComponents();
     }
 
-    public Paths paths() {
+    Paths paths() {
         return openapi.getPaths();
     }
 
-    public String nextClassName(String candidate) {
+    String nextClassName(String candidate) {
         return nextClassName(classNames, candidate);
     }
 
@@ -133,8 +133,7 @@ public final class Names {
         }
     }
 
-    @SuppressWarnings("rawtypes")
-    public Map<String, Schema> schemas() {
+    @SuppressWarnings("rawtypes") Map<String, Schema> schemas() {
         if (openapi.getComponents() == null) {
             return Collections.emptyMap();
         } else {
@@ -142,7 +141,7 @@ public final class Names {
         }
     }
 
-    public Map<String, RequestBody> requestBodies() {
+    Map<String, RequestBody> requestBodies() {
         if (openapi.getComponents() == null) {
             return Collections.emptyMap();
         } else {
@@ -150,7 +149,7 @@ public final class Names {
         }
     }
 
-    public Map<String, Parameter> parameters() {
+    Map<String, Parameter> parameters() {
         if (openapi.getComponents() == null) {
             return Collections.emptyMap();
         } else {
@@ -158,7 +157,7 @@ public final class Names {
         }
     }
 
-    public Map<String, ApiResponse> responses() {
+    Map<String, ApiResponse> responses() {
         if (openapi.getComponents() == null) {
             return Collections.emptyMap();
         } else {

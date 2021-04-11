@@ -52,7 +52,7 @@ public final class Converter {
         return openApiToPuml(result.getOpenAPI());
     }
 
-    public static String openApiToPuml(OpenAPI a) {
+    private static String openApiToPuml(OpenAPI a) {
 
         Names names = new Names(a);
         Model model = ComponentsHelper //

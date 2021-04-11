@@ -40,7 +40,7 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.media.UUIDSchema;
 
-public final class Common {
+final class Common {
 
     private Common() {
         // prevent instantiation
@@ -263,7 +263,7 @@ public final class Common {
                 .build());
     }
 
-    static Optional<String> getUmlTypeName(Schema<?> schema, Names names) {
+    private static Optional<String> getUmlTypeName(Schema<?> schema, Names names) {
         return getUmlTypeName(schema.get$ref(), schema, names);
     }
 
