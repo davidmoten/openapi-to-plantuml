@@ -26,6 +26,7 @@ Supports all features of OpenAPI 3.0 including
 [openapi-example.yml](src/test/resources/openapi-example.yml): 
 
 <img style="background-color:white" src="src/docs/openapi-example.svg"/>
+
 ## How to build
 
 ```bash
