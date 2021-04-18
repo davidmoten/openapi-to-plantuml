@@ -57,7 +57,7 @@ public class ConverterBatchTest {
                 output.createNewFile();
                 System.out.println(puml);
             }
-            String expected = new String(Files.readAllBytes(output.toPath()), StandardCharsets.UTF_8).trim();
+            String expected = com.github.davidmoten.junit.Files.readUtf8(output).trim();
             ConverterTest.writeSvg(input, "target/outputs/" + output.getName() + ".svg");
             assertEquals(expected, puml);
         } catch (IOException e) {
