@@ -14,7 +14,7 @@ public class InheritanceTest {
     public void testToString() {
         Inheritance a = new Inheritance("Vehicle", Lists.newArrayList("Car", "Motorbike"), AssociationType.ONE,
                 Optional.of("vehicle"));
-        assertEquals("Inheritance [from=Vehicle, to=[Car, Motorbike], type=ONE, label=Optional[vehicle]]",
+        assertEquals("Inheritance [from=Vehicle, to=[Car, Motorbike], type=ONE, propertyName=Optional[vehicle]]",
                 a.toString());
         assertEquals(AssociationType.ONE, a.type());
     }

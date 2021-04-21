@@ -7,13 +7,13 @@ public final class Inheritance implements Relationship {
     private final String from;
     private final List<String> to;
     private final AssociationType type;
-    private final Optional<String> label;
+    private final Optional<String> propertyName;
 
-    public Inheritance(String from, List<String> to, AssociationType type, Optional<String> label) {
+    public Inheritance(String from, List<String> to, AssociationType type, Optional<String> propertyName) {
         this.from = from;
         this.to = to;
         this.type = type;
-        this.label = label;
+        this.propertyName = propertyName;
     }
 
     public String from() {
@@ -28,8 +28,8 @@ public final class Inheritance implements Relationship {
         return type;
     }
 
-    public Optional<String> label() {
-        return label;
+    public Optional<String> propertyName() {
+        return propertyName;
     }
 
     @Override
@@ -41,8 +41,8 @@ public final class Inheritance implements Relationship {
         b.append(to);
         b.append(", type=");
         b.append(type);
-        b.append(", label=");
-        b.append(label);
+        b.append(", propertyName=");
+        b.append(propertyName);
         b.append("]");
         return b.toString();
     }
