@@ -20,7 +20,7 @@ public class DeflaterTest {
         assertTrue(new TranscoderSmart2().decode(encodedUml).startsWith("@startuml"));
         // System.out.println("https://planttext.com/api/plantuml/img/" + encodedUml);
     }
-    
+
     @Test
     public void testEncode() throws IOException {
         String uml = "@startuml\nBob->Alice: hello\n@enduml";
