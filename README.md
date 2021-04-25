@@ -3,7 +3,7 @@
 [![codecov](https://codecov.io/gh/davidmoten/openapi-to-plantuml/branch/main/graph/badge.svg)](https://codecov.io/gh/davidmoten/openapi-to-plantuml)<br/>
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.davidmoten/openapi-to-plantuml/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/com.github.davidmoten/openapi-to-plantuml)<br/>
 
-Java library to generate a [PlantUML](https://plantuml.com) Class Diagram (supplemented with path information) from an OpenAPI 3.0 definition (YAML or JSON).
+Java library to generate a [PlantUML](https://plantuml.com) Class Diagram (supplemented with path information) from an OpenAPI 3.0 definition (YAML or JSON). Try it online [here](https://openapi-to-puml.davidmoten.org/prod/site/index.html).
 
 **Features**
 
@@ -27,10 +27,6 @@ Supports all features of OpenAPI 3.0 including
 
 <img style="background-color:white" src="src/docs/openapi-example.svg"/>
 
-## Online Converter 
-
-Go to this [Online Converter](https://openapi-to-puml.davidmoten.org/prod/site/index.html) to convert your OpenAPI definition to a diagram!
- 
 ## How to build
 
 ```bash
