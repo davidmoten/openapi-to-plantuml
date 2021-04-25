@@ -33,15 +33,21 @@ public class ConverterTest {
 
     @Test
     public void testConvert() {
-        String openapi = "openapi: 3.0.1\n" + "components:\n" + "  schemas:\n" + "    CustomerType:\n"
-                + "      type: string\n" + "      example: Example value\n" + "    Customer:\n" + "      properties:\n"
-                + "        firstName:\n" + "          type: string\n" + "        lastName:\n"
-                + "          type: string\n" + "        heightMetres:\n" + "          type: number\n"
-                + "        type:\n" + "          $ref: '#/components/schemas/CustomerType'\n" + "        friends:\n"
+        String openapi = "openapi: 3.0.1\n" + "components:\n" + "  schemas:\n"
+                + "    CustomerType:\n" + "      type: string\n" + "      example: Example value\n"
+                + "    Customer:\n" + "      properties:\n" + "        firstName:\n"
+                + "          type: string\n" + "        lastName:\n" + "          type: string\n"
+                + "        heightMetres:\n" + "          type: number\n" + "        type:\n"
+                + "          $ref: '#/components/schemas/CustomerType'\n" + "        friends:\n"
                 + "          type: array\n" + "          items:\n"
                 + "            $ref: '#/components/schemas/Customer'\n" + "      ";
 
         Converter.openApiToPuml(openapi);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testConvertEmpty() {
+        Converter.openApiToPuml("");
     }
 
     @Test
@@ -66,7 +72,8 @@ public class ConverterTest {
         StringBuilder b = new StringBuilder();
         b.append("## openapi-to-plantuml examples\n");
         for (File f : new File("src/test/resources/inputs").listFiles()) {
-            b.append("\n\n* [" + f.getName() + "](../../src/test/resources/inputs/" + f.getName() + ")");
+            b.append("\n\n* [" + f.getName() + "](../../src/test/resources/inputs/" + f.getName()
+                    + ")");
             String svg = f.getName().substring(0, f.getName().lastIndexOf(".")) + ".puml.svg";
             b.append("\n\n<img src=\"../../src/docs/tests/" + svg + "\"/>");
         }
@@ -91,7 +98,8 @@ public class ConverterTest {
         SourceStringReader reader = new SourceStringReader(puml);
         try (OutputStream os = new BufferedOutputStream(new FileOutputStream(file))) {
             // Write the first image to "os"
-            DiagramDescription result = reader.outputImage(os, new FileFormatOption(FileFormat.SVG));
+            DiagramDescription result = reader.outputImage(os,
+                    new FileFormatOption(FileFormat.SVG));
             System.out.println("  svg result: " + result.getDescription());
         }
     }

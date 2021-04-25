@@ -49,6 +49,9 @@ public final class Converter {
 
     public static String openApiToPuml(String openApi) {
         SwaggerParseResult result = new OpenAPIParser().readContents(openApi, null, null);
+        if (result.getOpenAPI() == null) {
+            throw new IllegalArgumentException("Not an OpenAPI definition");
+        }
         return openApiToPuml(result.getOpenAPI());
     }
 
