@@ -27,6 +27,10 @@ Supports all features of OpenAPI 3.0 including
 
 <img style="background-color:white" src="src/docs/openapi-example.svg"/>
 
+## Online Converter 
+
+Go to this [Online Converter](https://openapi-to-puml.davidmoten.org/prod/site/index.html) to convert your OpenAPI definition to a diagram!
+ 
 ## How to build
 
 ```bash
