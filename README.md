@@ -33,7 +33,7 @@ Supports all features of OpenAPI 3.0 including
 mvn clean install
 ```
 
-## How to quickly convert your openapi
+## How to quickly convert your OpenAPI definition
 
 Easiest is to use the [online converter](https://openapi-to-puml.davidmoten.org/prod/site/index.html). If your definition is large then PlantText may refuse to render it (the Plant UML text is encoded and added to the PlantText url which can get too long). In that case just add your yaml file to `src/test/resources/demo/` directory and run `mvn test`. The generated image will be saved in `target/demos`.
 
