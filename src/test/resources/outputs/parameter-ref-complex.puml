@@ -7,13 +7,13 @@ hide empty fields
 set namespaceSeparator none
 
 class "Customer" {
-  firstName : string {O}
-  lastName : string {O}
+  {field} firstName : string {O}
+  {field} lastName : string {O}
 }
 
 class "CustomerId" <<Parameter>> {
-  id : string {O}
-  prefix : string {O}
+  {field} id : string {O}
+  {field} prefix : string {O}
 }
 
 class "GET /customer/expired" <<Path>> {

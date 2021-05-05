@@ -7,13 +7,13 @@ hide empty fields
 set namespaceSeparator none
 
 class "employee.role" {
-  employeeType : string {O}
-  level : integer
+  {field} employeeType : string {O}
+  {field} level : integer
 }
 
 class "employee.role.1" {
-  employeeType : string {O}
-  income : decimal
+  {field} employeeType : string {O}
+  {field} income : decimal
 }
 
 class "employee" {

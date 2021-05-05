@@ -7,13 +7,13 @@ hide empty fields
 set namespaceSeparator none
 
 class "CustomerType" {
-  value : string
+  {field} value : string
 }
 
 class "Customer" {
-  firstName : string
-  lastName : string
-  heightMetres : decimal {O}
+  {field} firstName : string
+  {field} lastName : string
+  {field} heightMetres : decimal {O}
 }
 
 "Customer" --> "1" "CustomerType"  :  "type"

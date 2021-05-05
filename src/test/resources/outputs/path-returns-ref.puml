@@ -7,16 +7,16 @@ hide empty fields
 set namespaceSeparator none
 
 class "Customer" {
-  firstName : string
-  lastName : string
-  heightMetres : decimal {O}
-  dateOfBirth : date
-  lastSessionTime : timestamp {O}
-  numberOfChildren : integer {O}
-  alive : boolean {O}
-  nicknames : string[] {O}
-  favouriteNumbers : integer[] {O}
-  picture : byte[] {O}
+  {field} firstName : string
+  {field} lastName : string
+  {field} heightMetres : decimal {O}
+  {field} dateOfBirth : date
+  {field} lastSessionTime : timestamp {O}
+  {field} numberOfChildren : integer {O}
+  {field} alive : boolean {O}
+  {field} nicknames : string[] {O}
+  {field} favouriteNumbers : integer[] {O}
+  {field} picture : byte[] {O}
 }
 
 class "Customers" <<Response>> {

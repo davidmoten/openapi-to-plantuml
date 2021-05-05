@@ -7,21 +7,21 @@ hide empty fields
 set namespaceSeparator none
 
 class "Pet" {
-  id : integer
-  name : string
-  tag : string {O}
+  {field} id : integer
+  {field} name : string
+  {field} tag : string {O}
 }
 
 class "Pets" {
 }
 
 class "Error" {
-  code : integer
-  message : string
+  {field} code : integer
+  {field} message : string
 }
 
 class "GET /pets" <<Path>> {
-  limit : integer {O}
+  {field} limit : integer {O}
 }
 
 class "POST /pets" <<Path>> {
@@ -31,7 +31,7 @@ class "POST /pets 201" <<Response>> {
 }
 
 class "GET /pets/{petId}" <<Path>> {
-  petId : string
+  {field} petId : string
 }
 
 "Pets" --> "*" "Pet"

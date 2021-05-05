@@ -10,8 +10,8 @@ class "Customers" {
 }
 
 class "Customer" {
-  firstName : string
-  lastName : string
+  {field} firstName : string
+  {field} lastName : string
 }
 
 "Customers" --> "*" "Customer"

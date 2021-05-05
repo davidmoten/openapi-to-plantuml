@@ -82,7 +82,7 @@ public final class Converter {
             b.append("\n\nclass " + Util.quote(cls.name())
                     + toStereotype(cls.type()).map(x -> " <<" + x + ">>").orElse("") + " {");
             cls.fields().stream().forEach(f -> {
-                b.append("\n  " + f.name() + COLON + f.type() + (f.isRequired() ? "" : " {O}"));
+                b.append("\n  {field} " + f.name() + COLON + f.type() + (f.isRequired() ? "" : " {O}"));
             });
             b.append("\n}");
         }

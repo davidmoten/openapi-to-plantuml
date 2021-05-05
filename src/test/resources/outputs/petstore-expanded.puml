@@ -10,22 +10,22 @@ class "Pet" {
 }
 
 class "PetId" {
-  id : integer
+  {field} id : integer
 }
 
 class "NewPet" {
-  name : string
-  tag : string {O}
+  {field} name : string
+  {field} tag : string {O}
 }
 
 class "Error" {
-  code : integer
-  message : string
+  {field} code : integer
+  {field} message : string
 }
 
 class "GET /pets" <<Path>> {
-  tags : string[] {O}
-  limit : integer {O}
+  {field} tags : string[] {O}
+  {field} limit : integer {O}
 }
 
 class "GET /pets 200" <<Response>> {
@@ -35,11 +35,11 @@ class "POST /pets" <<Path>> {
 }
 
 class "GET /pets/{id}" <<Path>> {
-  id : integer
+  {field} id : integer
 }
 
 class "DELETE /pets/{id}" <<Path>> {
-  id : integer
+  {field} id : integer
 }
 
 class "DELETE /pets/{id} 204" <<Response>> {
