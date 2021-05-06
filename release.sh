@@ -7,16 +7,16 @@ then
   exit 1 
 fi
 VERSION=$1
-git pull origin main 
-git checkout -b $VERSION-temp
+git pull origin master
 mvn versions:set -DnewVersion=$VERSION -DgenerateBackupPoms=false
 ## test build works
 mvn clean install
 git commit -am "prepare for release $VERSION"
 git tag -a $VERSION -m "$VERSION"
 git push origin $VERSION
-git checkout main
-git branch -D $VERSION-temp || echo 'branch did not exist!'
+mvn versions:set -DnextSnapshot=true
+git commit -am "set versions to next snapshot"
+git push
 echo =========================================================================
 echo At this point the tag has been pushed to the git repository on GitHub
 echo and you should go to the GitHub UI to indicate that that tag is the 
