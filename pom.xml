@@ -22,7 +22,7 @@
         <checkstyle.version>3.1.2</checkstyle.version>
         <checkstyle.xml>src/main/checkstyle/checkstyle.xml</checkstyle.xml>
         <checkstyle.suppressions.xml>src/main/checkstyle/suppressions.xml</checkstyle.suppressions.xml>
-        <checkstyle.core.version>9.1</checkstyle.core.version>
+        <checkstyle.core.version>9.2</checkstyle.core.version>
         <spotbugs.version>4.5.0.0</spotbugs.version>
         <javadoc.version>3.3.1</javadoc.version>
         <pmd.version>3.15.0</pmd.version>
