@@ -12,17 +12,17 @@ components:
             standardName:
               type: object
               properties:
-                firstName: 
+                firstName:
                   type: string
-                lastName: 
+                lastName:
                   type: string
               required:
-              - firstName
-              - lastName
+                - firstName
+                - lastName
             origin:
               type: string
         heightMetres:
           type: number
       required:
-      - name
+        - name
         

@@ -6,12 +6,12 @@ paths:
   /customer/expired:
     get:
       parameters:
-      - $ref: '#/components/parameters/CustomerId'
+        - $ref: '#/components/parameters/CustomerId'
       responses:
-        '200':  
+        '200':
           content:
             application/json:
-              schema: 
+              schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Customer'

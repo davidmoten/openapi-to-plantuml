@@ -6,14 +6,14 @@ paths:
   /customer/expired:
     get:
       responses:
-        '200':  
+        '200':
           content:
             application/json:
-              schema: 
+              schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Customer'
-                  
+
       requestBody:
         content:
           application/json:
@@ -24,7 +24,7 @@ paths:
                   type: array
                   items:
                     type: integer
-  
+
 components:
   schemas:
     Customer:
@@ -40,24 +40,24 @@ components:
           format: date
         lastSessionTime:
           type: string
-          format: date-time  
+          format: date-time
         numberOfChildren:
-          type: integer        
+          type: integer
         alive:
           type: boolean
         nicknames:
           type: array
-          items: 
+          items:
             type: string
         favouriteNumbers:
           type: array
           items:
-            type: integer 
+            type: integer
         picture:
           type: string
           format: binary
       required:
-      - firstName
-      - lastName
-      - dateOfBirth
+        - firstName
+        - lastName
+        - dateOfBirth
         

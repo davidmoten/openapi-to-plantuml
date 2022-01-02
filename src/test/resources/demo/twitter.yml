@@ -53,7 +53,7 @@ paths:
     get:
       description: Full open api spec in JSON format. (See https://github.com/OAI/OpenAPI-Specification/blob/master/README.md)
       operationId: getOpenApiSpec
-      parameters: []
+      parameters: [ ]
       responses:
         "200":
           content:
@@ -97,8 +97,8 @@ paths:
         default:
           $ref: "#/components/responses/HttpErrorResponse"
       security:
-        - BearerToken: []
-          UserToken: []
+        - BearerToken: [ ]
+          UserToken: [ ]
       summary: Returns hydrated Tweet objects
       tags:
         - Tweets
@@ -228,7 +228,7 @@ paths:
         default:
           $ref: "#/components/responses/HttpErrorResponse"
       security:
-        - BearerToken: []
+        - BearerToken: [ ]
       summary: Returns Tweets that match a search query.
       tags:
         - Search
@@ -305,7 +305,7 @@ paths:
         default:
           $ref: "#/components/responses/HttpErrorResponse"
       security:
-        - BearerToken: []
+        - BearerToken: [ ]
       summary: Returns Tweets from the last 7 days that match a search query.
       tags:
         - Search
@@ -426,8 +426,8 @@ paths:
         default:
           $ref: "#/components/responses/HttpErrorResponse"
       security:
-        - BearerToken: []
-          UserToken: []
+        - BearerToken: [ ]
+          UserToken: [ ]
       summary: Returns hydrated Tweet objects
       tags:
         - Tweets
@@ -498,8 +498,8 @@ paths:
         default:
           $ref: "#/components/responses/HttpErrorResponse"
       security:
-        - BearerToken: []
-          UserToken: []
+        - BearerToken: [ ]
+          UserToken: [ ]
       summary: Return details for the specified users
       tags:
         - Users
@@ -533,8 +533,8 @@ paths:
         default:
           $ref: "#/components/responses/HttpErrorResponse"
       security:
-        - BearerToken: []
-          UserToken: []
+        - BearerToken: [ ]
+          UserToken: [ ]
       summary: Return details for the specified users
       tags:
         - Users
@@ -562,8 +562,8 @@ paths:
         default:
           $ref: "#/components/responses/HttpErrorResponse"
       security:
-        - BearerToken: []
-          UserToken: []
+        - BearerToken: [ ]
+          UserToken: [ ]
       summary: Return details for the specified users
       tags:
         - Users
@@ -591,8 +591,8 @@ paths:
         default:
           $ref: "#/components/responses/HttpErrorResponse"
       security:
-        - BearerToken: []
-          UserToken: []
+        - BearerToken: [ ]
+          UserToken: [ ]
       summary: Return details for the specified users
       tags:
         - Users
@@ -742,8 +742,8 @@ paths:
         default:
           $ref: "#/components/responses/HttpErrorResponse"
       security:
-        - BearerToken: []
-          UserToken: []
+        - BearerToken: [ ]
+          UserToken: [ ]
       summary: Returns Tweet objects that mention the username associated to the provided User ID
       tags:
         - Mentions
@@ -781,8 +781,8 @@ paths:
         default:
           $ref: "#/components/responses/HttpErrorResponse"
       security:
-        - BearerToken: []
-          UserToken: []
+        - BearerToken: [ ]
+          UserToken: [ ]
       summary: Returns Tweet objects authored by the provided User ID
       tags:
         - Tweets
@@ -1427,7 +1427,7 @@ components:
             - status
           type: object
       description: A generic problem with no additional information beyond that provided by the HTTP status code.
-    GenericTweetsTimelineResponse: {}
+    GenericTweetsTimelineResponse: { }
     Geo:
       properties:
         bbox:

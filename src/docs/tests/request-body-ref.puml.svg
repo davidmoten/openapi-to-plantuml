@@ -1,11 +1,120 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="424px" preserveAspectRatio="none" style="width:427px;height:424px;" version="1.1" viewBox="0 0 427 424" width="427px" zoomAndPan="magnify"><defs><filter height="300%" id="fxlcoygx7xl38" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[2ce0c9fb7f55b1e256ab28a8ea6b25ec]
-class Customer--><rect codeLine="8" fill="#FEFECE" filter="url(#fxlcoygx7xl38)" height="168.0469" id="Customer" style="stroke:#A80036;stroke-width:1.5;" width="207" x="206.5" y="242"/><ellipse cx="275.75" cy="258" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M278.7188,263.6406 Q278.1406,263.9375 277.5,264.0781 Q276.8594,264.2344 276.1563,264.2344 Q273.6563,264.2344 272.3281,262.5938 Q271.0156,260.9375 271.0156,257.8125 Q271.0156,254.6875 272.3281,253.0313 Q273.6563,251.375 276.1563,251.375 Q276.8594,251.375 277.5,251.5313 Q278.1563,251.6875 278.7188,251.9844 L278.7188,254.7031 Q278.0938,254.125 277.5,253.8594 Q276.9063,253.5781 276.2813,253.5781 Q274.9375,253.5781 274.25,254.6563 Q273.5625,255.7188 273.5625,257.8125 Q273.5625,259.9063 274.25,260.9844 Q274.9375,262.0469 276.2813,262.0469 Q276.9063,262.0469 277.5,261.7813 Q278.0938,261.5 278.7188,260.9219 L278.7188,263.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="60" x="296.25" y="262.1543">Customer</text><line style="stroke:#A80036;stroke-width:1.5;" x1="207.5" x2="412.5" y1="274" y2="274"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="101" x="212.5" y="288.2104">firstName : string</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="99" x="212.5" y="301.0151">lastName : string</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="157" x="212.5" y="313.8198">heightMetres : decimal {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="102" x="212.5" y="326.6245">dateOfBirth : date</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="195" x="212.5" y="339.4292">lastSessionTime : timestamp {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="183" x="212.5" y="352.2339">numberOfChildren : integer {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="110" x="212.5" y="365.0386">alive : boolean {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="141" x="212.5" y="377.8433">nicknames : string[] {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="189" x="212.5" y="390.6479">favouriteNumbers : integer[] {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="110" x="212.5" y="403.4526">picture : byte[] {O}</text><!--MD5=[b2c3d89b312e4eed2d630e16ef59187f]
-class repositories--><rect codeLine="21" fill="#FEFECE" filter="url(#fxlcoygx7xl38)" height="58.7422" id="repositories" style="stroke:#A80036;stroke-width:1.5;" width="180" x="7" y="122"/><ellipse cx="47.2" cy="140.9688" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M50.1688,146.6094 Q49.5906,146.9063 48.95,147.0469 Q48.3094,147.2031 47.6063,147.2031 Q45.1063,147.2031 43.7781,145.5625 Q42.4656,143.9063 42.4656,140.7813 Q42.4656,137.6563 43.7781,136 Q45.1063,134.3438 47.6063,134.3438 Q48.3094,134.3438 48.95,134.5 Q49.6063,134.6563 50.1688,134.9531 L50.1688,137.6719 Q49.5438,137.0938 48.95,136.8281 Q48.3563,136.5469 47.7313,136.5469 Q46.3875,136.5469 45.7,137.625 Q45.0125,138.6875 45.0125,140.7813 Q45.0125,142.875 45.7,143.9531 Q46.3875,145.0156 47.7313,145.0156 Q48.3563,145.0156 48.95,144.75 Q49.5438,144.4688 50.1688,143.8906 L50.1688,146.6094 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="96" x="64.8" y="138.1387">«RequestBody»</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="75" x="75.3" y="152.1074">repositories</text><line style="stroke:#A80036;stroke-width:1.5;" x1="8" x2="186" y1="159.9375" y2="159.9375"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="168" x="13" y="174.1479">repository_ids : integer[] {O}</text><!--MD5=[872165f8b1007cfce347e18ce10edd44]
-class GET /customer/expired--><rect codeLine="25" fill="#FEFECE" filter="url(#fxlcoygx7xl38)" height="37.9375" id="GET /customer/expired" style="stroke:#A80036;stroke-width:1.5;" width="147" x="52.5" y="7"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="42" x="105" y="23.1387">«Path»</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="141" x="55.5" y="37.1074">GET /customer/expired</text><!--MD5=[f1ac86e405428676106dcb9e543aae2e]
-class GET /customer/expired 200--><rect codeLine="28" fill="#FEFECE" filter="url(#fxlcoygx7xl38)" height="37.9375" id="GET /customer/expired 200" style="stroke:#A80036;stroke-width:1.5;" width="175" x="222.5" y="132.5"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="74" x="273" y="148.6387">«Response»</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="169" x="225.5" y="162.6074">GET /customer/expired 200</text><!--MD5=[194a33745d2ad60875bb8b2b1cb9bcdc]
-link GET /customer/expired 200 to Customer--><path codeLine="31" d="M310,170.63 C310,186.77 310,211.65 310,236.74 " fill="none" id="GET /customer/expired 200-to-Customer" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="310,241.76,314,232.76,310,236.76,306,232.76,310,241.76" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="302.6992" y="230.9467">*</text><!--MD5=[a79f175480c98f40611c72f1406907d9]
-link GET /customer/expired to GET /customer/expired 200--><path codeLine="33" d="M153.15,45.22 C186.68,67.72 243.58,105.92 278.85,129.59 " fill="none" id="GET /customer/expired-to-GET /customer/expired 200" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="283.04,132.4,277.7901,124.067,278.8863,129.6166,273.3367,130.7128,283.04,132.4" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="24" x="219" y="88.0669">200</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="265.5585" y="121.3506">1</text><!--MD5=[525c17db54b4874834ac7b50c02b9536]
-link GET /customer/expired to repositories--><path codeLine="35" d="M121.72,45.22 C117.33,63.94 110.38,93.5 104.97,116.54 " fill="none" id="GET /customer/expired-to-repositories" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="103.77,121.65,109.7199,113.8015,104.912,116.7822,101.9314,111.9743,103.77,121.65" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="96.3413" y="111.0537">1</text><!--MD5=[d176a4e74dc983dc5f220be235908a70]
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     contentScriptType="application/ecmascript" contentStyleType="text/css" height="424px" preserveAspectRatio="none"
+     style="width:427px;height:424px;" version="1.1" viewBox="0 0 427 424" width="427px" zoomAndPan="magnify">
+    <defs>
+        <filter height="300%" id="fxlcoygx7xl38" width="300%" x="-1" y="-1">
+            <feGaussianBlur result="blurOut" stdDeviation="2.0"/>
+            <feColorMatrix in="blurOut" result="blurOut2" type="matrix"
+                           values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/>
+            <feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/>
+            <feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/>
+        </filter>
+    </defs>
+    <g><!--MD5=[2ce0c9fb7f55b1e256ab28a8ea6b25ec]
+class Customer-->
+        <rect codeLine="8" fill="#FEFECE" filter="url(#fxlcoygx7xl38)" height="168.0469" id="Customer"
+              style="stroke:#A80036;stroke-width:1.5;" width="207" x="206.5" y="242"/>
+        <ellipse cx="275.75" cy="258" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/>
+        <path d="M278.7188,263.6406 Q278.1406,263.9375 277.5,264.0781 Q276.8594,264.2344 276.1563,264.2344 Q273.6563,264.2344 272.3281,262.5938 Q271.0156,260.9375 271.0156,257.8125 Q271.0156,254.6875 272.3281,253.0313 Q273.6563,251.375 276.1563,251.375 Q276.8594,251.375 277.5,251.5313 Q278.1563,251.6875 278.7188,251.9844 L278.7188,254.7031 Q278.0938,254.125 277.5,253.8594 Q276.9063,253.5781 276.2813,253.5781 Q274.9375,253.5781 274.25,254.6563 Q273.5625,255.7188 273.5625,257.8125 Q273.5625,259.9063 274.25,260.9844 Q274.9375,262.0469 276.2813,262.0469 Q276.9063,262.0469 277.5,261.7813 Q278.0938,261.5 278.7188,260.9219 L278.7188,263.6406 Z "
+              fill="#000000"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="60" x="296.25"
+              y="262.1543">Customer
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="207.5" x2="412.5" y1="274" y2="274"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="101" x="212.5"
+              y="288.2104">firstName : string
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="99" x="212.5"
+              y="301.0151">lastName : string
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="157" x="212.5"
+              y="313.8198">heightMetres : decimal {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="102" x="212.5"
+              y="326.6245">dateOfBirth : date
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="195" x="212.5"
+              y="339.4292">lastSessionTime : timestamp {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="183" x="212.5"
+              y="352.2339">numberOfChildren : integer {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="110" x="212.5"
+              y="365.0386">alive : boolean {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="141" x="212.5"
+              y="377.8433">nicknames : string[] {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="189" x="212.5"
+              y="390.6479">favouriteNumbers : integer[] {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="110" x="212.5"
+              y="403.4526">picture : byte[] {O}
+        </text><!--MD5=[b2c3d89b312e4eed2d630e16ef59187f]
+class repositories-->
+        <rect codeLine="21" fill="#FEFECE" filter="url(#fxlcoygx7xl38)" height="58.7422" id="repositories"
+              style="stroke:#A80036;stroke-width:1.5;" width="180" x="7" y="122"/>
+        <ellipse cx="47.2" cy="140.9688" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/>
+        <path d="M50.1688,146.6094 Q49.5906,146.9063 48.95,147.0469 Q48.3094,147.2031 47.6063,147.2031 Q45.1063,147.2031 43.7781,145.5625 Q42.4656,143.9063 42.4656,140.7813 Q42.4656,137.6563 43.7781,136 Q45.1063,134.3438 47.6063,134.3438 Q48.3094,134.3438 48.95,134.5 Q49.6063,134.6563 50.1688,134.9531 L50.1688,137.6719 Q49.5438,137.0938 48.95,136.8281 Q48.3563,136.5469 47.7313,136.5469 Q46.3875,136.5469 45.7,137.625 Q45.0125,138.6875 45.0125,140.7813 Q45.0125,142.875 45.7,143.9531 Q46.3875,145.0156 47.7313,145.0156 Q48.3563,145.0156 48.95,144.75 Q49.5438,144.4688 50.1688,143.8906 L50.1688,146.6094 Z "
+              fill="#000000"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing"
+              textLength="96" x="64.8" y="138.1387">«RequestBody»
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="75" x="75.3"
+              y="152.1074">repositories
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="8" x2="186" y1="159.9375" y2="159.9375"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="168" x="13"
+              y="174.1479">repository_ids : integer[] {O}
+        </text><!--MD5=[872165f8b1007cfce347e18ce10edd44]
+class GET /customer/expired-->
+        <rect codeLine="25" fill="#FEFECE" filter="url(#fxlcoygx7xl38)" height="37.9375" id="GET /customer/expired"
+              style="stroke:#A80036;stroke-width:1.5;" width="147" x="52.5" y="7"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing"
+              textLength="42" x="105" y="23.1387">«Path»
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="141" x="55.5"
+              y="37.1074">GET /customer/expired
+        </text><!--MD5=[f1ac86e405428676106dcb9e543aae2e]
+class GET /customer/expired 200-->
+        <rect codeLine="28" fill="#FEFECE" filter="url(#fxlcoygx7xl38)" height="37.9375" id="GET /customer/expired 200"
+              style="stroke:#A80036;stroke-width:1.5;" width="175" x="222.5" y="132.5"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing"
+              textLength="74" x="273" y="148.6387">«Response»
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="169" x="225.5"
+              y="162.6074">GET /customer/expired 200
+        </text><!--MD5=[194a33745d2ad60875bb8b2b1cb9bcdc]
+link GET /customer/expired 200 to Customer-->
+        <path codeLine="31" d="M310,170.63 C310,186.77 310,211.65 310,236.74 " fill="none"
+              id="GET /customer/expired 200-to-Customer" style="stroke:#A80036;stroke-width:1.0;"/>
+        <polygon fill="#A80036" points="310,241.76,314,232.76,310,236.76,306,232.76,310,241.76"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="302.6992"
+              y="230.9467">*
+        </text><!--MD5=[a79f175480c98f40611c72f1406907d9]
+link GET /customer/expired to GET /customer/expired 200-->
+        <path codeLine="33" d="M153.15,45.22 C186.68,67.72 243.58,105.92 278.85,129.59 " fill="none"
+              id="GET /customer/expired-to-GET /customer/expired 200"
+              style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/>
+        <polygon fill="#A80036" points="283.04,132.4,277.7901,124.067,278.8863,129.6166,273.3367,130.7128,283.04,132.4"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="24" x="219"
+              y="88.0669">200
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="265.5585"
+              y="121.3506">1
+        </text><!--MD5=[525c17db54b4874834ac7b50c02b9536]
+link GET /customer/expired to repositories-->
+        <path codeLine="35" d="M121.72,45.22 C117.33,63.94 110.38,93.5 104.97,116.54 " fill="none"
+              id="GET /customer/expired-to-repositories" style="stroke:#A80036;stroke-width:1.0;"/>
+        <polygon fill="#A80036"
+                 points="103.77,121.65,109.7199,113.8015,104.912,116.7822,101.9314,111.9743,103.77,121.65"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="96.3413"
+              y="111.0537">1
+        </text><!--MD5=[d176a4e74dc983dc5f220be235908a70]
 @startuml
 hide <<Path>> circle
 hide <<Response>> circle
@@ -52,4 +161,6 @@ JVM: OpenJDK 64-Bit Server VM
 Default Encoding: UTF-8
 Language: en
 Country: AU
---></g></svg>
+-->
+    </g>
+</svg>

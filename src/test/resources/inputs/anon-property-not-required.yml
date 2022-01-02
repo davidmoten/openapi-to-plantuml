@@ -9,13 +9,13 @@ components:
         name:
           type: object
           properties:
-            firstName: 
+            firstName:
               type: string
-            lastName: 
+            lastName:
               type: string
           required:
-          - firstName
-          - lastName
+            - firstName
+            - lastName
         heightMetres:
           type: number
         

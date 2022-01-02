@@ -8,7 +8,7 @@ info:
 servers:
   - url: URL_HERE
     description: DESCRIPTION_HERE
-    
+
 paths:
   /agent:
     get:
@@ -16,46 +16,46 @@ paths:
       description: |
         Returns the list of craft reporting agents (reporting sources), like AIS, LRIT, FIS.
       responses:
-        '200':    # status code
+        '200': # status code
           description: OK
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/agents'
-                  
+
   /craftType:
     get:
       summary: Returns the list of craft types
       description: |
         Returns the list of craft types, like Vessel, Aircraft, Tracking Device, etc.
       responses:
-        '200':    # status code
+        '200': # status code
           description: OK
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/craftTypes'
-      
+
   /identifierType:
     get:
-      summary: Returns the list of craft identifier types 
+      summary: Returns the list of craft identifier types
       description: |
         Returns the list of craft identifier types like MMSI, Serial Number, IMO Number
       responses:
-        '200':    # status code
+        '200': # status code
           description: OK
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/identifierTypes'
-                            
+
   /track/rect:
     get:
       summary: |
         Returns a list of tracks (craft with positions) according to position, time and other criteria
       description: |
         Returns a list of track objects with identifiers, properties and positions
-      parameters: 
+      parameters:
         - in: query
           name: startTimeInclusive
           description: start of the search time window, must be less than finishTimeExclusive
@@ -73,16 +73,16 @@ paths:
         - in: query
           name: identifierValue
           description: identifier values to filter on, no filtering if empty
-          schema: 
+          schema:
             type: array
-            items: 
+            items:
               type: string
         - in: query
           name: craftId
           description: craftId to filter on, no filtering if empty
-          schema: 
+          schema:
             type: array
-            items: 
+            items:
               type: string
         - in: query
           name: craftType
@@ -102,7 +102,7 @@ paths:
           name: minLat
           description: southermost latitude of the bounding box, must be less than maxLatExclusive
           required: true
-          schema: 
+          schema:
             type: number
             minimum: -90
             maximum: 90
@@ -141,7 +141,7 @@ paths:
           description: includes craft properties if true otherwise does not
           schema:
             type: boolean
-            default: true            
+            default: true
         - in: query
           name: includeFixProperties
           description: includes fix properties if true otherwise does not
@@ -155,18 +155,18 @@ paths:
             type: boolean
             default: false
       responses:
-        '200':    # status code
+        '200': # status code
           description: OK
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/tracks'
-                
+
   /track/circle:
     get:
       summary: Returns a list of tracks (craft with positions) according to position, time and other criteria
       description: Returns a list of track objects with craft identifiers and positions
-      parameters: 
+      parameters:
         - in: query
           name: startTimeInclusive
           description: start of the search time window, must be less than finishTimeExclusive
@@ -184,17 +184,17 @@ paths:
         - in: query
           name: identifierValue
           description: identifier values to filter on, no filtering if empty
-          schema: 
+          schema:
             type: array
-            items: 
+            items:
               type: string
         - in: query
           name: craftId
           description: craftId to filter on, no filtering if empty
-          schema: 
+          schema:
             type: array
-            items: 
-              type: string              
+            items:
+              type: string
         - in: query
           name: craftType
           description: craft types to filter on, no filtering if empty
@@ -213,7 +213,7 @@ paths:
           name: centreLat
           description: latitude of the centre of the search region
           required: true
-          schema: 
+          schema:
             type: number
             minimum: -90
             maximum: 90
@@ -237,7 +237,7 @@ paths:
           description: includes craft properties if true otherwise does not
           schema:
             type: boolean
-            default: true            
+            default: true
         - in: query
           name: includeFixProperties
           description: includes fix properties if true otherwise does not
@@ -251,13 +251,13 @@ paths:
             type: boolean
             default: false
       responses:
-        '200':    # status code
+        '200': # status code
           description: OK
           content:
             application/json:
-              schema: 
-                $ref: '#/components/schemas/tracks'                
-                
+              schema:
+                $ref: '#/components/schemas/tracks'
+
   /craftpic/rect:
     get:
       summary: |
@@ -269,7 +269,7 @@ paths:
         window are considered. Note that closest actual position by time becomes
         last actual position if afterHours is set to 0. 
       description: Returns a list of craft with position
-      parameters: 
+      parameters:
         - in: query
           name: time
           description: time to predict positions at or to find the closest actual position to
@@ -281,7 +281,7 @@ paths:
           name: beforeHours
           description: hours before time to search for fixes
           required: true
-          schema: 
+          schema:
             type: number
             minimum: 0
             default: 24
@@ -289,24 +289,24 @@ paths:
           name: afterHours
           description: hours after time to search for fixes
           required: true
-          schema: 
+          schema:
             type: number
             minimum: 0
-            default: 2   
+            default: 2
         - in: query
           name: identifierValue
           description: identifier values to filter on, no filtering if empty
-          schema: 
+          schema:
             type: array
-            items: 
+            items:
               type: string
         - in: query
           name: craftId
           description: craftId to filter on, no filtering if empty
-          schema: 
+          schema:
             type: array
-            items: 
-              type: string              
+            items:
+              type: string
         - in: query
           name: craftType
           description: craft types to filter on, no filtering if empty
@@ -320,12 +320,12 @@ paths:
           schema:
             type: array
             items:
-              type: string                   
+              type: string
         - in: query
           name: minLat
           description: southermost latitude of the bounding box, must be less than or equal to maxLat
           required: true
-          schema: 
+          schema:
             type: number
             minimum: -90
             maximum: 90
@@ -400,13 +400,13 @@ paths:
             default: 20
             minimum: 0
       responses:
-        '200':    # status code
+        '200': # status code
           description: OK
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/craftpic'
-                
+
   /craftpic/circle:
     get:
       summary: |
@@ -418,7 +418,7 @@ paths:
         window are considered. Note that closest actual position by time becomes
         last actual position if afterHours is set to 0.
       description: Returns a list of craft with position
-      parameters: 
+      parameters:
         - in: query
           name: time
           description: time to find closest actual by time or predicted positions at
@@ -430,7 +430,7 @@ paths:
           name: beforeHours
           description: hours before time to search for fixes
           required: true
-          schema: 
+          schema:
             type: number
             minimum: 0
             default: 24
@@ -438,24 +438,24 @@ paths:
           name: afterHours
           description: hours after time to search for fixes
           required: true
-          schema: 
+          schema:
             type: number
             minimum: 0
-            default: 2          
+            default: 2
         - in: query
           name: identifierValue
           description: identifier values to filter on, no filtering if empty
-          schema: 
+          schema:
             type: array
-            items: 
+            items:
               type: string
         - in: query
           name: craftId
           description: craftId to filter on, no filtering if empty
-          schema: 
+          schema:
             type: array
-            items: 
-              type: string              
+            items:
+              type: string
         - in: query
           name: craftType
           description: craft types to filter on, no filtering if empty
@@ -469,12 +469,12 @@ paths:
           schema:
             type: array
             items:
-              type: string             
+              type: string
         - in: query
           name: centreLat
           description: latitude of the centre of the circular search region
           required: true
-          schema: 
+          schema:
             type: number
             minimum: -90
             maximum: 90
@@ -513,7 +513,7 @@ paths:
             default: false
         - in: query
           name: predicted
-          description: if true then uses extrapolation/interpolation to predict the positions at target time. If false returns closest actual positions by time to the target time. 
+          description: if true then uses extrapolation/interpolation to predict the positions at target time. If false returns closest actual positions by time to the target time.
           schema:
             type: boolean
             default: true
@@ -532,51 +532,51 @@ paths:
             default: 20
             minimum: 0
       responses:
-        '200':    # status code
+        '200': # status code
           description: OK
           content:
             application/json:
-              schema: 
-                $ref: '#/components/schemas/craftpic'                
+              schema:
+                $ref: '#/components/schemas/craftpic'
 
 components:
   schemas:
-  
+
     agents:
       description: craft reporting agents like AIS, LRIT
       type: array
       items:
         $ref: '#/components/schemas/agent'
-            
+
     agent:
       description: craft reporting agent like AIS, LRIT
       type: string
-      
+
     craftTypes:
       description: craft types like Vessel, Aircraft
       type: array
       items:
         $ref: '#/components/schemas/craftType'
 
-    tracks: 
+    tracks:
       description: a collection of unique craft and their position reports (fixes)
       type: array
       items:
         $ref: '#/components/schemas/craftFixes'
-          
+
     craftpic:
       description: a collection of unique craft and a single position report (fix)
       type: array
-      items: 
+      items:
         $ref: '#/components/schemas/craftFix'
-        
+
     craftId:
       description: the unique system identifier of a craft (not one of the public identifiers for a craft like the MMSI no)
       type: string
       maxLength: 512
       minLength: 1
       example: 43215678
-      
+
     craftType:
       type: string
       maxLength: 512
@@ -587,13 +587,13 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/identifierType'
-      
+
     identifierType:
       type: string
       maxLength: 256
       minLength: 1
       example: MMSI
-            
+
     craftFix:
       description: a single craft together with a single position for that craft (fix)
       properties:
@@ -617,10 +617,10 @@ components:
         fix:
           $ref: '#/components/schemas/fix'
       required:
-      - craftId
-      - craftType
-      - fix
-              
+        - craftId
+        - craftType
+        - fix
+
     craftFixes:
       description: a single craft and a collection of position reports (fixes)
       properties:
@@ -646,25 +646,25 @@ components:
           items:
             $ref: '#/components/schemas/fix'
       required:
-      - craftId
-      - craftType
+        - craftId
+        - craftType
 
     identifier:
       description: a unique identifier for a craft having a key and value
       properties:
-        key: 
+        key:
           $ref: '#/components/schemas/identifierType'
         value:
           type: string
           example: '123456789'
       required:
-      - key
-      - value
+        - key
+        - value
 
     property:
       description: a key-value property of the craft and/or fix
       properties:
-        key: 
+        key:
           type: string
           minLength: 1
           example: Name
@@ -672,67 +672,67 @@ components:
           type: string
           example: 'PACIFIC EXPLORER'
       required:
-      - key
-      - value
+        - key
+        - value
 
     fix:
       description: a position report for a craft (may be actual or predicted)
       properties:
-        fixId: 
+        fixId:
           type: string
           maxLength: 512
           minLength: 1
           example: '7654321'
-        time: 
+        time:
           type: string
           format: date-time
           example: '2020-11-17T14:08:18.123Z'
-        lat: 
+        lat:
           type: number
           minimum: -90.0
           maximum: 90.0
           example: -34.2
-        lon: 
+        lon:
           type: number
           minimum: -180
           maximum: 180
           example: 140.0
-        altitudeMetres: 
+        altitudeMetres:
           type: number
-        cog: 
+        cog:
           type: number
           minimum: 0
           maximum: 360
           example: 345.0
-        speedKnots: 
+        speedKnots:
           type: number
           minimum: 0.0
           example: 10.5
-        agent: 
+        agent:
           $ref: '#/components/schemas/agent'
-        properties: 
+        properties:
           type: array
-          items: 
+          items:
             $ref: '#/components/schemas/property'
         identifiers:
           type: array
-          items: 
+          items:
             $ref: '#/components/schemas/identifier'
-        closestActualFixTime: 
+        closestActualFixTime:
           type: string
           format: date-time
       required:
-      - fixId
-      - time
-      - lat
-      - lon
-      - agent
+        - fixId
+        - time
+        - lat
+        - lon
+        - agent
 
   securitySchemes:
-    basicAuth:     # <-- arbitrary name for the security scheme
+    basicAuth: # <-- arbitrary name for the security scheme
       type: http
       scheme: basic
-      
+
 security:
-  - basicAuth: [] # applies to whole api
+  - basicAuth: [ ] # applies to whole api
       

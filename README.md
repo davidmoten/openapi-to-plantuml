@@ -1,29 +1,33 @@
 # openapi-to-plantuml
+
 <a href="https://github.com/davidmoten/openapi-to-plantuml/actions/workflows/ci.yml"><img src="https://github.com/davidmoten/openapi-to-plantuml/actions/workflows/ci.yml/badge.svg"/></a><br/>
 [![codecov](https://codecov.io/gh/davidmoten/openapi-to-plantuml/branch/main/graph/badge.svg)](https://codecov.io/gh/davidmoten/openapi-to-plantuml)<br/>
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.davidmoten/openapi-to-plantuml/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/com.github.davidmoten/openapi-to-plantuml)<br/>
 
-Java library to generate a [PlantUML](https://plantuml.com) Class Diagram (supplemented with path information) from an OpenAPI 3.0 definition (YAML or JSON). Try it online [here](https://openapi-to-puml.davidmoten.org/prod/site/index.html).
+Java library to generate a [PlantUML](https://plantuml.com) Class Diagram (supplemented with path information) from an
+OpenAPI 3.0 definition (YAML or JSON). Try it online [here](https://openapi-to-puml.davidmoten.org/prod/site/index.html)
+.
 
 **Features**
 
 Supports all features of OpenAPI 3.0 including
 
-* Mixed types (*oneOf*, *anyOf*, *allOf*) 
-* Multiple levels of indirection (`$ref` -> `$ref` for example) 
+* Mixed types (*oneOf*, *anyOf*, *allOf*)
+* Multiple levels of indirection (`$ref` -> `$ref` for example)
 * Multiple response content types
 
-**Status:** Released to Maven Central 
+**Status:** Released to Maven Central
 
 **Limitations**
 
 * Only handles internal references ("#/*"), that is the yaml file should be self-contained
 
 **TODO**
+
 * Model *Callbacks*
 * Model *additionalProperties*
 
-[openapi-example.yml](src/test/resources/openapi-example.yml): 
+[openapi-example.yml](src/test/resources/openapi-example.yml):
 
 <img style="background-color:white" src="src/docs/openapi-example.svg"/>
 
@@ -35,9 +39,13 @@ mvn clean install
 
 ## How to quickly convert your OpenAPI definition
 
-The easiest thing to do is to use the [online converter](https://openapi-to-puml.davidmoten.org/prod/site/index.html). If your definition is large then PlantText may refuse to render it (the Plant UML text is encoded and added to the PlantText url which can get too long). In that case just add your yaml file to `src/test/resources/demo/` directory and run `mvn test`. The generated image will be saved in `target/demos`.
+The easiest thing to do is to use the [online converter](https://openapi-to-puml.davidmoten.org/prod/site/index.html).
+If your definition is large then PlantText may refuse to render it (the Plant UML text is encoded and added to the
+PlantText url which can get too long). In that case just add your yaml file to `src/test/resources/demo/` directory and
+run `mvn test`. The generated image will be saved in `target/demos`.
 
 ## Getting started
+
 Add this dependency to your pom.xml:
 
 ```xml
@@ -48,7 +56,9 @@ Add this dependency to your pom.xml:
 </dependency>
 ```
 
-Or use the standalone *jar-with-dependencies* artifact from [Maven Central](https://search.maven.org/search?q=g:com.github.davidmoten%20AND%20a:openapi-to-plantuml) (or from the `target` directory if you have built the project locally):
+Or use the standalone *jar-with-dependencies* artifact
+from [Maven Central](https://search.maven.org/search?q=g:com.github.davidmoten%20AND%20a:openapi-to-plantuml) (or from
+the `target` directory if you have built the project locally):
 
 ```bash
 java -jar openapi-to-plantuml-VERSION_HERE-jar-with-dependencies.jar openapi.yaml PNG openapi.png
@@ -59,7 +69,7 @@ java -jar openapi-to-plantuml-VERSION_HERE-jar-with-dependencies.jar openapi.yam
 ```java
 import com.github.davidmoten.oas3.puml.Converter;
 
-String puml = Converter.openApiToPuml(openapi);
+String puml=Converter.openApiToPuml(openapi);
 ```
 
 ## Examples

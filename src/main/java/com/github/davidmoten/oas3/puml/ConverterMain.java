@@ -1,54 +1,54 @@
 package com.github.davidmoten.oas3.puml;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.util.Arrays;
-import java.util.stream.Collectors;
-
-import net.sourceforge.plantuml.FileFormat;
-import net.sourceforge.plantuml.FileFormatOption;
-import net.sourceforge.plantuml.SourceStringReader;
-import net.sourceforge.plantuml.core.DiagramDescription;
+import com.github.davidmoten.oas3.internal.model.Throwables;
 
 public final class ConverterMain {
 
-    private ConverterMain() {
-        // prevent instantiation
-    }
+	public static final String JAVA_JAR = "java -jar openapi-to-plantuml-all.jar <OPENAPI_YAML> <OUTPUT_DIRECTORY> "
+	                                      + "<FILE_FORMAT>|<[FILE_FORMAT1, FILE_FORMAT1...]>\n";
+	public static final String USAGE    = JAVA_JAR
+	                                      + "<OPENAPI_YAML> file or Directory containing *.yml or *.yaml files\n"
+	                                      + "<OUTPUT_DIRECTORY> output Directory\n"
+	                                      + "<FILE_FORMAT> optional file format default PUML only\n"
+	                                      + " or"
+	                                      + "<[FILE_FORMAT1, FILE_FORMAT1...]> optional several file formats\n"
+	                                      + "surrounded by [delimited by comma and space ', ')] i.e. supported formats "
+	                                      + "are:\n"
+	                                      + Converter.SUPPORTED_FORMATS_STRING
+	                                      + "\n"
+	                                      + Converter.SUPPORTED_FILE_FORMAT_ARRAY_STRING;
 
-    static DiagramDescription writeFileFormatFromPuml(String puml, String filename,
-            FileFormat fileFormat) throws IOException {
-        File file = new File(filename);
-        SourceStringReader reader = new SourceStringReader(puml);
-        try (OutputStream os = new BufferedOutputStream(new FileOutputStream(file))) {
-            // Write the first image to "os"
-            return reader.outputImage(os, new FileFormatOption(fileFormat));
-        }
-    }
+	private ConverterMain() {
+		// prevent instantiation
+	}
 
-    public static void main(String[] args) throws IOException {
-        String usage = "Usage: java -jar openapi-to-plantuml-all.jar <OPENAPI_FILE> <FILE_FORMAT> <OUTPUT_FILE>"
-                + "\n  File formats are:\n    PUML\n" + Arrays.stream(FileFormat.values())
-                        .map(x -> "    " + x + "\n").collect(Collectors.joining());
-        if (args.length != 3) {
-            System.out.println(usage);
-            throw new IllegalArgumentException("must pass 3 arguments");
-        } else {
-            String puml = Converter.openApiToPuml(new File(args[0]));
-            String format = args[1];
-            File out = new File(args[2]);
-            if (format.equals("PUML")) {
-                Files.write(out.toPath(), puml.getBytes(StandardCharsets.UTF_8));
-            } else {
-                FileFormat ff = FileFormat.valueOf(format);
-                writeFileFormatFromPuml(puml, out.getPath(), ff);
-            }
-        }
-    }
-
+	public static void main(String[] arguments)
+					throws
+					Throwables {
+		try {
+			if (arguments.length < 2) {
+				throw new IllegalArgumentException("must pass 2-3 arguments");
+			}
+			String openApiFilePath = Converter.getPropertyOrArg(arguments,
+			                                                    0,
+			                                                    "OPENAPI_YAML",
+			                                                    "./openapi.yaml");
+			String outputDirectoryPath = Converter.getPropertyOrArg(arguments,
+			                                                        1,
+			                                                        "OUTPUT_DIRECTORY",
+			                                                        ".");
+			String fileFormatsString = Converter.getPropertyOrArg(arguments,
+			                                                      2,
+			                                                      "FILE_FORMAT",
+			                                                      "SVG");
+			Converter.writeOpenApiToPumlAndTo(openApiFilePath,
+			                                  outputDirectoryPath,
+			                                  fileFormatsString);
+		} catch (Exception | Throwables throwable) {
+			Converter.error(throwable,
+			                "%nUsage:%n%s%n",
+			                USAGE);
+			throw throwable;
+		}
+	}
 }

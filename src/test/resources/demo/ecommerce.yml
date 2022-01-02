@@ -236,7 +236,7 @@ paths:
       responses:
         '200':
           description: OK
-      security: []
+      security: [ ]
 components:
   schemas:
     Company:

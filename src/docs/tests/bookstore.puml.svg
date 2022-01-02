@@ -1,22 +1,260 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="613px" preserveAspectRatio="none" style="width:645px;height:613px;" version="1.1" viewBox="0 0 645 613" width="645px" zoomAndPan="magnify"><defs><filter height="300%" id="filu86zmqrgr2" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[480b55fe24535af2551deb761fe5417e]
-class AccessToken--><rect codeLine="2" fill="#FEFECE" filter="url(#filu86zmqrgr2)" height="73.6094" id="AccessToken" style="stroke:#A80036;stroke-width:1.5;" width="138" x="7" y="189"/><ellipse cx="32.8" cy="205" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M35.7688,210.6406 Q35.1906,210.9375 34.55,211.0859 Q33.9094,211.2344 33.2063,211.2344 Q30.7062,211.2344 29.3859,209.5859 Q28.0656,207.9375 28.0656,204.8125 Q28.0656,201.6875 29.3859,200.0313 Q30.7062,198.375 33.2063,198.375 Q33.9094,198.375 34.5578,198.5313 Q35.2063,198.6875 35.7688,198.9844 L35.7688,201.7031 Q35.1438,201.125 34.55,200.8516 Q33.9563,200.5781 33.3313,200.5781 Q31.9875,200.5781 31.3,201.6484 Q30.6125,202.7188 30.6125,204.8125 Q30.6125,206.9063 31.3,207.9766 Q31.9875,209.0469 33.3313,209.0469 Q33.9563,209.0469 34.55,208.7734 Q35.1438,208.5 35.7688,207.9219 L35.7688,210.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="82" x="49.2" y="209.1543">AccessToken</text><line style="stroke:#A80036;stroke-width:1.5;" x1="8" x2="144" y1="221" y2="221"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="119" x="13" y="235.2104">accessToken : string</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="126" x="13" y="248.0151">expiresAt : timestamp</text><line style="stroke:#A80036;stroke-width:1.5;" x1="8" x2="144" y1="254.6094" y2="254.6094"/><!--MD5=[b8cfd8c4119a3b0a7a46bfc5fc780f85]
-class Error--><rect codeLine="7" fill="#FEFECE" filter="url(#filu86zmqrgr2)" height="73.6094" id="Error" style="stroke:#A80036;stroke-width:1.5;" width="138" x="391" y="189"/><ellipse cx="440.25" cy="205" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M443.2188,210.6406 Q442.6406,210.9375 442,211.0859 Q441.3594,211.2344 440.6563,211.2344 Q438.1563,211.2344 436.8359,209.5859 Q435.5156,207.9375 435.5156,204.8125 Q435.5156,201.6875 436.8359,200.0313 Q438.1563,198.375 440.6563,198.375 Q441.3594,198.375 442.0078,198.5313 Q442.6563,198.6875 443.2188,198.9844 L443.2188,201.7031 Q442.5938,201.125 442,200.8516 Q441.4063,200.5781 440.7813,200.5781 Q439.4375,200.5781 438.75,201.6484 Q438.0625,202.7188 438.0625,204.8125 Q438.0625,206.9063 438.75,207.9766 Q439.4375,209.0469 440.7813,209.0469 Q441.4063,209.0469 442,208.7734 Q442.5938,208.5 443.2188,207.9219 L443.2188,210.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="31" x="460.75" y="209.1543">Error</text><line style="stroke:#A80036;stroke-width:1.5;" x1="392" x2="528" y1="221" y2="221"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="72" x="397" y="235.2104">code : string</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="126" x="397" y="248.0151">message : timestamp</text><line style="stroke:#A80036;stroke-width:1.5;" x1="392" x2="528" y1="254.6094" y2="254.6094"/><!--MD5=[c3f280b58e8dd0683e81b8ec31306a35]
-class Author--><rect codeLine="12" fill="#FEFECE" filter="url(#filu86zmqrgr2)" height="99.2188" id="Author" style="stroke:#A80036;stroke-width:1.5;" width="128" x="367" y="500"/><ellipse cx="406.3" cy="516" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M409.2688,521.6406 Q408.6906,521.9375 408.05,522.0859 Q407.4094,522.2344 406.7063,522.2344 Q404.2063,522.2344 402.8859,520.5859 Q401.5656,518.9375 401.5656,515.8125 Q401.5656,512.6875 402.8859,511.0313 Q404.2063,509.375 406.7063,509.375 Q407.4094,509.375 408.0578,509.5313 Q408.7063,509.6875 409.2688,509.9844 L409.2688,512.7031 Q408.6438,512.125 408.05,511.8516 Q407.4563,511.5781 406.8313,511.5781 Q405.4875,511.5781 404.8,512.6484 Q404.1125,513.7188 404.1125,515.8125 Q404.1125,517.9063 404.8,518.9766 Q405.4875,520.0469 406.8313,520.0469 Q407.4563,520.0469 408.05,519.7734 Q408.6438,519.5 409.2688,518.9219 L409.2688,521.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="42" x="425.7" y="520.1543">Author</text><line style="stroke:#A80036;stroke-width:1.5;" x1="368" x2="494" y1="532" y2="532"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="94" x="373" y="546.2104">fullname : string</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="114" x="373" y="559.0151">country : string {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="116" x="373" y="571.8198">birthYear : date {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="112" x="373" y="584.6245">gender : string {O}</text><line style="stroke:#A80036;stroke-width:1.5;" x1="368" x2="494" y1="591.2188" y2="591.2188"/><!--MD5=[838cb3b9b512e84757c00d0249b7cc0a]
-class BookGenre--><rect codeLine="19" fill="#FEFECE" filter="url(#filu86zmqrgr2)" height="60.8047" id="BookGenre" style="stroke:#A80036;stroke-width:1.5;" width="101" x="530.5" y="519"/><ellipse cx="545.5" cy="535" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M548.4688,540.6406 Q547.8906,540.9375 547.25,541.0859 Q546.6094,541.2344 545.9063,541.2344 Q543.4063,541.2344 542.0859,539.5859 Q540.7656,537.9375 540.7656,534.8125 Q540.7656,531.6875 542.0859,530.0313 Q543.4063,528.375 545.9063,528.375 Q546.6094,528.375 547.2578,528.5313 Q547.9063,528.6875 548.4688,528.9844 L548.4688,531.7031 Q547.8438,531.125 547.25,530.8516 Q546.6563,530.5781 546.0313,530.5781 Q544.6875,530.5781 544,531.6484 Q543.3125,532.7188 543.3125,534.8125 Q543.3125,536.9063 544,537.9766 Q544.6875,539.0469 546.0313,539.0469 Q546.6563,539.0469 547.25,538.7734 Q547.8438,538.5 548.4688,537.9219 L548.4688,540.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="69" x="559.5" y="539.1543">BookGenre</text><line style="stroke:#A80036;stroke-width:1.5;" x1="531.5" x2="630.5" y1="551" y2="551"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="75" x="536.5" y="565.2104">value : string</text><line style="stroke:#A80036;stroke-width:1.5;" x1="531.5" x2="630.5" y1="571.8047" y2="571.8047"/><!--MD5=[84e3a5e42879fb3231104d3c8e592439]
-class Book--><rect codeLine="23" fill="#FEFECE" filter="url(#filu86zmqrgr2)" height="99.2188" id="Book" style="stroke:#A80036;stroke-width:1.5;" width="151" x="430.5" y="324"/><ellipse cx="486.25" cy="340" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M489.2188,345.6406 Q488.6406,345.9375 488,346.0859 Q487.3594,346.2344 486.6563,346.2344 Q484.1563,346.2344 482.8359,344.5859 Q481.5156,342.9375 481.5156,339.8125 Q481.5156,336.6875 482.8359,335.0313 Q484.1563,333.375 486.6563,333.375 Q487.3594,333.375 488.0078,333.5313 Q488.6563,333.6875 489.2188,333.9844 L489.2188,336.7031 Q488.5938,336.125 488,335.8516 Q487.4063,335.5781 486.7813,335.5781 Q485.4375,335.5781 484.75,336.6484 Q484.0625,337.7188 484.0625,339.8125 Q484.0625,341.9063 484.75,342.9766 Q485.4375,344.0469 486.7813,344.0469 Q487.4063,344.0469 488,343.7734 Q488.5938,343.5 489.2188,342.9219 L489.2188,345.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="31" x="506.75" y="344.1543">Book</text><line style="stroke:#A80036;stroke-width:1.5;" x1="431.5" x2="580.5" y1="356" y2="356"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="62" x="436.5" y="370.2104">id : integer</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="66" x="436.5" y="383.0151">title : string</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="112" x="436.5" y="395.8198">totalPages : integer</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="139" x="436.5" y="408.6245">publishingHouse : string</text><line style="stroke:#A80036;stroke-width:1.5;" x1="431.5" x2="580.5" y1="415.2188" y2="415.2188"/><!--MD5=[2b9df03c28d9cb9ddfcbffc750f34f92]
-class POST /login--><rect codeLine="35" fill="#FEFECE" filter="url(#filu86zmqrgr2)" height="53.9375" id="POST /login" style="stroke:#A80036;stroke-width:1.5;" width="76" x="147" y="32.5"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="61" x="154.5" y="48.6387">«Method»</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="70" x="150" y="62.6074">POST /login</text><line style="stroke:#A80036;stroke-width:1.5;" x1="148" x2="222" y1="70.4375" y2="70.4375"/><line style="stroke:#A80036;stroke-width:1.5;" x1="148" x2="222" y1="78.4375" y2="78.4375"/><!--MD5=[5e99ce8bea90170f1a35f5d25331a19c]
-class GET /books--><rect codeLine="42" fill="#FEFECE" filter="url(#filu86zmqrgr2)" height="105.1563" id="GET /books" style="stroke:#A80036;stroke-width:1.5;" width="134" x="285" y="7"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="61" x="321.5" y="23.1387">«Method»</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="70" x="317" y="37.1074">GET /books</text><line style="stroke:#A80036;stroke-width:1.5;" x1="286" x2="418" y1="44.9375" y2="44.9375"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="85" x="291" y="59.1479">offset : integer</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="76" x="291" y="71.9526">limit : integer</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="122" x="291" y="84.7573">genre : unknown {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="111" x="291" y="97.562">search : string {O}</text><line style="stroke:#A80036;stroke-width:1.5;" x1="286" x2="418" y1="104.1563" y2="104.1563"/><!--MD5=[236f0516488153335a62f47e221d5f43]
-class GET /books 200 Return--><rect codeLine="49" fill="#FEFECE" filter="url(#filu86zmqrgr2)" height="48" id="GET /books 200 Return" style="stroke:#A80036;stroke-width:1.5;" width="176" x="180" y="202"/><ellipse cx="195" cy="218" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M197.9688,223.6406 Q197.3906,223.9375 196.75,224.0859 Q196.1094,224.2344 195.4063,224.2344 Q192.9063,224.2344 191.5859,222.5859 Q190.2656,220.9375 190.2656,217.8125 Q190.2656,214.6875 191.5859,213.0313 Q192.9063,211.375 195.4063,211.375 Q196.1094,211.375 196.7578,211.5313 Q197.4063,211.6875 197.9688,211.9844 L197.9688,214.7031 Q197.3438,214.125 196.75,213.8516 Q196.1563,213.5781 195.5313,213.5781 Q194.1875,213.5781 193.5,214.6484 Q192.8125,215.7188 192.8125,217.8125 Q192.8125,219.9063 193.5,220.9766 Q194.1875,222.0469 195.5313,222.0469 Q196.1563,222.0469 196.75,221.7734 Q197.3438,221.5 197.9688,220.9219 L197.9688,223.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="144" x="209" y="222.1543">GET /books 200 Return</text><line style="stroke:#A80036;stroke-width:1.5;" x1="181" x2="355" y1="234" y2="234"/><line style="stroke:#A80036;stroke-width:1.5;" x1="181" x2="355" y1="242" y2="242"/><!--MD5=[77bd6de3d50bbd86e1697f981634415e]
-class POST /books--><rect codeLine="58" fill="#FEFECE" filter="url(#filu86zmqrgr2)" height="53.9375" id="POST /books" style="stroke:#A80036;stroke-width:1.5;" width="84" x="492" y="32.5"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="61" x="503.5" y="48.6387">«Method»</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="78" x="495" y="62.6074">POST /books</text><line style="stroke:#A80036;stroke-width:1.5;" x1="493" x2="575" y1="70.4375" y2="70.4375"/><line style="stroke:#A80036;stroke-width:1.5;" x1="493" x2="575" y1="78.4375" y2="78.4375"/><!--MD5=[7efc6e0f254cd69f1fdf08743ee3b607]
-link Book to BookGenre--><path codeLine="30" d="M527.091,423.432 C539.572,452.388 555.074,488.352 566.247,514.272 " fill="none" id="Book-to-BookGenre" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="568.281,518.991,568.3914,509.1428,566.3017,514.3995,561.045,512.3097,568.281,518.991" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="37" x="546" y="466.0669">genre</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="24" x="538.8737" y="507.7793">0..1</text><!--MD5=[708ece48ef120737d1cb93104a627dff]
-link Book to Author--><path codeLine="32" d="M484.909,423.432 C475.282,445.766 463.858,472.27 454.009,495.118 " fill="none" id="Book-to-Author" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="451.933,499.9355,459.1699,493.2551,453.9129,495.3442,451.8239,490.0872,451.933,499.9355" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="42" x="472" y="466.0669">author</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="446.3142" y="488.9722">1</text><!--MD5=[7ba95e1d098153b54f522cf8b99e6133]
-link POST /login to AccessToken--><path codeLine="38" d="M162.027,86.72 C148.952,102.252 132.702,122.627 120,142 C111.323,155.234 102.9023,170.36 95.7905,184.042 " fill="none" id="POST /login-to-AccessToken" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="93.4303,188.622,101.1082,182.4536,95.7204,184.1773,93.9967,178.7894,93.4303,188.622" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="24" x="121" y="155.0669">200</text><!--MD5=[57665c253550576375cc7673b1742735]
-link POST /login to Error--><path codeLine="40" d="M196.199,86.723 C207.172,109.266 226.032,140.918 252,159 C297.469,190.661 320.366,171.693 373,189 C377.219,190.387 381.523,191.886 385.846,193.456 " fill="none" id="POST /login-to-Error" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="390.541,195.186,383.4789,188.3211,385.8493,193.4573,380.7131,195.8277,390.541,195.186" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="24" x="253" y="155.0669">400</text><!--MD5=[11c2af46181550f0c8923051b2fcfda7]
-link GET /books 200 Return to Book--><path codeLine="52" d="M305.712,250.055 C337.834,269.693 385.093,298.584 425.639,323.372 " fill="none" id="GET /books 200 Return-to-Book" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="430.044,326.064,424.4507,317.9575,425.7777,323.4565,420.2787,324.7835,430.044,326.064" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="415.4709" y="317.8907">*</text><!--MD5=[64a47dc76565ec74f7c90dc4295abdb1]
-link GET /books to GET /books 200 Return--><path codeLine="54" d="M309.766,112.246 C303.209,121.778 296.972,131.914 292,142 C283.464,159.313 277.445,180.194 273.57,196.68 " fill="none" id="GET /books-to-GET /books 200 Return" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="272.436,201.647,278.3389,193.7631,273.5489,196.7724,270.5396,191.9824,272.436,201.647" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="24" x="293" y="155.0669">200</text><!--MD5=[9d51a88ab644a29f9d5554ed47199a1e]
-link GET /books to Error--><path codeLine="56" d="M385.876,112.097 C401.244,135.506 419.151,162.78 433.513,184.657 " fill="none" id="GET /books-to-Error" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="436.337,188.958,434.7414,179.2393,433.5929,184.7783,428.0539,183.6298,436.337,188.958" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="24" x="417" y="155.0669">400</text><!--MD5=[712ae87b5092e0b79371a16ea00ccc41]
-link POST /books to Book--><path codeLine="61" d="M539.682,86.624 C547.22,125.424 558.33,200.43 547,263 C543.595,281.806 537.149,301.589 530.359,319.088 " fill="none" id="POST /books-to-Book" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="528.437,323.96,535.4598,317.0549,530.2713,319.3086,528.0176,314.1201,528.437,323.96" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="24" x="552" y="230.5669">201</text><!--MD5=[4356fb2a99c7e084864d271c21813bc7]
-link POST /books to Error--><path codeLine="63" d="M522.274,86.566 C510.476,112.794 492.109,153.623 478.374,184.155 " fill="none" id="POST /books-to-Error" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="476.211,188.963,483.5513,182.3964,478.2623,184.4032,476.2556,179.1142,476.211,188.963" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="24" x="498" y="155.0669">400</text><!--MD5=[986db7e6aa5e04a7bbfb3c5115c0c913]
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     contentScriptType="application/ecmascript" contentStyleType="text/css" height="613px" preserveAspectRatio="none"
+     style="width:645px;height:613px;" version="1.1" viewBox="0 0 645 613" width="645px" zoomAndPan="magnify">
+    <defs>
+        <filter height="300%" id="filu86zmqrgr2" width="300%" x="-1" y="-1">
+            <feGaussianBlur result="blurOut" stdDeviation="2.0"/>
+            <feColorMatrix in="blurOut" result="blurOut2" type="matrix"
+                           values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/>
+            <feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/>
+            <feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/>
+        </filter>
+    </defs>
+    <g><!--MD5=[480b55fe24535af2551deb761fe5417e]
+class AccessToken-->
+        <rect codeLine="2" fill="#FEFECE" filter="url(#filu86zmqrgr2)" height="73.6094" id="AccessToken"
+              style="stroke:#A80036;stroke-width:1.5;" width="138" x="7" y="189"/>
+        <ellipse cx="32.8" cy="205" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/>
+        <path d="M35.7688,210.6406 Q35.1906,210.9375 34.55,211.0859 Q33.9094,211.2344 33.2063,211.2344 Q30.7062,211.2344 29.3859,209.5859 Q28.0656,207.9375 28.0656,204.8125 Q28.0656,201.6875 29.3859,200.0313 Q30.7062,198.375 33.2063,198.375 Q33.9094,198.375 34.5578,198.5313 Q35.2063,198.6875 35.7688,198.9844 L35.7688,201.7031 Q35.1438,201.125 34.55,200.8516 Q33.9563,200.5781 33.3313,200.5781 Q31.9875,200.5781 31.3,201.6484 Q30.6125,202.7188 30.6125,204.8125 Q30.6125,206.9063 31.3,207.9766 Q31.9875,209.0469 33.3313,209.0469 Q33.9563,209.0469 34.55,208.7734 Q35.1438,208.5 35.7688,207.9219 L35.7688,210.6406 Z "
+              fill="#000000"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="82" x="49.2"
+              y="209.1543">AccessToken
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="8" x2="144" y1="221" y2="221"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="119" x="13"
+              y="235.2104">accessToken : string
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="126" x="13"
+              y="248.0151">expiresAt : timestamp
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="8" x2="144" y1="254.6094" y2="254.6094"/><!--MD5=[b8cfd8c4119a3b0a7a46bfc5fc780f85]
+class Error-->
+        <rect codeLine="7" fill="#FEFECE" filter="url(#filu86zmqrgr2)" height="73.6094" id="Error"
+              style="stroke:#A80036;stroke-width:1.5;" width="138" x="391" y="189"/>
+        <ellipse cx="440.25" cy="205" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/>
+        <path d="M443.2188,210.6406 Q442.6406,210.9375 442,211.0859 Q441.3594,211.2344 440.6563,211.2344 Q438.1563,211.2344 436.8359,209.5859 Q435.5156,207.9375 435.5156,204.8125 Q435.5156,201.6875 436.8359,200.0313 Q438.1563,198.375 440.6563,198.375 Q441.3594,198.375 442.0078,198.5313 Q442.6563,198.6875 443.2188,198.9844 L443.2188,201.7031 Q442.5938,201.125 442,200.8516 Q441.4063,200.5781 440.7813,200.5781 Q439.4375,200.5781 438.75,201.6484 Q438.0625,202.7188 438.0625,204.8125 Q438.0625,206.9063 438.75,207.9766 Q439.4375,209.0469 440.7813,209.0469 Q441.4063,209.0469 442,208.7734 Q442.5938,208.5 443.2188,207.9219 L443.2188,210.6406 Z "
+              fill="#000000"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="31" x="460.75"
+              y="209.1543">Error
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="392" x2="528" y1="221" y2="221"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="72" x="397"
+              y="235.2104">code : string
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="126" x="397"
+              y="248.0151">message : timestamp
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="392" x2="528" y1="254.6094" y2="254.6094"/><!--MD5=[c3f280b58e8dd0683e81b8ec31306a35]
+class Author-->
+        <rect codeLine="12" fill="#FEFECE" filter="url(#filu86zmqrgr2)" height="99.2188" id="Author"
+              style="stroke:#A80036;stroke-width:1.5;" width="128" x="367" y="500"/>
+        <ellipse cx="406.3" cy="516" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/>
+        <path d="M409.2688,521.6406 Q408.6906,521.9375 408.05,522.0859 Q407.4094,522.2344 406.7063,522.2344 Q404.2063,522.2344 402.8859,520.5859 Q401.5656,518.9375 401.5656,515.8125 Q401.5656,512.6875 402.8859,511.0313 Q404.2063,509.375 406.7063,509.375 Q407.4094,509.375 408.0578,509.5313 Q408.7063,509.6875 409.2688,509.9844 L409.2688,512.7031 Q408.6438,512.125 408.05,511.8516 Q407.4563,511.5781 406.8313,511.5781 Q405.4875,511.5781 404.8,512.6484 Q404.1125,513.7188 404.1125,515.8125 Q404.1125,517.9063 404.8,518.9766 Q405.4875,520.0469 406.8313,520.0469 Q407.4563,520.0469 408.05,519.7734 Q408.6438,519.5 409.2688,518.9219 L409.2688,521.6406 Z "
+              fill="#000000"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="42" x="425.7"
+              y="520.1543">Author
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="368" x2="494" y1="532" y2="532"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="94" x="373"
+              y="546.2104">fullname : string
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="114" x="373"
+              y="559.0151">country : string {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="116" x="373"
+              y="571.8198">birthYear : date {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="112" x="373"
+              y="584.6245">gender : string {O}
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="368" x2="494" y1="591.2188" y2="591.2188"/><!--MD5=[838cb3b9b512e84757c00d0249b7cc0a]
+class BookGenre-->
+        <rect codeLine="19" fill="#FEFECE" filter="url(#filu86zmqrgr2)" height="60.8047" id="BookGenre"
+              style="stroke:#A80036;stroke-width:1.5;" width="101" x="530.5" y="519"/>
+        <ellipse cx="545.5" cy="535" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/>
+        <path d="M548.4688,540.6406 Q547.8906,540.9375 547.25,541.0859 Q546.6094,541.2344 545.9063,541.2344 Q543.4063,541.2344 542.0859,539.5859 Q540.7656,537.9375 540.7656,534.8125 Q540.7656,531.6875 542.0859,530.0313 Q543.4063,528.375 545.9063,528.375 Q546.6094,528.375 547.2578,528.5313 Q547.9063,528.6875 548.4688,528.9844 L548.4688,531.7031 Q547.8438,531.125 547.25,530.8516 Q546.6563,530.5781 546.0313,530.5781 Q544.6875,530.5781 544,531.6484 Q543.3125,532.7188 543.3125,534.8125 Q543.3125,536.9063 544,537.9766 Q544.6875,539.0469 546.0313,539.0469 Q546.6563,539.0469 547.25,538.7734 Q547.8438,538.5 548.4688,537.9219 L548.4688,540.6406 Z "
+              fill="#000000"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="69" x="559.5"
+              y="539.1543">BookGenre
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="531.5" x2="630.5" y1="551" y2="551"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="75" x="536.5"
+              y="565.2104">value : string
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="531.5" x2="630.5" y1="571.8047" y2="571.8047"/><!--MD5=[84e3a5e42879fb3231104d3c8e592439]
+class Book-->
+        <rect codeLine="23" fill="#FEFECE" filter="url(#filu86zmqrgr2)" height="99.2188" id="Book"
+              style="stroke:#A80036;stroke-width:1.5;" width="151" x="430.5" y="324"/>
+        <ellipse cx="486.25" cy="340" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/>
+        <path d="M489.2188,345.6406 Q488.6406,345.9375 488,346.0859 Q487.3594,346.2344 486.6563,346.2344 Q484.1563,346.2344 482.8359,344.5859 Q481.5156,342.9375 481.5156,339.8125 Q481.5156,336.6875 482.8359,335.0313 Q484.1563,333.375 486.6563,333.375 Q487.3594,333.375 488.0078,333.5313 Q488.6563,333.6875 489.2188,333.9844 L489.2188,336.7031 Q488.5938,336.125 488,335.8516 Q487.4063,335.5781 486.7813,335.5781 Q485.4375,335.5781 484.75,336.6484 Q484.0625,337.7188 484.0625,339.8125 Q484.0625,341.9063 484.75,342.9766 Q485.4375,344.0469 486.7813,344.0469 Q487.4063,344.0469 488,343.7734 Q488.5938,343.5 489.2188,342.9219 L489.2188,345.6406 Z "
+              fill="#000000"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="31" x="506.75"
+              y="344.1543">Book
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="431.5" x2="580.5" y1="356" y2="356"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="62" x="436.5"
+              y="370.2104">id : integer
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="66" x="436.5"
+              y="383.0151">title : string
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="112" x="436.5"
+              y="395.8198">totalPages : integer
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="139" x="436.5"
+              y="408.6245">publishingHouse : string
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="431.5" x2="580.5" y1="415.2188" y2="415.2188"/><!--MD5=[2b9df03c28d9cb9ddfcbffc750f34f92]
+class POST /login-->
+        <rect codeLine="35" fill="#FEFECE" filter="url(#filu86zmqrgr2)" height="53.9375" id="POST /login"
+              style="stroke:#A80036;stroke-width:1.5;" width="76" x="147" y="32.5"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing"
+              textLength="61" x="154.5" y="48.6387">«Method»
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="70" x="150"
+              y="62.6074">POST /login
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="148" x2="222" y1="70.4375" y2="70.4375"/>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="148" x2="222" y1="78.4375" y2="78.4375"/><!--MD5=[5e99ce8bea90170f1a35f5d25331a19c]
+class GET /books-->
+        <rect codeLine="42" fill="#FEFECE" filter="url(#filu86zmqrgr2)" height="105.1563" id="GET /books"
+              style="stroke:#A80036;stroke-width:1.5;" width="134" x="285" y="7"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing"
+              textLength="61" x="321.5" y="23.1387">«Method»
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="70" x="317"
+              y="37.1074">GET /books
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="286" x2="418" y1="44.9375" y2="44.9375"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="85" x="291"
+              y="59.1479">offset : integer
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="76" x="291"
+              y="71.9526">limit : integer
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="122" x="291"
+              y="84.7573">genre : unknown {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="111" x="291"
+              y="97.562">search : string {O}
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="286" x2="418" y1="104.1563" y2="104.1563"/><!--MD5=[236f0516488153335a62f47e221d5f43]
+class GET /books 200 Return-->
+        <rect codeLine="49" fill="#FEFECE" filter="url(#filu86zmqrgr2)" height="48" id="GET /books 200 Return"
+              style="stroke:#A80036;stroke-width:1.5;" width="176" x="180" y="202"/>
+        <ellipse cx="195" cy="218" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/>
+        <path d="M197.9688,223.6406 Q197.3906,223.9375 196.75,224.0859 Q196.1094,224.2344 195.4063,224.2344 Q192.9063,224.2344 191.5859,222.5859 Q190.2656,220.9375 190.2656,217.8125 Q190.2656,214.6875 191.5859,213.0313 Q192.9063,211.375 195.4063,211.375 Q196.1094,211.375 196.7578,211.5313 Q197.4063,211.6875 197.9688,211.9844 L197.9688,214.7031 Q197.3438,214.125 196.75,213.8516 Q196.1563,213.5781 195.5313,213.5781 Q194.1875,213.5781 193.5,214.6484 Q192.8125,215.7188 192.8125,217.8125 Q192.8125,219.9063 193.5,220.9766 Q194.1875,222.0469 195.5313,222.0469 Q196.1563,222.0469 196.75,221.7734 Q197.3438,221.5 197.9688,220.9219 L197.9688,223.6406 Z "
+              fill="#000000"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="144" x="209"
+              y="222.1543">GET /books 200 Return
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="181" x2="355" y1="234" y2="234"/>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="181" x2="355" y1="242" y2="242"/><!--MD5=[77bd6de3d50bbd86e1697f981634415e]
+class POST /books-->
+        <rect codeLine="58" fill="#FEFECE" filter="url(#filu86zmqrgr2)" height="53.9375" id="POST /books"
+              style="stroke:#A80036;stroke-width:1.5;" width="84" x="492" y="32.5"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing"
+              textLength="61" x="503.5" y="48.6387">«Method»
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="78" x="495"
+              y="62.6074">POST /books
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="493" x2="575" y1="70.4375" y2="70.4375"/>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="493" x2="575" y1="78.4375" y2="78.4375"/><!--MD5=[7efc6e0f254cd69f1fdf08743ee3b607]
+link Book to BookGenre-->
+        <path codeLine="30" d="M527.091,423.432 C539.572,452.388 555.074,488.352 566.247,514.272 " fill="none"
+              id="Book-to-BookGenre" style="stroke:#A80036;stroke-width:1.0;"/>
+        <polygon fill="#A80036"
+                 points="568.281,518.991,568.3914,509.1428,566.3017,514.3995,561.045,512.3097,568.281,518.991"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="37" x="546"
+              y="466.0669">genre
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="24" x="538.8737"
+              y="507.7793">0..1
+        </text><!--MD5=[708ece48ef120737d1cb93104a627dff]
+link Book to Author-->
+        <path codeLine="32" d="M484.909,423.432 C475.282,445.766 463.858,472.27 454.009,495.118 " fill="none"
+              id="Book-to-Author" style="stroke:#A80036;stroke-width:1.0;"/>
+        <polygon fill="#A80036"
+                 points="451.933,499.9355,459.1699,493.2551,453.9129,495.3442,451.8239,490.0872,451.933,499.9355"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="42" x="472"
+              y="466.0669">author
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="446.3142"
+              y="488.9722">1
+        </text><!--MD5=[7ba95e1d098153b54f522cf8b99e6133]
+link POST /login to AccessToken-->
+        <path codeLine="38"
+              d="M162.027,86.72 C148.952,102.252 132.702,122.627 120,142 C111.323,155.234 102.9023,170.36 95.7905,184.042 "
+              fill="none" id="POST /login-to-AccessToken"
+              style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/>
+        <polygon fill="#A80036"
+                 points="93.4303,188.622,101.1082,182.4536,95.7204,184.1773,93.9967,178.7894,93.4303,188.622"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="24" x="121"
+              y="155.0669">200
+        </text><!--MD5=[57665c253550576375cc7673b1742735]
+link POST /login to Error-->
+        <path codeLine="40"
+              d="M196.199,86.723 C207.172,109.266 226.032,140.918 252,159 C297.469,190.661 320.366,171.693 373,189 C377.219,190.387 381.523,191.886 385.846,193.456 "
+              fill="none" id="POST /login-to-Error" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/>
+        <polygon fill="#A80036"
+                 points="390.541,195.186,383.4789,188.3211,385.8493,193.4573,380.7131,195.8277,390.541,195.186"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="24" x="253"
+              y="155.0669">400
+        </text><!--MD5=[11c2af46181550f0c8923051b2fcfda7]
+link GET /books 200 Return to Book-->
+        <path codeLine="52" d="M305.712,250.055 C337.834,269.693 385.093,298.584 425.639,323.372 " fill="none"
+              id="GET /books 200 Return-to-Book" style="stroke:#A80036;stroke-width:1.0;"/>
+        <polygon fill="#A80036"
+                 points="430.044,326.064,424.4507,317.9575,425.7777,323.4565,420.2787,324.7835,430.044,326.064"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="415.4709"
+              y="317.8907">*
+        </text><!--MD5=[64a47dc76565ec74f7c90dc4295abdb1]
+link GET /books to GET /books 200 Return-->
+        <path codeLine="54"
+              d="M309.766,112.246 C303.209,121.778 296.972,131.914 292,142 C283.464,159.313 277.445,180.194 273.57,196.68 "
+              fill="none" id="GET /books-to-GET /books 200 Return"
+              style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/>
+        <polygon fill="#A80036"
+                 points="272.436,201.647,278.3389,193.7631,273.5489,196.7724,270.5396,191.9824,272.436,201.647"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="24" x="293"
+              y="155.0669">200
+        </text><!--MD5=[9d51a88ab644a29f9d5554ed47199a1e]
+link GET /books to Error-->
+        <path codeLine="56" d="M385.876,112.097 C401.244,135.506 419.151,162.78 433.513,184.657 " fill="none"
+              id="GET /books-to-Error" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/>
+        <polygon fill="#A80036"
+                 points="436.337,188.958,434.7414,179.2393,433.5929,184.7783,428.0539,183.6298,436.337,188.958"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="24" x="417"
+              y="155.0669">400
+        </text><!--MD5=[712ae87b5092e0b79371a16ea00ccc41]
+link POST /books to Book-->
+        <path codeLine="61"
+              d="M539.682,86.624 C547.22,125.424 558.33,200.43 547,263 C543.595,281.806 537.149,301.589 530.359,319.088 "
+              fill="none" id="POST /books-to-Book" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/>
+        <polygon fill="#A80036"
+                 points="528.437,323.96,535.4598,317.0549,530.2713,319.3086,528.0176,314.1201,528.437,323.96"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="24" x="552"
+              y="230.5669">201
+        </text><!--MD5=[4356fb2a99c7e084864d271c21813bc7]
+link POST /books to Error-->
+        <path codeLine="63" d="M522.274,86.566 C510.476,112.794 492.109,153.623 478.374,184.155 " fill="none"
+              id="POST /books-to-Error" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/>
+        <polygon fill="#A80036"
+                 points="476.211,188.963,483.5513,182.3964,478.2623,184.4032,476.2556,179.1142,476.211,188.963"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="24" x="498"
+              y="155.0669">400
+        </text><!--MD5=[986db7e6aa5e04a7bbfb3c5115c0c913]
 @startuml
 
 class "AccessToken" {
@@ -91,4 +329,6 @@ JVM: Java HotSpot(TM) 64-Bit Server VM
 Default Encoding: UTF-8
 Language: en
 Country: US
---></g></svg>
+-->
+    </g>
+</svg>

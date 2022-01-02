@@ -4,7 +4,7 @@ info:
   version: 0.0.1
 components:
   schemas:
-  
+
     Customers:
       properties:
         names:
@@ -17,5 +17,5 @@ components:
               lastName:
                 type: string
             required:
-            - firstName
-            - lastName
+              - firstName
+              - lastName

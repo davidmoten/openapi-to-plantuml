@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     contentScriptType="application/ecmascript" contentStyleType="text/css" height="343px" preserveAspectRatio="none"
+     style="width:306px;height:343px;background:#FFFFFF;" version="1.1" viewBox="0 0 306 343" width="306px"
+     zoomAndPan="magnify">
+    <defs>
+        <filter height="300%" id="fk1vqpqyu7yw2" width="300%" x="-1" y="-1">
+            <feGaussianBlur result="blurOut" stdDeviation="2.0"/>
+            <feColorMatrix in="blurOut" result="blurOut2" type="matrix"
+                           values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/>
+            <feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/>
+            <feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/>
+        </filter>
+    </defs>
+    <g><!--MD5=[2ce0c9fb7f55b1e256ab28a8ea6b25ec]
+class Customer-->
+        <rect codeLine="8" fill="#FEFECE" filter="url(#fk1vqpqyu7yw2)" height="67.6719" id="Customer"
+              style="stroke:#A80036;stroke-width:1.5;" width="113" x="158" y="262"/>
+        <ellipse cx="184.7" cy="278" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/>
+        <path d="M187.4656,273.875 Q187.6219,273.6563 187.8094,273.5469 Q187.9969,273.4375 188.2156,273.4375 Q188.5906,273.4375 188.825,273.7031 Q189.0594,273.9531 189.0594,274.5625 L189.0594,276.0156 Q189.0594,276.625 188.825,276.8906 Q188.5906,277.1563 188.2156,277.1563 Q187.8719,277.1563 187.6688,276.9531 Q187.4656,276.7656 187.3563,276.25 Q187.3094,275.8906 187.1219,275.7031 Q186.7938,275.3281 186.1844,275.1094 Q185.575,274.8906 184.95,274.8906 Q184.1844,274.8906 183.5438,275.2188 Q182.9188,275.5469 182.4188,276.2969 Q181.9344,277.0469 181.9344,278.0781 L181.9344,279.1719 Q181.9344,280.4063 182.825,281.2344 Q183.7156,282.0469 185.3094,282.0469 Q186.2469,282.0469 186.9031,281.7969 Q187.2938,281.6406 187.7156,281.2031 Q187.9813,280.9375 188.1219,280.8594 Q188.2781,280.7813 188.4813,280.7813 Q188.8094,280.7813 189.0594,281.0469 Q189.325,281.2969 189.325,281.6406 Q189.325,281.9844 188.9813,282.3906 Q188.4813,282.9688 187.6844,283.2969 Q186.6063,283.75 185.3094,283.75 Q183.7938,283.75 182.5906,283.125 Q181.6063,282.625 180.9188,281.5625 Q180.2313,280.4844 180.2313,279.2031 L180.2313,278.0469 Q180.2313,276.7188 180.8406,275.5781 Q181.4656,274.4219 182.5594,273.8125 Q183.6531,273.1875 184.8875,273.1875 Q185.6219,273.1875 186.2625,273.3594 Q186.9188,273.5156 187.4656,273.875 Z "
+              fill="#000000"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="55" x="201.3"
+              y="282.9102">Customer
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="159" x2="270" y1="294" y2="294"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="101" x="164"
+              y="309.4189">firstName : string {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="99" x="164"
+              y="323.2549">lastName : string {O}
+        </text><!--MD5=[052b4b5cf7aa81bb3f0d5ba6d67d7b48]
+class CustomerId-->
+        <rect codeLine="13" fill="#FEFECE" filter="url(#fk1vqpqyu7yw2)" height="75.8594" id="CustomerId"
+              style="stroke:#A80036;stroke-width:1.5;" width="95" x="7" y="125"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing"
+              textLength="72" x="18.5" y="142.457">«Parameter»
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="65" x="22"
+              y="157.5508">CustomerId
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="8" x2="101" y1="165.1875" y2="165.1875"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="63" x="13"
+              y="180.6064">id : string {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="83" x="13"
+              y="194.4424">prefix : string {O}
+        </text><!--MD5=[872165f8b1007cfce347e18ce10edd44]
+class GET /customer/expired-->
+        <rect codeLine="18" fill="#FEFECE" filter="url(#fk1vqpqyu7yw2)" height="40.1875" id="GET /customer/expired"
+              style="stroke:#A80036;stroke-width:1.5;" width="131" x="42" y="7"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing"
+              textLength="39" x="88" y="24.457">«Path»
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="125" x="45"
+              y="39.5508">GET /customer/expired
+        </text><!--MD5=[f1ac86e405428676106dcb9e543aae2e]
+class GET /customer/expired 200-->
+        <rect codeLine="21" fill="#FEFECE" filter="url(#fk1vqpqyu7yw2)" height="40.1875" id="GET /customer/expired 200"
+              style="stroke:#A80036;stroke-width:1.5;" width="155" x="137" y="143"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing"
+              textLength="70" x="179.5" y="160.457">«Response»
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="149" x="140"
+              y="175.5508">GET /customer/expired 200
+        </text><!--MD5=[24287ef544696027a2b5623d009c6218]
+link GET /customer/expired to CustomerId-->
+        <path codeLine="24" d="M94.43,47.41 C88.96,56.17 82.86,66.82 78.5,77 C72.69,90.56 67.86,105.93 64.09,119.83 "
+              fill="none" id="GET /customer/expired-to-CustomerId" style="stroke:#A80036;stroke-width:1.0;"/>
+        <polygon fill="#A80036" points="62.75,124.88,68.9311,117.2123,64.0365,120.0484,61.2004,115.1538,62.75,124.88"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="64" x="79.5"
+              y="91.4951">customerId
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="56.5961"
+              y="114.2038">1
+        </text><!--MD5=[194a33745d2ad60875bb8b2b1cb9bcdc]
+link GET /customer/expired 200 to Customer-->
+        <path codeLine="26" d="M214.5,183.05 C214.5,202.33 214.5,232.67 214.5,256.9 " fill="none"
+              id="GET /customer/expired 200-to-Customer" style="stroke:#A80036;stroke-width:1.0;"/>
+        <polygon fill="#A80036" points="214.5,261.97,218.5,252.97,214.5,256.97,210.5,252.97,214.5,261.97"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="5" x="209.0078"
+              y="251.2574">*
+        </text><!--MD5=[a79f175480c98f40611c72f1406907d9]
+link GET /customer/expired to GET /customer/expired 200-->
+        <path codeLine="28"
+              d="M124.02,47.42 C131.57,56.36 140.56,67.16 148.5,77 C165.15,97.65 183.63,121.54 196.79,138.72 "
+              fill="none" id="GET /customer/expired-to-GET /customer/expired 200"
+              style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/>
+        <polygon fill="#A80036" points="200.02,142.94,197.7214,133.3631,196.979,138.971,191.3711,138.2287,200.02,142.94"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="21" x="162.5"
+              y="91.4951">200
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="187.7384"
+              y="132.2166">1
+        </text><!--MD5=[c73eb4e8fc968a309888454d3db90b9c]
+@startuml
+hide <<Path>> circle
+hide <<Response>> circle
+hide <<Parameter>> circle
+hide empty methods
+hide empty fields
+set namespaceSeparator none
+
+class "Customer" {
+  {field} firstName : string {O}
+  {field} lastName : string {O}
+}
+
+class "CustomerId" <<Parameter>> {
+  {field} id : string {O}
+  {field} prefix : string {O}
+}
+
+class "GET /customer/expired" <<Path>> {
+}
+
+class "GET /customer/expired 200" <<Response>> {
+}
+
+"GET /customer/expired" - -> "1" "CustomerId"  :  "customerId"
+
+"GET /customer/expired 200" - -> "*" "Customer"
+
+"GET /customer/expired" ..> "1" "GET /customer/expired 200"  :  "200"
+
+@enduml
+
+PlantUML version 1.2021.16(Wed Dec 08 19:25:22 IST 2021)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: GB
+-->
+    </g>
+</svg>

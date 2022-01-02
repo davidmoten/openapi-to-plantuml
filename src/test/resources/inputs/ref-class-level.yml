@@ -11,8 +11,8 @@ components:
         lastName:
           type: string
       required:
-      - firstName
-      - lastName
+        - firstName
+        - lastName
     Client:
       $ref: "#/components/schemas/Customer"
         

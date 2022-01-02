@@ -12,27 +12,27 @@ info:
     please check the section “client code” at https://developers.strava.com/docs.
   version: 3.0.0
 servers:
-- url: https://www.strava.com/api/v3
+  - url: https://www.strava.com/api/v3
 security:
-- strava_oauth:
-  - public
+  - strava_oauth:
+      - public
 paths:
   /athletes/{id}/stats:
     get:
       tags:
-      - Athletes
+        - Athletes
       summary: Get Athlete Stats
       description: Returns the activity stats of an athlete. Only includes data from
         activities set to Everyone visibilty.
       operationId: getStats
       parameters:
-      - name: id
-        in: path
-        description: The identifier of the athlete. Must match the authenticated athlete.
-        required: true
-        schema:
-          type: integer
-          format: int64
+        - name: id
+          in: path
+          description: The identifier of the athlete. Must match the authenticated athlete.
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         200:
           description: Activity stats of the athlete.
@@ -49,7 +49,7 @@ paths:
   /athlete:
     get:
       tags:
-      - Athletes
+        - Athletes
       summary: Get Authenticated Athlete
       description: Returns the currently authenticated athlete. Tokens with profile:read_all
         scope will receive a detailed athlete representation; all others will receive
@@ -84,20 +84,20 @@ paths:
                 athlete_type: 1
                 date_preference: '%m/%d/%Y'
                 measurement_preference: feet
-                clubs: []
+                clubs: [ ]
                 weight: 0
                 bikes:
-                - id: b12345678987655
-                  primary: true
-                  name: EMC
-                  resource_state: 2
-                  distance: 0
+                  - id: b12345678987655
+                    primary: true
+                    name: EMC
+                    resource_state: 2
+                    distance: 0
                 shoes:
-                - id: g12345678987655
-                  primary: true
-                  name: adidas
-                  resource_state: 2
-                  distance: 4904
+                  - id: g12345678987655
+                    primary: true
+                    name: adidas
+                    resource_state: 2
+                    distance: 4904
         default:
           description: Unexpected error.
           content:
@@ -106,19 +106,19 @@ paths:
                 $ref: '#/components/schemas/Fault'
     put:
       tags:
-      - Athletes
+        - Athletes
       summary: Update Athlete
       description: Update the currently authenticated athlete. Requires profile:write
         scope.
       operationId: updateLoggedInAthlete
       parameters:
-      - name: weight
-        in: path
-        description: The weight of the athlete in kilograms.
-        required: true
-        schema:
-          type: number
-          format: float
+        - name: weight
+          in: path
+          description: The weight of the athlete in kilograms.
+          required: true
+          schema:
+            type: number
+            format: float
       responses:
         200:
           description: Profile information for the authenticated athlete.
@@ -148,20 +148,20 @@ paths:
                 athlete_type: 1
                 date_preference: '%m/%d/%Y'
                 measurement_preference: feet
-                clubs: []
+                clubs: [ ]
                 weight: 0
                 bikes:
-                - id: b1234567898765509876
-                  primary: true
-                  name: EMC
-                  resource_state: 2
-                  distance: 0
+                  - id: b1234567898765509876
+                    primary: true
+                    name: EMC
+                    resource_state: 2
+                    distance: 0
                 shoes:
-                - id: g1234567898765509876
-                  primary: true
-                  name: adidas
-                  resource_state: 2
-                  distance: 4904
+                  - id: g1234567898765509876
+                    primary: true
+                    name: adidas
+                    resource_state: 2
+                    distance: 4904
         default:
           description: Unexpected error.
           content:
@@ -171,7 +171,7 @@ paths:
   /athlete/zones:
     get:
       tags:
-      - Athletes
+        - Athletes
       summary: Get Zones
       description: Returns the the authenticated athlete's heart rate and power zones.
         Requires profile:read_all.
@@ -184,43 +184,43 @@ paths:
               schema:
                 $ref: '#/components/schemas/Zones'
               example:
-              - distribution_buckets:
-                - max: 0
-                  min: 0
-                  time: 1498
-                - max: 50
-                  min: 0
-                  time: 62
-                - max: 100
-                  min: 50
-                  time: 169
-                - max: 150
-                  min: 100
-                  time: 536
-                - max: 200
-                  min: 150
-                  time: 672
-                - max: 250
-                  min: 200
-                  time: 821
-                - max: 300
-                  min: 250
-                  time: 529
-                - max: 350
-                  min: 300
-                  time: 251
-                - max: 400
-                  min: 350
-                  time: 80
-                - max: 450
-                  min: 400
-                  time: 81
-                - max: -1
-                  min: 450
-                  time: 343
-                type: power
-                resource_state: 3
-                sensor_based: true
+                - distribution_buckets:
+                    - max: 0
+                      min: 0
+                      time: 1498
+                    - max: 50
+                      min: 0
+                      time: 62
+                    - max: 100
+                      min: 50
+                      time: 169
+                    - max: 150
+                      min: 100
+                      time: 536
+                    - max: 200
+                      min: 150
+                      time: 672
+                    - max: 250
+                      min: 200
+                      time: 821
+                    - max: 300
+                      min: 250
+                      time: 529
+                    - max: 350
+                      min: 300
+                      time: 251
+                    - max: 400
+                      min: 350
+                      time: 80
+                    - max: 450
+                      min: 400
+                      time: 81
+                    - max: -1
+                      min: 450
+                      time: 343
+                  type: power
+                  resource_state: 3
+                  sensor_based: true
         default:
           description: Unexpected error.
           content:
@@ -230,19 +230,19 @@ paths:
   /segments/{id}:
     get:
       tags:
-      - Segments
+        - Segments
       summary: Get Segment
       description: Returns the specified segment. read_all scope required in order
         to retrieve athlete-specific segment information, or to retrieve private segments.
       operationId: getSegmentById
       parameters:
-      - name: id
-        in: path
-        description: The identifier of the segment.
-        required: true
-        schema:
-          type: integer
-          format: int64
+        - name: id
+          in: path
+          description: The identifier of the segment.
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         200:
           description: Representation of a segment.
@@ -261,11 +261,11 @@ paths:
                 elevation_high: 245.3
                 elevation_low: 92.4
                 start_latlng:
-                - 37.8331119
-                - -122.4834356
+                  - 37.8331119
+                  - -122.4834356
                 end_latlng:
-                - 37.8280722
-                - -122.4981393
+                  - 37.8280722
+                  - -122.4981393
                 climb_category: 1
                 city: San Francisco
                 state: CA
@@ -296,23 +296,23 @@ paths:
   /segments/starred:
     get:
       tags:
-      - Segments
+        - Segments
       summary: List Starred Segments
       description: List of the authenticated athlete's starred segments. Private segments
         are filtered out unless requested by a token with read_all scope.
       operationId: getLoggedInAthleteStarredSegments
       parameters:
-      - name: page
-        in: query
-        description: Page number. Defaults to 1.
-        schema:
-          type: integer
-      - name: per_page
-        in: query
-        description: Number of items per page. Defaults to 30.
-        schema:
-          type: integer
-          default: 30
+        - name: page
+          in: query
+          description: Page number. Defaults to 1.
+          schema:
+            type: integer
+        - name: per_page
+          in: query
+          description: Number of items per page. Defaults to 30.
+          schema:
+            type: integer
+            default: 30
       responses:
         200:
           description: List of the authenticated athlete's starred segments.
@@ -333,11 +333,11 @@ paths:
                 elevation_high: 245.3
                 elevation_low: 92.4
                 start_latlng:
-                - 37.8331119
-                - -122.4834356
+                  - 37.8331119
+                  - -122.4834356
                 end_latlng:
-                - 37.8280722
-                - -122.4981393
+                  - 37.8280722
+                  - -122.4981393
                 climb_category: 1
                 city: San Francisco
                 state: CA
@@ -368,25 +368,25 @@ paths:
   /segments/{id}/starred:
     put:
       tags:
-      - Segments
+        - Segments
       summary: Star Segment
       description: Stars/Unstars the given segment for the authenticated athlete.
         Requires profile:write scope.
       operationId: starSegment
       parameters:
-      - name: id
-        in: path
-        description: The identifier of the segment to star.
-        required: true
-        schema:
-          type: integer
-          format: int64
+        - name: id
+          in: path
+          description: The identifier of the segment to star.
+          required: true
+          schema:
+            type: integer
+            format: int64
       requestBody:
         content:
           multipart/form-data:
             schema:
               required:
-              - starred
+                - starred
               properties:
                 starred:
                   type: boolean
@@ -411,11 +411,11 @@ paths:
                 elevation_high: 245.3
                 elevation_low: 92.4
                 start_latlng:
-                - 37.8331119
-                - -122.4834356
+                  - 37.8331119
+                  - -122.4834356
                 end_latlng:
-                - 37.8280722
-                - -122.4981393
+                  - 37.8280722
+                  - -122.4981393
                 climb_category: 1
                 city: San Francisco
                 state: CA
@@ -446,36 +446,36 @@ paths:
   /segment_efforts:
     get:
       tags:
-      - SegmentEfforts
+        - SegmentEfforts
       summary: List Segment Efforts
       description: Returns a set of the authenticated athlete's segment efforts for
         a given segment.  Requires subscription.
       operationId: getEffortsBySegmentId
       parameters:
-      - name: segment_id
-        in: query
-        description: The identifier of the segment.
-        required: true
-        schema:
-          type: integer
-      - name: start_date_local
-        in: query
-        description: ISO 8601 formatted date time.
-        schema:
-          type: string
-          format: date-time
-      - name: end_date_local
-        in: query
-        description: ISO 8601 formatted date time.
-        schema:
-          type: string
-          format: date-time
-      - name: per_page
-        in: query
-        description: Number of items per page. Defaults to 30.
-        schema:
-          type: integer
-          default: 30
+        - name: segment_id
+          in: query
+          description: The identifier of the segment.
+          required: true
+          schema:
+            type: integer
+        - name: start_date_local
+          in: query
+          description: ISO 8601 formatted date time.
+          schema:
+            type: string
+            format: date-time
+        - name: end_date_local
+          in: query
+          description: ISO 8601 formatted date time.
+          schema:
+            type: string
+            format: date-time
+        - name: per_page
+          in: query
+          description: Number of items per page. Defaults to 30.
+          schema:
+            type: integer
+            default: 30
       responses:
         200:
           description: List of segment efforts.
@@ -486,48 +486,48 @@ paths:
                 items:
                   $ref: '#/components/schemas/DetailedSegmentEffort'
               example:
-              - id: 123456789
-                resource_state: 2
-                name: Alpe d'Huez
-                activity:
-                  id: 1234567890
-                  resource_state: 1
-                athlete:
-                  id: 123445678689
-                  resource_state: 1
-                elapsed_time: 1657
-                moving_time: 1642
-                start_date: 2007-09-15T08:15:29Z
-                start_date_local: 2007-09-15T09:15:29Z
-                distance: 6148.92
-                start_index: 1102
-                end_index: 1366
-                device_watts: false
-                average_watts: 220.2
-                segment:
-                  id: 788127
+                - id: 123456789
                   resource_state: 2
                   name: Alpe d'Huez
-                  activity_type: Ride
-                  distance: 6297.46
-                  average_grade: 4.8
-                  maximum_grade: 16.3
-                  elevation_high: 416
-                  elevation_low: 104.6
-                  start_latlng:
-                  - 52.98501000581467
-                  - -3.1869720001197366
-                  end_latlng:
-                  - 53.02204074375785
-                  - -3.2039630001245736
-                  climb_category: 2
-                  city: Le Bourg D'Oisans
-                  state: RA
-                  country: France
-                  private: false
-                  hazardous: false
-                  starred: false
-                achievements: []
+                  activity:
+                    id: 1234567890
+                    resource_state: 1
+                  athlete:
+                    id: 123445678689
+                    resource_state: 1
+                  elapsed_time: 1657
+                  moving_time: 1642
+                  start_date: 2007-09-15T08:15:29Z
+                  start_date_local: 2007-09-15T09:15:29Z
+                  distance: 6148.92
+                  start_index: 1102
+                  end_index: 1366
+                  device_watts: false
+                  average_watts: 220.2
+                  segment:
+                    id: 788127
+                    resource_state: 2
+                    name: Alpe d'Huez
+                    activity_type: Ride
+                    distance: 6297.46
+                    average_grade: 4.8
+                    maximum_grade: 16.3
+                    elevation_high: 416
+                    elevation_low: 104.6
+                    start_latlng:
+                      - 52.98501000581467
+                      - -3.1869720001197366
+                    end_latlng:
+                      - 53.02204074375785
+                      - -3.2039630001245736
+                    climb_category: 2
+                    city: Le Bourg D'Oisans
+                    state: RA
+                    country: France
+                    private: false
+                    hazardous: false
+                    starred: false
+                  achievements: [ ]
         default:
           description: Unexpected error.
           content:
@@ -537,48 +537,48 @@ paths:
   /segments/explore:
     get:
       tags:
-      - Segments
+        - Segments
       summary: Explore segments
       description: Returns the top 10 segments matching a specified query.
       operationId: exploreSegments
       parameters:
-      - name: bounds
-        in: query
-        description: 'The latitude and longitude for two points describing a rectangular
+        - name: bounds
+          in: query
+          description: 'The latitude and longitude for two points describing a rectangular
           boundary for the search: [southwest corner latitutde, southwest corner longitude,
           northeast corner latitude, northeast corner longitude]'
-        required: true
-        style: form
-        explode: false
-        schema:
-          maxItems: 4
-          minItems: 4
-          type: array
-          items:
-            type: number
-            format: float
-      - name: activity_type
-        in: query
-        description: Desired activity type.
-        schema:
-          type: string
-          enum:
-          - running
-          - riding
-      - name: min_cat
-        in: query
-        description: The minimum climbing category.
-        schema:
-          maximum: 5
-          minimum: 0
-          type: integer
-      - name: max_cat
-        in: query
-        description: The maximum climbing category.
-        schema:
-          maximum: 5
-          minimum: 0
-          type: integer
+          required: true
+          style: form
+          explode: false
+          schema:
+            maxItems: 4
+            minItems: 4
+            type: array
+            items:
+              type: number
+              format: float
+        - name: activity_type
+          in: query
+          description: Desired activity type.
+          schema:
+            type: string
+            enum:
+              - running
+              - riding
+        - name: min_cat
+          in: query
+          description: The minimum climbing category.
+          schema:
+            maximum: 5
+            minimum: 0
+            type: integer
+        - name: max_cat
+          in: query
+          description: The maximum climbing category.
+          schema:
+            maximum: 5
+            minimum: 0
+            type: integer
       responses:
         200:
           description: List of matching segments.
@@ -588,22 +588,22 @@ paths:
                 $ref: '#/components/schemas/ExplorerResponse'
               example:
                 segments:
-                - id: 229781
-                  resource_state: 2
-                  name: Hawk Hill
-                  climb_category: 1
-                  climb_category_desc: "4"
-                  avg_grade: 5.7
-                  start_latlng:
-                  - 37.8331119
-                  - -122.4834356
-                  end_latlng:
-                  - 37.8280722
-                  - -122.4981393
-                  elev_difference: 152.8
-                  distance: 2684.8
-                  points: '}g|eFnpqjVl@En@Md@HbAd@d@^h@Xx@VbARjBDh@OPQf@w@d@k@XKXDFPH\EbGT`AV`@v@|@NTNb@?XOb@cAxAWLuE@eAFMBoAv@eBt@q@b@}@tAeAt@i@dAC`AFZj@dB?~@[h@MbAVn@b@b@\d@Eh@Qb@_@d@eB|@c@h@WfBK|AMpA?VF\\t@f@t@h@j@|@b@hCb@b@XTd@Bl@GtA?jAL`ALp@Tr@RXd@Rx@Pn@^Zh@Tx@Zf@`@FTCzDy@f@Yx@m@n@Op@VJr@'
-                  starred: false
+                  - id: 229781
+                    resource_state: 2
+                    name: Hawk Hill
+                    climb_category: 1
+                    climb_category_desc: "4"
+                    avg_grade: 5.7
+                    start_latlng:
+                      - 37.8331119
+                      - -122.4834356
+                    end_latlng:
+                      - 37.8280722
+                      - -122.4981393
+                    elev_difference: 152.8
+                    distance: 2684.8
+                    points: '}g|eFnpqjVl@En@Md@HbAd@d@^h@Xx@VbARjBDh@OPQf@w@d@k@XKXDFPH\EbGT`AV`@v@|@NTNb@?XOb@cAxAWLuE@eAFMBoAv@eBt@q@b@}@tAeAt@i@dAC`AFZj@dB?~@[h@MbAVn@b@b@\d@Eh@Qb@_@d@eB|@c@h@WfBK|AMpA?VF\\t@f@t@h@j@|@b@hCb@b@XTd@Bl@GtA?jAL`ALp@Tr@RXd@Rx@Pn@^Zh@Tx@Zf@`@FTCzDy@f@Yx@m@n@Op@VJr@'
+                    starred: false
         default:
           description: Unexpected error.
           content:
@@ -613,19 +613,19 @@ paths:
   /segment_efforts/{id}:
     get:
       tags:
-      - SegmentEfforts
+        - SegmentEfforts
       summary: Get Segment Effort
       description: Returns a segment effort from an activity that is owned by the
         authenticated athlete. Requires subscription.
       operationId: getSegmentEffortById
       parameters:
-      - name: id
-        in: path
-        description: The identifier of the segment effort.
-        required: true
-        schema:
-          type: integer
-          format: int64
+        - name: id
+          in: path
+          description: The identifier of the segment effort.
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         200:
           description: Representation of a segment effort.
@@ -661,11 +661,11 @@ paths:
                   elevation_high: 21
                   elevation_low: 17.2
                   start_latlng:
-                  - 37.808407654682
-                  - -122.426682919323
+                    - 37.808407654682
+                    - -122.426682919323
                   end_latlng:
-                  - 37.808297909724
-                  - -122.421324329674
+                    - 37.808297909724
+                    - -122.421324329674
                   climb_category: 0
                   city: San Francisco
                   state: CA
@@ -673,7 +673,7 @@ paths:
                   private: false
                   hazardous: false
                   starred: false
-                achievements: []
+                achievements: [ ]
                 athlete_segment_stats:
                   pr_elapsed_time: 212
                   pr_date: 2015-02-12
@@ -687,18 +687,18 @@ paths:
   /running_races/{id}:
     get:
       tags:
-      - RunningRaces
+        - RunningRaces
       summary: Get Running Race
       description: Returns a running race for a given identifier.
       operationId: getRunningRaceById
       parameters:
-      - name: id
-        in: path
-        description: The identifier of the running race.
-        required: true
-        schema:
-          type: integer
-          format: int64
+        - name: id
+          in: path
+          description: The identifier of the running race.
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         200:
           description: Representation of a running race.
@@ -715,16 +715,16 @@ paths:
   /running_races:
     get:
       tags:
-      - RunningRaces
+        - RunningRaces
       summary: List Running Races
       description: Returns a list running races based on a set of search criteria.
       operationId: getRunningRaces
       parameters:
-      - name: year
-        in: query
-        description: Filters the list by a given year.
-        schema:
-          type: integer
+        - name: year
+          in: query
+          description: Filters the list by a given year.
+          schema:
+            type: integer
       responses:
         200:
           description: Representation of a list of running race.
@@ -743,7 +743,7 @@ paths:
   /activities:
     post:
       tags:
-      - Activities
+        - Activities
       summary: Create an Activity
       description: Creates a manual activity for an athlete, requires activity:write
         scope.
@@ -753,10 +753,10 @@ paths:
           multipart/form-data:
             schema:
               required:
-              - elapsed_time
-              - name
-              - start_date_local
-              - type
+                - elapsed_time
+                - name
+                - start_date_local
+                - type
               properties:
                 name:
                   type: string
@@ -833,7 +833,7 @@ paths:
                 total_photo_count: 0
                 has_kudoed: false
                 calories: 0
-                segment_efforts: []
+                segment_efforts: [ ]
         default:
           description: Unexpected error.
           content:
@@ -843,25 +843,25 @@ paths:
   /activities/{id}:
     get:
       tags:
-      - Activities
+        - Activities
       summary: Get Activity
       description: Returns the given activity that is owned by the authenticated athlete.
         Requires activity:read for Everyone and Followers activities. Requires activity:read_all
         for Only Me activities.
       operationId: getActivityById
       parameters:
-      - name: id
-        in: path
-        description: The identifier of the activity.
-        required: true
-        schema:
-          type: integer
-          format: int64
-      - name: include_all_efforts
-        in: query
-        description: To include all segments efforts.
-        schema:
-          type: boolean
+        - name: id
+          in: path
+          description: The identifier of the activity.
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: include_all_efforts
+          in: query
+          description: To include all segments efforts.
+          schema:
+            type: boolean
       responses:
         200:
           description: The activity's detailed representation.
@@ -888,11 +888,11 @@ paths:
                 timezone: (GMT-08:00) America/Los_Angeles
                 utc_offset: -28800
                 start_latlng:
-                - 37.83
-                - -122.26
+                  - 37.83
+                  - -122.26
                 end_latlng:
-                - 37.83
-                - -122.26
+                  - 37.83
+                  - -122.26
                 achievement_count: 0
                 kudos_count: 19
                 comment_count: 0
@@ -929,83 +929,83 @@ paths:
                 description: ""
                 calories: 870.2
                 segment_efforts:
-                - id: 12345678987654320
-                  resource_state: 2
-                  name: Tunnel Rd.
-                  activity:
-                    id: 12345678987654320
-                    resource_state: 1
-                  athlete:
-                    id: 134815
-                    resource_state: 1
-                  elapsed_time: 2038
-                  moving_time: 2038
-                  start_date: 2018-02-16T14:56:25Z
-                  start_date_local: 2018-02-16T06:56:25Z
-                  distance: 9434.8
-                  start_index: 211
-                  end_index: 2246
-                  average_cadence: 78.6
-                  device_watts: true
-                  average_watts: 237.6
-                  segment:
-                    id: 673683
+                  - id: 12345678987654320
                     resource_state: 2
                     name: Tunnel Rd.
-                    activity_type: Ride
-                    distance: 9220.7
-                    average_grade: 4.2
-                    maximum_grade: 25.8
-                    elevation_high: 426.5
-                    elevation_low: 43.4
-                    start_latlng:
-                    - 37.8346153
-                    - -122.2520872
-                    end_latlng:
-                    - 37.8476261
-                    - -122.2008944
-                    climb_category: 3
-                    city: Oakland
-                    state: CA
-                    country: United States
-                    private: false
-                    hazardous: false
-                    starred: false
-                  achievements: []
-                  hidden: false
+                    activity:
+                      id: 12345678987654320
+                      resource_state: 1
+                    athlete:
+                      id: 134815
+                      resource_state: 1
+                    elapsed_time: 2038
+                    moving_time: 2038
+                    start_date: 2018-02-16T14:56:25Z
+                    start_date_local: 2018-02-16T06:56:25Z
+                    distance: 9434.8
+                    start_index: 211
+                    end_index: 2246
+                    average_cadence: 78.6
+                    device_watts: true
+                    average_watts: 237.6
+                    segment:
+                      id: 673683
+                      resource_state: 2
+                      name: Tunnel Rd.
+                      activity_type: Ride
+                      distance: 9220.7
+                      average_grade: 4.2
+                      maximum_grade: 25.8
+                      elevation_high: 426.5
+                      elevation_low: 43.4
+                      start_latlng:
+                        - 37.8346153
+                        - -122.2520872
+                      end_latlng:
+                        - 37.8476261
+                        - -122.2008944
+                      climb_category: 3
+                      city: Oakland
+                      state: CA
+                      country: United States
+                      private: false
+                      hazardous: false
+                      starred: false
+                    achievements: [ ]
+                    hidden: false
                 splits_metric:
-                - distance: 1001.5
-                  elapsed_time: 141
-                  elevation_difference: 4.4
-                  moving_time: 141
-                  split: 1
-                  average_speed: 7.1
-                  pace_zone: 0
+                  - distance: 1001.5
+                    elapsed_time: 141
+                    elevation_difference: 4.4
+                    moving_time: 141
+                    split: 1
+                    average_speed: 7.1
+                    pace_zone: 0
                 laps:
-                - id: 4479306946
-                  resource_state: 2
-                  name: Lap 1
-                  activity:
-                    id: 1410355832
-                    resource_state: 1
-                  athlete:
-                    id: 134815
-                    resource_state: 1
-                  elapsed_time: 1573
-                  moving_time: 1569
-                  start_date: 2018-02-16T14:52:54Z
-                  start_date_local: 2018-02-16T06:52:54Z
-                  distance: 8046.72
-                  start_index: 0
-                  end_index: 1570
-                  total_elevation_gain: 276
-                  average_speed: 5.12
-                  max_speed: 9.5
-                  average_cadence: 78.6
-                  device_watts: true
-                  average_watts: 233.1
-                  lap_index: 1
-                  split: 1
+                  - id: 4479306946
+                    resource_state: 2
+                    name: Lap 1
+                    activity:
+                      id: 1410355832
+                      resource_state: 1
+                    athlete:
+                      id: 134815
+                      resource_state: 1
+                    elapsed_time: 1573
+                    moving_time: 1569
+                    start_date: 2018-02-16T14:52:54Z
+                    start_date_local: 2018-02-16T06:52:54Z
+                    distance: 8046.72
+                    start_index: 0
+                    end_index: 1570
+                    total_elevation_gain: 276
+                    average_speed: 5.12
+                    max_speed: 9.5
+                    average_cadence: 78.6
+                    device_watts: true
+                    average_watts: 233.1
+                    lap_index: 1
+                    split: 1
                 gear:
                   id: b12345678987654321
                   primary: true
@@ -1022,10 +1022,10 @@ paths:
                   use_primary_photo: true
                   count: 2
                 highlighted_kudosers:
-                - destination_url: strava://athletes/12345678987654321
-                  display_name: Marianne V.
-                  avatar_url: https://dgalywyr863hv.cloudfront.net/pictures/athletes/12345678987654321/12345678987654321/3/medium.jpg
-                  show_name: true
+                  - destination_url: strava://athletes/12345678987654321
+                    display_name: Marianne V.
+                    avatar_url: https://dgalywyr863hv.cloudfront.net/pictures/athletes/12345678987654321/12345678987654321/3/medium.jpg
+                    show_name: true
                 device_name: Garmin Edge 1030
                 embed_token: 18e4615989b47dd4ff3dc711b0aa4502e4b311a9
                 segment_leaderboard_opt_out: false
@@ -1038,20 +1038,20 @@ paths:
                 $ref: '#/components/schemas/Fault'
     put:
       tags:
-      - Activities
+        - Activities
       summary: Update Activity
       description: Updates the given activity that is owned by the authenticated athlete.
         Requires activity:write. Also requires activity:read_all in order to update
         Only Me activities
       operationId: updateActivityById
       parameters:
-      - name: id
-        in: path
-        description: The identifier of the activity.
-        required: true
-        schema:
-          type: integer
-          format: int64
+        - name: id
+          in: path
+          description: The identifier of the activity.
+          required: true
+          schema:
+            type: integer
+            format: int64
       requestBody:
         content:
           '*/*':
@@ -1084,11 +1084,11 @@ paths:
                 timezone: (GMT-08:00) America/Los_Angeles
                 utc_offset: -28800
                 start_latlng:
-                - 37.83
-                - -122.26
+                  - 37.83
+                  - -122.26
                 end_latlng:
-                - 37.83
-                - -122.26
+                  - 37.83
+                  - -122.26
                 location_country: United States
                 achievement_count: 0
                 kudos_count: 19
@@ -1126,83 +1126,83 @@ paths:
                 description: ""
                 calories: 870.2
                 segment_efforts:
-                - id: 12345678987654320
-                  resource_state: 2
-                  name: Tunnel Rd.
-                  activity:
-                    id: 12345678987654320
-                    resource_state: 1
-                  athlete:
-                    id: 12345678987654320
-                    resource_state: 1
-                  elapsed_time: 2038
-                  moving_time: 2038
-                  start_date: 2018-02-16T14:56:25Z
-                  start_date_local: 2018-02-16T06:56:25Z
-                  distance: 9434.8
-                  start_index: 211
-                  end_index: 2246
-                  average_cadence: 78.6
-                  device_watts: true
-                  average_watts: 237.6
-                  segment:
-                    id: 673683
+                  - id: 12345678987654320
                     resource_state: 2
                     name: Tunnel Rd.
-                    activity_type: Ride
-                    distance: 9220.7
-                    average_grade: 4.2
-                    maximum_grade: 25.8
-                    elevation_high: 426.5
-                    elevation_low: 43.4
-                    start_latlng:
-                    - 37.8346153
-                    - -122.2520872
-                    end_latlng:
-                    - 37.8476261
-                    - -122.2008944
-                    climb_category: 3
-                    city: Oakland
-                    state: CA
-                    country: United States
-                    private: false
-                    hazardous: false
-                    starred: false
-                  achievements: []
-                  hidden: false
+                    activity:
+                      id: 12345678987654320
+                      resource_state: 1
+                    athlete:
+                      id: 12345678987654320
+                      resource_state: 1
+                    elapsed_time: 2038
+                    moving_time: 2038
+                    start_date: 2018-02-16T14:56:25Z
+                    start_date_local: 2018-02-16T06:56:25Z
+                    distance: 9434.8
+                    start_index: 211
+                    end_index: 2246
+                    average_cadence: 78.6
+                    device_watts: true
+                    average_watts: 237.6
+                    segment:
+                      id: 673683
+                      resource_state: 2
+                      name: Tunnel Rd.
+                      activity_type: Ride
+                      distance: 9220.7
+                      average_grade: 4.2
+                      maximum_grade: 25.8
+                      elevation_high: 426.5
+                      elevation_low: 43.4
+                      start_latlng:
+                        - 37.8346153
+                        - -122.2520872
+                      end_latlng:
+                        - 37.8476261
+                        - -122.2008944
+                      climb_category: 3
+                      city: Oakland
+                      state: CA
+                      country: United States
+                      private: false
+                      hazardous: false
+                      starred: false
+                    achievements: [ ]
+                    hidden: false
                 splits_metric:
-                - distance: 1001.5
-                  elapsed_time: 141
-                  elevation_difference: 4.4
-                  moving_time: 141
-                  split: 1
-                  average_speed: 7.1
-                  pace_zone: 0
+                  - distance: 1001.5
+                    elapsed_time: 141
+                    elevation_difference: 4.4
+                    moving_time: 141
+                    split: 1
+                    average_speed: 7.1
+                    pace_zone: 0
                 laps:
-                - id: 4479306946
-                  resource_state: 2
-                  name: Lap 1
-                  activity:
-                    id: 1410355832
-                    resource_state: 1
-                  athlete:
-                    id: 134815
-                    resource_state: 1
-                  elapsed_time: 1573
-                  moving_time: 1569
-                  start_date: 2018-02-16T14:52:54Z
-                  start_date_local: 2018-02-16T06:52:54Z
-                  distance: 8046.72
-                  start_index: 0
-                  end_index: 1570
-                  total_elevation_gain: 276
-                  average_speed: 5.12
-                  max_speed: 9.5
-                  average_cadence: 78.6
-                  device_watts: true
-                  average_watts: 233.1
-                  lap_index: 1
-                  split: 1
+                  - id: 4479306946
+                    resource_state: 2
+                    name: Lap 1
+                    activity:
+                      id: 1410355832
+                      resource_state: 1
+                    athlete:
+                      id: 134815
+                      resource_state: 1
+                    elapsed_time: 1573
+                    moving_time: 1569
+                    start_date: 2018-02-16T14:52:54Z
+                    start_date_local: 2018-02-16T06:52:54Z
+                    distance: 8046.72
+                    start_index: 0
+                    end_index: 1570
+                    total_elevation_gain: 276
+                    average_speed: 5.12
+                    max_speed: 9.5
+                    average_cadence: 78.6
+                    device_watts: true
+                    average_watts: 233.1
+                    lap_index: 1
+                    split: 1
                 gear:
                   id: b12345678987654321
                   primary: true
@@ -1219,10 +1219,10 @@ paths:
                   use_primary_photo: true
                   count: 2
                 highlighted_kudosers:
-                - destination_url: strava://athletes/12345678987654321
-                  display_name: Marianne V.
-                  avatar_url: https://dgalywyr863hv.cloudfront.net/pictures/athletes/12345678987654321/12345678987654321/3/medium.jpg
-                  show_name: true
+                  - destination_url: strava://athletes/12345678987654321
+                    display_name: Marianne V.
+                    avatar_url: https://dgalywyr863hv.cloudfront.net/pictures/athletes/12345678987654321/12345678987654321/3/medium.jpg
+                    show_name: true
                 device_name: Garmin Edge 1030
                 embed_token: 18e4615989b47dd4ff3dc711b0aa4502e4b311a9
                 segment_leaderboard_opt_out: false
@@ -1237,36 +1237,36 @@ paths:
   /athlete/activities:
     get:
       tags:
-      - Activities
+        - Activities
       summary: List Athlete Activities
       description: Returns the activities of an athlete for a specific identifier.
         Requires activity:read. Only Me activities will be filtered out unless requested
         by a token with activity:read_all.
       operationId: getLoggedInAthleteActivities
       parameters:
-      - name: before
-        in: query
-        description: An epoch timestamp to use for filtering activities that have
-          taken place before a certain time.
-        schema:
-          type: integer
-      - name: after
-        in: query
-        description: An epoch timestamp to use for filtering activities that have
-          taken place after a certain time.
-        schema:
-          type: integer
-      - name: page
-        in: query
-        description: Page number. Defaults to 1.
-        schema:
-          type: integer
-      - name: per_page
-        in: query
-        description: Number of items per page. Defaults to 30.
-        schema:
-          type: integer
-          default: 30
+        - name: before
+          in: query
+          description: An epoch timestamp to use for filtering activities that have
+            taken place before a certain time.
+          schema:
+            type: integer
+        - name: after
+          in: query
+          description: An epoch timestamp to use for filtering activities that have
+            taken place after a certain time.
+          schema:
+            type: integer
+        - name: page
+          in: query
+          description: Page number. Defaults to 1.
+          schema:
+            type: integer
+        - name: per_page
+          in: query
+          description: Number of items per page. Defaults to 30.
+          schema:
+            type: integer
+            default: 30
       responses:
         200:
           description: The authenticated athlete's activities
@@ -1277,102 +1277,102 @@ paths:
                 items:
                   $ref: '#/components/schemas/SummaryActivity'
               example:
-              - resource_state: 2
-                athlete:
-                  id: 134815
-                  resource_state: 1
-                name: Happy Friday
-                distance: 24931.4
-                moving_time: 4500
-                elapsed_time: 4500
-                total_elevation_gain: 0
-                type: Ride
-                id: 154504250376823
-                external_id: garmin_push_12345678987654321
-                upload_id: 987654321234567900000
-                start_date: 2018-05-02T12:15:09Z
-                start_date_local: 2018-05-02T05:15:09Z
-                timezone: (GMT-08:00) America/Los_Angeles
-                utc_offset: -25200
-                location_country: United States
-                achievement_count: 0
-                kudos_count: 3
-                comment_count: 1
-                athlete_count: 1
-                photo_count: 0
-                map:
-                  id: a12345678987654321
-                  resource_state: 2
-                trainer: true
-                commute: false
-                manual: false
-                private: false
-                flagged: false
-                gear_id: b12345678987654321
-                from_accepted_tag: false
-                average_speed: 5.54
-                max_speed: 11
-                average_cadence: 67.1
-                average_watts: 175.3
-                weighted_average_watts: 210
-                kilojoules: 788.7
-                device_watts: true
-                has_heartrate: true
-                average_heartrate: 140.3
-                max_heartrate: 178
-                max_watts: 406
-                pr_count: 0
-                total_photo_count: 1
-                has_kudoed: false
-                suffer_score: 82
-              - resource_state: 2
-                athlete:
-                  id: 167560
-                  resource_state: 1
-                name: Bondcliff
-                distance: 23676.5
-                moving_time: 5400
-                elapsed_time: 5400
-                total_elevation_gain: 0
-                type: Ride
-                id: 1234567809
-                external_id: garmin_push_12345678987654321
-                upload_id: 1234567819
-                start_date: 2018-04-30T12:35:51Z
-                start_date_local: 2018-04-30T05:35:51Z
-                timezone: (GMT-08:00) America/Los_Angeles
-                utc_offset: -25200
-                location_country: United States
-                achievement_count: 0
-                kudos_count: 4
-                comment_count: 0
-                athlete_count: 1
-                photo_count: 0
-                map:
-                  id: a12345689
-                  resource_state: 2
-                trainer: true
-                commute: false
-                manual: false
-                private: false
-                flagged: false
-                gear_id: b12345678912343
-                from_accepted_tag: false
-                average_speed: 4.385
-                max_speed: 8.8
-                average_cadence: 69.8
-                average_watts: 200
-                weighted_average_watts: 214
-                kilojoules: 1080
-                device_watts: true
-                has_heartrate: true
-                average_heartrate: 152.4
-                max_heartrate: 183
-                max_watts: 403
-                pr_count: 0
-                total_photo_count: 1
-                has_kudoed: false
-                suffer_score: 162
+                - resource_state: 2
+                  athlete:
+                    id: 134815
+                    resource_state: 1
+                  name: Happy Friday
+                  distance: 24931.4
+                  moving_time: 4500
+                  elapsed_time: 4500
+                  total_elevation_gain: 0
+                  type: Ride
+                  id: 154504250376823
+                  external_id: garmin_push_12345678987654321
+                  upload_id: 987654321234567900000
+                  start_date: 2018-05-02T12:15:09Z
+                  start_date_local: 2018-05-02T05:15:09Z
+                  timezone: (GMT-08:00) America/Los_Angeles
+                  utc_offset: -25200
+                  location_country: United States
+                  achievement_count: 0
+                  kudos_count: 3
+                  comment_count: 1
+                  athlete_count: 1
+                  photo_count: 0
+                  map:
+                    id: a12345678987654321
+                    resource_state: 2
+                  trainer: true
+                  commute: false
+                  manual: false
+                  private: false
+                  flagged: false
+                  gear_id: b12345678987654321
+                  from_accepted_tag: false
+                  average_speed: 5.54
+                  max_speed: 11
+                  average_cadence: 67.1
+                  average_watts: 175.3
+                  weighted_average_watts: 210
+                  kilojoules: 788.7
+                  device_watts: true
+                  has_heartrate: true
+                  average_heartrate: 140.3
+                  max_heartrate: 178
+                  max_watts: 406
+                  pr_count: 0
+                  total_photo_count: 1
+                  has_kudoed: false
+                  suffer_score: 82
+                - resource_state: 2
+                  athlete:
+                    id: 167560
+                    resource_state: 1
+                  name: Bondcliff
+                  distance: 23676.5
+                  moving_time: 5400
+                  elapsed_time: 5400
+                  total_elevation_gain: 0
+                  type: Ride
+                  id: 1234567809
+                  external_id: garmin_push_12345678987654321
+                  upload_id: 1234567819
+                  start_date: 2018-04-30T12:35:51Z
+                  start_date_local: 2018-04-30T05:35:51Z
+                  timezone: (GMT-08:00) America/Los_Angeles
+                  utc_offset: -25200
+                  location_country: United States
+                  achievement_count: 0
+                  kudos_count: 4
+                  comment_count: 0
+                  athlete_count: 1
+                  photo_count: 0
+                  map:
+                    id: a12345689
+                    resource_state: 2
+                  trainer: true
+                  commute: false
+                  manual: false
+                  private: false
+                  flagged: false
+                  gear_id: b12345678912343
+                  from_accepted_tag: false
+                  average_speed: 4.385
+                  max_speed: 8.8
+                  average_cadence: 69.8
+                  average_watts: 200
+                  weighted_average_watts: 214
+                  kilojoules: 1080
+                  device_watts: true
+                  has_heartrate: true
+                  average_heartrate: 152.4
+                  max_heartrate: 183
+                  max_watts: 403
+                  pr_count: 0
+                  total_photo_count: 1
+                  has_kudoed: false
+                  suffer_score: 162
         default:
           description: Unexpected error.
           content:
@@ -1382,20 +1382,20 @@ paths:
   /activities/{id}/laps:
     get:
       tags:
-      - Activities
+        - Activities
       summary: List Activity Laps
       description: Returns the laps of an activity identified by an identifier. Requires
         activity:read for Everyone and Followers activities. Requires activity:read_all
         for Only Me activities.
       operationId: getLapsByActivityId
       parameters:
-      - name: id
-        in: path
-        description: The identifier of the activity.
-        required: true
-        schema:
-          type: integer
-          format: int64
+        - name: id
+          in: path
+          description: The identifier of the activity.
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         200:
           description: Activity Laps.
@@ -1406,30 +1406,30 @@ paths:
                 items:
                   $ref: '#/components/schemas/Lap'
               example:
-              - id: 12345678987654320
-                resource_state: 2
-                name: Lap 1
-                activity:
-                  id: 12345678987654320
-                  resource_state: 1
-                athlete:
-                  id: 12345678987654320
-                  resource_state: 1
-                elapsed_time: 1691
-                moving_time: 1587
-                start_date: 2018-02-08T14:13:37Z
-                start_date_local: 2018-02-08T06:13:37Z
-                distance: 8046.72
-                start_index: 0
-                end_index: 1590
-                total_elevation_gain: 270
-                average_speed: 4.76
-                max_speed: 9.4
-                average_cadence: 79
-                device_watts: true
-                average_watts: 228.2
-                lap_index: 1
-                split: 1
+                - id: 12345678987654320
+                  resource_state: 2
+                  name: Lap 1
+                  activity:
+                    id: 12345678987654320
+                    resource_state: 1
+                  athlete:
+                    id: 12345678987654320
+                    resource_state: 1
+                  elapsed_time: 1691
+                  moving_time: 1587
+                  start_date: 2018-02-08T14:13:37Z
+                  start_date_local: 2018-02-08T06:13:37Z
+                  distance: 8046.72
+                  start_index: 0
+                  end_index: 1590
+                  total_elevation_gain: 270
+                  average_speed: 4.76
+                  max_speed: 9.4
+                  average_cadence: 79
+                  device_watts: true
+                  average_watts: 228.2
+                  lap_index: 1
+                  split: 1
         default:
           description: Unexpected error.
           content:
@@ -1439,20 +1439,20 @@ paths:
   /activities/{id}/zones:
     get:
       tags:
-      - Activities
+        - Activities
       summary: Get Activity Zones
       description: Summit Feature. Returns the zones of a given activity. Requires
         activity:read for Everyone and Followers activities. Requires activity:read_all
         for Only Me activities.
       operationId: getZonesByActivityId
       parameters:
-      - name: id
-        in: path
-        description: The identifier of the activity.
-        required: true
-        schema:
-          type: integer
-          format: int64
+        - name: id
+          in: path
+          description: The identifier of the activity.
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         200:
           description: Activity Zones.
@@ -1471,31 +1471,31 @@ paths:
   /activities/{id}/comments:
     get:
       tags:
-      - Activities
+        - Activities
       summary: List Activity Comments
       description: Returns the comments on the given activity. Requires activity:read
         for Everyone and Followers activities. Requires activity:read_all for Only
         Me activities.
       operationId: getCommentsByActivityId
       parameters:
-      - name: id
-        in: path
-        description: The identifier of the activity.
-        required: true
-        schema:
-          type: integer
-          format: int64
-      - name: page
-        in: query
-        description: Page number. Defaults to 1.
-        schema:
-          type: integer
-      - name: per_page
-        in: query
-        description: Number of items per page. Defaults to 30.
-        schema:
-          type: integer
-          default: 30
+        - name: id
+          in: path
+          description: The identifier of the activity.
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: page
+          in: query
+          description: Page number. Defaults to 1.
+          schema:
+            type: integer
+        - name: per_page
+          in: query
+          description: Number of items per page. Defaults to 30.
+          schema:
+            type: integer
+            default: 30
       responses:
         200:
           description: Comments.
@@ -1506,14 +1506,14 @@ paths:
                 items:
                   $ref: '#/components/schemas/Comment'
               example:
-              - id: 12345678987654320
-                activity_id: 12345678987654320
-                resource_state: 2
-                text: Good job and keep the cat pictures coming!
-                created_at: 2018-02-08T19:25:39Z
-                athlete:
-                  firstname: Peter
-                  lastname: S
+                - id: 12345678987654320
+                  activity_id: 12345678987654320
+                  resource_state: 2
+                  text: Good job and keep the cat pictures coming!
+                  created_at: 2018-02-08T19:25:39Z
+                  athlete:
+                    firstname: Peter
+                    lastname: S
         default:
           description: Unexpected error.
           content:
@@ -1523,31 +1523,31 @@ paths:
   /activities/{id}/kudos:
     get:
       tags:
-      - Activities
+        - Activities
       summary: List Activity Kudoers
       description: Returns the athletes who kudoed an activity identified by an identifier.
         Requires activity:read for Everyone and Followers activities. Requires activity:read_all
         for Only Me activities.
       operationId: getKudoersByActivityId
       parameters:
-      - name: id
-        in: path
-        description: The identifier of the activity.
-        required: true
-        schema:
-          type: integer
-          format: int64
-      - name: page
-        in: query
-        description: Page number. Defaults to 1.
-        schema:
-          type: integer
-      - name: per_page
-        in: query
-        description: Number of items per page. Defaults to 30.
-        schema:
-          type: integer
-          default: 30
+        - name: id
+          in: path
+          description: The identifier of the activity.
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: page
+          in: query
+          description: Page number. Defaults to 1.
+          schema:
+            type: integer
+        - name: per_page
+          in: query
+          description: Number of items per page. Defaults to 30.
+          schema:
+            type: integer
+            default: 30
       responses:
         200:
           description: Comments.
@@ -1558,8 +1558,8 @@ paths:
                 items:
                   $ref: '#/components/schemas/SummaryAthlete'
               example:
-              - firstname: Peter
-                lastname: S
+                - firstname: Peter
+                  lastname: S
         default:
           description: Unexpected error.
           content:
@@ -1569,18 +1569,18 @@ paths:
   /clubs/{id}:
     get:
       tags:
-      - Clubs
+        - Clubs
       summary: Get Club
       description: Returns a given club using its identifier.
       operationId: getClubById
       parameters:
-      - name: id
-        in: path
-        description: The identifier of the club.
-        required: true
-        schema:
-          type: integer
-          format: int64
+        - name: id
+          in: path
+          description: The identifier of the club.
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         200:
           description: The detailed representation of a club.
@@ -1622,29 +1622,29 @@ paths:
   /clubs/{id}/members:
     get:
       tags:
-      - Clubs
+        - Clubs
       summary: List Club Members
       description: Returns a list of the athletes who are members of a given club.
       operationId: getClubMembersById
       parameters:
-      - name: id
-        in: path
-        description: The identifier of the club.
-        required: true
-        schema:
-          type: integer
-          format: int64
-      - name: page
-        in: query
-        description: Page number. Defaults to 1.
-        schema:
-          type: integer
-      - name: per_page
-        in: query
-        description: Number of items per page. Defaults to 30.
-        schema:
-          type: integer
-          default: 30
+        - name: id
+          in: path
+          description: The identifier of the club.
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: page
+          in: query
+          description: Page number. Defaults to 1.
+          schema:
+            type: integer
+        - name: per_page
+          in: query
+          description: Number of items per page. Defaults to 30.
+          schema:
+            type: integer
+            default: 30
       responses:
         200:
           description: A list of summary athlete representations.
@@ -1655,12 +1655,12 @@ paths:
                 items:
                   $ref: '#/components/schemas/SummaryAthlete'
               example:
-              - resource_state: 2
-                firstname: Peter
-                lastname: S.
-                membership: member
-                admin: false
-                owner: false
+                - resource_state: 2
+                  firstname: Peter
+                  lastname: S.
+                  membership: member
+                  admin: false
+                  owner: false
         default:
           description: Unexpected error.
           content:
@@ -1670,29 +1670,29 @@ paths:
   /clubs/{id}/admins:
     get:
       tags:
-      - Clubs
+        - Clubs
       summary: List Club Administrators
       description: Returns a list of the administrators of a given club.
       operationId: getClubAdminsById
       parameters:
-      - name: id
-        in: path
-        description: The identifier of the club.
-        required: true
-        schema:
-          type: integer
-          format: int64
-      - name: page
-        in: query
-        description: Page number. Defaults to 1.
-        schema:
-          type: integer
-      - name: per_page
-        in: query
-        description: Number of items per page. Defaults to 30.
-        schema:
-          type: integer
-          default: 30
+        - name: id
+          in: path
+          description: The identifier of the club.
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: page
+          in: query
+          description: Page number. Defaults to 1.
+          schema:
+            type: integer
+        - name: per_page
+          in: query
+          description: Number of items per page. Defaults to 30.
+          schema:
+            type: integer
+            default: 30
       responses:
         200:
           description: A list of summary athlete representations.
@@ -1703,9 +1703,9 @@ paths:
                 items:
                   $ref: '#/components/schemas/SummaryAthlete'
               example:
-              - resource_state: 2
-                firstname: Peter
-                lastname: S.
+                - resource_state: 2
+                  firstname: Peter
+                  lastname: S.
         default:
           description: Unexpected error.
           content:
@@ -1715,7 +1715,7 @@ paths:
   /clubs/{id}/activities:
     get:
       tags:
-      - Clubs
+        - Clubs
       summary: List Club Activities
       description: Retrieve recent activities from members of a specific club. The
         authenticated athlete must belong to the requested club in order to hit this
@@ -1723,24 +1723,24 @@ paths:
         for all activities.
       operationId: getClubActivitiesById
       parameters:
-      - name: id
-        in: path
-        description: The identifier of the club.
-        required: true
-        schema:
-          type: integer
-          format: int64
-      - name: page
-        in: query
-        description: Page number. Defaults to 1.
-        schema:
-          type: integer
-      - name: per_page
-        in: query
-        description: Number of items per page. Defaults to 30.
-        schema:
-          type: integer
-          default: 30
+        - name: id
+          in: path
+          description: The identifier of the club.
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: page
+          in: query
+          description: Page number. Defaults to 1.
+          schema:
+            type: integer
+        - name: per_page
+          in: query
+          description: Number of items per page. Defaults to 30.
+          schema:
+            type: integer
+            default: 30
       responses:
         200:
           description: A list of activities.
@@ -1751,17 +1751,17 @@ paths:
                 items:
                   $ref: '#/components/schemas/SummaryActivity'
               example:
-              - resource_state: 2
-                athlete:
-                  resource_state: 2
-                  firstname: Peter
-                  lastname: S.
-                name: World Championship
-                distance: 2641.7
-                moving_time: 577
-                elapsed_time: 635
-                total_elevation_gain: 8.8
-                type: Ride
+                - resource_state: 2
+                  athlete:
+                    resource_state: 2
+                    firstname: Peter
+                    lastname: S.
+                  name: World Championship
+                  distance: 2641.7
+                  moving_time: 577
+                  elapsed_time: 635
+                  total_elevation_gain: 8.8
+                  type: Ride
         default:
           description: Unexpected error.
           content:
@@ -1771,23 +1771,23 @@ paths:
   /athlete/clubs:
     get:
       tags:
-      - Clubs
+        - Clubs
       summary: List Athlete Clubs
       description: Returns a list of the clubs whose membership includes the authenticated
         athlete.
       operationId: getLoggedInAthleteClubs
       parameters:
-      - name: page
-        in: query
-        description: Page number. Defaults to 1.
-        schema:
-          type: integer
-      - name: per_page
-        in: query
-        description: Number of items per page. Defaults to 30.
-        schema:
-          type: integer
-          default: 30
+        - name: page
+          in: query
+          description: Page number. Defaults to 1.
+          schema:
+            type: integer
+        - name: per_page
+          in: query
+          description: Number of items per page. Defaults to 30.
+          schema:
+            type: integer
+            default: 30
       responses:
         200:
           description: A list of summary club representations.
@@ -1798,22 +1798,22 @@ paths:
                 items:
                   $ref: '#/components/schemas/SummaryClub'
               example:
-              - id: 231407
-                resource_state: 2
-                name: The Strava Club
-                profile_medium: https://dgalywyr863hv.cloudfront.net/pictures/clubs/231407/5319085/1/medium.jpg
-                profile: https://dgalywyr863hv.cloudfront.net/pictures/clubs/231407/5319085/1/large.jpg
-                cover_photo: https://dgalywyr863hv.cloudfront.net/pictures/clubs/231407/5098428/4/large.jpg
-                cover_photo_small: https://dgalywyr863hv.cloudfront.net/pictures/clubs/231407/5098428/4/small.jpg
-                sport_type: other
-                city: San Francisco
-                state: California
-                country: United States
-                private: false
-                member_count: 93151
-                featured: false
-                verified: true
-                url: strava
+                - id: 231407
+                  resource_state: 2
+                  name: The Strava Club
+                  profile_medium: https://dgalywyr863hv.cloudfront.net/pictures/clubs/231407/5319085/1/medium.jpg
+                  profile: https://dgalywyr863hv.cloudfront.net/pictures/clubs/231407/5319085/1/large.jpg
+                  cover_photo: https://dgalywyr863hv.cloudfront.net/pictures/clubs/231407/5098428/4/large.jpg
+                  cover_photo_small: https://dgalywyr863hv.cloudfront.net/pictures/clubs/231407/5098428/4/small.jpg
+                  sport_type: other
+                  city: San Francisco
+                  state: California
+                  country: United States
+                  private: false
+                  member_count: 93151
+                  featured: false
+                  verified: true
+                  url: strava
         default:
           description: Unexpected error.
           content:
@@ -1823,17 +1823,17 @@ paths:
   /gear/{id}:
     get:
       tags:
-      - Gears
+        - Gears
       summary: Get Equipment
       description: Returns an equipment using its identifier.
       operationId: getGearById
       parameters:
-      - name: id
-        in: path
-        description: The identifier of the gear.
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          description: The identifier of the gear.
+          required: true
+          schema:
+            type: string
       responses:
         200:
           description: A representation of the gear.
@@ -1859,19 +1859,19 @@ paths:
   /routes/{id}:
     get:
       tags:
-      - Routes
+        - Routes
       summary: Get Route
       description: Returns a route using its identifier. Requires read_all scope for
         private routes.
       operationId: getRouteById
       parameters:
-      - name: id
-        in: path
-        description: The identifier of the route.
-        required: true
-        schema:
-          type: integer
-          format: int64
+        - name: id
+          in: path
+          description: The identifier of the route.
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         200:
           description: A representation of the route.
@@ -1888,24 +1888,24 @@ paths:
   /athletes/{id}/routes:
     get:
       tags:
-      - Routes
+        - Routes
       summary: List Athlete Routes
       description: Returns a list of the routes created by the authenticated athlete.
         Private routes are filtered out unless requested by a token with read_all
         scope.
       operationId: getRoutesByAthleteId
       parameters:
-      - name: page
-        in: query
-        description: Page number. Defaults to 1.
-        schema:
-          type: integer
-      - name: per_page
-        in: query
-        description: Number of items per page. Defaults to 30.
-        schema:
-          type: integer
-          default: 30
+        - name: page
+          in: query
+          description: Page number. Defaults to 1.
+          schema:
+            type: integer
+        - name: per_page
+          in: query
+          description: Number of items per page. Defaults to 30.
+          schema:
+            type: integer
+            default: 30
       responses:
         200:
           description: A representation of the route.
@@ -1924,23 +1924,23 @@ paths:
   /routes/{id}/export_gpx:
     get:
       tags:
-      - Routes
+        - Routes
       summary: Export Route GPX
       description: Returns a GPX file of the route. Requires read_all scope for private
         routes.
       operationId: getRouteAsGPX
       parameters:
-      - name: id
-        in: path
-        description: The identifier of the route.
-        required: true
-        schema:
-          type: integer
-          format: int64
+        - name: id
+          in: path
+          description: The identifier of the route.
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         200:
           description: A GPX file with the route.
-          content: {}
+          content: { }
         default:
           description: Unexpected error.
           content:
@@ -1950,23 +1950,23 @@ paths:
   /routes/{id}/export_tcx:
     get:
       tags:
-      - Routes
+        - Routes
       summary: Export Route TCX
       description: Returns a TCX file of the route. Requires read_all scope for private
         routes.
       operationId: getRouteAsTCX
       parameters:
-      - name: id
-        in: path
-        description: The identifier of the route.
-        required: true
-        schema:
-          type: integer
-          format: int64
+        - name: id
+          in: path
+          description: The identifier of the route.
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         200:
           description: A TCX file with the route.
-          content: {}
+          content: { }
         default:
           description: Unexpected error.
           content:
@@ -1976,7 +1976,7 @@ paths:
   /uploads:
     post:
       tags:
-      - Uploads
+        - Uploads
       summary: Upload Activity
       description: Uploads a new data file to create an activity from. Requires activity:write
         scope.
@@ -2008,12 +2008,12 @@ paths:
                   type: string
                   description: The format of the uploaded file.
                   enum:
-                  - fit
-                  - fit.gz
-                  - tcx
-                  - tcx.gz
-                  - gpx
-                  - gpx.gz
+                    - fit
+                    - fit.gz
+                    - tcx
+                    - tcx.gz
+                    - gpx
+                    - gpx.gz
                 external_id:
                   type: string
                   description: The desired external identifier of the resulting activity.
@@ -2033,19 +2033,19 @@ paths:
   /uploads/{uploadId}:
     get:
       tags:
-      - Uploads
+        - Uploads
       summary: Get Upload
       description: Returns an upload for a given identifier. Requires activity:write
         scope.
       operationId: getUploadById
       parameters:
-      - name: uploadId
-        in: path
-        description: The identifier of the upload.
-        required: true
-        schema:
-          type: integer
-          format: int64
+        - name: uploadId
+          in: path
+          description: The identifier of the upload.
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         200:
           description: Representation of the upload.
@@ -2062,49 +2062,49 @@ paths:
   /activities/{id}/streams:
     get:
       tags:
-      - Streams
+        - Streams
       summary: Get Activity Streams
       description: Returns the given activity's streams. Requires activity:read scope.
         Requires activity:read_all scope for Only Me activities.
       operationId: getActivityStreams
       parameters:
-      - name: id
-        in: path
-        description: The identifier of the activity.
-        required: true
-        schema:
-          type: integer
-          format: int64
-      - name: keys
-        in: query
-        description: Desired stream types.
-        required: true
-        style: form
-        explode: false
-        schema:
-          minItems: 1
-          type: array
-          items:
-            type: string
-            enum:
-            - time
-            - distance
-            - latlng
-            - altitude
-            - velocity_smooth
-            - heartrate
-            - cadence
-            - watts
-            - temp
-            - moving
-            - grade_smooth
-      - name: key_by_type
-        in: query
-        description: Must be true.
-        required: true
-        schema:
-          type: boolean
-          default: true
+        - name: id
+          in: path
+          description: The identifier of the activity.
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: keys
+          in: query
+          description: Desired stream types.
+          required: true
+          style: form
+          explode: false
+          schema:
+            minItems: 1
+            type: array
+            items:
+              type: string
+              enum:
+                - time
+                - distance
+                - latlng
+                - altitude
+                - velocity_smooth
+                - heartrate
+                - cadence
+                - watts
+                - temp
+                - moving
+                - grade_smooth
+        - name: key_by_type
+          in: query
+          description: Must be true.
+          required: true
+          schema:
+            type: boolean
+            default: true
       responses:
         200:
           description: The set of requested streams.
@@ -2113,23 +2113,23 @@ paths:
               schema:
                 $ref: '#/components/schemas/StreamSet'
               example:
-              - type: distance
-                data:
-                - 2.9
-                - 5.8
-                - 8.5
-                - 11.7
-                - 15
-                - 19
-                - 23.2
-                - 28
-                - 32.8
-                - 38.1
-                - 43.8
-                - 49.5
-                series_type: distance
-                original_size: 12
-                resolution: high
+                - type: distance
+                  data:
+                    - 2.9
+                    - 5.8
+                    - 8.5
+                    - 11.7
+                    - 15
+                    - 19
+                    - 23.2
+                    - 28
+                    - 32.8
+                    - 38.1
+                    - 43.8
+                    - 49.5
+                  series_type: distance
+                  original_size: 12
+                  resolution: high
         default:
           description: Unexpected error.
           content:
@@ -2139,49 +2139,49 @@ paths:
   /segment_efforts/{id}/streams:
     get:
       tags:
-      - Streams
+        - Streams
       summary: Get Segment Effort Streams
       description: Returns a set of streams for a segment effort completed by the
         authenticated athlete. Requires read_all scope.
       operationId: getSegmentEffortStreams
       parameters:
-      - name: id
-        in: path
-        description: The identifier of the segment effort.
-        required: true
-        schema:
-          type: integer
-          format: int64
-      - name: keys
-        in: query
-        description: The types of streams to return.
-        required: true
-        style: form
-        explode: false
-        schema:
-          minItems: 1
-          type: array
-          items:
-            type: string
-            enum:
-            - time
-            - distance
-            - latlng
-            - altitude
-            - velocity_smooth
-            - heartrate
-            - cadence
-            - watts
-            - temp
-            - moving
-            - grade_smooth
-      - name: key_by_type
-        in: query
-        description: Must be true.
-        required: true
-        schema:
-          type: boolean
-          default: true
+        - name: id
+          in: path
+          description: The identifier of the segment effort.
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: keys
+          in: query
+          description: The types of streams to return.
+          required: true
+          style: form
+          explode: false
+          schema:
+            minItems: 1
+            type: array
+            items:
+              type: string
+              enum:
+                - time
+                - distance
+                - latlng
+                - altitude
+                - velocity_smooth
+                - heartrate
+                - cadence
+                - watts
+                - temp
+                - moving
+                - grade_smooth
+        - name: key_by_type
+          in: query
+          description: Must be true.
+          required: true
+          schema:
+            type: boolean
+            default: true
       responses:
         200:
           description: The set of requested streams.
@@ -2190,25 +2190,25 @@ paths:
               schema:
                 $ref: '#/components/schemas/StreamSet'
               example:
-              - type: distance
-                data:
-                - 904.5
-                - 957.8
-                - 963.1
-                - 989.1
-                - 1011.9
-                - 1049.7
-                - 1082.4
-                - 1098.1
-                - 1113.2
-                - 1124.7
-                - 1139.2
-                - 1142.1
-                - 1170.4
-                - 1173
-                series_type: distance
-                original_size: 14
-                resolution: high
+                - type: distance
+                  data:
+                    - 904.5
+                    - 957.8
+                    - 963.1
+                    - 989.1
+                    - 1011.9
+                    - 1049.7
+                    - 1082.4
+                    - 1098.1
+                    - 1113.2
+                    - 1124.7
+                    - 1139.2
+                    - 1142.1
+                    - 1170.4
+                    - 1173
+                  series_type: distance
+                  original_size: 14
+                  resolution: high
         default:
           description: Unexpected error.
           content:
@@ -2218,41 +2218,41 @@ paths:
   /segments/{id}/streams:
     get:
       tags:
-      - Streams
+        - Streams
       summary: Get Segment Streams
       description: Returns the given segment's streams. Requires read_all scope for
         private segments.
       operationId: getSegmentStreams
       parameters:
-      - name: id
-        in: path
-        description: The identifier of the segment.
-        required: true
-        schema:
-          type: integer
-          format: int64
-      - name: keys
-        in: query
-        description: The types of streams to return.
-        required: true
-        style: form
-        explode: false
-        schema:
-          minItems: 1
-          type: array
-          items:
-            type: string
-            enum:
-            - distance
-            - latlng
-            - altitude
-      - name: key_by_type
-        in: query
-        description: Must be true.
-        required: true
-        schema:
-          type: boolean
-          default: true
+        - name: id
+          in: path
+          description: The identifier of the segment.
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: keys
+          in: query
+          description: The types of streams to return.
+          required: true
+          style: form
+          explode: false
+          schema:
+            minItems: 1
+            type: array
+            items:
+              type: string
+              enum:
+                - distance
+                - latlng
+                - altitude
+        - name: key_by_type
+          in: query
+          description: Must be true.
+          required: true
+          schema:
+            type: boolean
+            default: true
       responses:
         200:
           description: The set of requested streams.
@@ -2261,29 +2261,29 @@ paths:
               schema:
                 $ref: '#/components/schemas/StreamSet'
               example:
-              - type: latlng
-                data:
-                - - 37.833112
-                  - -122.483436
-                - - 37.832964
-                  - -122.483406
-                series_type: distance
-                original_size: 2
-                resolution: high
-              - type: distance
-                data:
-                - 0
-                - 16.8
-                series_type: distance
-                original_size: 2
-                resolution: high
-              - type: altitude
-                data:
-                - 92.4
-                - 93.4
-                series_type: distance
-                original_size: 2
-                resolution: high
+                - type: latlng
+                  data:
+                    - - 37.833112
+                      - -122.483436
+                    - - 37.832964
+                      - -122.483406
+                  series_type: distance
+                  original_size: 2
+                  resolution: high
+                - type: distance
+                  data:
+                    - 0
+                    - 16.8
+                  series_type: distance
+                  original_size: 2
+                  resolution: high
+                - type: altitude
+                  data:
+                    - 92.4
+                    - 93.4
+                  series_type: distance
+                  original_size: 2
+                  resolution: high
         default:
           description: Unexpected error.
           content:
@@ -2293,19 +2293,19 @@ paths:
   /routes/{id}/streams:
     get:
       tags:
-      - Streams
+        - Streams
       summary: Get Route Streams
       description: Returns the given route's streams. Requires read_all scope for
         private routes.
       operationId: getRouteStreams
       parameters:
-      - name: id
-        in: path
-        description: The identifier of the route.
-        required: true
-        schema:
-          type: integer
-          format: int64
+        - name: id
+          in: path
+          description: The identifier of the route.
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         200:
           description: The set of requested streams.
@@ -2314,20 +2314,20 @@ paths:
               schema:
                 $ref: '#/components/schemas/StreamSet'
               example:
-              - type: latlng
-                data:
-                - - 37.833112
-                  - -122.483436
-                - - 37.832964
-                  - -122.483406
-              - type: distance
-                data:
-                - 0
-                - 16.8
-              - type: altitude
-                data:
-                - 92.4
-                - 93.4
+                - type: latlng
+                  data:
+                    - - 37.833112
+                      - -122.483436
+                    - - 37.832964
+                      - -122.483406
+                - type: distance
+                  data:
+                    - 0
+                    - 16.8
+                - type: altitude
+                  data:
+                    - 92.4
+                    - 93.4
         default:
           description: Unexpected error.
           content:
@@ -2418,94 +2418,94 @@ components:
           description: The type of resource associated with this error.
     DetailedAthlete:
       allOf:
-      - $ref: '#/components/schemas/SummaryAthlete'
-      - type: object
-        properties:
-          follower_count:
-            type: integer
-            description: The athlete's follower count.
-          friend_count:
-            type: integer
-            description: The athlete's friend count.
-          measurement_preference:
-            type: string
-            description: The athlete's preferred unit system.
-            enum:
-            - feet
-            - meters
-          ftp:
-            type: integer
-            description: The athlete's FTP (Functional Threshold Power).
-          weight:
-            type: number
-            description: The athlete's weight.
-            format: float
-          clubs:
-            type: array
-            description: The athlete's clubs.
-            items:
-              $ref: '#/components/schemas/SummaryClub'
-          bikes:
-            type: array
-            description: The athlete's bikes.
-            items:
-              $ref: '#/components/schemas/SummaryGear'
-          shoes:
-            type: array
-            description: The athlete's shoes.
-            items:
-              $ref: '#/components/schemas/SummaryGear'
+        - $ref: '#/components/schemas/SummaryAthlete'
+        - type: object
+          properties:
+            follower_count:
+              type: integer
+              description: The athlete's follower count.
+            friend_count:
+              type: integer
+              description: The athlete's friend count.
+            measurement_preference:
+              type: string
+              description: The athlete's preferred unit system.
+              enum:
+                - feet
+                - meters
+            ftp:
+              type: integer
+              description: The athlete's FTP (Functional Threshold Power).
+            weight:
+              type: number
+              description: The athlete's weight.
+              format: float
+            clubs:
+              type: array
+              description: The athlete's clubs.
+              items:
+                $ref: '#/components/schemas/SummaryClub'
+            bikes:
+              type: array
+              description: The athlete's bikes.
+              items:
+                $ref: '#/components/schemas/SummaryGear'
+            shoes:
+              type: array
+              description: The athlete's shoes.
+              items:
+                $ref: '#/components/schemas/SummaryGear'
     SummaryAthlete:
       allOf:
-      - $ref: '#/components/schemas/MetaAthlete'
-      - type: object
-        properties:
-          resource_state:
-            type: integer
-            description: 'Resource state, indicates level of detail. Possible values:
+        - $ref: '#/components/schemas/MetaAthlete'
+        - type: object
+          properties:
+            resource_state:
+              type: integer
+              description: 'Resource state, indicates level of detail. Possible values:
               1 -> "meta", 2 -> "summary", 3 -> "detail"'
-          firstname:
-            type: string
-            description: The athlete's first name.
-          lastname:
-            type: string
-            description: The athlete's last name.
-          profile_medium:
-            type: string
-            description: URL to a 62x62 pixel profile picture.
-          profile:
-            type: string
-            description: URL to a 124x124 pixel profile picture.
-          city:
-            type: string
-            description: The athlete's city.
-          state:
-            type: string
-            description: The athlete's state or geographical region.
-          country:
-            type: string
-            description: The athlete's country.
-          sex:
-            type: string
-            description: The athlete's sex.
-            enum:
-            - M
-            - F
-          premium:
-            type: boolean
-            description: Deprecated.  Use summit field instead. Whether the athlete
-              has any Summit subscription.
-          summit:
-            type: boolean
-            description: Whether the athlete has any Summit subscription.
-          created_at:
-            type: string
-            description: The time at which the athlete was created.
-            format: date-time
-          updated_at:
-            type: string
-            description: The time at which the athlete was last updated.
-            format: date-time
+            firstname:
+              type: string
+              description: The athlete's first name.
+            lastname:
+              type: string
+              description: The athlete's last name.
+            profile_medium:
+              type: string
+              description: URL to a 62x62 pixel profile picture.
+            profile:
+              type: string
+              description: URL to a 124x124 pixel profile picture.
+            city:
+              type: string
+              description: The athlete's city.
+            state:
+              type: string
+              description: The athlete's state or geographical region.
+            country:
+              type: string
+              description: The athlete's country.
+            sex:
+              type: string
+              description: The athlete's sex.
+              enum:
+                - M
+                - F
+            premium:
+              type: boolean
+              description: Deprecated.  Use summit field instead. Whether the athlete
+                has any Summit subscription.
+            summit:
+              type: boolean
+              description: Whether the athlete has any Summit subscription.
+            created_at:
+              type: string
+              description: The time at which the athlete was created.
+              format: date-time
+            updated_at:
+              type: string
+              description: The time at which the athlete was last updated.
+              format: date-time
     MetaAthlete:
       type: object
       properties:
@@ -2515,49 +2515,49 @@ components:
           format: int64
     SummaryClub:
       allOf:
-      - $ref: '#/components/schemas/MetaClub'
-      - type: object
-        properties:
-          profile_medium:
-            type: string
-            description: URL to a 60x60 pixel profile picture.
-          cover_photo:
-            type: string
-            description: URL to a ~1185x580 pixel cover photo.
-          cover_photo_small:
-            type: string
-            description: URL to a ~360x176  pixel cover photo.
-          sport_type:
-            type: string
-            enum:
-            - cycling
-            - running
-            - triathlon
-            - other
-          city:
-            type: string
-            description: The club's city.
-          state:
-            type: string
-            description: The club's state or geographical region.
-          country:
-            type: string
-            description: The club's country.
-          private:
-            type: boolean
-            description: Whether the club is private.
-          member_count:
-            type: integer
-            description: The club's member count.
-          featured:
-            type: boolean
-            description: Whether the club is featured or not.
-          verified:
-            type: boolean
-            description: Whether the club is verified or not.
-          url:
-            type: string
-            description: The club's vanity URL.
+        - $ref: '#/components/schemas/MetaClub'
+        - type: object
+          properties:
+            profile_medium:
+              type: string
+              description: URL to a 60x60 pixel profile picture.
+            cover_photo:
+              type: string
+              description: URL to a ~1185x580 pixel cover photo.
+            cover_photo_small:
+              type: string
+              description: URL to a ~360x176  pixel cover photo.
+            sport_type:
+              type: string
+              enum:
+                - cycling
+                - running
+                - triathlon
+                - other
+            city:
+              type: string
+              description: The club's city.
+            state:
+              type: string
+              description: The club's state or geographical region.
+            country:
+              type: string
+              description: The club's country.
+            private:
+              type: boolean
+              description: Whether the club is private.
+            member_count:
+              type: integer
+              description: The club's member count.
+            featured:
+              type: boolean
+              description: Whether the club is featured or not.
+            verified:
+              type: boolean
+              description: Whether the club is verified or not.
+            url:
+              type: string
+              description: The club's vanity URL.
     MetaClub:
       type: object
       properties:
@@ -2627,36 +2627,36 @@ components:
           $ref: '#/components/schemas/ZoneRanges'
     DetailedSegment:
       allOf:
-      - $ref: '#/components/schemas/SummarySegment'
-      - type: object
-        properties:
-          created_at:
-            type: string
-            description: The time at which the segment was created.
-            format: date-time
-          updated_at:
-            type: string
-            description: The time at which the segment was last updated.
-            format: date-time
-          total_elevation_gain:
-            type: number
-            description: The segment's total elevation gain.
-            format: float
-          map:
-            $ref: '#/components/schemas/PolylineMap'
-          effort_count:
-            type: integer
-            description: The total number of efforts for this segment
-          athlete_count:
-            type: integer
-            description: The number of unique athletes who have an effort for this
-              segment
-          hazardous:
-            type: boolean
-            description: Whether this segment is considered hazardous
-          star_count:
-            type: integer
-            description: The number of stars for this segment
+        - $ref: '#/components/schemas/SummarySegment'
+        - type: object
+          properties:
+            created_at:
+              type: string
+              description: The time at which the segment was created.
+              format: date-time
+            updated_at:
+              type: string
+              description: The time at which the segment was last updated.
+              format: date-time
+            total_elevation_gain:
+              type: number
+              description: The segment's total elevation gain.
+              format: float
+            map:
+              $ref: '#/components/schemas/PolylineMap'
+            effort_count:
+              type: integer
+              description: The total number of efforts for this segment
+            athlete_count:
+              type: integer
+              description: The number of unique athletes who have an effort for this
+                segment
+            hazardous:
+              type: boolean
+              description: Whether this segment is considered hazardous
+            star_count:
+              type: integer
+              description: The number of stars for this segment
     SummarySegment:
       type: object
       properties:
@@ -2670,8 +2670,8 @@ components:
         activity_type:
           type: string
           enum:
-          - Ride
-          - Run
+            - Ride
+            - Run
         distance:
           type: number
           description: The segment's distance, in meters
@@ -2786,63 +2786,63 @@ components:
           description: The summary polyline of the map
     DetailedSegmentEffort:
       allOf:
-      - $ref: '#/components/schemas/SummarySegmentEffort'
-      - type: object
-        properties:
-          name:
-            type: string
-            description: The name of the segment on which this effort was performed
-          activity:
-            $ref: '#/components/schemas/MetaActivity'
-          athlete:
-            $ref: '#/components/schemas/MetaAthlete'
-          moving_time:
-            type: integer
-            description: The effort's moving time
-          start_index:
-            type: integer
-            description: The start index of this effort in its activity's stream
-          end_index:
-            type: integer
-            description: The end index of this effort in its activity's stream
-          average_cadence:
-            type: number
-            description: The effort's average cadence
-            format: float
-          average_watts:
-            type: number
-            description: The average wattage of this effort
-            format: float
-          device_watts:
-            type: boolean
-            description: For riding efforts, whether the wattage was reported by a
-              dedicated recording device
-          average_heartrate:
-            type: number
-            description: The heart heart rate of the athlete during this effort
-            format: float
-          max_heartrate:
-            type: number
-            description: The maximum heart rate of the athlete during this effort
-            format: float
-          segment:
-            $ref: '#/components/schemas/SummarySegment'
-          kom_rank:
-            maximum: 1E+1
-            minimum: 1
-            type: integer
-            description: The rank of the effort on the global leaderboard if it belongs
-              in the top 10 at the time of upload
-          pr_rank:
-            maximum: 3
-            minimum: 1
-            type: integer
-            description: The rank of the effort on the athlete's leaderboard if it
-              belongs in the top 3 at the time of upload
-          hidden:
-            type: boolean
-            description: Whether this effort should be hidden when viewed within an
-              activity
+        - $ref: '#/components/schemas/SummarySegmentEffort'
+        - type: object
+          properties:
+            name:
+              type: string
+              description: The name of the segment on which this effort was performed
+            activity:
+              $ref: '#/components/schemas/MetaActivity'
+            athlete:
+              $ref: '#/components/schemas/MetaAthlete'
+            moving_time:
+              type: integer
+              description: The effort's moving time
+            start_index:
+              type: integer
+              description: The start index of this effort in its activity's stream
+            end_index:
+              type: integer
+              description: The end index of this effort in its activity's stream
+            average_cadence:
+              type: number
+              description: The effort's average cadence
+              format: float
+            average_watts:
+              type: number
+              description: The average wattage of this effort
+              format: float
+            device_watts:
+              type: boolean
+              description: For riding efforts, whether the wattage was reported by a
+                dedicated recording device
+            average_heartrate:
+              type: number
+              description: The heart heart rate of the athlete during this effort
+              format: float
+            max_heartrate:
+              type: number
+              description: The maximum heart rate of the athlete during this effort
+              format: float
+            segment:
+              $ref: '#/components/schemas/SummarySegment'
+            kom_rank:
+              maximum: 1E+1
+              minimum: 1
+              type: integer
+              description: The rank of the effort on the global leaderboard if it belongs
+                in the top 10 at the time of upload
+            pr_rank:
+              maximum: 3
+              minimum: 1
+              type: integer
+              description: The rank of the effort on the athlete's leaderboard if it
+                belongs in the top 3 at the time of upload
+            hidden:
+              type: boolean
+              description: Whether this effort should be hidden when viewed within an
+                activity
     MetaActivity:
       type: object
       properties:
@@ -2880,12 +2880,12 @@ components:
           type: string
           description: The description for the category of the climb
           enum:
-          - NC
-          - "4"
-          - "3"
-          - "2"
-          - "1"
-          - HC
+            - NC
+            - "4"
+            - "3"
+            - "2"
+            - "1"
+            - HC
         avg_grade:
           type: number
           description: The segment's average grade, in percents
@@ -2946,8 +2946,8 @@ components:
           type: string
           description: The unit system in which the race should be displayed.
           enum:
-          - feet
-          - meters
+            - feet
+            - meters
         url:
           type: string
           description: The vanity URL of this race on Strava.
@@ -2956,221 +2956,221 @@ components:
           description: The URL of this race's website.
     DetailedActivity:
       allOf:
-      - $ref: '#/components/schemas/SummaryActivity'
-      - type: object
-        properties:
-          description:
-            type: string
-            description: The description of the activity
-          photos:
-            $ref: '#/components/schemas/PhotosSummary'
-          gear:
-            $ref: '#/components/schemas/SummaryGear'
-          calories:
-            type: number
-            description: The number of kilocalories consumed during this activity
-            format: float
-          segment_efforts:
-            type: array
-            items:
-              $ref: '#/components/schemas/DetailedSegmentEffort'
-          device_name:
-            type: string
-            description: The name of the device used to record the activity
-          embed_token:
-            type: string
-            description: The token used to embed a Strava activity
-          splits_metric:
-            type: array
-            description: The splits of this activity in metric units (for runs)
-            items:
-              $ref: '#/components/schemas/Split'
-          splits_standard:
-            type: array
-            description: The splits of this activity in imperial units (for runs)
-            items:
-              $ref: '#/components/schemas/Split'
-          laps:
-            type: array
-            items:
-              $ref: '#/components/schemas/Lap'
-          best_efforts:
-            type: array
-            items:
-              $ref: '#/components/schemas/DetailedSegmentEffort'
+        - $ref: '#/components/schemas/SummaryActivity'
+        - type: object
+          properties:
+            description:
+              type: string
+              description: The description of the activity
+            photos:
+              $ref: '#/components/schemas/PhotosSummary'
+            gear:
+              $ref: '#/components/schemas/SummaryGear'
+            calories:
+              type: number
+              description: The number of kilocalories consumed during this activity
+              format: float
+            segment_efforts:
+              type: array
+              items:
+                $ref: '#/components/schemas/DetailedSegmentEffort'
+            device_name:
+              type: string
+              description: The name of the device used to record the activity
+            embed_token:
+              type: string
+              description: The token used to embed a Strava activity
+            splits_metric:
+              type: array
+              description: The splits of this activity in metric units (for runs)
+              items:
+                $ref: '#/components/schemas/Split'
+            splits_standard:
+              type: array
+              description: The splits of this activity in imperial units (for runs)
+              items:
+                $ref: '#/components/schemas/Split'
+            laps:
+              type: array
+              items:
+                $ref: '#/components/schemas/Lap'
+            best_efforts:
+              type: array
+              items:
+                $ref: '#/components/schemas/DetailedSegmentEffort'
     SummaryActivity:
       allOf:
-      - $ref: '#/components/schemas/MetaActivity'
-      - type: object
-        properties:
-          external_id:
-            type: string
-            description: The identifier provided at upload time
-          upload_id:
-            type: integer
-            description: The identifier of the upload that resulted in this activity
-            format: int64
-          athlete:
-            $ref: '#/components/schemas/MetaAthlete'
-          name:
-            type: string
-            description: The name of the activity
-          distance:
-            type: number
-            description: The activity's distance, in meters
-            format: float
-          moving_time:
-            type: integer
-            description: The activity's moving time, in seconds
-          elapsed_time:
-            type: integer
-            description: The activity's elapsed time, in seconds
-          total_elevation_gain:
-            type: number
-            description: The activity's total elevation gain.
-            format: float
-          elev_high:
-            type: number
-            description: The activity's highest elevation, in meters
-            format: float
-          elev_low:
-            type: number
-            description: The activity's lowest elevation, in meters
-            format: float
-          type:
-            $ref: '#/components/schemas/ActivityType'
-          start_date:
-            type: string
-            description: The time at which the activity was started.
-            format: date-time
-          start_date_local:
-            type: string
-            description: The time at which the activity was started in the local timezone.
-            format: date-time
-          timezone:
-            type: string
-            description: The timezone of the activity
-          start_latlng:
-            $ref: '#/components/schemas/LatLng'
-          end_latlng:
-            $ref: '#/components/schemas/LatLng'
-          achievement_count:
-            type: integer
-            description: The number of achievements gained during this activity
-          kudos_count:
-            type: integer
-            description: The number of kudos given for this activity
-          comment_count:
-            type: integer
-            description: The number of comments for this activity
-          athlete_count:
-            minimum: 1
-            type: integer
-            description: The number of athletes for taking part in a group activity
-          photo_count:
-            type: integer
-            description: The number of Instagram photos for this activity
-          total_photo_count:
-            type: integer
-            description: The number of Instagram and Strava photos for this activity
-          map:
-            $ref: '#/components/schemas/PolylineMap'
-          trainer:
-            type: boolean
-            description: Whether this activity was recorded on a training machine
-          commute:
-            type: boolean
-            description: Whether this activity is a commute
-          manual:
-            type: boolean
-            description: Whether this activity was created manually
-          private:
-            type: boolean
-            description: Whether this activity is private
-          flagged:
-            type: boolean
-            description: Whether this activity is flagged
-          workout_type:
-            type: integer
-            description: The activity's workout type
-          upload_id_str:
-            type: string
-            description: The unique identifier of the upload in string format
-          average_speed:
-            type: number
-            description: The activity's average speed, in meters per second
-            format: float
-          max_speed:
-            type: number
-            description: The activity's max speed, in meters per second
-            format: float
-          has_kudoed:
-            type: boolean
-            description: Whether the logged-in athlete has kudoed this activity
-          gear_id:
-            type: string
-            description: The id of the gear for the activity
-          kilojoules:
-            type: number
-            description: The total work done in kilojoules during this activity. Rides
-              only
-            format: float
-          average_watts:
-            type: number
-            description: Average power output in watts during this activity. Rides
-              only
-            format: float
-          device_watts:
-            type: boolean
-            description: Whether the watts are from a power meter, false if estimated
-          max_watts:
-            type: integer
-            description: Rides with power meter data only
-          weighted_average_watts:
-            type: integer
-            description: Similar to Normalized Power. Rides with power meter data
-              only
+        - $ref: '#/components/schemas/MetaActivity'
+        - type: object
+          properties:
+            external_id:
+              type: string
+              description: The identifier provided at upload time
+            upload_id:
+              type: integer
+              description: The identifier of the upload that resulted in this activity
+              format: int64
+            athlete:
+              $ref: '#/components/schemas/MetaAthlete'
+            name:
+              type: string
+              description: The name of the activity
+            distance:
+              type: number
+              description: The activity's distance, in meters
+              format: float
+            moving_time:
+              type: integer
+              description: The activity's moving time, in seconds
+            elapsed_time:
+              type: integer
+              description: The activity's elapsed time, in seconds
+            total_elevation_gain:
+              type: number
+              description: The activity's total elevation gain.
+              format: float
+            elev_high:
+              type: number
+              description: The activity's highest elevation, in meters
+              format: float
+            elev_low:
+              type: number
+              description: The activity's lowest elevation, in meters
+              format: float
+            type:
+              $ref: '#/components/schemas/ActivityType'
+            start_date:
+              type: string
+              description: The time at which the activity was started.
+              format: date-time
+            start_date_local:
+              type: string
+              description: The time at which the activity was started in the local timezone.
+              format: date-time
+            timezone:
+              type: string
+              description: The timezone of the activity
+            start_latlng:
+              $ref: '#/components/schemas/LatLng'
+            end_latlng:
+              $ref: '#/components/schemas/LatLng'
+            achievement_count:
+              type: integer
+              description: The number of achievements gained during this activity
+            kudos_count:
+              type: integer
+              description: The number of kudos given for this activity
+            comment_count:
+              type: integer
+              description: The number of comments for this activity
+            athlete_count:
+              minimum: 1
+              type: integer
+              description: The number of athletes for taking part in a group activity
+            photo_count:
+              type: integer
+              description: The number of Instagram photos for this activity
+            total_photo_count:
+              type: integer
+              description: The number of Instagram and Strava photos for this activity
+            map:
+              $ref: '#/components/schemas/PolylineMap'
+            trainer:
+              type: boolean
+              description: Whether this activity was recorded on a training machine
+            commute:
+              type: boolean
+              description: Whether this activity is a commute
+            manual:
+              type: boolean
+              description: Whether this activity was created manually
+            private:
+              type: boolean
+              description: Whether this activity is private
+            flagged:
+              type: boolean
+              description: Whether this activity is flagged
+            workout_type:
+              type: integer
+              description: The activity's workout type
+            upload_id_str:
+              type: string
+              description: The unique identifier of the upload in string format
+            average_speed:
+              type: number
+              description: The activity's average speed, in meters per second
+              format: float
+            max_speed:
+              type: number
+              description: The activity's max speed, in meters per second
+              format: float
+            has_kudoed:
+              type: boolean
+              description: Whether the logged-in athlete has kudoed this activity
+            gear_id:
+              type: string
+              description: The id of the gear for the activity
+            kilojoules:
+              type: number
+              description: The total work done in kilojoules during this activity. Rides
+                only
+              format: float
+            average_watts:
+              type: number
+              description: Average power output in watts during this activity. Rides
+                only
+              format: float
+            device_watts:
+              type: boolean
+              description: Whether the watts are from a power meter, false if estimated
+            max_watts:
+              type: integer
+              description: Rides with power meter data only
+            weighted_average_watts:
+              type: integer
+              description: Similar to Normalized Power. Rides with power meter data
+                only
     ActivityType:
       type: string
       description: An enumeration of the types an activity may have.
       enum:
-      - AlpineSki
-      - BackcountrySki
-      - Canoeing
-      - Crossfit
-      - EBikeRide
-      - Elliptical
-      - Golf
-      - Handcycle
-      - Hike
-      - IceSkate
-      - InlineSkate
-      - Kayaking
-      - Kitesurf
-      - NordicSki
-      - Ride
-      - RockClimbing
-      - RollerSki
-      - Rowing
-      - Run
-      - Sail
-      - Skateboard
-      - Snowboard
-      - Snowshoe
-      - Soccer
-      - StairStepper
-      - StandUpPaddling
-      - Surfing
-      - Swim
-      - Velomobile
-      - VirtualRide
-      - VirtualRun
-      - Walk
-      - WeightTraining
-      - Wheelchair
-      - Windsurf
-      - Workout
-      - Yoga
+        - AlpineSki
+        - BackcountrySki
+        - Canoeing
+        - Crossfit
+        - EBikeRide
+        - Elliptical
+        - Golf
+        - Handcycle
+        - Hike
+        - IceSkate
+        - InlineSkate
+        - Kayaking
+        - Kitesurf
+        - NordicSki
+        - Ride
+        - RockClimbing
+        - RollerSki
+        - Rowing
+        - Run
+        - Sail
+        - Skateboard
+        - Snowboard
+        - Snowshoe
+        - Soccer
+        - StairStepper
+        - StandUpPaddling
+        - Surfing
+        - Swim
+        - Velomobile
+        - VirtualRide
+        - VirtualRun
+        - Walk
+        - WeightTraining
+        - Wheelchair
+        - Windsurf
+        - Workout
+        - Yoga
     PhotosSummary:
       type: object
       properties:
@@ -3311,8 +3311,8 @@ components:
         type:
           type: string
           enum:
-          - heartrate
-          - power
+            - heartrate
+            - power
         sensor_based:
           type: boolean
         points:
@@ -3330,12 +3330,12 @@ components:
     TimedZoneRange:
       description: A union type representing the time spent in a given zone.
       allOf:
-      - $ref: '#/components/schemas/ZoneRange'
-      - type: object
-        properties:
-          time:
-            type: integer
-            description: The number of seconds spent in this zone
+        - $ref: '#/components/schemas/ZoneRange'
+        - type: object
+          properties:
+            time:
+              type: integer
+              description: The number of seconds spent in this zone
     Comment:
       type: object
       properties:
@@ -3358,44 +3358,44 @@ components:
           format: date-time
     DetailedClub:
       allOf:
-      - $ref: '#/components/schemas/SummaryClub'
-      - type: object
-        properties:
-          membership:
-            type: string
-            description: The membership status of the logged-in athlete.
-            enum:
-            - member
-            - pending
-          admin:
-            type: boolean
-            description: Whether the currently logged-in athlete is an administrator
-              of this club.
-          owner:
-            type: boolean
-            description: Whether the currently logged-in athlete is the owner of this
-              club.
-          following_count:
-            type: integer
-            description: The number of athletes in the club that the logged-in athlete
-              follows.
+        - $ref: '#/components/schemas/SummaryClub'
+        - type: object
+          properties:
+            membership:
+              type: string
+              description: The membership status of the logged-in athlete.
+              enum:
+                - member
+                - pending
+            admin:
+              type: boolean
+              description: Whether the currently logged-in athlete is an administrator
+                of this club.
+            owner:
+              type: boolean
+              description: Whether the currently logged-in athlete is the owner of this
+                club.
+            following_count:
+              type: integer
+              description: The number of athletes in the club that the logged-in athlete
+                follows.
     DetailedGear:
       allOf:
-      - $ref: '#/components/schemas/SummaryGear'
-      - type: object
-        properties:
-          brand_name:
-            type: string
-            description: The gear's brand name.
-          model_name:
-            type: string
-            description: The gear's model name.
-          frame_type:
-            type: integer
-            description: The gear's frame type (bike only).
-          description:
-            type: string
-            description: The gear's description.
+        - $ref: '#/components/schemas/SummaryGear'
+        - type: object
+          properties:
+            brand_name:
+              type: string
+              description: The gear's brand name.
+            model_name:
+              type: string
+              description: The gear's model name.
+            frame_type:
+              type: integer
+              description: The gear's frame type (bike only).
+            description:
+              type: string
+              description: The gear's description.
     Route:
       type: object
       properties:
@@ -3507,14 +3507,14 @@ components:
           $ref: '#/components/schemas/SmoothGradeStream'
     TimeStream:
       allOf:
-      - $ref: '#/components/schemas/BaseStream'
-      - type: object
-        properties:
-          data:
-            type: array
-            description: The sequence of time values for this stream, in seconds
-            items:
-              type: integer
+        - $ref: '#/components/schemas/BaseStream'
+        - type: object
+          properties:
+            data:
+              type: array
+              description: The sequence of time values for this stream, in seconds
+              items:
+                type: integer
     BaseStream:
       type: object
       properties:
@@ -3525,125 +3525,125 @@ components:
           type: string
           description: The level of detail (sampling) in which this stream was returned
           enum:
-          - low
-          - medium
-          - high
+            - low
+            - medium
+            - high
         series_type:
           type: string
           description: The base series used in the case the stream was downsampled
           enum:
-          - distance
-          - time
+            - distance
+            - time
     DistanceStream:
       allOf:
-      - $ref: '#/components/schemas/BaseStream'
-      - type: object
-        properties:
-          data:
-            type: array
-            description: The sequence of distance values for this stream, in meters
-            items:
-              type: number
-              format: float
+        - $ref: '#/components/schemas/BaseStream'
+        - type: object
+          properties:
+            data:
+              type: array
+              description: The sequence of distance values for this stream, in meters
+              items:
+                type: number
+                format: float
     LatLngStream:
       allOf:
-      - $ref: '#/components/schemas/BaseStream'
-      - type: object
-        properties:
-          data:
-            type: array
-            description: The sequence of lat/long values for this stream
-            items:
-              $ref: '#/components/schemas/LatLng'
+        - $ref: '#/components/schemas/BaseStream'
+        - type: object
+          properties:
+            data:
+              type: array
+              description: The sequence of lat/long values for this stream
+              items:
+                $ref: '#/components/schemas/LatLng'
     AltitudeStream:
       allOf:
-      - $ref: '#/components/schemas/BaseStream'
-      - type: object
-        properties:
-          data:
-            type: array
-            description: The sequence of altitude values for this stream, in meters
-            items:
-              type: number
-              format: float
+        - $ref: '#/components/schemas/BaseStream'
+        - type: object
+          properties:
+            data:
+              type: array
+              description: The sequence of altitude values for this stream, in meters
+              items:
+                type: number
+                format: float
     SmoothVelocityStream:
       allOf:
-      - $ref: '#/components/schemas/BaseStream'
-      - type: object
-        properties:
-          data:
-            type: array
-            description: The sequence of velocity values for this stream, in meters
-              per second
-            items:
-              type: number
-              format: float
+        - $ref: '#/components/schemas/BaseStream'
+        - type: object
+          properties:
+            data:
+              type: array
+              description: The sequence of velocity values for this stream, in meters
+                per second
+              items:
+                type: number
+                format: float
     HeartrateStream:
       allOf:
-      - $ref: '#/components/schemas/BaseStream'
-      - type: object
-        properties:
-          data:
-            type: array
-            description: The sequence of heart rate values for this stream, in beats
-              per minute
-            items:
-              type: integer
+        - $ref: '#/components/schemas/BaseStream'
+        - type: object
+          properties:
+            data:
+              type: array
+              description: The sequence of heart rate values for this stream, in beats
+                per minute
+              items:
+                type: integer
     CadenceStream:
       allOf:
-      - $ref: '#/components/schemas/BaseStream'
-      - type: object
-        properties:
-          data:
-            type: array
-            description: The sequence of cadence values for this stream, in rotations
-              per minute
-            items:
-              type: integer
+        - $ref: '#/components/schemas/BaseStream'
+        - type: object
+          properties:
+            data:
+              type: array
+              description: The sequence of cadence values for this stream, in rotations
+                per minute
+              items:
+                type: integer
     PowerStream:
       allOf:
-      - $ref: '#/components/schemas/BaseStream'
-      - type: object
-        properties:
-          data:
-            type: array
-            description: The sequence of power values for this stream, in watts
-            items:
-              type: integer
+        - $ref: '#/components/schemas/BaseStream'
+        - type: object
+          properties:
+            data:
+              type: array
+              description: The sequence of power values for this stream, in watts
+              items:
+                type: integer
     TemperatureStream:
       allOf:
-      - $ref: '#/components/schemas/BaseStream'
-      - type: object
-        properties:
-          data:
-            type: array
-            description: The sequence of temperature values for this stream, in celsius
-              degrees
-            items:
-              type: integer
+        - $ref: '#/components/schemas/BaseStream'
+        - type: object
+          properties:
+            data:
+              type: array
+              description: The sequence of temperature values for this stream, in celsius
+                degrees
+              items:
+                type: integer
     MovingStream:
       allOf:
-      - $ref: '#/components/schemas/BaseStream'
-      - type: object
-        properties:
-          data:
-            type: array
-            description: The sequence of moving values for this stream, as boolean
-              values
-            items:
-              type: boolean
+        - $ref: '#/components/schemas/BaseStream'
+        - type: object
+          properties:
+            data:
+              type: array
+              description: The sequence of moving values for this stream, as boolean
+                values
+              items:
+                type: boolean
     SmoothGradeStream:
       allOf:
-      - $ref: '#/components/schemas/BaseStream'
-      - type: object
-        properties:
-          data:
-            type: array
-            description: The sequence of grade values for this stream, as percents
-              of a grade
-            items:
-              type: number
-              format: float
+        - $ref: '#/components/schemas/BaseStream'
+        - type: object
+          properties:
+            data:
+              type: array
+              description: The sequence of grade values for this stream, as percents
+                of a grade
+              items:
+                type: number
+                format: float
   parameters:
     page:
       name: page

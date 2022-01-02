@@ -1,51 +1,714 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="993px" preserveAspectRatio="none" style="width:1309px;height:993px;" version="1.1" viewBox="0 0 1309 993" width="1309px" zoomAndPan="magnify"><defs><filter height="300%" id="f1cf6uikq0urbj" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[789dc9694f718e85b0448a69b113399f]
-class agents--><rect codeLine="8" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="32" id="agents" style="stroke:#A80036;stroke-width:1.5;" width="76" x="1219" y="620"/><ellipse cx="1234" cy="636" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M1236.9688,641.6406 Q1236.3906,641.9375 1235.75,642.0781 Q1235.1094,642.2344 1234.4063,642.2344 Q1231.9063,642.2344 1230.5781,640.5938 Q1229.2656,638.9375 1229.2656,635.8125 Q1229.2656,632.6875 1230.5781,631.0313 Q1231.9063,629.375 1234.4063,629.375 Q1235.1094,629.375 1235.75,629.5313 Q1236.4063,629.6875 1236.9688,629.9844 L1236.9688,632.7031 Q1236.3438,632.125 1235.75,631.8594 Q1235.1563,631.5781 1234.5313,631.5781 Q1233.1875,631.5781 1232.5,632.6563 Q1231.8125,633.7188 1231.8125,635.8125 Q1231.8125,637.9063 1232.5,638.9844 Q1233.1875,640.0469 1234.5313,640.0469 Q1235.1563,640.0469 1235.75,639.7813 Q1236.3438,639.5 1236.9688,638.9219 L1236.9688,641.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="44" x="1248" y="640.1543">agents</text><!--MD5=[ca87f10b7dee07e1e55f9eb4a33c33e0]
-class agent--><rect codeLine="11" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="52.8047" id="agent" style="stroke:#A80036;stroke-width:1.5;" width="87" x="1046.5" y="790.5"/><ellipse cx="1069.6" cy="806.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M1072.5688,812.1406 Q1071.9906,812.4375 1071.35,812.5781 Q1070.7094,812.7344 1070.0063,812.7344 Q1067.5063,812.7344 1066.1781,811.0938 Q1064.8656,809.4375 1064.8656,806.3125 Q1064.8656,803.1875 1066.1781,801.5313 Q1067.5063,799.875 1070.0063,799.875 Q1070.7094,799.875 1071.35,800.0313 Q1072.0063,800.1875 1072.5688,800.4844 L1072.5688,803.2031 Q1071.9438,802.625 1071.35,802.3594 Q1070.7563,802.0781 1070.1313,802.0781 Q1068.7875,802.0781 1068.1,803.1563 Q1067.4125,804.2188 1067.4125,806.3125 Q1067.4125,808.4063 1068.1,809.4844 Q1068.7875,810.5469 1070.1313,810.5469 Q1070.7563,810.5469 1071.35,810.2813 Q1071.9438,810 1072.5688,809.4219 L1072.5688,812.1406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="37" x="1085.4" y="810.6543">agent</text><line style="stroke:#A80036;stroke-width:1.5;" x1="1047.5" x2="1132.5" y1="822.5" y2="822.5"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="75" x="1052.5" y="836.7104">value : string</text><!--MD5=[5e3432edda921811e26e6e75407176e3]
-class craftTypes--><rect codeLine="15" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="32" id="craftTypes" style="stroke:#A80036;stroke-width:1.5;" width="97" x="109.5" y="453"/><ellipse cx="124.5" cy="469" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M127.4688,474.6406 Q126.8906,474.9375 126.25,475.0781 Q125.6094,475.2344 124.9063,475.2344 Q122.4063,475.2344 121.0781,473.5938 Q119.7656,471.9375 119.7656,468.8125 Q119.7656,465.6875 121.0781,464.0313 Q122.4063,462.375 124.9063,462.375 Q125.6094,462.375 126.25,462.5313 Q126.9063,462.6875 127.4688,462.9844 L127.4688,465.7031 Q126.8438,465.125 126.25,464.8594 Q125.6563,464.5781 125.0313,464.5781 Q123.6875,464.5781 123,465.6563 Q122.3125,466.7188 122.3125,468.8125 Q122.3125,470.9063 123,471.9844 Q123.6875,473.0469 125.0313,473.0469 Q125.6563,473.0469 126.25,472.7813 Q126.8438,472.5 127.4688,471.9219 L127.4688,474.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="65" x="138.5" y="473.1543">craftTypes</text><!--MD5=[cece516a03c291edcce204ec8e8344e1]
-class tracks--><rect codeLine="18" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="32" id="tracks" style="stroke:#A80036;stroke-width:1.5;" width="71" x="682.5" y="338"/><ellipse cx="697.5" cy="354" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M700.4688,359.6406 Q699.8906,359.9375 699.25,360.0781 Q698.6094,360.2344 697.9063,360.2344 Q695.4063,360.2344 694.0781,358.5938 Q692.7656,356.9375 692.7656,353.8125 Q692.7656,350.6875 694.0781,349.0313 Q695.4063,347.375 697.9063,347.375 Q698.6094,347.375 699.25,347.5313 Q699.9063,347.6875 700.4688,347.9844 L700.4688,350.7031 Q699.8438,350.125 699.25,349.8594 Q698.6563,349.5781 698.0313,349.5781 Q696.6875,349.5781 696,350.6563 Q695.3125,351.7188 695.3125,353.8125 Q695.3125,355.9063 696,356.9844 Q696.6875,358.0469 698.0313,358.0469 Q698.6563,358.0469 699.25,357.7813 Q699.8438,357.5 700.4688,356.9219 L700.4688,359.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="39" x="711.5" y="358.1543">tracks</text><!--MD5=[a05fcbd3914b00f30dc5640282048966]
-class craftpic--><rect codeLine="21" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="32" id="craftpic" style="stroke:#A80036;stroke-width:1.5;" width="79" x="418.5" y="338"/><ellipse cx="433.5" cy="354" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M436.4688,359.6406 Q435.8906,359.9375 435.25,360.0781 Q434.6094,360.2344 433.9063,360.2344 Q431.4063,360.2344 430.0781,358.5938 Q428.7656,356.9375 428.7656,353.8125 Q428.7656,350.6875 430.0781,349.0313 Q431.4063,347.375 433.9063,347.375 Q434.6094,347.375 435.25,347.5313 Q435.9063,347.6875 436.4688,347.9844 L436.4688,350.7031 Q435.8438,350.125 435.25,349.8594 Q434.6563,349.5781 434.0313,349.5781 Q432.6875,349.5781 432,350.6563 Q431.3125,351.7188 431.3125,353.8125 Q431.3125,355.9063 432,356.9844 Q432.6875,358.0469 434.0313,358.0469 Q434.6563,358.0469 435.25,357.7813 Q435.8438,357.5 436.4688,356.9219 L436.4688,359.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="47" x="447.5" y="358.1543">craftpic</text><!--MD5=[f98e6e14bebbafab16036971696ca6bb]
-class craftId--><rect codeLine="24" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="52.8047" id="craftId" style="stroke:#A80036;stroke-width:1.5;" width="87" x="560.5" y="609.5"/><ellipse cx="582.25" cy="625.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M585.2188,631.1406 Q584.6406,631.4375 584,631.5781 Q583.3594,631.7344 582.6563,631.7344 Q580.1563,631.7344 578.8281,630.0938 Q577.5156,628.4375 577.5156,625.3125 Q577.5156,622.1875 578.8281,620.5313 Q580.1563,618.875 582.6563,618.875 Q583.3594,618.875 584,619.0313 Q584.6563,619.1875 585.2188,619.4844 L585.2188,622.2031 Q584.5938,621.625 584,621.3594 Q583.4063,621.0781 582.7813,621.0781 Q581.4375,621.0781 580.75,622.1563 Q580.0625,623.2188 580.0625,625.3125 Q580.0625,627.4063 580.75,628.4844 Q581.4375,629.5469 582.7813,629.5469 Q583.4063,629.5469 584,629.2813 Q584.5938,629 585.2188,628.4219 L585.2188,631.1406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="40" x="597.75" y="629.6543">craftId</text><line style="stroke:#A80036;stroke-width:1.5;" x1="561.5" x2="646.5" y1="641.5" y2="641.5"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="75" x="566.5" y="655.7104">value : string</text><!--MD5=[882e465f128e3b9c32b167e5578719a3]
-class craftType--><rect codeLine="28" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="52.8047" id="craftType" style="stroke:#A80036;stroke-width:1.5;" width="90" x="298" y="609.5"/><ellipse cx="313" cy="625.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M315.9688,631.1406 Q315.3906,631.4375 314.75,631.5781 Q314.1094,631.7344 313.4063,631.7344 Q310.9063,631.7344 309.5781,630.0938 Q308.2656,628.4375 308.2656,625.3125 Q308.2656,622.1875 309.5781,620.5313 Q310.9063,618.875 313.4063,618.875 Q314.1094,618.875 314.75,619.0313 Q315.4063,619.1875 315.9688,619.4844 L315.9688,622.2031 Q315.3438,621.625 314.75,621.3594 Q314.1563,621.0781 313.5313,621.0781 Q312.1875,621.0781 311.5,622.1563 Q310.8125,623.2188 310.8125,625.3125 Q310.8125,627.4063 311.5,628.4844 Q312.1875,629.5469 313.5313,629.5469 Q314.1563,629.5469 314.75,629.2813 Q315.3438,629 315.9688,628.4219 L315.9688,631.1406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="58" x="327" y="629.6543">craftType</text><line style="stroke:#A80036;stroke-width:1.5;" x1="299" x2="387" y1="641.5" y2="641.5"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="75" x="304" y="655.7104">value : string</text><!--MD5=[023fec21c1aac0a46521a480d3831890]
-class identifierTypes--><rect codeLine="32" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="32" id="identifierTypes" style="stroke:#A80036;stroke-width:1.5;" width="123" x="235.5" y="801"/><ellipse cx="250.5" cy="817" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M253.4688,822.6406 Q252.8906,822.9375 252.25,823.0781 Q251.6094,823.2344 250.9063,823.2344 Q248.4063,823.2344 247.0781,821.5938 Q245.7656,819.9375 245.7656,816.8125 Q245.7656,813.6875 247.0781,812.0313 Q248.4063,810.375 250.9063,810.375 Q251.6094,810.375 252.25,810.5313 Q252.9063,810.6875 253.4688,810.9844 L253.4688,813.7031 Q252.8438,813.125 252.25,812.8594 Q251.6563,812.5781 251.0313,812.5781 Q249.6875,812.5781 249,813.6563 Q248.3125,814.7188 248.3125,816.8125 Q248.3125,818.9063 249,819.9844 Q249.6875,821.0469 251.0313,821.0469 Q251.6563,821.0469 252.25,820.7813 Q252.8438,820.5 253.4688,819.9219 L253.4688,822.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="91" x="264.5" y="821.1543">identifierTypes</text><!--MD5=[301499c3aca3ccff70acd925331dd391]
-class identifierType--><rect codeLine="35" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="52.8047" id="identifierType" style="stroke:#A80036;stroke-width:1.5;" width="116" x="309" y="927"/><ellipse cx="324" cy="943" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M326.9688,948.6406 Q326.3906,948.9375 325.75,949.0781 Q325.1094,949.2344 324.4063,949.2344 Q321.9063,949.2344 320.5781,947.5938 Q319.2656,945.9375 319.2656,942.8125 Q319.2656,939.6875 320.5781,938.0313 Q321.9063,936.375 324.4063,936.375 Q325.1094,936.375 325.75,936.5313 Q326.4063,936.6875 326.9688,936.9844 L326.9688,939.7031 Q326.3438,939.125 325.75,938.8594 Q325.1563,938.5781 324.5313,938.5781 Q323.1875,938.5781 322.5,939.6563 Q321.8125,940.7188 321.8125,942.8125 Q321.8125,944.9063 322.5,945.9844 Q323.1875,947.0469 324.5313,947.0469 Q325.1563,947.0469 325.75,946.7813 Q326.3438,946.5 326.9688,945.9219 L326.9688,948.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="84" x="338" y="947.1543">identifierType</text><line style="stroke:#A80036;stroke-width:1.5;" x1="310" x2="424" y1="959" y2="959"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="75" x="315" y="973.2104">value : string</text><!--MD5=[71ab6f72fcfb2c776b258f79101d82fe]
-class craftFix--><rect codeLine="39" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="32" id="craftFix" style="stroke:#A80036;stroke-width:1.5;" width="77" x="419.5" y="453"/><ellipse cx="434.5" cy="469" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M437.4688,474.6406 Q436.8906,474.9375 436.25,475.0781 Q435.6094,475.2344 434.9063,475.2344 Q432.4063,475.2344 431.0781,473.5938 Q429.7656,471.9375 429.7656,468.8125 Q429.7656,465.6875 431.0781,464.0313 Q432.4063,462.375 434.9063,462.375 Q435.6094,462.375 436.25,462.5313 Q436.9063,462.6875 437.4688,462.9844 L437.4688,465.7031 Q436.8438,465.125 436.25,464.8594 Q435.6563,464.5781 435.0313,464.5781 Q433.6875,464.5781 433,465.6563 Q432.3125,466.7188 432.3125,468.8125 Q432.3125,470.9063 433,471.9844 Q433.6875,473.0469 435.0313,473.0469 Q435.6563,473.0469 436.25,472.7813 Q436.8438,472.5 437.4688,471.9219 L437.4688,474.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="45" x="448.5" y="473.1543">craftFix</text><!--MD5=[ab2f5aae934a78342c778199b9ad7615]
-class craftFixes--><rect codeLine="42" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="32" id="craftFixes" style="stroke:#A80036;stroke-width:1.5;" width="92" x="672" y="453"/><ellipse cx="687" cy="469" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M689.9688,474.6406 Q689.3906,474.9375 688.75,475.0781 Q688.1094,475.2344 687.4063,475.2344 Q684.9063,475.2344 683.5781,473.5938 Q682.2656,471.9375 682.2656,468.8125 Q682.2656,465.6875 683.5781,464.0313 Q684.9063,462.375 687.4063,462.375 Q688.1094,462.375 688.75,462.5313 Q689.4063,462.6875 689.9688,462.9844 L689.9688,465.7031 Q689.3438,465.125 688.75,464.8594 Q688.1563,464.5781 687.5313,464.5781 Q686.1875,464.5781 685.5,465.6563 Q684.8125,466.7188 684.8125,468.8125 Q684.8125,470.9063 685.5,471.9844 Q686.1875,473.0469 687.5313,473.0469 Q688.1563,473.0469 688.75,472.7813 Q689.3438,472.5 689.9688,471.9219 L689.9688,474.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="60" x="701" y="473.1543">craftFixes</text><!--MD5=[a4cbbd06cd94a1a9f5581d73b55e6981]
-class identifier--><rect codeLine="45" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="52.8047" id="identifier" style="stroke:#A80036;stroke-width:1.5;" width="87" x="445.5" y="790.5"/><ellipse cx="460.5" cy="806.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M463.4688,812.1406 Q462.8906,812.4375 462.25,812.5781 Q461.6094,812.7344 460.9063,812.7344 Q458.4063,812.7344 457.0781,811.0938 Q455.7656,809.4375 455.7656,806.3125 Q455.7656,803.1875 457.0781,801.5313 Q458.4063,799.875 460.9063,799.875 Q461.6094,799.875 462.25,800.0313 Q462.9063,800.1875 463.4688,800.4844 L463.4688,803.2031 Q462.8438,802.625 462.25,802.3594 Q461.6563,802.0781 461.0313,802.0781 Q459.6875,802.0781 459,803.1563 Q458.3125,804.2188 458.3125,806.3125 Q458.3125,808.4063 459,809.4844 Q459.6875,810.5469 461.0313,810.5469 Q461.6563,810.5469 462.25,810.2813 Q462.8438,810 463.4688,809.4219 L463.4688,812.1406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="55" x="474.5" y="810.6543">identifier</text><line style="stroke:#A80036;stroke-width:1.5;" x1="446.5" x2="531.5" y1="822.5" y2="822.5"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="75" x="451.5" y="836.7104">value : string</text><!--MD5=[0766b2e74f5159a8c7d793f1f1cee8a6]
-class property--><rect codeLine="49" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="65.6094" id="property" style="stroke:#A80036;stroke-width:1.5;" width="87" x="888.5" y="784"/><ellipse cx="904.4" cy="800" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M907.3688,805.6406 Q906.7906,805.9375 906.15,806.0781 Q905.5094,806.2344 904.8063,806.2344 Q902.3063,806.2344 900.9781,804.5938 Q899.6656,802.9375 899.6656,799.8125 Q899.6656,796.6875 900.9781,795.0313 Q902.3063,793.375 904.8063,793.375 Q905.5094,793.375 906.15,793.5313 Q906.8063,793.6875 907.3688,793.9844 L907.3688,796.7031 Q906.7438,796.125 906.15,795.8594 Q905.5563,795.5781 904.9313,795.5781 Q903.5875,795.5781 902.9,796.6563 Q902.2125,797.7188 902.2125,799.8125 Q902.2125,801.9063 902.9,802.9844 Q903.5875,804.0469 904.9313,804.0469 Q905.5563,804.0469 906.15,803.7813 Q906.7438,803.5 907.3688,802.9219 L907.3688,805.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="53" x="918.6" y="804.1543">property</text><line style="stroke:#A80036;stroke-width:1.5;" x1="889.5" x2="974.5" y1="816" y2="816"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="64" x="894.5" y="830.2104">key : string</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="75" x="894.5" y="843.0151">value : string</text><!--MD5=[f3f5b879bc41167043afecf2909be0a8]
-class fix--><rect codeLine="54" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="142.4375" id="fix" style="stroke:#A80036;stroke-width:1.5;" width="230" x="817" y="565"/><ellipse cx="921.25" cy="581" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M924.2188,586.6406 Q923.6406,586.9375 923,587.0781 Q922.3594,587.2344 921.6563,587.2344 Q919.1563,587.2344 917.8281,585.5938 Q916.5156,583.9375 916.5156,580.8125 Q916.5156,577.6875 917.8281,576.0313 Q919.1563,574.375 921.6563,574.375 Q922.3594,574.375 923,574.5313 Q923.6563,574.6875 924.2188,574.9844 L924.2188,577.7031 Q923.5938,577.125 923,576.8594 Q922.4063,576.5781 921.7813,576.5781 Q920.4375,576.5781 919.75,577.6563 Q919.0625,578.7188 919.0625,580.8125 Q919.0625,582.9063 919.75,583.9844 Q920.4375,585.0469 921.7813,585.0469 Q922.4063,585.0469 923,584.7813 Q923.5938,584.5 924.2188,583.9219 L924.2188,586.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="13" x="941.75" y="585.1543">fix</text><line style="stroke:#A80036;stroke-width:1.5;" x1="818" x2="1046" y1="597" y2="597"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="68" x="823" y="611.2104">fixId : string</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="98" x="823" y="624.0151">time : timestamp</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="70" x="823" y="636.8198">lat : decimal</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="73" x="823" y="649.6245">lon : decimal</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="164" x="823" y="662.4292">altitudeMetres : decimal {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="103" x="823" y="675.2339">cog : decimal {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="150" x="823" y="688.0386">speedKnots : decimal {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="218" x="823" y="700.8433">closestActualFixTime : timestamp {O}</text><!--MD5=[0766a025c2fc0be6876e7f20635baeeb]
-class GET /agent--><rect codeLine="65" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="37.9375" id="GET /agent" style="stroke:#A80036;stroke-width:1.5;" width="75" x="1219.5" y="450"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="42" x="1236" y="466.1387">«Path»</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="69" x="1222.5" y="480.1074">GET /agent</text><!--MD5=[8d9ffab08a5789e58567c9ccf4072f76]
-class GET /craftType--><rect codeLine="68" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="37.9375" id="GET /craftType" style="stroke:#A80036;stroke-width:1.5;" width="96" x="110" y="335"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="42" x="137" y="351.1387">«Path»</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="90" x="113" y="365.1074">GET /craftType</text><!--MD5=[30d532b129e74f07c14986de67005add]
-class GET /identifierType--><rect codeLine="71" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="37.9375" id="GET /identifierType" style="stroke:#A80036;stroke-width:1.5;" width="122" x="7" y="617"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="42" x="47" y="633.1387">«Path»</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="116" x="10" y="647.1074">GET /identifierType</text><!--MD5=[da8012ed613542852b70da3e445ea16b]
-class GET /track/rect--><rect codeLine="74" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="212.3984" id="GET /track/rect" style="stroke:#A80036;stroke-width:1.5;" width="223" x="605.5" y="26.5"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="42" x="696" y="42.6387">«Path»</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="93" x="670.5" y="56.6074">GET /track/rect</text><line style="stroke:#A80036;stroke-width:1.5;" x1="606.5" x2="827.5" y1="64.4375" y2="64.4375"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="177" x="611.5" y="78.6479">startTimeInclusive : timestamp</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="184" x="611.5" y="91.4526">finishTimeExclusive : timestamp</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="161" x="611.5" y="104.2573">identifierValue : string[] {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="116" x="611.5" y="117.062">craftId : string[] {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="133" x="611.5" y="129.8667">craftType : string[] {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="112" x="611.5" y="142.6714">agent : string[] {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="94" x="611.5" y="155.4761">minLat : decimal</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="97" x="611.5" y="168.2808">maxLat : decimal</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="94" x="611.5" y="181.0854">leftLon : decimal</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="102" x="611.5" y="193.8901">rightLon : decimal</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="211" x="611.5" y="206.6948">includeCraftProperties : boolean {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="198" x="611.5" y="219.4995">includeFixProperties : boolean {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="193" x="611.5" y="232.3042">includeFixIdentifers : boolean {O}</text><!--MD5=[724dcd4586d36c83fcd15ecc9f45af28]
-class GET /track/circle--><rect codeLine="90" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="199.5938" id="GET /track/circle" style="stroke:#A80036;stroke-width:1.5;" width="223" x="863.5" y="32.5"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="42" x="954" y="48.6387">«Path»</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="101" x="924.5" y="62.6074">GET /track/circle</text><line style="stroke:#A80036;stroke-width:1.5;" x1="864.5" x2="1085.5" y1="70.4375" y2="70.4375"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="177" x="869.5" y="84.6479">startTimeInclusive : timestamp</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="184" x="869.5" y="97.4526">finishTimeExclusive : timestamp</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="161" x="869.5" y="110.2573">identifierValue : string[] {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="116" x="869.5" y="123.062">craftId : string[] {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="133" x="869.5" y="135.8667">craftType : string[] {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="112" x="869.5" y="148.6714">agent : string[] {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="109" x="869.5" y="161.4761">centreLat : decimal</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="112" x="869.5" y="174.2808">centreLon : decimal</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="111" x="869.5" y="187.0854">radiusNm : decimal</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="211" x="869.5" y="199.8901">includeCraftProperties : boolean {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="198" x="869.5" y="212.6948">includeFixProperties : boolean {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="193" x="869.5" y="225.4995">includeFixIdentifers : boolean {O}</text><!--MD5=[769b2aaf1abe4535bc11573b2d4478df]
-class GET /craftpic/rect--><rect codeLine="105" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="250.8125" id="GET /craftpic/rect" style="stroke:#A80036;stroke-width:1.5;" width="223" x="88.5" y="7"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="42" x="179" y="23.1387">«Path»</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="108" x="146" y="37.1074">GET /craftpic/rect</text><line style="stroke:#A80036;stroke-width:1.5;" x1="89.5" x2="310.5" y1="44.9375" y2="44.9375"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="98" x="94.5" y="59.1479">time : timestamp</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="127" x="94.5" y="71.9526">beforeHours : decimal</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="117" x="94.5" y="84.7573">afterHours : decimal</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="161" x="94.5" y="97.562">identifierValue : string[] {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="116" x="94.5" y="110.3667">craftId : string[] {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="133" x="94.5" y="123.1714">craftType : string[] {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="112" x="94.5" y="135.9761">agent : string[] {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="94" x="94.5" y="148.7808">minLat : decimal</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="97" x="94.5" y="161.5854">maxLat : decimal</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="94" x="94.5" y="174.3901">leftLon : decimal</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="102" x="94.5" y="187.1948">rightLon : decimal</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="198" x="94.5" y="199.9995">includeFixProperties : boolean {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="211" x="94.5" y="212.8042">includeCraftProperties : boolean {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="193" x="94.5" y="225.6089">includeFixIdentifers : boolean {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="137" x="94.5" y="238.4136">predicted : boolean {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="206" x="94.5" y="251.2183">speedForMarginKnots : decimal {O}</text><!--MD5=[a32c34cc5ebe411007160bf7a0740a0d]
-class GET /craftpic/circle--><rect codeLine="124" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="238.0078" id="GET /craftpic/circle" style="stroke:#A80036;stroke-width:1.5;" width="223" x="346.5" y="13.5"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="42" x="437" y="29.6387">«Path»</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="116" x="400" y="43.6074">GET /craftpic/circle</text><line style="stroke:#A80036;stroke-width:1.5;" x1="347.5" x2="568.5" y1="51.4375" y2="51.4375"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="98" x="352.5" y="65.6479">time : timestamp</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="127" x="352.5" y="78.4526">beforeHours : decimal</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="117" x="352.5" y="91.2573">afterHours : decimal</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="161" x="352.5" y="104.062">identifierValue : string[] {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="116" x="352.5" y="116.8667">craftId : string[] {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="133" x="352.5" y="129.6714">craftType : string[] {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="112" x="352.5" y="142.4761">agent : string[] {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="109" x="352.5" y="155.2808">centreLat : decimal</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="112" x="352.5" y="168.0854">centreLon : decimal</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="111" x="352.5" y="180.8901">radiusNm : decimal</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="211" x="352.5" y="193.6948">includeCraftProperties : boolean {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="198" x="352.5" y="206.4995">includeFixProperties : boolean {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="193" x="352.5" y="219.3042">includeFixIdentifers : boolean {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="137" x="352.5" y="232.1089">predicted : boolean {O}</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="206" x="352.5" y="244.9136">speedForMarginKnots : decimal {O}</text><!--MD5=[48b32d299b5041a5c4fd9cfd495d93fb]
-link agents to agent--><path codeLine="142" d="M1243.07,652.04 C1229.92,666.22 1209.64,688.08 1192,707 C1166.77,734.06 1137.97,764.83 1117.42,786.76 " fill="none" id="agents-to-agent" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1113.93,790.48,1123.0111,786.6677,1117.3568,786.839,1117.1855,781.1847,1113.93,790.48" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="1111.9098" y="779.2945">*</text><!--MD5=[116f4513ba17c7e21ccce110dd98300f]
-link craftTypes to craftType--><path codeLine="144" d="M176.75,485.07 C199.46,503.47 238.68,535.78 271,565 C285.42,578.04 300.94,593 313.86,605.74 " fill="none" id="craftTypes-to-craftType" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="317.44,609.27,313.8488,600.0992,313.8831,605.756,308.2264,605.7902,317.44,609.27" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="303.7199" y="598.4591">*</text><!--MD5=[d2ba5241b1691b289bf08f43f1232092]
-link tracks to craftFixes--><path codeLine="146" d="M718,370.24 C718,390.21 718,425.29 718,447.55 " fill="none" id="tracks-to-craftFixes" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="718,452.64,722,443.64,718,447.64,714,443.64,718,452.64" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="709.8406" y="441.8253">*</text><!--MD5=[2ebbfe335bd7b5ea2742d5c52c275a6f]
-link craftpic to craftFix--><path codeLine="148" d="M458,370.24 C458,390.21 458,425.29 458,447.55 " fill="none" id="craftpic-to-craftFix" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="458,452.64,462,443.64,458,447.64,454,443.64,458,452.64" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="449.8406" y="441.8253">*</text><!--MD5=[b87e35e612edd0c327fbaee5deb5fd4c]
-link identifierTypes to identifierType--><path codeLine="150" d="M304.89,833.17 C316.08,854.66 336.79,894.45 351.2,922.15 " fill="none" id="identifierTypes-to-identifierType" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="353.64,926.83,353.0417,916.9993,351.3355,922.3927,345.9421,920.6865,353.64,926.83" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="342.7411" y="916.033">*</text><!--MD5=[d54df8b460ce40043809516e92aeb1f7]
-link craftFix to craftId--><path codeLine="152" d="M471.47,485.23 C495.65,512.55 546.79,570.35 578,605.61 " fill="none" id="craftFix-to-craftId" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="581.33,609.38,578.3582,599.9902,578.0153,605.6367,572.3688,605.2938,581.33,609.38" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="567.1626" y="598.5946">1</text><!--MD5=[09264e4349ea03b9adf868f103e6adc7]
-link craftFix to craftType--><path codeLine="154" d="M424.42,485.13 C409.94,493.1 393.88,504.14 383,518 C363.12,543.33 352.8,579.15 347.67,604.46 " fill="none" id="craftFix-to-craftType" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="346.71,609.38,352.3612,601.3138,347.6686,604.4727,344.5096,599.7801,346.71,609.38" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="338.6429" y="598.5946">1</text><!--MD5=[d01631b2e244d59396d6ebd4eeb3602b]
-link craftFix to identifier--><path codeLine="156" d="M419.24,472.35 C363.37,478.07 261.89,497.69 216,565 C180.45,617.15 180.6,654.75 216,707 C229.23,726.53 365.82,774.73 440.63,799.98 " fill="none" id="craftFix-to-identifier" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="445.47,801.61,438.2269,794.9364,440.7338,800.0074,435.6627,802.5143,445.47,801.61" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="62" x="217" y="640.5669">identifiers</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="430.3867" y="794.7709">*</text><!--MD5=[f76b73bc8c22393d03005486f59cd67a]
-link craftFix to property--><path codeLine="158" d="M453.61,485.14 C442.61,526.6 418.65,643.14 476,707 C524.93,761.48 566.59,720.82 638,737 C725.06,756.73 825.22,784.81 883.3,801.64 " fill="none" id="craftFix-to-property" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="888.44,803.13,880.9026,796.7907,883.6362,801.7432,878.6837,804.4768,888.44,803.13" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="65" x="477" y="640.5669">properties</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="873.6457" y="796.7008">*</text><!--MD5=[ecec6e57531c966bfe01fda2ae9ded84]
-link craftFix to fix--><path codeLine="160" d="M496.57,478.65 C559.22,493.24 686.53,525.06 790,565 C797.33,567.83 804.79,570.9 812.26,574.12 " fill="none" id="craftFix-to-fix" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="816.91,576.14,810.2405,568.8931,812.3217,574.1532,807.0616,576.2343,816.91,576.14" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="800.9086" y="568.6709">1</text><!--MD5=[bf5075ca0185b3f5c733557861f5e4f5]
-link craftFixes to craftId--><path codeLine="162" d="M707.48,485.23 C688.68,512.44 648.99,569.88 624.6,605.18 " fill="none" id="craftFixes-to-craftId" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="621.7,609.38,630.107,604.2495,624.5423,605.2665,623.5254,599.7018,621.7,609.38" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="616.8681" y="598.5946">1</text><!--MD5=[e6a357a3302c2f8e3d5022ec054b86fe]
-link craftFixes to craftType--><path codeLine="164" d="M671.88,477.53 C609.99,489.12 498.22,515.39 415,565 C397.21,575.61 380.42,591.45 367.54,605.38 " fill="none" id="craftFixes-to-craftType" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="364.01,609.25,373.0284,605.2916,367.3776,605.5542,367.1151,599.9034,364.01,609.25" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="359.9436" y="598.4345">1</text><!--MD5=[738edfd7ab1fd4588a44eff81bc82906]
-link craftFixes to identifier--><path codeLine="166" d="M718.48,485.2 C719,525.35 715.46,636.05 665,707 C633.48,751.33 577.71,781.34 537.39,798.47 " fill="none" id="craftFixes-to-identifier" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="532.55,800.5,542.3964,800.72,537.1633,798.5719,539.3114,793.3387,532.55,800.5" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="62" x="715" y="640.5669">identifiers</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="540.6367" y="793.4701">*</text><!--MD5=[ba4546011d179940ea34a7bd9b2cdfef]
-link craftFixes to property--><path codeLine="168" d="M764.26,475.79 C849.86,487.55 1027.6,517.26 1064,565 C1102.27,615.19 1090.9,649.91 1064,707 C1046.68,743.77 1010.18,772.37 979.95,791.02 " fill="none" id="craftFixes-to-property" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="975.54,793.7,985.3076,792.4373,979.811,791.1003,981.148,785.6037,975.54,793.7" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="65" x="1090" y="640.5669">properties</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="983.625" y="785.5181">*</text><!--MD5=[0a011825a424ec06715c8e0fad825adc]
-link craftFixes to fix--><path codeLine="170" d="M754.65,485 C773.23,493.41 795.68,504.86 814,518 C831.5,530.56 848.83,545.75 864.61,560.96 " fill="none" id="craftFixes-to-fix" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="868.58,564.83,864.9148,555.6885,864.9948,561.3448,859.3385,561.4248,868.58,564.83" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="29" x="837" y="531.0669">fixes</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="854.6789" y="553.7683">*</text><!--MD5=[387c24eed0ecfa03e746f3c0986ef865]
-link identifier to identifierType--><path codeLine="172" d="M465.77,843.62 C445.16,866.33 415.07,899.5 393.53,923.25 " fill="none" id="identifier-to-identifierType" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="390.15,926.98,399.16,923.0026,393.5098,923.2771,393.2353,917.6269,390.15,926.98" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="22" x="433" y="893.0669">key</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="386.8178" y="915.7945">1</text><!--MD5=[bd657ee020933f3b789c6978e73bead6]
-link fix to agent--><path codeLine="174" d="M993.99,707.23 C1018.25,734.71 1044.75,764.73 1063.75,786.26 " fill="none" id="fix-to-agent" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1067.21,790.18,1064.2382,780.7902,1063.8953,786.4367,1058.2488,786.0938,1067.21,790.18" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="1053.0148" y="779.3483">1</text><!--MD5=[6975bb0c418ac467da369e371208abe2]
-link fix to property--><path codeLine="176" d="M932,707.23 C932,731.61 932,757.99 932,778.67 " fill="none" id="fix-to-property" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="932,783.8,936,774.8,932,778.8,928,774.8,932,783.8" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="65" x="933" y="750.0669">properties</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="924.3109" y="772.9056">*</text><!--MD5=[4745a5a730b16c874911cb221456aa30]
-link fix to identifier--><path codeLine="178" d="M816.63,695.18 C807.68,699.3 798.72,703.28 790,707 C702.59,744.24 597.71,780.34 537.66,800.23 " fill="none" id="fix-to-identifier" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="532.7,801.87,542.5013,802.8364,537.4463,800.2974,539.9852,795.2424,532.7,801.87" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="62" x="710" y="750.0669">identifiers</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="540.5175" y="812.7003">*</text><!--MD5=[4dcef72ad059fb468134e6785073a364]
-link GET /agent to agents--><path codeLine="180" d="M1257,488.29 C1257,519.22 1257,581.68 1257,614.22 " fill="none" id="GET /agent-to-agents" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="1257,619.55,1261,610.55,1257,614.55,1253,610.55,1257,619.55" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="24" x="1258" y="531.0669">200</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="1247.725" y="609.004">1</text><!--MD5=[b65b9d332165c4f455fa4cdbb0cccc49]
-link GET /craftType to craftTypes--><path codeLine="182" d="M158,373.16 C158,393.52 158,426.45 158,447.66 " fill="none" id="GET /craftType-to-craftTypes" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="158,452.79,162,443.79,158,447.79,154,443.79,158,452.79" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="24" x="159" y="416.0669">200</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="148.675" y="442.025">1</text><!--MD5=[aac5d37776cc9bfa1796ab625d849b92]
-link GET /identifierType to identifierTypes--><path codeLine="184" d="M76.12,655.28 C88.21,680.63 113.2,726.42 147,754 C172.39,774.71 205.65,789.4 234.41,799.26 " fill="none" id="GET /identifierType-to-identifierTypes" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="239.35,800.93,232.0828,794.2826,234.608,799.3446,229.5461,801.8698,239.35,800.93" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="24" x="148" y="750.0669">200</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="219.598" y="793.5165">1</text><!--MD5=[dd6e27089193c94a749305e5a97a5bea]
-link GET /track/rect to tracks--><path codeLine="186" d="M717.48,238.75 C717.64,274.45 717.81,310.79 717.91,332.62 " fill="none" id="GET /track/rect-to-tracks" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="717.93,337.85,721.8785,328.8273,717.9014,332.8501,713.8786,328.873,717.93,337.85" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="24" x="719" y="301.0669">200</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="708.5309" y="326.81">1</text><!--MD5=[ed4cd329ba34e9a2cff698caba7723c0]
-link GET /track/circle to tracks--><path codeLine="188" d="M874.75,232.64 C865.18,241.38 855.5,249.95 846,258 C812.33,286.53 770.94,316.38 744.51,334.84 " fill="none" id="GET /track/circle-to-tracks" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="740.4,337.7,750.0739,335.8519,744.5068,334.848,745.5107,329.281,740.4,337.7" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="24" x="810" y="301.0669">200</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="738.495" y="326.9051">1</text><!--MD5=[c6430f2807ec80ecf85c9f08b3a38667]
-link GET /craftpic/rect to craftpic--><path codeLine="190" d="M311.75,243.05 C317.52,248.17 323.29,253.18 329,258 C362.89,286.61 404.61,316.44 431.26,334.87 " fill="none" id="GET /craftpic/rect-to-craftpic" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="435.41,337.73,430.2597,329.3351,431.2898,334.8974,425.7275,335.9274,435.41,337.73" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="24" x="389" y="301.0669">200</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="418.6021" y="326.9451">1</text><!--MD5=[488546d8c8d2583327e2a90d71433674]
-link GET /craftpic/circle to craftpic--><path codeLine="192" d="M458,251.6 C458,282.95 458,313.39 458,332.6 " fill="none" id="GET /craftpic/circle-to-craftpic" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="458,337.71,462,328.71,458,332.71,454,328.71,458,337.71" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="24" x="459" y="301.0669">200</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="448.675" y="326.9185">1</text><!--MD5=[2f062ad9c21ec28e383dc5be5bffeceb]
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     contentScriptType="application/ecmascript" contentStyleType="text/css" height="993px" preserveAspectRatio="none"
+     style="width:1309px;height:993px;" version="1.1" viewBox="0 0 1309 993" width="1309px" zoomAndPan="magnify">
+    <defs>
+        <filter height="300%" id="f1cf6uikq0urbj" width="300%" x="-1" y="-1">
+            <feGaussianBlur result="blurOut" stdDeviation="2.0"/>
+            <feColorMatrix in="blurOut" result="blurOut2" type="matrix"
+                           values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/>
+            <feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/>
+            <feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/>
+        </filter>
+    </defs>
+    <g><!--MD5=[789dc9694f718e85b0448a69b113399f]
+class agents-->
+        <rect codeLine="8" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="32" id="agents"
+              style="stroke:#A80036;stroke-width:1.5;" width="76" x="1219" y="620"/>
+        <ellipse cx="1234" cy="636" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/>
+        <path d="M1236.9688,641.6406 Q1236.3906,641.9375 1235.75,642.0781 Q1235.1094,642.2344 1234.4063,642.2344 Q1231.9063,642.2344 1230.5781,640.5938 Q1229.2656,638.9375 1229.2656,635.8125 Q1229.2656,632.6875 1230.5781,631.0313 Q1231.9063,629.375 1234.4063,629.375 Q1235.1094,629.375 1235.75,629.5313 Q1236.4063,629.6875 1236.9688,629.9844 L1236.9688,632.7031 Q1236.3438,632.125 1235.75,631.8594 Q1235.1563,631.5781 1234.5313,631.5781 Q1233.1875,631.5781 1232.5,632.6563 Q1231.8125,633.7188 1231.8125,635.8125 Q1231.8125,637.9063 1232.5,638.9844 Q1233.1875,640.0469 1234.5313,640.0469 Q1235.1563,640.0469 1235.75,639.7813 Q1236.3438,639.5 1236.9688,638.9219 L1236.9688,641.6406 Z "
+              fill="#000000"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="44" x="1248"
+              y="640.1543">agents
+        </text><!--MD5=[ca87f10b7dee07e1e55f9eb4a33c33e0]
+class agent-->
+        <rect codeLine="11" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="52.8047" id="agent"
+              style="stroke:#A80036;stroke-width:1.5;" width="87" x="1046.5" y="790.5"/>
+        <ellipse cx="1069.6" cy="806.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/>
+        <path d="M1072.5688,812.1406 Q1071.9906,812.4375 1071.35,812.5781 Q1070.7094,812.7344 1070.0063,812.7344 Q1067.5063,812.7344 1066.1781,811.0938 Q1064.8656,809.4375 1064.8656,806.3125 Q1064.8656,803.1875 1066.1781,801.5313 Q1067.5063,799.875 1070.0063,799.875 Q1070.7094,799.875 1071.35,800.0313 Q1072.0063,800.1875 1072.5688,800.4844 L1072.5688,803.2031 Q1071.9438,802.625 1071.35,802.3594 Q1070.7563,802.0781 1070.1313,802.0781 Q1068.7875,802.0781 1068.1,803.1563 Q1067.4125,804.2188 1067.4125,806.3125 Q1067.4125,808.4063 1068.1,809.4844 Q1068.7875,810.5469 1070.1313,810.5469 Q1070.7563,810.5469 1071.35,810.2813 Q1071.9438,810 1072.5688,809.4219 L1072.5688,812.1406 Z "
+              fill="#000000"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="37" x="1085.4"
+              y="810.6543">agent
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="1047.5" x2="1132.5" y1="822.5" y2="822.5"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="75" x="1052.5"
+              y="836.7104">value : string
+        </text><!--MD5=[5e3432edda921811e26e6e75407176e3]
+class craftTypes-->
+        <rect codeLine="15" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="32" id="craftTypes"
+              style="stroke:#A80036;stroke-width:1.5;" width="97" x="109.5" y="453"/>
+        <ellipse cx="124.5" cy="469" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/>
+        <path d="M127.4688,474.6406 Q126.8906,474.9375 126.25,475.0781 Q125.6094,475.2344 124.9063,475.2344 Q122.4063,475.2344 121.0781,473.5938 Q119.7656,471.9375 119.7656,468.8125 Q119.7656,465.6875 121.0781,464.0313 Q122.4063,462.375 124.9063,462.375 Q125.6094,462.375 126.25,462.5313 Q126.9063,462.6875 127.4688,462.9844 L127.4688,465.7031 Q126.8438,465.125 126.25,464.8594 Q125.6563,464.5781 125.0313,464.5781 Q123.6875,464.5781 123,465.6563 Q122.3125,466.7188 122.3125,468.8125 Q122.3125,470.9063 123,471.9844 Q123.6875,473.0469 125.0313,473.0469 Q125.6563,473.0469 126.25,472.7813 Q126.8438,472.5 127.4688,471.9219 L127.4688,474.6406 Z "
+              fill="#000000"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="65" x="138.5"
+              y="473.1543">craftTypes
+        </text><!--MD5=[cece516a03c291edcce204ec8e8344e1]
+class tracks-->
+        <rect codeLine="18" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="32" id="tracks"
+              style="stroke:#A80036;stroke-width:1.5;" width="71" x="682.5" y="338"/>
+        <ellipse cx="697.5" cy="354" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/>
+        <path d="M700.4688,359.6406 Q699.8906,359.9375 699.25,360.0781 Q698.6094,360.2344 697.9063,360.2344 Q695.4063,360.2344 694.0781,358.5938 Q692.7656,356.9375 692.7656,353.8125 Q692.7656,350.6875 694.0781,349.0313 Q695.4063,347.375 697.9063,347.375 Q698.6094,347.375 699.25,347.5313 Q699.9063,347.6875 700.4688,347.9844 L700.4688,350.7031 Q699.8438,350.125 699.25,349.8594 Q698.6563,349.5781 698.0313,349.5781 Q696.6875,349.5781 696,350.6563 Q695.3125,351.7188 695.3125,353.8125 Q695.3125,355.9063 696,356.9844 Q696.6875,358.0469 698.0313,358.0469 Q698.6563,358.0469 699.25,357.7813 Q699.8438,357.5 700.4688,356.9219 L700.4688,359.6406 Z "
+              fill="#000000"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="39" x="711.5"
+              y="358.1543">tracks
+        </text><!--MD5=[a05fcbd3914b00f30dc5640282048966]
+class craftpic-->
+        <rect codeLine="21" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="32" id="craftpic"
+              style="stroke:#A80036;stroke-width:1.5;" width="79" x="418.5" y="338"/>
+        <ellipse cx="433.5" cy="354" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/>
+        <path d="M436.4688,359.6406 Q435.8906,359.9375 435.25,360.0781 Q434.6094,360.2344 433.9063,360.2344 Q431.4063,360.2344 430.0781,358.5938 Q428.7656,356.9375 428.7656,353.8125 Q428.7656,350.6875 430.0781,349.0313 Q431.4063,347.375 433.9063,347.375 Q434.6094,347.375 435.25,347.5313 Q435.9063,347.6875 436.4688,347.9844 L436.4688,350.7031 Q435.8438,350.125 435.25,349.8594 Q434.6563,349.5781 434.0313,349.5781 Q432.6875,349.5781 432,350.6563 Q431.3125,351.7188 431.3125,353.8125 Q431.3125,355.9063 432,356.9844 Q432.6875,358.0469 434.0313,358.0469 Q434.6563,358.0469 435.25,357.7813 Q435.8438,357.5 436.4688,356.9219 L436.4688,359.6406 Z "
+              fill="#000000"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="47" x="447.5"
+              y="358.1543">craftpic
+        </text><!--MD5=[f98e6e14bebbafab16036971696ca6bb]
+class craftId-->
+        <rect codeLine="24" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="52.8047" id="craftId"
+              style="stroke:#A80036;stroke-width:1.5;" width="87" x="560.5" y="609.5"/>
+        <ellipse cx="582.25" cy="625.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/>
+        <path d="M585.2188,631.1406 Q584.6406,631.4375 584,631.5781 Q583.3594,631.7344 582.6563,631.7344 Q580.1563,631.7344 578.8281,630.0938 Q577.5156,628.4375 577.5156,625.3125 Q577.5156,622.1875 578.8281,620.5313 Q580.1563,618.875 582.6563,618.875 Q583.3594,618.875 584,619.0313 Q584.6563,619.1875 585.2188,619.4844 L585.2188,622.2031 Q584.5938,621.625 584,621.3594 Q583.4063,621.0781 582.7813,621.0781 Q581.4375,621.0781 580.75,622.1563 Q580.0625,623.2188 580.0625,625.3125 Q580.0625,627.4063 580.75,628.4844 Q581.4375,629.5469 582.7813,629.5469 Q583.4063,629.5469 584,629.2813 Q584.5938,629 585.2188,628.4219 L585.2188,631.1406 Z "
+              fill="#000000"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="40" x="597.75"
+              y="629.6543">craftId
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="561.5" x2="646.5" y1="641.5" y2="641.5"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="75" x="566.5"
+              y="655.7104">value : string
+        </text><!--MD5=[882e465f128e3b9c32b167e5578719a3]
+class craftType-->
+        <rect codeLine="28" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="52.8047" id="craftType"
+              style="stroke:#A80036;stroke-width:1.5;" width="90" x="298" y="609.5"/>
+        <ellipse cx="313" cy="625.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/>
+        <path d="M315.9688,631.1406 Q315.3906,631.4375 314.75,631.5781 Q314.1094,631.7344 313.4063,631.7344 Q310.9063,631.7344 309.5781,630.0938 Q308.2656,628.4375 308.2656,625.3125 Q308.2656,622.1875 309.5781,620.5313 Q310.9063,618.875 313.4063,618.875 Q314.1094,618.875 314.75,619.0313 Q315.4063,619.1875 315.9688,619.4844 L315.9688,622.2031 Q315.3438,621.625 314.75,621.3594 Q314.1563,621.0781 313.5313,621.0781 Q312.1875,621.0781 311.5,622.1563 Q310.8125,623.2188 310.8125,625.3125 Q310.8125,627.4063 311.5,628.4844 Q312.1875,629.5469 313.5313,629.5469 Q314.1563,629.5469 314.75,629.2813 Q315.3438,629 315.9688,628.4219 L315.9688,631.1406 Z "
+              fill="#000000"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="58" x="327"
+              y="629.6543">craftType
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="299" x2="387" y1="641.5" y2="641.5"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="75" x="304"
+              y="655.7104">value : string
+        </text><!--MD5=[023fec21c1aac0a46521a480d3831890]
+class identifierTypes-->
+        <rect codeLine="32" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="32" id="identifierTypes"
+              style="stroke:#A80036;stroke-width:1.5;" width="123" x="235.5" y="801"/>
+        <ellipse cx="250.5" cy="817" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/>
+        <path d="M253.4688,822.6406 Q252.8906,822.9375 252.25,823.0781 Q251.6094,823.2344 250.9063,823.2344 Q248.4063,823.2344 247.0781,821.5938 Q245.7656,819.9375 245.7656,816.8125 Q245.7656,813.6875 247.0781,812.0313 Q248.4063,810.375 250.9063,810.375 Q251.6094,810.375 252.25,810.5313 Q252.9063,810.6875 253.4688,810.9844 L253.4688,813.7031 Q252.8438,813.125 252.25,812.8594 Q251.6563,812.5781 251.0313,812.5781 Q249.6875,812.5781 249,813.6563 Q248.3125,814.7188 248.3125,816.8125 Q248.3125,818.9063 249,819.9844 Q249.6875,821.0469 251.0313,821.0469 Q251.6563,821.0469 252.25,820.7813 Q252.8438,820.5 253.4688,819.9219 L253.4688,822.6406 Z "
+              fill="#000000"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="91" x="264.5"
+              y="821.1543">identifierTypes
+        </text><!--MD5=[301499c3aca3ccff70acd925331dd391]
+class identifierType-->
+        <rect codeLine="35" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="52.8047" id="identifierType"
+              style="stroke:#A80036;stroke-width:1.5;" width="116" x="309" y="927"/>
+        <ellipse cx="324" cy="943" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/>
+        <path d="M326.9688,948.6406 Q326.3906,948.9375 325.75,949.0781 Q325.1094,949.2344 324.4063,949.2344 Q321.9063,949.2344 320.5781,947.5938 Q319.2656,945.9375 319.2656,942.8125 Q319.2656,939.6875 320.5781,938.0313 Q321.9063,936.375 324.4063,936.375 Q325.1094,936.375 325.75,936.5313 Q326.4063,936.6875 326.9688,936.9844 L326.9688,939.7031 Q326.3438,939.125 325.75,938.8594 Q325.1563,938.5781 324.5313,938.5781 Q323.1875,938.5781 322.5,939.6563 Q321.8125,940.7188 321.8125,942.8125 Q321.8125,944.9063 322.5,945.9844 Q323.1875,947.0469 324.5313,947.0469 Q325.1563,947.0469 325.75,946.7813 Q326.3438,946.5 326.9688,945.9219 L326.9688,948.6406 Z "
+              fill="#000000"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="84" x="338"
+              y="947.1543">identifierType
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="310" x2="424" y1="959" y2="959"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="75" x="315"
+              y="973.2104">value : string
+        </text><!--MD5=[71ab6f72fcfb2c776b258f79101d82fe]
+class craftFix-->
+        <rect codeLine="39" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="32" id="craftFix"
+              style="stroke:#A80036;stroke-width:1.5;" width="77" x="419.5" y="453"/>
+        <ellipse cx="434.5" cy="469" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/>
+        <path d="M437.4688,474.6406 Q436.8906,474.9375 436.25,475.0781 Q435.6094,475.2344 434.9063,475.2344 Q432.4063,475.2344 431.0781,473.5938 Q429.7656,471.9375 429.7656,468.8125 Q429.7656,465.6875 431.0781,464.0313 Q432.4063,462.375 434.9063,462.375 Q435.6094,462.375 436.25,462.5313 Q436.9063,462.6875 437.4688,462.9844 L437.4688,465.7031 Q436.8438,465.125 436.25,464.8594 Q435.6563,464.5781 435.0313,464.5781 Q433.6875,464.5781 433,465.6563 Q432.3125,466.7188 432.3125,468.8125 Q432.3125,470.9063 433,471.9844 Q433.6875,473.0469 435.0313,473.0469 Q435.6563,473.0469 436.25,472.7813 Q436.8438,472.5 437.4688,471.9219 L437.4688,474.6406 Z "
+              fill="#000000"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="45" x="448.5"
+              y="473.1543">craftFix
+        </text><!--MD5=[ab2f5aae934a78342c778199b9ad7615]
+class craftFixes-->
+        <rect codeLine="42" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="32" id="craftFixes"
+              style="stroke:#A80036;stroke-width:1.5;" width="92" x="672" y="453"/>
+        <ellipse cx="687" cy="469" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/>
+        <path d="M689.9688,474.6406 Q689.3906,474.9375 688.75,475.0781 Q688.1094,475.2344 687.4063,475.2344 Q684.9063,475.2344 683.5781,473.5938 Q682.2656,471.9375 682.2656,468.8125 Q682.2656,465.6875 683.5781,464.0313 Q684.9063,462.375 687.4063,462.375 Q688.1094,462.375 688.75,462.5313 Q689.4063,462.6875 689.9688,462.9844 L689.9688,465.7031 Q689.3438,465.125 688.75,464.8594 Q688.1563,464.5781 687.5313,464.5781 Q686.1875,464.5781 685.5,465.6563 Q684.8125,466.7188 684.8125,468.8125 Q684.8125,470.9063 685.5,471.9844 Q686.1875,473.0469 687.5313,473.0469 Q688.1563,473.0469 688.75,472.7813 Q689.3438,472.5 689.9688,471.9219 L689.9688,474.6406 Z "
+              fill="#000000"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="60" x="701"
+              y="473.1543">craftFixes
+        </text><!--MD5=[a4cbbd06cd94a1a9f5581d73b55e6981]
+class identifier-->
+        <rect codeLine="45" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="52.8047" id="identifier"
+              style="stroke:#A80036;stroke-width:1.5;" width="87" x="445.5" y="790.5"/>
+        <ellipse cx="460.5" cy="806.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/>
+        <path d="M463.4688,812.1406 Q462.8906,812.4375 462.25,812.5781 Q461.6094,812.7344 460.9063,812.7344 Q458.4063,812.7344 457.0781,811.0938 Q455.7656,809.4375 455.7656,806.3125 Q455.7656,803.1875 457.0781,801.5313 Q458.4063,799.875 460.9063,799.875 Q461.6094,799.875 462.25,800.0313 Q462.9063,800.1875 463.4688,800.4844 L463.4688,803.2031 Q462.8438,802.625 462.25,802.3594 Q461.6563,802.0781 461.0313,802.0781 Q459.6875,802.0781 459,803.1563 Q458.3125,804.2188 458.3125,806.3125 Q458.3125,808.4063 459,809.4844 Q459.6875,810.5469 461.0313,810.5469 Q461.6563,810.5469 462.25,810.2813 Q462.8438,810 463.4688,809.4219 L463.4688,812.1406 Z "
+              fill="#000000"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="55" x="474.5"
+              y="810.6543">identifier
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="446.5" x2="531.5" y1="822.5" y2="822.5"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="75" x="451.5"
+              y="836.7104">value : string
+        </text><!--MD5=[0766b2e74f5159a8c7d793f1f1cee8a6]
+class property-->
+        <rect codeLine="49" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="65.6094" id="property"
+              style="stroke:#A80036;stroke-width:1.5;" width="87" x="888.5" y="784"/>
+        <ellipse cx="904.4" cy="800" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/>
+        <path d="M907.3688,805.6406 Q906.7906,805.9375 906.15,806.0781 Q905.5094,806.2344 904.8063,806.2344 Q902.3063,806.2344 900.9781,804.5938 Q899.6656,802.9375 899.6656,799.8125 Q899.6656,796.6875 900.9781,795.0313 Q902.3063,793.375 904.8063,793.375 Q905.5094,793.375 906.15,793.5313 Q906.8063,793.6875 907.3688,793.9844 L907.3688,796.7031 Q906.7438,796.125 906.15,795.8594 Q905.5563,795.5781 904.9313,795.5781 Q903.5875,795.5781 902.9,796.6563 Q902.2125,797.7188 902.2125,799.8125 Q902.2125,801.9063 902.9,802.9844 Q903.5875,804.0469 904.9313,804.0469 Q905.5563,804.0469 906.15,803.7813 Q906.7438,803.5 907.3688,802.9219 L907.3688,805.6406 Z "
+              fill="#000000"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="53" x="918.6"
+              y="804.1543">property
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="889.5" x2="974.5" y1="816" y2="816"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="64" x="894.5"
+              y="830.2104">key : string
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="75" x="894.5"
+              y="843.0151">value : string
+        </text><!--MD5=[f3f5b879bc41167043afecf2909be0a8]
+class fix-->
+        <rect codeLine="54" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="142.4375" id="fix"
+              style="stroke:#A80036;stroke-width:1.5;" width="230" x="817" y="565"/>
+        <ellipse cx="921.25" cy="581" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/>
+        <path d="M924.2188,586.6406 Q923.6406,586.9375 923,587.0781 Q922.3594,587.2344 921.6563,587.2344 Q919.1563,587.2344 917.8281,585.5938 Q916.5156,583.9375 916.5156,580.8125 Q916.5156,577.6875 917.8281,576.0313 Q919.1563,574.375 921.6563,574.375 Q922.3594,574.375 923,574.5313 Q923.6563,574.6875 924.2188,574.9844 L924.2188,577.7031 Q923.5938,577.125 923,576.8594 Q922.4063,576.5781 921.7813,576.5781 Q920.4375,576.5781 919.75,577.6563 Q919.0625,578.7188 919.0625,580.8125 Q919.0625,582.9063 919.75,583.9844 Q920.4375,585.0469 921.7813,585.0469 Q922.4063,585.0469 923,584.7813 Q923.5938,584.5 924.2188,583.9219 L924.2188,586.6406 Z "
+              fill="#000000"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="13" x="941.75"
+              y="585.1543">fix
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="818" x2="1046" y1="597" y2="597"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="68" x="823"
+              y="611.2104">fixId : string
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="98" x="823"
+              y="624.0151">time : timestamp
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="70" x="823"
+              y="636.8198">lat : decimal
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="73" x="823"
+              y="649.6245">lon : decimal
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="164" x="823"
+              y="662.4292">altitudeMetres : decimal {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="103" x="823"
+              y="675.2339">cog : decimal {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="150" x="823"
+              y="688.0386">speedKnots : decimal {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="218" x="823"
+              y="700.8433">closestActualFixTime : timestamp {O}
+        </text><!--MD5=[0766a025c2fc0be6876e7f20635baeeb]
+class GET /agent-->
+        <rect codeLine="65" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="37.9375" id="GET /agent"
+              style="stroke:#A80036;stroke-width:1.5;" width="75" x="1219.5" y="450"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing"
+              textLength="42" x="1236" y="466.1387">«Path»
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="69" x="1222.5"
+              y="480.1074">GET /agent
+        </text><!--MD5=[8d9ffab08a5789e58567c9ccf4072f76]
+class GET /craftType-->
+        <rect codeLine="68" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="37.9375" id="GET /craftType"
+              style="stroke:#A80036;stroke-width:1.5;" width="96" x="110" y="335"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing"
+              textLength="42" x="137" y="351.1387">«Path»
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="90" x="113"
+              y="365.1074">GET /craftType
+        </text><!--MD5=[30d532b129e74f07c14986de67005add]
+class GET /identifierType-->
+        <rect codeLine="71" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="37.9375" id="GET /identifierType"
+              style="stroke:#A80036;stroke-width:1.5;" width="122" x="7" y="617"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing"
+              textLength="42" x="47" y="633.1387">«Path»
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="116" x="10"
+              y="647.1074">GET /identifierType
+        </text><!--MD5=[da8012ed613542852b70da3e445ea16b]
+class GET /track/rect-->
+        <rect codeLine="74" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="212.3984" id="GET /track/rect"
+              style="stroke:#A80036;stroke-width:1.5;" width="223" x="605.5" y="26.5"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing"
+              textLength="42" x="696" y="42.6387">«Path»
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="93" x="670.5"
+              y="56.6074">GET /track/rect
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="606.5" x2="827.5" y1="64.4375" y2="64.4375"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="177" x="611.5"
+              y="78.6479">startTimeInclusive : timestamp
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="184" x="611.5"
+              y="91.4526">finishTimeExclusive : timestamp
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="161" x="611.5"
+              y="104.2573">identifierValue : string[] {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="116" x="611.5"
+              y="117.062">craftId : string[] {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="133" x="611.5"
+              y="129.8667">craftType : string[] {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="112" x="611.5"
+              y="142.6714">agent : string[] {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="94" x="611.5"
+              y="155.4761">minLat : decimal
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="97" x="611.5"
+              y="168.2808">maxLat : decimal
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="94" x="611.5"
+              y="181.0854">leftLon : decimal
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="102" x="611.5"
+              y="193.8901">rightLon : decimal
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="211" x="611.5"
+              y="206.6948">includeCraftProperties : boolean {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="198" x="611.5"
+              y="219.4995">includeFixProperties : boolean {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="193" x="611.5"
+              y="232.3042">includeFixIdentifers : boolean {O}
+        </text><!--MD5=[724dcd4586d36c83fcd15ecc9f45af28]
+class GET /track/circle-->
+        <rect codeLine="90" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="199.5938" id="GET /track/circle"
+              style="stroke:#A80036;stroke-width:1.5;" width="223" x="863.5" y="32.5"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing"
+              textLength="42" x="954" y="48.6387">«Path»
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="101" x="924.5"
+              y="62.6074">GET /track/circle
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="864.5" x2="1085.5" y1="70.4375" y2="70.4375"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="177" x="869.5"
+              y="84.6479">startTimeInclusive : timestamp
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="184" x="869.5"
+              y="97.4526">finishTimeExclusive : timestamp
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="161" x="869.5"
+              y="110.2573">identifierValue : string[] {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="116" x="869.5"
+              y="123.062">craftId : string[] {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="133" x="869.5"
+              y="135.8667">craftType : string[] {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="112" x="869.5"
+              y="148.6714">agent : string[] {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="109" x="869.5"
+              y="161.4761">centreLat : decimal
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="112" x="869.5"
+              y="174.2808">centreLon : decimal
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="111" x="869.5"
+              y="187.0854">radiusNm : decimal
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="211" x="869.5"
+              y="199.8901">includeCraftProperties : boolean {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="198" x="869.5"
+              y="212.6948">includeFixProperties : boolean {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="193" x="869.5"
+              y="225.4995">includeFixIdentifers : boolean {O}
+        </text><!--MD5=[769b2aaf1abe4535bc11573b2d4478df]
+class GET /craftpic/rect-->
+        <rect codeLine="105" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="250.8125" id="GET /craftpic/rect"
+              style="stroke:#A80036;stroke-width:1.5;" width="223" x="88.5" y="7"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing"
+              textLength="42" x="179" y="23.1387">«Path»
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="108" x="146"
+              y="37.1074">GET /craftpic/rect
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="89.5" x2="310.5" y1="44.9375" y2="44.9375"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="98" x="94.5"
+              y="59.1479">time : timestamp
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="127" x="94.5"
+              y="71.9526">beforeHours : decimal
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="117" x="94.5"
+              y="84.7573">afterHours : decimal
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="161" x="94.5"
+              y="97.562">identifierValue : string[] {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="116" x="94.5"
+              y="110.3667">craftId : string[] {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="133" x="94.5"
+              y="123.1714">craftType : string[] {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="112" x="94.5"
+              y="135.9761">agent : string[] {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="94" x="94.5"
+              y="148.7808">minLat : decimal
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="97" x="94.5"
+              y="161.5854">maxLat : decimal
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="94" x="94.5"
+              y="174.3901">leftLon : decimal
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="102" x="94.5"
+              y="187.1948">rightLon : decimal
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="198" x="94.5"
+              y="199.9995">includeFixProperties : boolean {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="211" x="94.5"
+              y="212.8042">includeCraftProperties : boolean {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="193" x="94.5"
+              y="225.6089">includeFixIdentifers : boolean {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="137" x="94.5"
+              y="238.4136">predicted : boolean {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="206" x="94.5"
+              y="251.2183">speedForMarginKnots : decimal {O}
+        </text><!--MD5=[a32c34cc5ebe411007160bf7a0740a0d]
+class GET /craftpic/circle-->
+        <rect codeLine="124" fill="#FEFECE" filter="url(#f1cf6uikq0urbj)" height="238.0078" id="GET /craftpic/circle"
+              style="stroke:#A80036;stroke-width:1.5;" width="223" x="346.5" y="13.5"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing"
+              textLength="42" x="437" y="29.6387">«Path»
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="116" x="400"
+              y="43.6074">GET /craftpic/circle
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="347.5" x2="568.5" y1="51.4375" y2="51.4375"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="98" x="352.5"
+              y="65.6479">time : timestamp
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="127" x="352.5"
+              y="78.4526">beforeHours : decimal
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="117" x="352.5"
+              y="91.2573">afterHours : decimal
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="161" x="352.5"
+              y="104.062">identifierValue : string[] {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="116" x="352.5"
+              y="116.8667">craftId : string[] {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="133" x="352.5"
+              y="129.6714">craftType : string[] {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="112" x="352.5"
+              y="142.4761">agent : string[] {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="109" x="352.5"
+              y="155.2808">centreLat : decimal
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="112" x="352.5"
+              y="168.0854">centreLon : decimal
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="111" x="352.5"
+              y="180.8901">radiusNm : decimal
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="211" x="352.5"
+              y="193.6948">includeCraftProperties : boolean {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="198" x="352.5"
+              y="206.4995">includeFixProperties : boolean {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="193" x="352.5"
+              y="219.3042">includeFixIdentifers : boolean {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="137" x="352.5"
+              y="232.1089">predicted : boolean {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="206" x="352.5"
+              y="244.9136">speedForMarginKnots : decimal {O}
+        </text><!--MD5=[48b32d299b5041a5c4fd9cfd495d93fb]
+link agents to agent-->
+        <path codeLine="142"
+              d="M1243.07,652.04 C1229.92,666.22 1209.64,688.08 1192,707 C1166.77,734.06 1137.97,764.83 1117.42,786.76 "
+              fill="none" id="agents-to-agent" style="stroke:#A80036;stroke-width:1.0;"/>
+        <polygon fill="#A80036"
+                 points="1113.93,790.48,1123.0111,786.6677,1117.3568,786.839,1117.1855,781.1847,1113.93,790.48"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="1111.9098"
+              y="779.2945">*
+        </text><!--MD5=[116f4513ba17c7e21ccce110dd98300f]
+link craftTypes to craftType-->
+        <path codeLine="144"
+              d="M176.75,485.07 C199.46,503.47 238.68,535.78 271,565 C285.42,578.04 300.94,593 313.86,605.74 "
+              fill="none" id="craftTypes-to-craftType" style="stroke:#A80036;stroke-width:1.0;"/>
+        <polygon fill="#A80036"
+                 points="317.44,609.27,313.8488,600.0992,313.8831,605.756,308.2264,605.7902,317.44,609.27"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="303.7199"
+              y="598.4591">*
+        </text><!--MD5=[d2ba5241b1691b289bf08f43f1232092]
+link tracks to craftFixes-->
+        <path codeLine="146" d="M718,370.24 C718,390.21 718,425.29 718,447.55 " fill="none" id="tracks-to-craftFixes"
+              style="stroke:#A80036;stroke-width:1.0;"/>
+        <polygon fill="#A80036" points="718,452.64,722,443.64,718,447.64,714,443.64,718,452.64"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="709.8406"
+              y="441.8253">*
+        </text><!--MD5=[2ebbfe335bd7b5ea2742d5c52c275a6f]
+link craftpic to craftFix-->
+        <path codeLine="148" d="M458,370.24 C458,390.21 458,425.29 458,447.55 " fill="none" id="craftpic-to-craftFix"
+              style="stroke:#A80036;stroke-width:1.0;"/>
+        <polygon fill="#A80036" points="458,452.64,462,443.64,458,447.64,454,443.64,458,452.64"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="449.8406"
+              y="441.8253">*
+        </text><!--MD5=[b87e35e612edd0c327fbaee5deb5fd4c]
+link identifierTypes to identifierType-->
+        <path codeLine="150" d="M304.89,833.17 C316.08,854.66 336.79,894.45 351.2,922.15 " fill="none"
+              id="identifierTypes-to-identifierType" style="stroke:#A80036;stroke-width:1.0;"/>
+        <polygon fill="#A80036"
+                 points="353.64,926.83,353.0417,916.9993,351.3355,922.3927,345.9421,920.6865,353.64,926.83"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="342.7411"
+              y="916.033">*
+        </text><!--MD5=[d54df8b460ce40043809516e92aeb1f7]
+link craftFix to craftId-->
+        <path codeLine="152" d="M471.47,485.23 C495.65,512.55 546.79,570.35 578,605.61 " fill="none"
+              id="craftFix-to-craftId" style="stroke:#A80036;stroke-width:1.0;"/>
+        <polygon fill="#A80036"
+                 points="581.33,609.38,578.3582,599.9902,578.0153,605.6367,572.3688,605.2938,581.33,609.38"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="567.1626"
+              y="598.5946">1
+        </text><!--MD5=[09264e4349ea03b9adf868f103e6adc7]
+link craftFix to craftType-->
+        <path codeLine="154"
+              d="M424.42,485.13 C409.94,493.1 393.88,504.14 383,518 C363.12,543.33 352.8,579.15 347.67,604.46 "
+              fill="none" id="craftFix-to-craftType" style="stroke:#A80036;stroke-width:1.0;"/>
+        <polygon fill="#A80036"
+                 points="346.71,609.38,352.3612,601.3138,347.6686,604.4727,344.5096,599.7801,346.71,609.38"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="338.6429"
+              y="598.5946">1
+        </text><!--MD5=[d01631b2e244d59396d6ebd4eeb3602b]
+link craftFix to identifier-->
+        <path codeLine="156"
+              d="M419.24,472.35 C363.37,478.07 261.89,497.69 216,565 C180.45,617.15 180.6,654.75 216,707 C229.23,726.53 365.82,774.73 440.63,799.98 "
+              fill="none" id="craftFix-to-identifier" style="stroke:#A80036;stroke-width:1.0;"/>
+        <polygon fill="#A80036"
+                 points="445.47,801.61,438.2269,794.9364,440.7338,800.0074,435.6627,802.5143,445.47,801.61"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="62" x="217"
+              y="640.5669">identifiers
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="430.3867"
+              y="794.7709">*
+        </text><!--MD5=[f76b73bc8c22393d03005486f59cd67a]
+link craftFix to property-->
+        <path codeLine="158"
+              d="M453.61,485.14 C442.61,526.6 418.65,643.14 476,707 C524.93,761.48 566.59,720.82 638,737 C725.06,756.73 825.22,784.81 883.3,801.64 "
+              fill="none" id="craftFix-to-property" style="stroke:#A80036;stroke-width:1.0;"/>
+        <polygon fill="#A80036"
+                 points="888.44,803.13,880.9026,796.7907,883.6362,801.7432,878.6837,804.4768,888.44,803.13"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="65" x="477"
+              y="640.5669">properties
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="873.6457"
+              y="796.7008">*
+        </text><!--MD5=[ecec6e57531c966bfe01fda2ae9ded84]
+link craftFix to fix-->
+        <path codeLine="160"
+              d="M496.57,478.65 C559.22,493.24 686.53,525.06 790,565 C797.33,567.83 804.79,570.9 812.26,574.12 "
+              fill="none" id="craftFix-to-fix" style="stroke:#A80036;stroke-width:1.0;"/>
+        <polygon fill="#A80036"
+                 points="816.91,576.14,810.2405,568.8931,812.3217,574.1532,807.0616,576.2343,816.91,576.14"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="800.9086"
+              y="568.6709">1
+        </text><!--MD5=[bf5075ca0185b3f5c733557861f5e4f5]
+link craftFixes to craftId-->
+        <path codeLine="162" d="M707.48,485.23 C688.68,512.44 648.99,569.88 624.6,605.18 " fill="none"
+              id="craftFixes-to-craftId" style="stroke:#A80036;stroke-width:1.0;"/>
+        <polygon fill="#A80036" points="621.7,609.38,630.107,604.2495,624.5423,605.2665,623.5254,599.7018,621.7,609.38"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="616.8681"
+              y="598.5946">1
+        </text><!--MD5=[e6a357a3302c2f8e3d5022ec054b86fe]
+link craftFixes to craftType-->
+        <path codeLine="164"
+              d="M671.88,477.53 C609.99,489.12 498.22,515.39 415,565 C397.21,575.61 380.42,591.45 367.54,605.38 "
+              fill="none" id="craftFixes-to-craftType" style="stroke:#A80036;stroke-width:1.0;"/>
+        <polygon fill="#A80036"
+                 points="364.01,609.25,373.0284,605.2916,367.3776,605.5542,367.1151,599.9034,364.01,609.25"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="359.9436"
+              y="598.4345">1
+        </text><!--MD5=[738edfd7ab1fd4588a44eff81bc82906]
+link craftFixes to identifier-->
+        <path codeLine="166"
+              d="M718.48,485.2 C719,525.35 715.46,636.05 665,707 C633.48,751.33 577.71,781.34 537.39,798.47 "
+              fill="none" id="craftFixes-to-identifier" style="stroke:#A80036;stroke-width:1.0;"/>
+        <polygon fill="#A80036" points="532.55,800.5,542.3964,800.72,537.1633,798.5719,539.3114,793.3387,532.55,800.5"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="62" x="715"
+              y="640.5669">identifiers
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="540.6367"
+              y="793.4701">*
+        </text><!--MD5=[ba4546011d179940ea34a7bd9b2cdfef]
+link craftFixes to property-->
+        <path codeLine="168"
+              d="M764.26,475.79 C849.86,487.55 1027.6,517.26 1064,565 C1102.27,615.19 1090.9,649.91 1064,707 C1046.68,743.77 1010.18,772.37 979.95,791.02 "
+              fill="none" id="craftFixes-to-property" style="stroke:#A80036;stroke-width:1.0;"/>
+        <polygon fill="#A80036" points="975.54,793.7,985.3076,792.4373,979.811,791.1003,981.148,785.6037,975.54,793.7"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="65" x="1090"
+              y="640.5669">properties
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="983.625"
+              y="785.5181">*
+        </text><!--MD5=[0a011825a424ec06715c8e0fad825adc]
+link craftFixes to fix-->
+        <path codeLine="170"
+              d="M754.65,485 C773.23,493.41 795.68,504.86 814,518 C831.5,530.56 848.83,545.75 864.61,560.96 "
+              fill="none" id="craftFixes-to-fix" style="stroke:#A80036;stroke-width:1.0;"/>
+        <polygon fill="#A80036"
+                 points="868.58,564.83,864.9148,555.6885,864.9948,561.3448,859.3385,561.4248,868.58,564.83"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="29" x="837"
+              y="531.0669">fixes
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="854.6789"
+              y="553.7683">*
+        </text><!--MD5=[387c24eed0ecfa03e746f3c0986ef865]
+link identifier to identifierType-->
+        <path codeLine="172" d="M465.77,843.62 C445.16,866.33 415.07,899.5 393.53,923.25 " fill="none"
+              id="identifier-to-identifierType" style="stroke:#A80036;stroke-width:1.0;"/>
+        <polygon fill="#A80036" points="390.15,926.98,399.16,923.0026,393.5098,923.2771,393.2353,917.6269,390.15,926.98"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="22" x="433"
+              y="893.0669">key
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="386.8178"
+              y="915.7945">1
+        </text><!--MD5=[bd657ee020933f3b789c6978e73bead6]
+link fix to agent-->
+        <path codeLine="174" d="M993.99,707.23 C1018.25,734.71 1044.75,764.73 1063.75,786.26 " fill="none"
+              id="fix-to-agent" style="stroke:#A80036;stroke-width:1.0;"/>
+        <polygon fill="#A80036"
+                 points="1067.21,790.18,1064.2382,780.7902,1063.8953,786.4367,1058.2488,786.0938,1067.21,790.18"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="1053.0148"
+              y="779.3483">1
+        </text><!--MD5=[6975bb0c418ac467da369e371208abe2]
+link fix to property-->
+        <path codeLine="176" d="M932,707.23 C932,731.61 932,757.99 932,778.67 " fill="none" id="fix-to-property"
+              style="stroke:#A80036;stroke-width:1.0;"/>
+        <polygon fill="#A80036" points="932,783.8,936,774.8,932,778.8,928,774.8,932,783.8"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="65" x="933"
+              y="750.0669">properties
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="924.3109"
+              y="772.9056">*
+        </text><!--MD5=[4745a5a730b16c874911cb221456aa30]
+link fix to identifier-->
+        <path codeLine="178"
+              d="M816.63,695.18 C807.68,699.3 798.72,703.28 790,707 C702.59,744.24 597.71,780.34 537.66,800.23 "
+              fill="none" id="fix-to-identifier" style="stroke:#A80036;stroke-width:1.0;"/>
+        <polygon fill="#A80036" points="532.7,801.87,542.5013,802.8364,537.4463,800.2974,539.9852,795.2424,532.7,801.87"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="62" x="710"
+              y="750.0669">identifiers
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="540.5175"
+              y="812.7003">*
+        </text><!--MD5=[4dcef72ad059fb468134e6785073a364]
+link GET /agent to agents-->
+        <path codeLine="180" d="M1257,488.29 C1257,519.22 1257,581.68 1257,614.22 " fill="none"
+              id="GET /agent-to-agents" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/>
+        <polygon fill="#A80036" points="1257,619.55,1261,610.55,1257,614.55,1253,610.55,1257,619.55"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="24" x="1258"
+              y="531.0669">200
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="1247.725"
+              y="609.004">1
+        </text><!--MD5=[b65b9d332165c4f455fa4cdbb0cccc49]
+link GET /craftType to craftTypes-->
+        <path codeLine="182" d="M158,373.16 C158,393.52 158,426.45 158,447.66 " fill="none"
+              id="GET /craftType-to-craftTypes" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/>
+        <polygon fill="#A80036" points="158,452.79,162,443.79,158,447.79,154,443.79,158,452.79"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="24" x="159"
+              y="416.0669">200
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="148.675"
+              y="442.025">1
+        </text><!--MD5=[aac5d37776cc9bfa1796ab625d849b92]
+link GET /identifierType to identifierTypes-->
+        <path codeLine="184"
+              d="M76.12,655.28 C88.21,680.63 113.2,726.42 147,754 C172.39,774.71 205.65,789.4 234.41,799.26 "
+              fill="none" id="GET /identifierType-to-identifierTypes"
+              style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/>
+        <polygon fill="#A80036"
+                 points="239.35,800.93,232.0828,794.2826,234.608,799.3446,229.5461,801.8698,239.35,800.93"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="24" x="148"
+              y="750.0669">200
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="219.598"
+              y="793.5165">1
+        </text><!--MD5=[dd6e27089193c94a749305e5a97a5bea]
+link GET /track/rect to tracks-->
+        <path codeLine="186" d="M717.48,238.75 C717.64,274.45 717.81,310.79 717.91,332.62 " fill="none"
+              id="GET /track/rect-to-tracks" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/>
+        <polygon fill="#A80036"
+                 points="717.93,337.85,721.8785,328.8273,717.9014,332.8501,713.8786,328.873,717.93,337.85"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="24" x="719"
+              y="301.0669">200
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="708.5309"
+              y="326.81">1
+        </text><!--MD5=[ed4cd329ba34e9a2cff698caba7723c0]
+link GET /track/circle to tracks-->
+        <path codeLine="188"
+              d="M874.75,232.64 C865.18,241.38 855.5,249.95 846,258 C812.33,286.53 770.94,316.38 744.51,334.84 "
+              fill="none" id="GET /track/circle-to-tracks"
+              style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/>
+        <polygon fill="#A80036" points="740.4,337.7,750.0739,335.8519,744.5068,334.848,745.5107,329.281,740.4,337.7"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="24" x="810"
+              y="301.0669">200
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="738.495"
+              y="326.9051">1
+        </text><!--MD5=[c6430f2807ec80ecf85c9f08b3a38667]
+link GET /craftpic/rect to craftpic-->
+        <path codeLine="190"
+              d="M311.75,243.05 C317.52,248.17 323.29,253.18 329,258 C362.89,286.61 404.61,316.44 431.26,334.87 "
+              fill="none" id="GET /craftpic/rect-to-craftpic"
+              style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/>
+        <polygon fill="#A80036"
+                 points="435.41,337.73,430.2597,329.3351,431.2898,334.8974,425.7275,335.9274,435.41,337.73"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="24" x="389"
+              y="301.0669">200
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="418.6021"
+              y="326.9451">1
+        </text><!--MD5=[488546d8c8d2583327e2a90d71433674]
+link GET /craftpic/circle to craftpic-->
+        <path codeLine="192" d="M458,251.6 C458,282.95 458,313.39 458,332.6 " fill="none"
+              id="GET /craftpic/circle-to-craftpic" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/>
+        <polygon fill="#A80036" points="458,337.71,462,328.71,458,332.71,454,328.71,458,337.71"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="24" x="459"
+              y="301.0669">200
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="448.675"
+              y="326.9185">1
+        </text><!--MD5=[2f062ad9c21ec28e383dc5be5bffeceb]
 @startuml
 hide <<Path>> circle
 hide <<Response>> circle
@@ -249,4 +912,6 @@ JVM: OpenJDK 64-Bit Server VM
 Default Encoding: UTF-8
 Language: en
 Country: AU
---></g></svg>
+-->
+    </g>
+</svg>
