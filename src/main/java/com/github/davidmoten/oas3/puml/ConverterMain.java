@@ -9,7 +9,7 @@ public final class ConverterMain {
 	public static final String USAGE    = JAVA_JAR
 	                                      + "<OPENAPI_YAML> file or Directory containing *.yml or *.yaml files\n"
 	                                      + "<OUTPUT_DIRECTORY> output Directory\n"
-	                                      + "<FILE_FORMAT> optional file format default PUML only\n"
+	                                      + "<FILE_FORMAT> optional file format default PUML and SVG only\n"
 	                                      + " or"
 	                                      + "<[FILE_FORMAT1, FILE_FORMAT1...]> optional several file formats\n"
 	                                      + "surrounded by [delimited by comma and space ', ')] i.e. supported formats "

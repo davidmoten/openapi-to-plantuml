@@ -52,7 +52,7 @@ Add this dependency to your pom.xml:
 <dependency>
   <groupId>com.github.davidmoten</groupId>
   <artifactId>openapi-to-plantuml</artifactId>
-  <version>VERSION_HERE</version>
+  <version>2022-01-01-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -60,16 +60,62 @@ Or use the standalone *jar-with-dependencies* artifact
 from [Maven Central](https://search.maven.org/search?q=g:com.github.davidmoten%20AND%20a:openapi-to-plantuml) (or from
 the `target` directory if you have built the project locally):
 
+## Usage
+
+Read com.github.davidmoten.oas3.puml.ConverterMainTest for more examples
+
 ```bash
-java -jar openapi-to-plantuml-VERSION_HERE-jar-with-dependencies.jar openapi.yaml PNG openapi.png
+Usage:
+java -jar openapi-to-plantuml-all.jar <OPENAPI_YAML> <OUTPUT_DIRECTORY> <FILE_FORMAT>|<[FILE_FORMAT1, FILE_FORMAT1...]>
+<OPENAPI_YAML> file or Directory containing *.yml or *.yaml files
+<OUTPUT_DIRECTORY> output Directory
+<FILE_FORMAT> optional file format default PUML and SVG only
+ or<[FILE_FORMAT1, FILE_FORMAT1...]> optional several file formats
+surrounded by [delimited by comma and space ', ')] i.e. supported formats are:
+[ATXT, BRAILLE_PNG, DEBUG, EPS, EPS_TEXT, LATEX, LATEX_NO_PREAMBLE, PNG, SVG, UTXT, VDX]
+ATXT	*.atxt	text/plain
+BRAILLE_PNG	*.braille.png	image/png
+DEBUG	*.debug	text/plain
+EPS	*.eps	application/postscript
+EPS_TEXT	*.eps.text.eps	application/postscript
+LATEX	*.latex	application/x-latex
+LATEX_NO_PREAMBLE	*.latex.no.preamble.latex	application/x-latex
+PNG	*.png	image/png
+SVG	*.svg	image/svg+xml
+UTXT	*.utxt	text/plain;charset=UTF-8
+VDX	*.vdx	application/vnd.visio.xml
+```
+
+all demo files at src/test/resources/demo to target/converted-puml as PUML & SVG by default
+
+```bash
+java -jar target/openapi-to-plantuml-2022-01-01-SNAPSHOT-jar-with-dependencies.jar src/test/resources/demo target/converted-puml
+```
+
+all demo files at src/test/resources/demo to target/converted-puml as PUML, SVG & PNG
+
+```bash
+java -jar target/openapi-to-plantuml-2022-01-01-SNAPSHOT-jar-with-dependencies.jar src/test/resources/demo target/converted-puml "[SVG, PNG]"
 ```
 
 ## Usage
 
+Read com.github.davidmoten.oas3.puml.DemoJavaTest for more examples All supported formats
+
 ```java
 import com.github.davidmoten.oas3.puml.Converter;
+Converter.writeOpenApiDirectoryFileToPumlAndTo(OPEN_API_DIRECTORY_FILE,
+				OUTPUT_DIRECTORY_FILE,
+				Converter.SUPPORTED_FORMATS);
+```
 
-String puml=Converter.openApiToPuml(openapi);
+PUML, SVG & PNG
+
+```java
+		Converter.writeOpenApiDirectoryFileToPumlAndTo(OPEN_API_DIRECTORY_FILE,
+		                                               OUTPUT_DIRECTORY_FILE,
+		                                               FileFormat.SVG,
+		                                               FileFormat.PNG);
 ```
 
 ## Examples

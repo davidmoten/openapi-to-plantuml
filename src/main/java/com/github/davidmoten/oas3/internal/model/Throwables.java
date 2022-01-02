@@ -33,6 +33,12 @@ public class Throwables
 
 	@Override
 	public final String toString() {
-		return throwables.toString();
+		String message = getMessage() == null
+		                 ? ""
+		                 : getMessage();
+		String string = String.format("%s%n%s%n",
+		                              message,
+		                              throwables);
+		return string;
 	}
 }

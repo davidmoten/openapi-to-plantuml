@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import java.io.File;
 
-public class DemoBatchTest {
+public class DemoJavaTest {
 
 	private static final String OPEN_API_DIRECTORY      = "src/test/resources/demo/";
 	public static final  File   OPEN_API_DIRECTORY_FILE = new File(OPEN_API_DIRECTORY);
@@ -66,6 +66,18 @@ public class DemoBatchTest {
 		                                               OUTPUT_DIRECTORY_FILE,
 		                                               FileFormat.SVG,
 		                                               FileFormat.PNG);
+	}
+
+	@Test
+	public void testWriteOpenApiDirectoryFilesToPUMLOnly()
+					throws
+					Throwables {
+		if (!"true".equalsIgnoreCase(System.getProperty("demo",
+		                                                "true"))) {
+			return;
+		}
+		Converter.writeOpenApiDirectoryFileToPumlAndTo(OPEN_API_DIRECTORY_FILE,
+		                                               OUTPUT_DIRECTORY_FILE);
 	}
 
 }
