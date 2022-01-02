@@ -73,6 +73,16 @@
             </roles>
             <timezone>+10</timezone>
         </developer>
+        <developer>
+            <id>VRDate</id>
+            <name>Tomer Bar-Shlomo</name>
+            <url>https://github.com/VRDate/</url>
+            <roles>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+            <timezone>+2</timezone>
+        </developer>
     </developers>
 
     <scm>
