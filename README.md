@@ -112,10 +112,10 @@ Converter.writeOpenApiDirectoryFileToPumlAndTo(OPEN_API_DIRECTORY_FILE,
 PUML, SVG & PNG
 
 ```java
-		Converter.writeOpenApiDirectoryFileToPumlAndTo(OPEN_API_DIRECTORY_FILE,
-		                                               OUTPUT_DIRECTORY_FILE,
-		                                               FileFormat.SVG,
-		                                               FileFormat.PNG);
+Converter.writeOpenApiDirectoryFileToPumlAndTo(OPEN_API_DIRECTORY_FILE,
+                                               OUTPUT_DIRECTORY_FILE,
+                                               FileFormat.SVG,
+                                               FileFormat.PNG);
 ```
 
 ## Examples
