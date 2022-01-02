@@ -105,8 +105,8 @@ Read com.github.davidmoten.oas3.puml.DemoJavaTest for more examples All supporte
 ```java
 import com.github.davidmoten.oas3.puml.Converter;
 Converter.writeOpenApiDirectoryFileToPumlAndTo(OPEN_API_DIRECTORY_FILE,
-				OUTPUT_DIRECTORY_FILE,
-				Converter.SUPPORTED_FORMATS);
+                                               OUTPUT_DIRECTORY_FILE,
+                                               Converter.SUPPORTED_FORMATS);
 ```
 
 PUML, SVG & PNG
