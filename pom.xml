@@ -22,15 +22,15 @@
         <checkstyle.version>3.1.2</checkstyle.version>
         <checkstyle.xml>src/main/checkstyle/checkstyle.xml</checkstyle.xml>
         <checkstyle.suppressions.xml>src/main/checkstyle/suppressions.xml</checkstyle.suppressions.xml>
-        <checkstyle.core.version>9.2</checkstyle.core.version>
-        <spotbugs.version>4.5.0.0</spotbugs.version>
+        <checkstyle.core.version>9.2.1</checkstyle.core.version>
+        <spotbugs.version>4.5.2.0</spotbugs.version>
         <javadoc.version>3.3.1</javadoc.version>
         <pmd.version>3.15.0</pmd.version>
         <jdepend.version>2.0</jdepend.version>
         <project.info.version>3.1.1</project.info.version>
         <jxr.version>3.1.1</jxr.version>
         <taglist.version>2.4</taglist.version>
-        <m3.site.version>3.9.1</m3.site.version>
+        <m3.site.version>3.10.0</m3.site.version>
         <changelog.version>2.2</changelog.version>
         <bundle.plugin.version>5.1.2</bundle.plugin.version>
         <coverage.reports.dir>${project.build.directory}/target/coverage-reports</coverage.reports.dir>
@@ -38,7 +38,7 @@
         <branch.coverage>0.40</branch.coverage>
 
         <slf4j.version>1.7.30</slf4j.version>
-        <log4j.version>2.14.1</log4j.version>
+        <log4j.version>2.17.1</log4j.version>
 
     </properties>
 
@@ -97,7 +97,7 @@
         <dependency>
             <groupId>io.swagger.parser.v3</groupId>
             <artifactId>swagger-parser</artifactId>
-            <version>2.0.28</version>
+            <version>2.0.29</version>
         </dependency>
 
         <dependency>
