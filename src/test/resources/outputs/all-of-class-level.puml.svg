@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     contentScriptType="application/ecmascript" contentStyleType="text/css" height="166px" preserveAspectRatio="none"
+     style="width:223px;height:166px;background:#FFFFFF;" version="1.1" viewBox="0 0 223 166" width="223px"
+     zoomAndPan="magnify">
+    <defs>
+        <filter height="300%" id="fncizemwizaqe" width="300%" x="-1" y="-1">
+            <feGaussianBlur result="blurOut" stdDeviation="2.0"/>
+            <feColorMatrix in="blurOut" result="blurOut2" type="matrix"
+                           values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/>
+            <feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/>
+            <feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/>
+        </filter>
+    </defs>
+    <g><!--MD5=[58521b9143a6696c24486cbdfb8e8110]
+class employee-->
+        <rect codeLine="8" fill="#FEFECE" filter="url(#fncizemwizaqe)" height="32" id="employee"
+              style="stroke:#A80036;stroke-width:1.5;" width="86" x="61" y="7"/>
+        <ellipse cx="76" cy="23" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/>
+        <path d="M78.7656,18.875 Q78.9219,18.6563 79.1094,18.5469 Q79.2969,18.4375 79.5156,18.4375 Q79.8906,18.4375 80.125,18.7031 Q80.3594,18.9531 80.3594,19.5625 L80.3594,21.0156 Q80.3594,21.625 80.125,21.8906 Q79.8906,22.1563 79.5156,22.1563 Q79.1719,22.1563 78.9688,21.9531 Q78.7656,21.7656 78.6563,21.25 Q78.6094,20.8906 78.4219,20.7031 Q78.0938,20.3281 77.4844,20.1094 Q76.875,19.8906 76.25,19.8906 Q75.4844,19.8906 74.8438,20.2188 Q74.2188,20.5469 73.7188,21.2969 Q73.2344,22.0469 73.2344,23.0781 L73.2344,24.1719 Q73.2344,25.4063 74.125,26.2344 Q75.0156,27.0469 76.6094,27.0469 Q77.5469,27.0469 78.2031,26.7969 Q78.5938,26.6406 79.0156,26.2031 Q79.2813,25.9375 79.4219,25.8594 Q79.5781,25.7813 79.7813,25.7813 Q80.1094,25.7813 80.3594,26.0469 Q80.625,26.2969 80.625,26.6406 Q80.625,26.9844 80.2813,27.3906 Q79.7813,27.9688 78.9844,28.2969 Q77.9063,28.75 76.6094,28.75 Q75.0938,28.75 73.8906,28.125 Q72.9063,27.625 72.2188,26.5625 Q71.5313,25.4844 71.5313,24.2031 L71.5313,23.0469 Q71.5313,21.7188 72.1406,20.5781 Q72.7656,19.4219 73.8594,18.8125 Q74.9531,18.1875 76.1875,18.1875 Q76.9219,18.1875 77.5625,18.3594 Q78.2188,18.5156 78.7656,18.875 Z "
+              fill="#000000"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="54" x="90"
+              y="27.9102">employee
+        </text><!--MD5=[eec114a0b3352c6b1c1f53d18fe88291]
+class nurse-->
+        <rect codeLine="11" fill="#FEFECE" filter="url(#fncizemwizaqe)" height="53.8359" id="nurse"
+              style="stroke:#A80036;stroke-width:1.5;" width="76" x="7" y="99"/>
+        <ellipse cx="27.4" cy="115" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/>
+        <path d="M30.1656,110.875 Q30.3219,110.6563 30.5094,110.5469 Q30.6969,110.4375 30.9156,110.4375 Q31.2906,110.4375 31.525,110.7031 Q31.7594,110.9531 31.7594,111.5625 L31.7594,113.0156 Q31.7594,113.625 31.525,113.8906 Q31.2906,114.1563 30.9156,114.1563 Q30.5719,114.1563 30.3688,113.9531 Q30.1656,113.7656 30.0563,113.25 Q30.0094,112.8906 29.8219,112.7031 Q29.4938,112.3281 28.8844,112.1094 Q28.275,111.8906 27.65,111.8906 Q26.8844,111.8906 26.2438,112.2188 Q25.6188,112.5469 25.1188,113.2969 Q24.6344,114.0469 24.6344,115.0781 L24.6344,116.1719 Q24.6344,117.4063 25.525,118.2344 Q26.4156,119.0469 28.0094,119.0469 Q28.9469,119.0469 29.6031,118.7969 Q29.9938,118.6406 30.4156,118.2031 Q30.6813,117.9375 30.8219,117.8594 Q30.9781,117.7813 31.1813,117.7813 Q31.5094,117.7813 31.7594,118.0469 Q32.025,118.2969 32.025,118.6406 Q32.025,118.9844 31.6813,119.3906 Q31.1813,119.9688 30.3844,120.2969 Q29.3063,120.75 28.0094,120.75 Q26.4938,120.75 25.2906,120.125 Q24.3063,119.625 23.6188,118.5625 Q22.9313,117.4844 22.9313,116.2031 L22.9313,115.0469 Q22.9313,113.7188 23.5406,112.5781 Q24.1656,111.4219 25.2594,110.8125 Q26.3531,110.1875 27.5875,110.1875 Q28.3219,110.1875 28.9625,110.3594 Q29.6188,110.5156 30.1656,110.875 Z "
+              fill="#000000"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="32" x="42.6"
+              y="119.9102">nurse
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="8" x2="82" y1="131" y2="131"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="64" x="13"
+              y="146.4189">level : integer
+        </text><!--MD5=[c24d5af84c82019f1badc7472456af6e]
+class doctor-->
+        <rect codeLine="15" fill="#FEFECE" filter="url(#fncizemwizaqe)" height="53.8359" id="doctor"
+              style="stroke:#A80036;stroke-width:1.5;" width="91" x="118.5" y="99"/>
+        <ellipse cx="144.75" cy="115" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/>
+        <path d="M147.5156,110.875 Q147.6719,110.6563 147.8594,110.5469 Q148.0469,110.4375 148.2656,110.4375 Q148.6406,110.4375 148.875,110.7031 Q149.1094,110.9531 149.1094,111.5625 L149.1094,113.0156 Q149.1094,113.625 148.875,113.8906 Q148.6406,114.1563 148.2656,114.1563 Q147.9219,114.1563 147.7188,113.9531 Q147.5156,113.7656 147.4063,113.25 Q147.3594,112.8906 147.1719,112.7031 Q146.8438,112.3281 146.2344,112.1094 Q145.625,111.8906 145,111.8906 Q144.2344,111.8906 143.5938,112.2188 Q142.9688,112.5469 142.4688,113.2969 Q141.9844,114.0469 141.9844,115.0781 L141.9844,116.1719 Q141.9844,117.4063 142.875,118.2344 Q143.7656,119.0469 145.3594,119.0469 Q146.2969,119.0469 146.9531,118.7969 Q147.3438,118.6406 147.7656,118.2031 Q148.0313,117.9375 148.1719,117.8594 Q148.3281,117.7813 148.5313,117.7813 Q148.8594,117.7813 149.1094,118.0469 Q149.375,118.2969 149.375,118.6406 Q149.375,118.9844 149.0313,119.3906 Q148.5313,119.9688 147.7344,120.2969 Q146.6563,120.75 145.3594,120.75 Q143.8438,120.75 142.6406,120.125 Q141.6563,119.625 140.9688,118.5625 Q140.2813,117.4844 140.2813,116.2031 L140.2813,115.0469 Q140.2813,113.7188 140.8906,112.5781 Q141.5156,111.4219 142.6094,110.8125 Q143.7031,110.1875 144.9375,110.1875 Q145.6719,110.1875 146.3125,110.3594 Q146.9688,110.5156 147.5156,110.875 Z "
+              fill="#000000"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="34" x="161.25"
+              y="119.9102">doctor
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="119.5" x2="208.5" y1="131" y2="131"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="79" x="124.5"
+              y="146.4189">income : decimal
+        </text><!--MD5=[3db12954672d83927e612c021bfef13e]
+link employee to doctor-->
+        <path codeLine="19" d="M113.11,39.34 C121.76,53.89 134.99,76.17 145.8,94.36 " fill="none"
+              id="employee-to-doctor" style="stroke:#A80036;stroke-width:1.0;"/>
+        <polygon fill="#A80036" points="148.49,98.89,147.3519,89.1071,145.9449,94.5862,140.4658,93.1793,148.49,98.89"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="137.0939"
+              y="88.3255">1
+        </text><!--MD5=[46ea5f43a1748e173cdfe0cf51f01025]
+link employee to nurse-->
+        <path codeLine="21" d="M95.04,39.34 C86.54,53.89 73.52,76.17 62.9,94.36 " fill="none" id="employee-to-nurse"
+              style="stroke:#A80036;stroke-width:1.0;"/>
+        <polygon fill="#A80036" points="60.25,98.89,68.2293,93.1167,62.7614,94.5665,61.3116,89.0985,60.25,98.89"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="55.9672"
+              y="88.3255">1
+        </text><!--MD5=[fd6b44a6b04d6a05a939c9201bc90d9b]
+@startuml
+hide <<Path>> circle
+hide <<Response>> circle
+hide <<Parameter>> circle
+hide empty methods
+hide empty fields
+set namespaceSeparator none
+
+class "employee" {
+}
+
+class "nurse" {
+  {field} level : integer
+}
+
+class "doctor" {
+  {field} income : decimal
+}
+
+"employee" - -> "1" "doctor"
+
+"employee" - -> "1" "nurse"
+
+@enduml
+
+PlantUML version 1.2021.16(Wed Dec 08 19:25:22 IST 2021)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: GB
+-->
+    </g>
+</svg>

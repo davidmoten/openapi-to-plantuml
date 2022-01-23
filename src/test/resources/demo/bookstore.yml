@@ -1,16 +1,16 @@
 openapi: 3.0.2
 info:
-    title: bookstore
-    version: 1.0.0
-    description: >-
-        This is a sample server BookStore API
-    contact:
-      name: API Support
-      url: https://italiancoders/support
-      email: italiancoders@gmail.com
-    license:
-        name: Apache 2.0
-        url: https://www.apache.org/licenses/LICENSE-2.0.html
+  title: bookstore
+  version: 1.0.0
+  description: >-
+    This is a sample server BookStore API
+  contact:
+    name: API Support
+    url: https://italiancoders/support
+    email: italiancoders@gmail.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
 servers:
   - url: https://italiancoders.it/v1
     description: Production server
@@ -19,13 +19,13 @@ servers:
 
 # Apply the security globally to all operations
 security:
-  - bearerAuth: []     
+  - bearerAuth: [ ]
 paths:
   /login:
     post:
       operationId: login
       # declare /login as public endpoint
-      security: []
+      security: [ ]
       tags:
         - Authentication
       description: >
@@ -57,7 +57,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-                
+
   /books:
     get:
       operationId: findBooks
@@ -78,14 +78,14 @@ paths:
           required: true
           description: The numbers of items to return
           schema:
-            type: integer            
+            type: integer
             minimum: 1
             maximum: 100
         - name: genre
           in: query
           description: genre of the book
           schema:
-            $ref: '#/components/schemas/BookGenre'   
+            $ref: '#/components/schemas/BookGenre'
         - name: search
           in: query
           description: Free Search (example author name, book title)
@@ -100,15 +100,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Book'                
+                  $ref: '#/components/schemas/Book'
         '401':
-          $ref: '#/components/responses/UnauthorizedError'                
+          $ref: '#/components/responses/UnauthorizedError'
         '400':
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'   
+                $ref: '#/components/schemas/Error'
     post:
       operationId: addBook
       tags:
@@ -121,31 +121,31 @@ paths:
               $ref: '#/components/schemas/Book'
           application/xml:
             schema:
-              $ref: '#/components/schemas/Book'               
+              $ref: '#/components/schemas/Book'
         required: true
       responses:
         '201':
-          description: Book Created      
+          description: Book Created
           content:
-          #content negotiation to support multiple media types
+            #content negotiation to support multiple media types
             application/json:
               schema:
-                $ref: '#/components/schemas/Book'  
+                $ref: '#/components/schemas/Book'
             application/xml:
               schema:
-                $ref: '#/components/schemas/Book'                
+                $ref: '#/components/schemas/Book'
         '400':
           description: Unable to create a Book
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'               
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/UnauthorizedError'                
+          $ref: '#/components/responses/UnauthorizedError'
 components:
-# 1) Define the security scheme type (HTTP bearer)
+  # 1) Define the security scheme type (HTTP bearer)
   securitySchemes:
-    bearerAuth:            # arbitrary name for the security scheme
+    bearerAuth: # arbitrary name for the security scheme
       type: http
       #Authorization: Bearer <token>
       scheme: bearer
@@ -158,29 +158,29 @@ components:
       type: object
       properties:
         accessToken:
-          type: string             
-        expiresAt: 
+          type: string
+        expiresAt:
           type: string
           format: date-time
       required:
-         - accessToken
-         - expiresAt
+        - accessToken
+        - expiresAt
       example:
         accessToken: xuhwiuhwidhhdwuwihduh
-        expiresAt: 2018-09-15T15:53:00+02:00        
+        expiresAt: 2018-09-15T15:53:00+02:00
     Error:
       description: Error Details
       #custom property
       x-docs-additionalinfo: error_table.html
       properties:
         code:
-          type: string             
-        message: 
+          type: string
+        message:
           type: string
           format: date-time
-      required: 
-         - code
-         - message
+      required:
+        - code
+        - message
       example:
         code: 1010
         message: Invalid User
@@ -190,7 +190,7 @@ components:
         fullname:
           type: string
           minLength: 3
-          maxLength: 30          
+          maxLength: 30
         country:
           description: Nationality of the author
           type: string
@@ -206,23 +206,23 @@ components:
             - MALE
             - FEMALE
             - UNDEFINED
-      required: 
-         - fullname
+      required:
+        - fullname
       example:
         fullname: Luigi Pirandello
         country: Italy
         birthYear: 1986-06-28
         gender: MALE
     BookGenre:
-        description: Genre categories of a book
-        enum:
-           - FANTASY
-           - HORROR
-           - CLASSIC
-           - HOMOR
-           - OTHER
-        type: string
-        example: CLASSIC        
+      description: Genre categories of a book
+      enum:
+        - FANTASY
+        - HORROR
+        - CLASSIC
+        - HOMOR
+        - OTHER
+      type: string
+      example: CLASSIC
     Book:
       description: Author Infos related a Book
       properties:
@@ -235,7 +235,7 @@ components:
           description: Title Of the Book
           type: string
           minLength: 3
-          maxLength: 50          
+          maxLength: 50
         totalPages:
           description: No of pages
           type: integer
@@ -246,13 +246,13 @@ components:
         genre:
           $ref: '#/components/schemas/BookGenre'
         author:
-          $ref: '#/components/schemas/Author'          
-      required: 
-         - id
-         - title
-         - totalPages
-         - publishingHouse
-         - author
+          $ref: '#/components/schemas/Author'
+      required:
+        - id
+        - title
+        - totalPages
+        - publishingHouse
+        - author
       example:
         id: 1
         title: Il fu Mattia Pascal

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     contentScriptType="application/ecmascript" contentStyleType="text/css" height="220px" preserveAspectRatio="none"
+     style="width:159px;height:220px;background:#FFFFFF;" version="1.1" viewBox="0 0 159 220" width="159px"
+     zoomAndPan="magnify">
+    <defs>
+        <filter height="300%" id="f1f5lhhg8fqeu1" width="300%" x="-1" y="-1">
+            <feGaussianBlur result="blurOut" stdDeviation="2.0"/>
+            <feColorMatrix in="blurOut" result="blurOut2" type="matrix"
+                           values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/>
+            <feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/>
+            <feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/>
+        </filter>
+    </defs>
+    <g><!--MD5=[6442a9ee188b20c9d3fb318f1aca6d9a]
+class Customer.name-->
+        <rect codeLine="8" fill="#FEFECE" filter="url(#f1f5lhhg8fqeu1)" height="67.6719" id="Customer.name"
+              style="stroke:#A80036;stroke-width:1.5;" width="122" x="15" y="139"/>
+        <ellipse cx="30" cy="155" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/>
+        <path d="M32.7656,150.875 Q32.9219,150.6563 33.1094,150.5469 Q33.2969,150.4375 33.5156,150.4375 Q33.8906,150.4375 34.125,150.7031 Q34.3594,150.9531 34.3594,151.5625 L34.3594,153.0156 Q34.3594,153.625 34.125,153.8906 Q33.8906,154.1563 33.5156,154.1563 Q33.1719,154.1563 32.9688,153.9531 Q32.7656,153.7656 32.6563,153.25 Q32.6094,152.8906 32.4219,152.7031 Q32.0938,152.3281 31.4844,152.1094 Q30.875,151.8906 30.25,151.8906 Q29.4844,151.8906 28.8438,152.2188 Q28.2188,152.5469 27.7188,153.2969 Q27.2344,154.0469 27.2344,155.0781 L27.2344,156.1719 Q27.2344,157.4063 28.125,158.2344 Q29.0156,159.0469 30.6094,159.0469 Q31.5469,159.0469 32.2031,158.7969 Q32.5938,158.6406 33.0156,158.2031 Q33.2813,157.9375 33.4219,157.8594 Q33.5781,157.7813 33.7813,157.7813 Q34.1094,157.7813 34.3594,158.0469 Q34.625,158.2969 34.625,158.6406 Q34.625,158.9844 34.2813,159.3906 Q33.7813,159.9688 32.9844,160.2969 Q31.9063,160.75 30.6094,160.75 Q29.0938,160.75 27.8906,160.125 Q26.9063,159.625 26.2188,158.5625 Q25.5313,157.4844 25.5313,156.2031 L25.5313,155.0469 Q25.5313,153.7188 26.1406,152.5781 Q26.7656,151.4219 27.8594,150.8125 Q28.9531,150.1875 30.1875,150.1875 Q30.9219,150.1875 31.5625,150.3594 Q32.2188,150.5156 32.7656,150.875 Z "
+              fill="#000000"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="90" x="44"
+              y="159.9102">Customer.name
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="16" x2="136" y1="171" y2="171"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="82" x="21"
+              y="186.4189">firstName : string
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="80" x="21"
+              y="200.2549">lastName : string
+        </text><!--MD5=[2ce0c9fb7f55b1e256ab28a8ea6b25ec]
+class Customer-->
+        <rect codeLine="13" fill="#FEFECE" filter="url(#f1f5lhhg8fqeu1)" height="53.8359" id="Customer"
+              style="stroke:#A80036;stroke-width:1.5;" width="138" x="7" y="7"/>
+        <ellipse cx="44.95" cy="23" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/>
+        <path d="M47.7156,18.875 Q47.8719,18.6563 48.0594,18.5469 Q48.2469,18.4375 48.4656,18.4375 Q48.8406,18.4375 49.075,18.7031 Q49.3094,18.9531 49.3094,19.5625 L49.3094,21.0156 Q49.3094,21.625 49.075,21.8906 Q48.8406,22.1563 48.4656,22.1563 Q48.1219,22.1563 47.9188,21.9531 Q47.7156,21.7656 47.6063,21.25 Q47.5594,20.8906 47.3719,20.7031 Q47.0438,20.3281 46.4344,20.1094 Q45.825,19.8906 45.2,19.8906 Q44.4344,19.8906 43.7938,20.2188 Q43.1688,20.5469 42.6688,21.2969 Q42.1844,22.0469 42.1844,23.0781 L42.1844,24.1719 Q42.1844,25.4063 43.075,26.2344 Q43.9656,27.0469 45.5594,27.0469 Q46.4969,27.0469 47.1531,26.7969 Q47.5438,26.6406 47.9656,26.2031 Q48.2313,25.9375 48.3719,25.8594 Q48.5281,25.7813 48.7313,25.7813 Q49.0594,25.7813 49.3094,26.0469 Q49.575,26.2969 49.575,26.6406 Q49.575,26.9844 49.2313,27.3906 Q48.7313,27.9688 47.9344,28.2969 Q46.8563,28.75 45.5594,28.75 Q44.0438,28.75 42.8406,28.125 Q41.8563,27.625 41.1688,26.5625 Q40.4813,25.4844 40.4813,24.2031 L40.4813,23.0469 Q40.4813,21.7188 41.0906,20.5781 Q41.7156,19.4219 42.8094,18.8125 Q43.9031,18.1875 45.1375,18.1875 Q45.8719,18.1875 46.5125,18.3594 Q47.1688,18.5156 47.7156,18.875 Z "
+              fill="#000000"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="55" x="64.05"
+              y="27.9102">Customer
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="8" x2="144" y1="39" y2="39"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="126" x="13"
+              y="54.4189">heightMetres : decimal {O}
+        </text><!--MD5=[2476d3400e8711626c4ed8a224fa3b6a]
+link Customer to Customer.name-->
+        <path codeLine="17" d="M76,61.09 C76,81.66 76,110.64 76,133.82 " fill="none" id="Customer-to-Customer.name"
+              style="stroke:#A80036;stroke-width:1.0;"/>
+        <polygon fill="#A80036" points="76,138.98,80,129.98,76,133.98,72,129.98,76,138.98"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="32" x="77"
+              y="105.4951">name
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="7" x="68.3109"
+              y="128.2693">1
+        </text><!--MD5=[32c34733c48e79a5d92c4321e390d9c8]
+@startuml
+hide <<Path>> circle
+hide <<Response>> circle
+hide <<Parameter>> circle
+hide empty methods
+hide empty fields
+set namespaceSeparator none
+
+class "Customer.name" {
+  {field} firstName : string
+  {field} lastName : string
+}
+
+class "Customer" {
+  {field} heightMetres : decimal {O}
+}
+
+"Customer" - -> "1" "Customer.name"  :  "name"
+
+@enduml
+
+PlantUML version 1.2021.16(Wed Dec 08 19:25:22 IST 2021)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: GB
+-->
+    </g>
+</svg>

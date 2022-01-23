@@ -5,22 +5,22 @@ info:
 components:
   schemas:
     employee:
-      anyOf: 
-      - type: object
-        properties:
-          employeeType:
-            type: string 
-            enum: ['Nurse']
-          level:
-            type: integer
-        required:
-        - level
-      - type: object
-        properties:
-          employeeType:
-            type: string 
-            enum: ['Doctor']
-          income:
-            type: number
-        required:
-        - income
+      anyOf:
+        - type: object
+          properties:
+            employeeType:
+              type: string
+              enum: [ 'Nurse' ]
+            level:
+              type: integer
+          required:
+            - level
+        - type: object
+          properties:
+            employeeType:
+              type: string
+              enum: [ 'Doctor' ]
+            income:
+              type: number
+          required:
+            - income

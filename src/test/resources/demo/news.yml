@@ -95,7 +95,7 @@ paths:
                 description: 'Searches for articles mentioning a risk exposure, for example: Boeing 737, COVID-19, Firearms, Glyphosate'
               searchByRegion:
                 summary: Search By World Region
-                value: 
+                value:
                   key: region
                   value: Afghanistan
                 description: 'Searches for articles mentioning a certain region, for example: Middle East, Afghanistan, Europe, Russia, etc. More specific regions are also indexed in less specific regions - for example all articles mentioning Germany are also indexed in the Europe region'
@@ -138,7 +138,7 @@ paths:
                   type: Press Release
                   count: 25
                   offset: 0
-                
+
         description: Search Query
         required: true
   /article/{slug}:
@@ -262,7 +262,7 @@ paths:
                   id:
                     type: integer
                     description: The local id number the article was assigned in the news instance it was uploaded to
-                required: [success,id]
+                required: [ success,id ]
         '400':
           description: Bad Request
         '403':
@@ -275,10 +275,10 @@ paths:
         description: Article to Upload
         required: true
 security:
-  - private_key_auth: []
-  - public_key_auth: []
-  - header_private_key_auth: []
-  - header_public_key_auth: []
+  - private_key_auth: [ ]
+  - public_key_auth: [ ]
+  - header_private_key_auth: [ ]
+  - header_public_key_auth: [ ]
 servers:
   - url: 'https://api.newsrpm.com'
   - url: 'http://api.newsrpm.com'
@@ -301,16 +301,16 @@ components:
   schemas:
     indexSearchQuery:
       type: object
-      required: [key]
+      required: [ key ]
       properties:
         key:
           type: string
           description: An Index Key is a specifier used to identify which index you would like to query from
         value:
-          oneOf: 
+          oneOf:
             - type: string
             - type: array
-              items: 
+              items:
                 type: string
           description: The value to look up in the Index
         count:
@@ -346,27 +346,27 @@ components:
       type: object
       properties:
         publisher:
-          oneOf: 
+          oneOf:
             - type: string
             - type: array
-              items: 
+              items:
                 type: string
           description: The name of the publisher to search for
         provider:
-          oneOf: 
+          oneOf:
             - type: string
             - type: array
-              items: 
+              items:
                 type: string
           description: The name of the provider to search for
         fullText:
           type: string
           description: A full text query to execute against the article headline
         type:
-          oneOf: 
+          oneOf:
             - type: string
             - type: array
-              items: 
+              items:
                 type: string
           description: The type of article to search for
         count:
@@ -501,7 +501,7 @@ components:
           type: boolean
         body:
           type: object
-          required: [v,chunks]
+          required: [ v,chunks ]
           properties:
             v:
               type: number
@@ -514,7 +514,7 @@ components:
     articleBodyChunk:
       type: object
       description: A named chunk of the article body
-      required: [name,format,content]
+      required: [ name,format,content ]
       properties:
         name:
           type: string

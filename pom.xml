@@ -1,24 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.davidmoten</groupId>
     <artifactId>openapi-to-plantuml</artifactId>
-    <version>0.1.6-SNAPSHOT</version>
+    <version>2022-01-23-SNAPSHOT</version>
     <name>${project.artifactId}</name>
     <description>Generates PlantUML file from an OpenAPI 3.0 Definition</description>
     <packaging>jar</packaging>
-
     <url>http://github.com/davidmoten/openapi-to-plantuml</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <maven.compiler.target>1.8</maven.compiler.target>
-
-        <slf4j.version>1.7.33</slf4j.version>
+        <maven.compiler.target>11</maven.compiler.target>
         <checkstyle.version>3.1.2</checkstyle.version>
         <checkstyle.xml>src/main/checkstyle/checkstyle.xml</checkstyle.xml>
         <checkstyle.suppressions.xml>src/main/checkstyle/suppressions.xml</checkstyle.suppressions.xml>
@@ -36,10 +32,8 @@
         <coverage.reports.dir>${project.build.directory}/target/coverage-reports</coverage.reports.dir>
         <line.coverage>0.80</line.coverage>
         <branch.coverage>0.40</branch.coverage>
-
-        <slf4j.version>1.7.30</slf4j.version>
+        <slf4j.version>1.7.33</slf4j.version>
         <log4j.version>2.17.1</log4j.version>
-
     </properties>
 
     <licenses>
@@ -61,7 +55,7 @@
         <url>https://github.com/davidmoten/openapi-to-plantuml/issues</url>
     </issueManagement>
 
-    <inceptionYear>2021</inceptionYear>
+    <inceptionYear>2022</inceptionYear>
     <developers>
         <developer>
             <id>dave</id>
@@ -72,6 +66,16 @@
                 <role>developer</role>
             </roles>
             <timezone>+10</timezone>
+        </developer>
+        <developer>
+            <id>VRDate</id>
+            <name>Tomer Bar-Shlomo</name>
+            <url>https://github.com/VRDate/</url>
+            <roles>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+            <timezone>+2</timezone>
         </developer>
     </developers>
 
@@ -252,7 +256,7 @@
                 <version>${checkstyle.version}</version>
                 <configuration>
                     <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                    <configLocation>${checkstyle.xml}</configLocation>
+                    <configLocation>src/main/checkstyle/checkstyle.xml</configLocation>
                     <encoding>UTF-8</encoding>
                     <consoleOutput>true</consoleOutput>
                     <failsOnError>true</failsOnError>
@@ -392,7 +396,7 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>${javadoc.version}</version>
                 <configuration>
-                    <aggregate>true</aggregate>
+                    <!--                    <aggregate>true</aggregate>-->
                 </configuration>
             </plugin>
             <!-- commented this plugin out because cannot run offline (e.g. 

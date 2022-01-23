@@ -1,18 +1,17 @@
 package com.github.davidmoten.oas3.internal;
 
-import org.junit.Test;
-
 import io.swagger.v3.oas.models.OpenAPI;
+import org.junit.Test;
 
 public class NamesTest {
 
-    @Test(expected = RuntimeException.class)
-    public void testRefToClassNameNotFound() {
-        emptyNames().refToClassName("abc");
-    }
+	private static Names emptyNames() {
+		OpenAPI a = new OpenAPI();
+		return new Names(a);
+	}
 
-    private static Names emptyNames() {
-        OpenAPI a = new OpenAPI();
-        return new Names(a);
-    }
+	@Test(expected = RuntimeException.class)
+	public void testRefToClassNameNotFound() {
+		emptyNames().refToClassName("abc");
+	}
 }

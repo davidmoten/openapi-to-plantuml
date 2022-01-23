@@ -128,7 +128,7 @@ components:
       allOf:
         - $ref: '#/components/schemas/NewPet'
         - $ref: '#/components/schemas/PetId'
-        
+
     PetId:
       type: object
       properties:
@@ -136,17 +136,17 @@ components:
           type: integer
           format: int64
       required:
-        - id        
+        - id
 
     NewPet:
       type: object
       required:
-        - name  
+        - name
       properties:
         name:
           type: string
         tag:
-          type: string    
+          type: string
 
     Error:
       type: object

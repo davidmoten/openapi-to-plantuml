@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     contentScriptType="application/ecmascript" contentStyleType="text/css" height="188px" preserveAspectRatio="none"
+     style="width:451px;height:188px;background:#FFFFFF;" version="1.1" viewBox="0 0 451 188" width="451px"
+     zoomAndPan="magnify">
+    <defs>
+        <filter height="300%" id="f22la38rs7b6p" width="300%" x="-1" y="-1">
+            <feGaussianBlur result="blurOut" stdDeviation="2.0"/>
+            <feColorMatrix in="blurOut" result="blurOut2" type="matrix"
+                           values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/>
+            <feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/>
+            <feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/>
+        </filter>
+    </defs>
+    <g><!--MD5=[906191eefbe920f4854ecc545455b080]
+class employee.role-->
+        <rect codeLine="8" fill="#FEFECE" filter="url(#f22la38rs7b6p)" height="67.6719" id="employee.role"
+              style="stroke:#A80036;stroke-width:1.5;" width="137" x="7" y="7"/>
+        <ellipse cx="34.15" cy="23" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/>
+        <path d="M36.9156,18.875 Q37.0719,18.6563 37.2594,18.5469 Q37.4469,18.4375 37.6656,18.4375 Q38.0406,18.4375 38.275,18.7031 Q38.5094,18.9531 38.5094,19.5625 L38.5094,21.0156 Q38.5094,21.625 38.275,21.8906 Q38.0406,22.1563 37.6656,22.1563 Q37.3219,22.1563 37.1188,21.9531 Q36.9156,21.7656 36.8063,21.25 Q36.7594,20.8906 36.5719,20.7031 Q36.2438,20.3281 35.6344,20.1094 Q35.025,19.8906 34.4,19.8906 Q33.6344,19.8906 32.9938,20.2188 Q32.3688,20.5469 31.8688,21.2969 Q31.3844,22.0469 31.3844,23.0781 L31.3844,24.1719 Q31.3844,25.4063 32.275,26.2344 Q33.1656,27.0469 34.7594,27.0469 Q35.6969,27.0469 36.3531,26.7969 Q36.7438,26.6406 37.1656,26.2031 Q37.4313,25.9375 37.5719,25.8594 Q37.7281,25.7813 37.9313,25.7813 Q38.2594,25.7813 38.5094,26.0469 Q38.775,26.2969 38.775,26.6406 Q38.775,26.9844 38.4313,27.3906 Q37.9313,27.9688 37.1344,28.2969 Q36.0563,28.75 34.7594,28.75 Q33.2438,28.75 32.0406,28.125 Q31.0563,27.625 30.3688,26.5625 Q29.6813,25.4844 29.6813,24.2031 L29.6813,23.0469 Q29.6813,21.7188 30.2906,20.5781 Q30.9156,19.4219 32.0094,18.8125 Q33.1031,18.1875 34.3375,18.1875 Q35.0719,18.1875 35.7125,18.3594 Q36.3688,18.5156 36.9156,18.875 Z "
+              fill="#000000"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="78" x="50.85"
+              y="27.9102">employee.role
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="8" x2="143" y1="39" y2="39"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="125" x="13"
+              y="54.4189">employeeType : string {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="64" x="13"
+              y="68.2549">level : integer
+        </text><!--MD5=[691188911535c18fa6d1f1e2ccf9a4ee]
+class employee.role.1-->
+        <rect codeLine="13" fill="#FEFECE" filter="url(#f22la38rs7b6p)" height="67.6719" id="employee.role.1"
+              style="stroke:#A80036;stroke-width:1.5;" width="137" x="179" y="7"/>
+        <ellipse cx="201.65" cy="23" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/>
+        <path d="M204.4156,18.875 Q204.5719,18.6563 204.7594,18.5469 Q204.9469,18.4375 205.1656,18.4375 Q205.5406,18.4375 205.775,18.7031 Q206.0094,18.9531 206.0094,19.5625 L206.0094,21.0156 Q206.0094,21.625 205.775,21.8906 Q205.5406,22.1563 205.1656,22.1563 Q204.8219,22.1563 204.6188,21.9531 Q204.4156,21.7656 204.3063,21.25 Q204.2594,20.8906 204.0719,20.7031 Q203.7438,20.3281 203.1344,20.1094 Q202.525,19.8906 201.9,19.8906 Q201.1344,19.8906 200.4938,20.2188 Q199.8688,20.5469 199.3688,21.2969 Q198.8844,22.0469 198.8844,23.0781 L198.8844,24.1719 Q198.8844,25.4063 199.775,26.2344 Q200.6656,27.0469 202.2594,27.0469 Q203.1969,27.0469 203.8531,26.7969 Q204.2438,26.6406 204.6656,26.2031 Q204.9313,25.9375 205.0719,25.8594 Q205.2281,25.7813 205.4313,25.7813 Q205.7594,25.7813 206.0094,26.0469 Q206.275,26.2969 206.275,26.6406 Q206.275,26.9844 205.9313,27.3906 Q205.4313,27.9688 204.6344,28.2969 Q203.5563,28.75 202.2594,28.75 Q200.7438,28.75 199.5406,28.125 Q198.5563,27.625 197.8688,26.5625 Q197.1813,25.4844 197.1813,24.2031 L197.1813,23.0469 Q197.1813,21.7188 197.7906,20.5781 Q198.4156,19.4219 199.5094,18.8125 Q200.6031,18.1875 201.8375,18.1875 Q202.5719,18.1875 203.2125,18.3594 Q203.8688,18.5156 204.4156,18.875 Z "
+              fill="#000000"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="88" x="217.35"
+              y="27.9102">employee.role.1
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="180" x2="315" y1="39" y2="39"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="125" x="185"
+              y="54.4189">employeeType : string {O}
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="79" x="185"
+              y="68.2549">income : decimal
+        </text><!--MD5=[58521b9143a6696c24486cbdfb8e8110]
+class employee-->
+        <rect codeLine="18" fill="#FEFECE" filter="url(#f22la38rs7b6p)" height="32" id="employee"
+              style="stroke:#A80036;stroke-width:1.5;" width="86" x="351.5" y="25"/>
+        <ellipse cx="366.5" cy="41" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/>
+        <path d="M369.2656,36.875 Q369.4219,36.6563 369.6094,36.5469 Q369.7969,36.4375 370.0156,36.4375 Q370.3906,36.4375 370.625,36.7031 Q370.8594,36.9531 370.8594,37.5625 L370.8594,39.0156 Q370.8594,39.625 370.625,39.8906 Q370.3906,40.1563 370.0156,40.1563 Q369.6719,40.1563 369.4688,39.9531 Q369.2656,39.7656 369.1563,39.25 Q369.1094,38.8906 368.9219,38.7031 Q368.5938,38.3281 367.9844,38.1094 Q367.375,37.8906 366.75,37.8906 Q365.9844,37.8906 365.3438,38.2188 Q364.7188,38.5469 364.2188,39.2969 Q363.7344,40.0469 363.7344,41.0781 L363.7344,42.1719 Q363.7344,43.4063 364.625,44.2344 Q365.5156,45.0469 367.1094,45.0469 Q368.0469,45.0469 368.7031,44.7969 Q369.0938,44.6406 369.5156,44.2031 Q369.7813,43.9375 369.9219,43.8594 Q370.0781,43.7813 370.2813,43.7813 Q370.6094,43.7813 370.8594,44.0469 Q371.125,44.2969 371.125,44.6406 Q371.125,44.9844 370.7813,45.3906 Q370.2813,45.9688 369.4844,46.2969 Q368.4063,46.75 367.1094,46.75 Q365.5938,46.75 364.3906,46.125 Q363.4063,45.625 362.7188,44.5625 Q362.0313,43.4844 362.0313,42.2031 L362.0313,41.0469 Q362.0313,39.7188 362.6406,38.5781 Q363.2656,37.4219 364.3594,36.8125 Q365.4531,36.1875 366.6875,36.1875 Q367.4219,36.1875 368.0625,36.3594 Q368.7188,36.5156 369.2656,36.875 Z "
+              fill="#000000"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="54" x="380.5"
+              y="45.9102">employee
+        </text>
+        <polygon fill="#FEFECE" filter="url(#f22la38rs7b6p)" points="247.5,153,259.5,165,247.5,177,235.5,165,247.5,153"
+                 style="stroke:#A80036;stroke-width:1.5;"/><!--MD5=[abe639915a57cc4665ca41286734383a]
+link employee to anon1-->
+        <path codeLine="23" d="M376.18,57.2 C344.89,83.17 282.18,135.22 257.66,155.57 " fill="none"
+              id="employee-to-anon1" style="stroke:#A80036;stroke-width:1.0;"/>
+        <polygon fill="#A80036" points="253.8,158.77,263.2864,156.1228,257.6551,155.586,258.192,149.9546,253.8,158.77"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="21" x="317.5"
+              y="119.4951">role
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="22" x="267.4238"
+              y="145.1974">0..1
+        </text><!--MD5=[3a9e251035c9308fc6ca566cad08911c]
+link employee.role to anon1-->
+        <path codeLine="25" d="M122.05,75.01 C155.18,98.52 198.29,129.1 224.38,147.6 " fill="none"
+              id="employee.role-to-anon1" style="stroke:#A80036;stroke-width:1.0;"/>
+        <polygon fill="none" points="228.59,142,240.85,159.28,220.49,153.42,228.59,142"
+                 style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[a5abbeddf97581eda3f1f51999ef6c65]
+link employee.role.1 to anon1-->
+        <path codeLine="27" d="M247.5,75.01 C247.5,92.87 247.5,114.82 247.5,132.44 " fill="none"
+              id="employee.role.1-to-anon1" style="stroke:#A80036;stroke-width:1.0;"/>
+        <polygon fill="none" points="254.5,132.72,247.5,152.72,240.5,132.72,254.5,132.72"
+                 style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[f90c1b67e5e8c624a185943da51ee07c]
+@startuml
+hide <<Path>> circle
+hide <<Response>> circle
+hide <<Parameter>> circle
+hide empty methods
+hide empty fields
+set namespaceSeparator none
+
+class "employee.role" {
+  {field} employeeType : string {O}
+  {field} level : integer
+}
+
+class "employee.role.1" {
+  {field} employeeType : string {O}
+  {field} income : decimal
+}
+
+class "employee" {
+}
+
+diamond anon1
+
+"employee" - ->"0..1" "anon1" : "role"
+
+"employee.role" - -|> "anon1"
+
+"employee.role.1" - -|> "anon1"
+
+@enduml
+
+PlantUML version 1.2021.16(Wed Dec 08 19:25:22 IST 2021)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: GB
+-->
+    </g>
+</svg>

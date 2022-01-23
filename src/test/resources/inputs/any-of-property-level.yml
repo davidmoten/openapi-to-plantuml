@@ -5,22 +5,22 @@ info:
 components:
   schemas:
     employee:
-     properties:
-       role:
-         anyOf: 
-         - $ref: "#/components/schemas/doctor"
-         - $ref: "#/components/schemas/nurse"
-      
+      properties:
+        role:
+          anyOf:
+            - $ref: "#/components/schemas/doctor"
+            - $ref: "#/components/schemas/nurse"
+
     nurse:
       properties:
         level:
           type: integer
       required:
-      - level
-      
+        - level
+
     doctor:
       properties:
         income:
           type: number
       required:
-      - income
+        - income

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     contentScriptType="application/ecmascript" contentStyleType="text/css" height="198px" preserveAspectRatio="none"
+     style="width:157px;height:198px;background:#FFFFFF;" version="1.1" viewBox="0 0 157 198" width="157px"
+     zoomAndPan="magnify">
+    <defs>
+        <filter height="300%" id="fmbl98d4kiyqj" width="300%" x="-1" y="-1">
+            <feGaussianBlur result="blurOut" stdDeviation="2.0"/>
+            <feColorMatrix in="blurOut" result="blurOut2" type="matrix"
+                           values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/>
+            <feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/>
+            <feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/>
+        </filter>
+    </defs>
+    <g><!--MD5=[31154756eeff5e88f0bdf2e20d2bbf04]
+class Customers.names-->
+        <rect codeLine="8" fill="#FEFECE" filter="url(#fmbl98d4kiyqj)" height="67.6719" id="Customers.names"
+              style="stroke:#A80036;stroke-width:1.5;" width="136" x="7" y="117"/>
+        <ellipse cx="22" cy="133" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/>
+        <path d="M24.7656,128.875 Q24.9219,128.6563 25.1094,128.5469 Q25.2969,128.4375 25.5156,128.4375 Q25.8906,128.4375 26.125,128.7031 Q26.3594,128.9531 26.3594,129.5625 L26.3594,131.0156 Q26.3594,131.625 26.125,131.8906 Q25.8906,132.1563 25.5156,132.1563 Q25.1719,132.1563 24.9688,131.9531 Q24.7656,131.7656 24.6563,131.25 Q24.6094,130.8906 24.4219,130.7031 Q24.0938,130.3281 23.4844,130.1094 Q22.875,129.8906 22.25,129.8906 Q21.4844,129.8906 20.8438,130.2188 Q20.2188,130.5469 19.7188,131.2969 Q19.2344,132.0469 19.2344,133.0781 L19.2344,134.1719 Q19.2344,135.4063 20.125,136.2344 Q21.0156,137.0469 22.6094,137.0469 Q23.5469,137.0469 24.2031,136.7969 Q24.5938,136.6406 25.0156,136.2031 Q25.2813,135.9375 25.4219,135.8594 Q25.5781,135.7813 25.7813,135.7813 Q26.1094,135.7813 26.3594,136.0469 Q26.625,136.2969 26.625,136.6406 Q26.625,136.9844 26.2813,137.3906 Q25.7813,137.9688 24.9844,138.2969 Q23.9063,138.75 22.6094,138.75 Q21.0938,138.75 19.8906,138.125 Q18.9063,137.625 18.2188,136.5625 Q17.5313,135.4844 17.5313,134.2031 L17.5313,133.0469 Q17.5313,131.7188 18.1406,130.5781 Q18.7656,129.4219 19.8594,128.8125 Q20.9531,128.1875 22.1875,128.1875 Q22.9219,128.1875 23.5625,128.3594 Q24.2188,128.5156 24.7656,128.875 Z "
+              fill="#000000"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="104" x="36"
+              y="137.9102">Customers.names
+        </text>
+        <line style="stroke:#A80036;stroke-width:1.5;" x1="8" x2="142" y1="149" y2="149"/>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="82" x="13"
+              y="164.4189">firstName : string
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="80" x="13"
+              y="178.2549">lastName : string
+        </text><!--MD5=[2704dbe64761a25d9ab9623dde8d0f47]
+class Customers-->
+        <rect codeLine="13" fill="#FEFECE" filter="url(#fmbl98d4kiyqj)" height="32" id="Customers"
+              style="stroke:#A80036;stroke-width:1.5;" width="94" x="28" y="7"/>
+        <ellipse cx="43" cy="23" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/>
+        <path d="M45.7656,18.875 Q45.9219,18.6563 46.1094,18.5469 Q46.2969,18.4375 46.5156,18.4375 Q46.8906,18.4375 47.125,18.7031 Q47.3594,18.9531 47.3594,19.5625 L47.3594,21.0156 Q47.3594,21.625 47.125,21.8906 Q46.8906,22.1563 46.5156,22.1563 Q46.1719,22.1563 45.9688,21.9531 Q45.7656,21.7656 45.6563,21.25 Q45.6094,20.8906 45.4219,20.7031 Q45.0938,20.3281 44.4844,20.1094 Q43.875,19.8906 43.25,19.8906 Q42.4844,19.8906 41.8438,20.2188 Q41.2188,20.5469 40.7188,21.2969 Q40.2344,22.0469 40.2344,23.0781 L40.2344,24.1719 Q40.2344,25.4063 41.125,26.2344 Q42.0156,27.0469 43.6094,27.0469 Q44.5469,27.0469 45.2031,26.7969 Q45.5938,26.6406 46.0156,26.2031 Q46.2813,25.9375 46.4219,25.8594 Q46.5781,25.7813 46.7813,25.7813 Q47.1094,25.7813 47.3594,26.0469 Q47.625,26.2969 47.625,26.6406 Q47.625,26.9844 47.2813,27.3906 Q46.7813,27.9688 45.9844,28.2969 Q44.9063,28.75 43.6094,28.75 Q42.0938,28.75 40.8906,28.125 Q39.9063,27.625 39.2188,26.5625 Q38.5313,25.4844 38.5313,24.2031 L38.5313,23.0469 Q38.5313,21.7188 39.1406,20.5781 Q39.7656,19.4219 40.8594,18.8125 Q41.9531,18.1875 43.1875,18.1875 Q43.9219,18.1875 44.5625,18.3594 Q45.2188,18.5156 45.7656,18.875 Z "
+              fill="#000000"/>
+        <text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="62" x="57"
+              y="27.9102">Customers
+        </text><!--MD5=[1dc7652016cef6d008bc81b057909a5d]
+link Customers to Customers.names-->
+        <path codeLine="16" d="M75,39.45 C75,57.36 75,87.54 75,111.85 " fill="none" id="Customers-to-Customers.names"
+              style="stroke:#A80036;stroke-width:1.0;"/>
+        <polygon fill="#A80036" points="75,116.94,79,107.94,75,111.94,71,107.94,75,116.94"
+                 style="stroke:#A80036;stroke-width:1.0;"/>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="39" x="76"
+              y="83.4951">names
+        </text>
+        <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="5" x="69.5078"
+              y="106.2215">*
+        </text><!--MD5=[2365306470ad64c693e1aa8a735a92d3]
+@startuml
+hide <<Path>> circle
+hide <<Response>> circle
+hide <<Parameter>> circle
+hide empty methods
+hide empty fields
+set namespaceSeparator none
+
+class "Customers.names" {
+  {field} firstName : string
+  {field} lastName : string
+}
+
+class "Customers" {
+}
+
+"Customers" - -> "*" "Customers.names"  :  "names"
+
+@enduml
+
+PlantUML version 1.2021.16(Wed Dec 08 19:25:22 IST 2021)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: GB
+-->
+    </g>
+</svg>

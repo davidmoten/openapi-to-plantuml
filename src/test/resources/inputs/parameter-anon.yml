@@ -29,10 +29,10 @@ paths:
               max:
                 type: integer
       responses:
-        '200':  
+        '200':
           content:
             application/json:
-              schema: 
+              schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Customer'
