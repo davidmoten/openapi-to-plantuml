@@ -2,23 +2,19 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.davidmoten</groupId>
     <artifactId>openapi-to-plantuml</artifactId>
-    <version>2022-01-01-SNAPSHOT</version>
+    <version>2022-01-23-SNAPSHOT</version>
     <name>${project.artifactId}</name>
     <description>Generates PlantUML file from an OpenAPI 3.0 Definition</description>
     <packaging>jar</packaging>
-
     <url>http://github.com/davidmoten/openapi-to-plantuml</url>
-
+         
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.target>11</maven.compiler.target>
-
-        <slf4j.version>1.7.33</slf4j.version>
         <checkstyle.version>3.1.2</checkstyle.version>
         <checkstyle.xml>src/main/checkstyle/checkstyle.xml</checkstyle.xml>
         <checkstyle.suppressions.xml>src/main/checkstyle/suppressions.xml</checkstyle.suppressions.xml>
@@ -36,10 +32,8 @@
         <coverage.reports.dir>${project.build.directory}/target/coverage-reports</coverage.reports.dir>
         <line.coverage>0.80</line.coverage>
         <branch.coverage>0.40</branch.coverage>
-
         <slf4j.version>1.7.33</slf4j.version>
         <log4j.version>2.17.1</log4j.version>
-
     </properties>
 
     <licenses>
