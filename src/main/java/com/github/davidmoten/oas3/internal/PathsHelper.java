@@ -61,7 +61,7 @@ public final class PathsHelper {
                     String className = entry.getKey() + " " + path;
                     FieldsWithModel f = toModelParameters(names, className,
                             operation.getParameters());
-                    Model m = new Model(new Class(className, ClassType.METHOD, f.fields))
+                    Model m = new Model(new Class(className, ClassType.METHOD, f.fields, false))
                             .add(f.model);
                     m = m.add(toModelResponses(names, operation, className));
                     return m.add(toModelRequestBody(className, operation, names));

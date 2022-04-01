@@ -9,8 +9,10 @@ public final class Class {
     private final String name;
     private final ClassType type;
     private final List<Field> fields;
+    private final boolean isEnum;
 
-    public Class(String name, ClassType type, List<Field> fields) {
+    public Class(String name, ClassType type, List<Field> fields, boolean isEnum) {
+        this.isEnum = isEnum;
         Preconditions.checkNotNull(name);
         Preconditions.checkNotNull(type);
         Preconditions.checkNotNull(fields);
@@ -20,7 +22,7 @@ public final class Class {
     }
 
     public Class(String name, ClassType type) {
-        this(name, type, Collections.emptyList());
+        this(name, type, Collections.emptyList(), false);
     }
 
     public String name() {
@@ -33,6 +35,10 @@ public final class Class {
 
     public List<Field> fields() {
         return fields;
+    }
+
+    public boolean isEnum() {
+        return isEnum;
     }
 
     @Override

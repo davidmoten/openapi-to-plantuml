@@ -1,0 +1,12 @@
+openapi: 3.0.1
+info:
+  title: unit test
+  version: 0.0.1
+components:
+  schemas:
+    EmployeeType:
+      type: string
+      enum: 
+      - Doctor
+      - Nurse
+      - Administrator

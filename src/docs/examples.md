@@ -73,6 +73,10 @@
 
 <img src="../../src/docs/tests/any-of-anon-class-level.puml.svg"/>
 
+* [enum.yml](../../src/test/resources/inputs/enum.yml)
+
+<img src="../../src/docs/tests/enum.puml.svg"/>
+
 * [one-of-class-level-empty.yml](../../src/test/resources/inputs/one-of-class-level-empty.yml)
 
 <img src="../../src/docs/tests/one-of-class-level-empty.puml.svg"/>

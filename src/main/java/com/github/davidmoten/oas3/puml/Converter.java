@@ -79,12 +79,21 @@ public final class Converter {
         int anonNumber = 0;
         StringBuilder b = new StringBuilder();
         for (Class cls : model.classes()) {
-            b.append("\n\nclass " + Util.quote(cls.name())
-                    + toStereotype(cls.type()).map(x -> " <<" + x + ">>").orElse("") + " {");
-            cls.fields().stream().forEach(f -> {
-                b.append("\n  {field} " + f.name() + COLON + f.type() + (f.isRequired() ? "" : " {O}"));
-            });
-            b.append("\n}");
+            if (cls.isEnum()) {
+                b.append("\n\nenum " + Util.quote(cls.name())
+                        + toStereotype(cls.type()).map(x -> " <<" + x + ">>").orElse("") + " {");
+                cls.fields().stream().forEach(f -> {
+                    b.append("\n  " + f.name());
+                });
+                b.append("\n}");
+            } else {
+                b.append("\n\nclass " + Util.quote(cls.name())
+                        + toStereotype(cls.type()).map(x -> " <<" + x + ">>").orElse("") + " {");
+                cls.fields().stream().forEach(f -> {
+                    b.append("\n  {field} " + f.name() + COLON + f.type() + (f.isRequired() ? "" : " {O}"));
+                });
+                b.append("\n}");
+            }
         }
 
         for (Relationship r : model.relationships()) {

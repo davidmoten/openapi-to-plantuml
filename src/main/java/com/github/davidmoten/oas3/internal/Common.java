@@ -53,7 +53,7 @@ final class Common {
 
     static Model toModelClass(String name, Schema<?> schema, Names names, ClassType classType) {
         List<Field> fields = new ArrayList<>();
-
+        boolean isEnum = false;
         List<Relationship> relationships = new ArrayList<>();
         List<Class> classes = new ArrayList<>();
         if (schema.get$ref() != null) {
@@ -158,11 +158,23 @@ final class Common {
             Optional<String> t = getUmlTypeName(schema, names);
             if (t.isPresent()) {
                 String type = t.get();
-                fields.add(new Field("value", type, type.endsWith("]"), true));
+                if (("string".equals(type) || "integer".equals(type) || "decimal".equals(type)) //
+                        && !isEmpty(schema.getEnum())) {
+                    isEnum = true;
+                    for (Object item: schema.getEnum()) {
+                        fields.add(new Field(item.toString(), type, false, false));
+                    }
+                } else {
+                    fields.add(new Field("value", type, type.endsWith("]"), true));
+                }
             }
         }
-        classes.add(new Class(name, classType, fields));
+        classes.add(new Class(name, classType, fields, isEnum));
         return new Model(classes, relationships);
+    }
+
+    private static boolean isEmpty(List<?> list) {
+        return list == null || list.isEmpty();
     }
 
     private static boolean isComplexArrayType(String type) {

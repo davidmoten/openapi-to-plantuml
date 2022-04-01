@@ -1,0 +1,15 @@
+@startuml
+hide <<Path>> circle
+hide <<Response>> circle
+hide <<Parameter>> circle
+hide empty methods
+hide empty fields
+set namespaceSeparator none
+
+enum "EmployeeType" {
+  Doctor
+  Nurse
+  Administrator
+}
+
+@enduml
