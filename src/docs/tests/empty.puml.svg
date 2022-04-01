@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="10px" preserveAspectRatio="none" style="width:10px;height:10px;" version="1.1" viewBox="0 0 10 10" width="10px" zoomAndPan="magnify"><defs/><g><!--MD5=[a0bab7779aca653b094f9aeb34f34f87]
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="10px" preserveAspectRatio="none" style="width:10px;height:10px;background:#FFFFFF;" version="1.1" viewBox="0 0 10 10" width="10px" zoomAndPan="magnify"><defs/><g><!--MD5=[551181afdbe13b86ee55367425e3c10f]
 @startuml
 hide <<Path>> circle
 hide <<Response>> circle
@@ -9,7 +9,7 @@ set namespaceSeparator none
 
 @enduml
 
-PlantUML version 1.2021.2(Sun Mar 07 22:10:27 AEDT 2021)
+PlantUML version 1.2022.3(Wed Mar 30 03:10:57 AEDT 2022)
 (GPL source distribution)
 Java Runtime: OpenJDK Runtime Environment
 JVM: OpenJDK 64-Bit Server VM
