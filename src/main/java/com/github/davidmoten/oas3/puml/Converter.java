@@ -113,6 +113,10 @@ public final class Converter {
                     arrow = "-->";
                     label = a.propertyOrParameterName().orElse("");
                 }
+                String to = a.to();
+                if (to.contains(":")) {
+                    
+                }
                 b.append("\n\n" + quote(a.from()) + SPACE + arrow + SPACE + quote(mult) + SPACE
                         + quote(a.to())
                         + (label.equals("") ? "" : SPACE + COLON + SPACE + quote(label)));

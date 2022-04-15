@@ -1,0 +1,28 @@
+openapi: 3.0.1
+info:
+  title: unit test
+  version: 0.0.1
+components:
+  schemas:
+    employee:
+      allOf: 
+      - $ref: "#/components/schemas/doctor"
+      - $ref: "#/components/schemas/nurse"
+      
+    nurse:
+      properties:
+        level:
+          type: integer
+        agreement:
+          $ref: 'agreements.yml#/components/schemas/agreement'
+      required:
+      - level
+      
+    doctor:
+      properties:
+        income:
+          type: number
+        agreement:
+          $ref: 'agreements.yml#/components/schemas/agreement'
+      required:
+      - income

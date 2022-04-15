@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import com.github.davidmoten.guavamini.Preconditions;
@@ -23,7 +24,7 @@ import io.swagger.v3.oas.models.responses.ApiResponse;
 public final class Names {
 
     private static final String EMPTY_RESPONSE_CLASS_NAME = "Empty Response";
-    private final Map<String, String> refClassNames = new HashMap<>();
+    private final Map<String, Reference> refClassNames = new HashMap<>();
     private final Set<String> classNames = Sets.newHashSet(EMPTY_RESPONSE_CLASS_NAME);
     private final OpenAPI openapi;
 
@@ -32,39 +33,35 @@ public final class Names {
         this.openapi = a;
         if (components != null) {
             // resolve name clashes
-            nullMapToEmpty(components.getSchemas()).keySet().forEach(name -> {
-                String className = nextClassName(classNames, name);
-                refClassNames.put("#/components/schemas/" + name, className);
-            });
-            nullMapToEmpty(components.getRequestBodies()).keySet().forEach(name -> {
-                String className = nextClassName(classNames, name);
-                refClassNames.put("#/components/requestBodies/" + name, className);
-            });
-            nullMapToEmpty(components.getParameters()).keySet().forEach(name -> {
-                String className = nextClassName(classNames, name);
-                refClassNames.put("#/components/parameters/" + name, className);
-            });
-            nullMapToEmpty(components.getResponses()).keySet().forEach(name -> {
-                String className = nextClassName(classNames, name);
-                refClassNames.put("#/components/responses/" + name, className);
-            });
+            nullMapToEmpty(components.getSchemas()).keySet().forEach(name -> 
+                refClassNames.put("#/components/schemas/" + name, new Reference(name, classNames))
+            );
+            nullMapToEmpty(components.getRequestBodies()).keySet().forEach(name -> 
+                refClassNames.put("#/components/requestBodies/" + name, new Reference(name, classNames))
+            );
+            nullMapToEmpty(components.getParameters()).keySet().forEach(name -> 
+                refClassNames.put("#/components/parameters/" + name, new Reference(name, classNames))
+            );
+            nullMapToEmpty(components.getResponses()).keySet().forEach(name -> 
+                refClassNames.put("#/components/responses/" + name, new Reference(name, classNames))
+            );
         }
     }
 
     String schemaClassName(String simpleName) {
-        return refToClassName("#/components/schemas/" + simpleName);
+        return refToClassName("#/components/schemas/" + simpleName).className();
     }
 
     String requestBodyClassName(String simpleName) {
-        return refToClassName("#/components/requestBodies/" + simpleName);
+        return refToClassName("#/components/requestBodies/" + simpleName).className();
     }
 
     String responseClassName(String simpleName) {
-        return refToClassName("#/components/responses/" + simpleName);
+        return refToClassName("#/components/responses/" + simpleName).className();
     }
 
     private String parameterClassName(String simpleName) {
-        return refToClassName("#/components/parameters/" + simpleName);
+        return refToClassName("#/components/parameters/" + simpleName).className();
     }
 
     String requestBodyClassName(RequestBody b) {
@@ -87,12 +84,51 @@ public final class Names {
                 .orElseThrow(() -> new RuntimeException("cound not find " + p));
     }
 
-    String refToClassName(String ref) {
+    Reference refToClassName(String ref) {
         Preconditions.checkNotNull(ref);
-        String className = refClassNames.get(ref);
-        if (className == null) {
-            throw new RuntimeException("could not find ref=" + ref);
+        Reference reference = refClassNames.get(ref);
+        if (reference == null) {
+            Reference r = new Reference(ref, classNames);
+            refClassNames.put(ref, r);
+            // throw new RuntimeException("could not find ref=" + ref);
+            return r;
         } else {
+            return reference;
+        }
+    }
+
+    public static final class Reference {
+        final Optional<String> base;
+        final String name;
+        final String className;
+
+        Reference(String ref, Set<String> classNames) {
+            int i = ref.lastIndexOf("#");
+            if (i == -1) {
+                base = Optional.empty();
+                name = ref;
+            } else {
+                if (i == 0) {
+                    base = Optional.empty();
+                } else {
+                    String s = ref.substring(0, i);
+                    if (s.startsWith("./")) {
+                        s = s.substring(2);
+                    }
+                    base = Optional.of(s);
+                }
+                String nm = ref.substring(i + 1);
+                int j = nm.substring(0, nm.length() - 1).lastIndexOf("/");
+                if (j == -1) {
+                    name = nm;
+                } else {
+                    name = nm.substring(j + 1);
+                }
+            }
+            className = nextClassName(classNames, name);
+        }
+
+        public String className() {
             return className;
         }
     }
@@ -133,7 +169,8 @@ public final class Names {
         }
     }
 
-    @SuppressWarnings("rawtypes") Map<String, Schema> schemas() {
+    @SuppressWarnings("rawtypes")
+    Map<String, Schema> schemas() {
         if (openapi.getComponents() == null) {
             return Collections.emptyMap();
         } else {

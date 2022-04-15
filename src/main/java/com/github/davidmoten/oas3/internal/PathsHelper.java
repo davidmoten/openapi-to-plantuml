@@ -115,7 +115,7 @@ public final class PathsHelper {
         if (ref != null) {
             Model model = new Model(Association //
                     .from(className) //
-                    .to(names.refToClassName(ref)) //
+                    .to(names.refToClassName(ref).className()) //
                     .one() //
                     .propertyOrParameterName(parameterName) //
                     .build());
@@ -167,7 +167,7 @@ public final class PathsHelper {
             String ref = body.get$ref();
             if (ref != null) {
                 return new Model(
-                        Association.from(className).to(names.refToClassName(ref)).one().build());
+                        Association.from(className).to(names.refToClassName(ref).className()).one().build());
             }
             Content content = body.getContent();
             if (content != null) {
@@ -179,7 +179,7 @@ public final class PathsHelper {
                 // note that sch cannot be null because the parser sets the
                 // response body to null if schema is missing
                 if (sch.get$ref() != null) {
-                    requestBodyClassName = names.refToClassName(sch.get$ref());
+                    requestBodyClassName = names.refToClassName(sch.get$ref()).className();
                     model = Model.EMPTY;
                 } else {
                     requestBodyClassName = className + " Request";
@@ -204,7 +204,7 @@ public final class PathsHelper {
                     ApiResponse r = ent.getValue();
                     final Model model;
                     if (r.get$ref() != null) {
-                        String returnClassName = names.refToClassName(r.get$ref());
+                        String returnClassName = names.refToClassName(r.get$ref()).className();
                         model = new Model(Association.from(className).to(returnClassName).one()
                                 .responseCode(responseCode).build());
                     } else {
@@ -229,7 +229,7 @@ public final class PathsHelper {
                                     // TODO
                                     System.out.println("TODO handle null schema in response");
                                 } else if (sch.get$ref() != null) {
-                                    String returnClassName = names.refToClassName(sch.get$ref());
+                                    String returnClassName = names.refToClassName(sch.get$ref()).className();
                                     m = m.add(Association.from(className).to(returnClassName).one()
                                             .responseCode(responseCode)
                                             .responseContentType(contentType).build());

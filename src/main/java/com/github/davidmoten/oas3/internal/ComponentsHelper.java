@@ -33,7 +33,7 @@ public final class ComponentsHelper {
                     String className = names.requestBodyClassName(b);
                     String ref = b.get$ref();
                     if (ref != null) {
-                        String otherClassName = names.refToClassName(ref);
+                        String otherClassName = names.refToClassName(ref).className();
                         Class c = new Class(className, ClassType.REQUEST_BODY);
                         Association a = Association.from(className).to(otherClassName).one().build();
                         return new Model(c, a);
@@ -54,7 +54,7 @@ public final class ComponentsHelper {
                     String ref = p.get$ref();
                     if (ref != null) {
                         Class c = new Class(className, ClassType.PARAMETER);
-                        String otherClassName = names.refToClassName(ref);
+                        String otherClassName = names.refToClassName(ref).className();
                         Association a = Association.from(className).to(otherClassName).one().build();
                         return new Model(c, a);
                     } else {
