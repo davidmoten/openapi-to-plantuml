@@ -24,6 +24,7 @@ import io.swagger.v3.oas.models.responses.ApiResponse;
 public final class Names {
 
     private static final String EMPTY_RESPONSE_CLASS_NAME = "Empty Response";
+    public static final String NAMESPACE_DELIMITER = "::";
     private final Map<String, Reference> refClassNames = new HashMap<>();
     private final Set<String> classNames = Sets.newHashSet(EMPTY_RESPONSE_CLASS_NAME);
     private final OpenAPI openapi;
@@ -129,7 +130,7 @@ public final class Names {
         }
 
         public String className() {
-            return className;
+            return base.map(x -> x + NAMESPACE_DELIMITER).orElse("") + className;
         }
     }
 
