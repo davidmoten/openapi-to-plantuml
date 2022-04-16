@@ -64,7 +64,7 @@ String puml = Converter.openApiToPuml(openapi);
 
 ## Examples
 
-Unit test examples are [here](src/docs/examples.md).
+Unit test examples are [here](src/docs/generated/examples.md).
 
 [petstore-expanded.yml](src/test/resources/inputs/petstore-expanded.yml):
 
