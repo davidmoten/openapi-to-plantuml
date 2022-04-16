@@ -8,7 +8,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 
@@ -95,6 +97,26 @@ public final class Converter {
                 b.append("\n}");
             }
         }
+        // add external ref classes
+        Set<String> added = new HashSet<>();
+        for (Relationship r : model.relationships()) {
+            final String to;
+            if (r instanceof Association) {
+                Association a = (Association) r;
+                to = a.to();
+            } else {
+                Inheritance a = (Inheritance) r;
+                to = a.from();
+            }
+            if (!added.contains(to) && to.contains(Names.NAMESPACE_DELIMITER)) {
+                String[] items = to.split(Names.NAMESPACE_DELIMITER);
+                String namespace = items[0];
+                String clsName = items[1];
+                b.append("\n\nclass " + Util.quote(clsName) + " <<" + namespace + ">>" + " {");
+                b.append("\n}");
+                added.add(to);
+            }
+        }
 
         for (Relationship r : model.relationships()) {
             if (r instanceof Association) {
@@ -113,17 +135,25 @@ public final class Converter {
                     arrow = "-->";
                     label = a.propertyOrParameterName().orElse("");
                 }
+                String to = a.to();
+                if (to.contains(Names.NAMESPACE_DELIMITER)) {
+                    to = to.split(Names.NAMESPACE_DELIMITER)[1];
+                }
                 b.append("\n\n" + quote(a.from()) + SPACE + arrow + SPACE + quote(mult) + SPACE
-                        + quote(a.to())
+                        + quote(to)
                         + (label.equals("") ? "" : SPACE + COLON + SPACE + quote(label)));
             } else {
                 Inheritance a = (Inheritance) r;
+                String from = a.from();
+                if (from.contains(Names.NAMESPACE_DELIMITER)) {
+                    from = from.split(Names.NAMESPACE_DELIMITER)[1];
+                }
                 if (a.propertyName().isPresent() || a.type() != AssociationType.ONE) {
                     String mult = toMultiplicity(a.type());
                     anonNumber++;
                     String diamond = "anon" + anonNumber;
                     b.append("\n\ndiamond " + diamond);
-                    b.append("\n\n" + quote(a.from()) + SPACE + "-->" + quote(mult) + SPACE
+                    b.append("\n\n" + quote(from) + SPACE + "-->" + quote(mult) + SPACE
                             + quote(diamond) + a.propertyName().map(x -> COLON + quote(x)).orElse(""));
                     for (String otherClassName : a.to()) {
                         b.append("\n\n" + quote(otherClassName) + SPACE + "--|>" + SPACE

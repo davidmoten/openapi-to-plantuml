@@ -6,7 +6,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 
 public class NamesTest {
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void testRefToClassNameNotFound() {
         emptyNames().refToClassName("abc");
     }

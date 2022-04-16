@@ -1,0 +1,31 @@
+@startuml
+hide <<Path>> circle
+hide <<Response>> circle
+hide <<Parameter>> circle
+hide empty methods
+hide empty fields
+set namespaceSeparator none
+
+class "employee" {
+}
+
+class "nurse" {
+  {field} level : integer
+}
+
+class "doctor" {
+  {field} income : decimal
+}
+
+class "agreement" <<agreements.yml>> {
+}
+
+"employee" --> "1" "doctor"
+
+"employee" --> "1" "nurse"
+
+"nurse" --> "0..1" "agreement"  :  "agreement"
+
+"doctor" --> "0..1" "agreement"  :  "agreement"
+
+@enduml

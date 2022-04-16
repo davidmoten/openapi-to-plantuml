@@ -88,7 +88,6 @@ public final class Association implements Relationship {
             this.to = to;
             return new Builder2(this);
         }
-
     }
 
     public static final class Builder2 {

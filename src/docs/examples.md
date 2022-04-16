@@ -49,6 +49,10 @@
 
 <img src="../../src/docs/tests/simple-has-refs.puml.svg"/>
 
+* [external-ref.yml](../../src/test/resources/inputs/external-ref.yml)
+
+<img src="../../src/docs/tests/external-ref.puml.svg"/>
+
 * [array-property-level.yml](../../src/test/resources/inputs/array-property-level.yml)
 
 <img src="../../src/docs/tests/array-property-level.puml.svg"/>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="279px" preserveAspectRatio="none" style="width:283px;height:279px;background:#FFFFFF;" version="1.1" viewBox="0 0 283 279" width="283px" zoomAndPan="magnify"><defs/><g><!--MD5=[58521b9143a6696c24486cbdfb8e8110]
+class employee--><g id="elem_employee"><rect codeLine="8" fill="#F1F1F1" height="32" id="employee" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="100" x="85.5" y="7"/><ellipse cx="100.5" cy="23" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M103.4688,28.6406 Q102.8906,28.9375 102.25,29.0781 Q101.6094,29.2344 100.9063,29.2344 Q98.4063,29.2344 97.0781,27.5938 Q95.7656,25.9375 95.7656,22.8125 Q95.7656,19.6875 97.0781,18.0313 Q98.4063,16.375 100.9063,16.375 Q101.6094,16.375 102.25,16.5313 Q102.9063,16.6875 103.4688,16.9844 L103.4688,19.7031 Q102.8438,19.125 102.25,18.8594 Q101.6563,18.5781 101.0313,18.5781 Q99.6875,18.5781 99,19.6563 Q98.3125,20.7188 98.3125,22.8125 Q98.3125,24.9063 99,25.9844 Q99.6875,27.0469 101.0313,27.0469 Q101.6563,27.0469 102.25,26.7813 Q102.8438,26.5 103.4688,25.9219 L103.4688,28.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="68" x="114.5" y="27.8467">employee</text></g><!--MD5=[eec114a0b3352c6b1c1f53d18fe88291]
+class nurse--><g id="elem_nurse"><rect codeLine="11" fill="#F1F1F1" height="56.2969" id="nurse" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="105" x="7" y="100"/><ellipse cx="36.85" cy="116" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M39.8188,121.6406 Q39.2406,121.9375 38.6,122.0781 Q37.9594,122.2344 37.2563,122.2344 Q34.7563,122.2344 33.4281,120.5938 Q32.1156,118.9375 32.1156,115.8125 Q32.1156,112.6875 33.4281,111.0313 Q34.7563,109.375 37.2563,109.375 Q37.9594,109.375 38.6,109.5313 Q39.2563,109.6875 39.8188,109.9844 L39.8188,112.7031 Q39.1938,112.125 38.6,111.8594 Q38.0063,111.5781 37.3813,111.5781 Q36.0375,111.5781 35.35,112.6563 Q34.6625,113.7188 34.6625,115.8125 Q34.6625,117.9063 35.35,118.9844 Q36.0375,120.0469 37.3813,120.0469 Q38.0063,120.0469 38.6,119.7813 Q39.1938,119.5 39.8188,118.9219 L39.8188,121.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="40" x="54.15" y="120.8467">nurse</text><line style="stroke:#181818;stroke-width:0.5;" x1="8" x2="111" y1="132" y2="132"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="93" x="13" y="148.9951">level : integer</text></g><!--MD5=[c24d5af84c82019f1badc7472456af6e]
+class doctor--><g id="elem_doctor"><rect codeLine="15" fill="#F1F1F1" height="56.2969" id="doctor" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="129" x="147" y="100"/><ellipse cx="185.4" cy="116" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M188.3688,121.6406 Q187.7906,121.9375 187.15,122.0781 Q186.5094,122.2344 185.8063,122.2344 Q183.3063,122.2344 181.9781,120.5938 Q180.6656,118.9375 180.6656,115.8125 Q180.6656,112.6875 181.9781,111.0313 Q183.3063,109.375 185.8063,109.375 Q186.5094,109.375 187.15,109.5313 Q187.8063,109.6875 188.3688,109.9844 L188.3688,112.7031 Q187.7438,112.125 187.15,111.8594 Q186.5563,111.5781 185.9313,111.5781 Q184.5875,111.5781 183.9,112.6563 Q183.2125,113.7188 183.2125,115.8125 Q183.2125,117.9063 183.9,118.9844 Q184.5875,120.0469 185.9313,120.0469 Q186.5563,120.0469 187.15,119.7813 Q187.7438,119.5 188.3688,118.9219 L188.3688,121.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="45" x="204.6" y="120.8467">doctor</text><line style="stroke:#181818;stroke-width:0.5;" x1="148" x2="275" y1="132" y2="132"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="117" x="153" y="148.9951">income : decimal</text></g><!--MD5=[97a7ba44093f3efffe154745b770d448]
+class agreement--><g id="elem_agreement"><rect codeLine="19" fill="#F1F1F1" height="40.2656" id="agreement" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="142" x="63.5" y="233"/><ellipse cx="78.5" cy="253.1328" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M81.4688,258.7734 Q80.8906,259.0703 80.25,259.2109 Q79.6094,259.3672 78.9063,259.3672 Q76.4063,259.3672 75.0781,257.7266 Q73.7656,256.0703 73.7656,252.9453 Q73.7656,249.8203 75.0781,248.1641 Q76.4063,246.5078 78.9063,246.5078 Q79.6094,246.5078 80.25,246.6641 Q80.9063,246.8203 81.4688,247.1172 L81.4688,249.8359 Q80.8438,249.2578 80.25,248.9922 Q79.6563,248.7109 79.0313,248.7109 Q77.6875,248.7109 77,249.7891 Q76.3125,250.8516 76.3125,252.9453 Q76.3125,255.0391 77,256.1172 Q77.6875,257.1797 79.0313,257.1797 Q79.6563,257.1797 80.25,256.9141 Q80.8438,256.6328 81.4688,256.0547 L81.4688,258.7734 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="114" x="90.5" y="249.1387">«agreements.yml»</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="76" x="109.5" y="264.9639">agreement</text></g><!--MD5=[3db12954672d83927e612c021bfef13e]
+link employee to doctor--><g id="link_employee_doctor"><path codeLine="22" d="M146.71,39.2 C157.62,53.97 174.5,76.86 188.3,95.56 " fill="none" id="employee-to-doctor" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="191.38,99.73,189.2568,90.1127,188.4121,95.7062,182.8186,94.8614,191.38,99.73" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="178.1038" y="88.9543">1</text></g><!--MD5=[46ea5f43a1748e173cdfe0cf51f01025]
+link employee to nurse--><g id="link_employee_nurse"><path codeLine="24" d="M124.29,39.2 C113.38,53.97 96.5,76.86 82.7,95.56 " fill="none" id="employee-to-nurse" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="79.62,99.73,88.1814,94.8614,82.5879,95.7062,81.7432,90.1127,79.62,99.73" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="75.1463" y="88.9543">1</text></g><!--MD5=[a930b51dfbaf5a97788788f55452b4e3]
+link nurse to agreement--><g id="link_nurse_agreement"><path codeLine="26" d="M65.94,156.33 C70.13,170.9 76.51,188.71 85.5,203 C91.45,212.45 99.52,221.49 107.4,229.17 " fill="none" id="nurse-to-agreement" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="111.24,232.83,107.4823,223.7262,107.6197,229.3814,101.9645,229.5187,111.24,232.83" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="71" x="86.5" y="199.0669">agreement</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="24" x="77.3231" y="222.096">0..1</text></g><!--MD5=[afa6830afc30e62716d78d67b288bc92]
+link doctor to agreement--><g id="link_doctor_agreement"><path codeLine="28" d="M194.41,156.3 C180.84,177.97 162.07,207.95 149.18,228.55 " fill="none" id="doctor-to-agreement" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="146.52,232.8,154.687,227.2954,149.1738,228.5624,147.9068,223.0493,146.52,232.8" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="71" x="175.5" y="199.0669">agreement</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="24" x="122.5256" y="222.0576">0..1</text></g><!--MD5=[ffa8dd04f04464e6e615af2ca2c8f666]
+@startuml
+hide <<Path>> circle
+hide <<Response>> circle
+hide <<Parameter>> circle
+hide empty methods
+hide empty fields
+set namespaceSeparator none
+
+class "employee" {
+}
+
+class "nurse" {
+  {field} level : integer
+}
+
+class "doctor" {
+  {field} income : decimal
+}
+
+class "agreement" <<agreements.yml>> {
+}
+
+"employee" - -> "1" "doctor"
+
+"employee" - -> "1" "nurse"
+
+"nurse" - -> "0..1" "agreement"  :  "agreement"
+
+"doctor" - -> "0..1" "agreement"  :  "agreement"
+
+@enduml
+
+PlantUML version 1.2022.4(Sat Apr 09 23:29:17 AEST 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: AU
+--></g></svg>

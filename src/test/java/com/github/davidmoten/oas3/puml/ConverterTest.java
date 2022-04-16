@@ -45,6 +45,11 @@ public class ConverterTest {
         Converter.openApiToPuml(openapi);
     }
 
+    @Test
+    public void testConvertExternalRef() throws IOException {
+        Converter.openApiToPuml(new File("src/test/resources/inputs/external-ref.yml"));
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void testConvertEmpty() {
         Converter.openApiToPuml("");

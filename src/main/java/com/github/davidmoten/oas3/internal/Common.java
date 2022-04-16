@@ -58,7 +58,7 @@ final class Common {
         List<Class> classes = new ArrayList<>();
         if (schema.get$ref() != null) {
             // this is an alias case for a schema
-            String otherClassName = names.refToClassName(schema.get$ref());
+            String otherClassName = names.refToClassName(schema.get$ref()).className();
             relationships.add(Association.from(name).to(otherClassName).one().build());
         } else if (schema instanceof ComposedSchema) {
             ComposedSchema s = (ComposedSchema) schema;
@@ -113,7 +113,7 @@ final class Common {
                     }
                 } else if (sch.get$ref() != null) {
                     String ref = sch.get$ref();
-                    String otherClassName = names.refToClassName(ref);
+                    String otherClassName = names.refToClassName(ref).className();
                     addToOne(relationships, name, otherClassName, property,
                             required.contains(entry.getKey()));
                 } else {
@@ -144,7 +144,7 @@ final class Common {
             String ref = items.get$ref();
             String otherClassName;
             if (ref != null) {
-                otherClassName = names.refToClassName(ref);
+                otherClassName = names.refToClassName(ref).className();
             } else {
                 // create anon class
                 otherClassName = names.nextClassName(name);
@@ -193,7 +193,7 @@ final class Common {
         String ref = items.get$ref();
         final String otherClassName;
         if (ref != null) {
-            otherClassName = names.refToClassName(ref);
+            otherClassName = names.refToClassName(ref).className();
         } else {
             // create anon class
             otherClassName = names.nextClassName(name + "." + property);
@@ -239,7 +239,7 @@ final class Common {
         List<String> otherClassNames = schemas.stream() //
                 .map(s -> {
                     if (s.get$ref() != null) {
-                        return names.refToClassName(s.get$ref());
+                        return names.refToClassName(s.get$ref()).className();
                     } else {
                         String className = names
                                 .nextClassName(name + (property == null ? "" : "." + property));
@@ -282,7 +282,7 @@ final class Common {
     static Optional<String> getUmlTypeName(String ref, Schema<?> schema, Names names) {
         final String type;
         if (ref != null) {
-            type = names.refToClassName(ref);
+            type = names.refToClassName(ref).className();
         } else if (schema == null) {
             type = null;
         } else if (schema instanceof StringSchema) {
@@ -324,7 +324,7 @@ final class Common {
         } else if ("string".equals(schema.getType())) {
             type = "string";
         } else if (schema.get$ref() != null) {
-            type = names.refToClassName(schema.get$ref());
+            type = names.refToClassName(schema.get$ref()).className();
         } else if (schema.getType() == null) {
             type = null;
         } else {
