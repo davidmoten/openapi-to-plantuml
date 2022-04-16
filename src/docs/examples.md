@@ -148,7 +148,3 @@
 * [array-anon-property-level.yml](../../src/test/resources/inputs/array-anon-property-level.yml)
 
 <img src="../../src/docs/tests/array-anon-property-level.puml.svg"/>
-
-* [external-ref.yml](../../src/test/resources/inputs/external-ref.yml)
-
-<img src="../../src/docs/tests/external-ref.puml.svg"/>
