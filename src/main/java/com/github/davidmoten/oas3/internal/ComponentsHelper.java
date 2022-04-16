@@ -18,14 +18,16 @@ public final class ComponentsHelper {
     }
 
     public static Model toModel(Names names) {
-        Model part1 = names.schemas() //
+        Model part1 = names //
+                .schemas() //
                 .entrySet() //
                 .stream() //
                 .map(entry -> Common.toModelClass(names.schemaClassName(entry.getKey()), entry.getValue(), names,
                         ClassType.SCHEMA)) //
                 .reduce(Model.EMPTY, (a, b) -> a.add(b));
 
-        Model part2 = names.requestBodies() //
+        Model part2 = names //
+                .requestBodies() //
                 .entrySet() //
                 .stream() //
                 .map(entry -> {
@@ -45,7 +47,8 @@ public final class ComponentsHelper {
                 }) //
                 .reduce(Model.EMPTY, (a, b) -> a.add(b));
 
-        Model part3 = names.parameters() //
+        Model part3 = names //
+                .parameters() //
                 .entrySet() //
                 .stream() //
                 .map(entry -> {
@@ -63,7 +66,8 @@ public final class ComponentsHelper {
                 }) //
                 .reduce(Model.EMPTY, (a, b) -> a.add(b));
 
-        Model part4 = names.responses() //
+        Model part4 = names //
+                .responses() //
                 .entrySet() //
                 .stream() //
                 // TODO handle ref responses as per parameters and request bodies above
@@ -72,6 +76,7 @@ public final class ComponentsHelper {
                                 names, ClassType.RESPONSE)) //
                         .orElse(new Model(new Class(names.responseClassName(entry.getKey()), ClassType.RESPONSE)))) //
                 .reduce(Model.EMPTY, (a, b) -> a.add(b));
+        
         return part1.add(part2).add(part3).add(part4);
     }
 
