@@ -13,10 +13,6 @@
 
 <img src="../../src/docs/tests/path-returns-ref-ref.puml.svg"/>
 
-* [TS29531_Nnssf_NSSelection.yml](../../src/test/resources/inputs/TS29531_Nnssf_NSSelection.yml)
-
-<img src="../../src/docs/tests/TS29531_Nnssf_NSSelection.puml.svg"/>
-
 * [path-returns-ref-ref2.yml](../../src/test/resources/inputs/path-returns-ref-ref2.yml)
 
 <img src="../../src/docs/tests/path-returns-ref-ref2.puml.svg"/>
