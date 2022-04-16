@@ -76,7 +76,7 @@ public final class ComponentsHelper {
                                 names, ClassType.RESPONSE)) //
                         .orElse(new Model(new Class(names.responseClassName(entry.getKey()), ClassType.RESPONSE)))) //
                 .reduce(Model.EMPTY, (a, b) -> a.add(b));
-        
+
         return part1.add(part2).add(part3).add(part4);
     }
 

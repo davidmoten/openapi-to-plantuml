@@ -34,16 +34,16 @@ public final class Names {
         this.openapi = a;
         if (components != null) {
             // resolve name clashes
-            nullMapToEmpty(components.getSchemas()).keySet().forEach(name -> 
+            nullMapToEmpty(components.getSchemas()).keySet().forEach(name ->
                 refClassNames.put("#/components/schemas/" + name, new Reference(name, classNames))
             );
-            nullMapToEmpty(components.getRequestBodies()).keySet().forEach(name -> 
+            nullMapToEmpty(components.getRequestBodies()).keySet().forEach(name ->
                 refClassNames.put("#/components/requestBodies/" + name, new Reference(name, classNames))
             );
-            nullMapToEmpty(components.getParameters()).keySet().forEach(name -> 
+            nullMapToEmpty(components.getParameters()).keySet().forEach(name ->
                 refClassNames.put("#/components/parameters/" + name, new Reference(name, classNames))
             );
-            nullMapToEmpty(components.getResponses()).keySet().forEach(name -> 
+            nullMapToEmpty(components.getResponses()).keySet().forEach(name ->
                 refClassNames.put("#/components/responses/" + name, new Reference(name, classNames))
             );
         }
@@ -99,9 +99,9 @@ public final class Names {
     }
 
     public static final class Reference {
-        final Optional<String> base;
-        final String name;
-        final String className;
+        private final Optional<String> base;
+        private final String name;
+        private final String className;
 
         Reference(String ref, Set<String> classNames) {
             int i = ref.lastIndexOf("#");

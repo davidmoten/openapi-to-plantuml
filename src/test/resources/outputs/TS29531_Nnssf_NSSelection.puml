@@ -1,0 +1,290 @@
+@startuml
+hide <<Path>> circle
+hide <<Response>> circle
+hide <<Parameter>> circle
+hide empty methods
+hide empty fields
+set namespaceSeparator none
+
+class "AuthorizedNetworkSliceInfo" {
+  {field} targetAmfSet : string {O}
+  {field} nrfOauth2Required : map {O}
+}
+
+class "SubscribedSnssai" {
+  {field} defaultIndication : boolean {O}
+}
+
+class "AllowedSnssai" {
+}
+
+class "AllowedNssai" {
+}
+
+class "NsiInformation" {
+  {field} nrfOauth2Required : map {O}
+}
+
+class "MappingOfSnssai" {
+}
+
+class "SliceInfoForRegistration" {
+  {field} defaultConfiguredSnssaiInd : boolean {O}
+  {field} requestMapping : boolean {O}
+  {field} ueSupNssrgInd : boolean {O}
+  {field} suppressNssrgInd : boolean {O}
+}
+
+class "SliceInfoForPDUSession" {
+}
+
+class "SliceInfoForUEConfigurationUpdate" {
+  {field} defaultConfiguredSnssaiInd : boolean {O}
+  {field} ueSupNssrgInd : boolean {O}
+  {field} suppressNssrgInd : boolean {O}
+}
+
+class "ConfiguredSnssai" {
+}
+
+enum "RoamingIndication.1" {
+  NON_ROAMING
+  LOCAL_BREAKOUT
+  HOME_ROUTED_ROAMING
+}
+
+class "RoamingIndication.2" {
+  {field} value : string
+}
+
+class "RoamingIndication" {
+}
+
+class "NsiId" {
+  {field} value : string
+}
+
+class "GET /network-slice-information" <<Path>> {
+}
+
+class "GET /network-slice-information.nf-type" <<Parameter>> {
+}
+
+class "GET /network-slice-information.nf-id" <<Parameter>> {
+}
+
+class "GET /network-slice-information.slice-info-request-for-registration" <<Parameter>> {
+}
+
+class "GET /network-slice-information.slice-info-request-for-pdu-session" <<Parameter>> {
+}
+
+class "GET /network-slice-information.slice-info-request-for-ue-cu" <<Parameter>> {
+}
+
+class "GET /network-slice-information.home-plmn-id" <<Parameter>> {
+}
+
+class "GET /network-slice-information.tai" <<Parameter>> {
+}
+
+class "GET /network-slice-information.supported-features" <<Parameter>> {
+}
+
+class "GET /network-slice-information default" <<Response>> {
+}
+
+class "NfInstanceId" <<TS29571_CommonData.yaml>> {
+}
+
+class "Snssai" <<TS29571_CommonData.yaml>> {
+}
+
+class "SupportedFeatures" <<TS29571_CommonData.yaml>> {
+}
+
+class "Uri" <<TS29571_CommonData.yaml>> {
+}
+
+class "NfServiceSetId" <<TS29571_CommonData.yaml>> {
+}
+
+class "NsSrg" <<TS29571_CommonData.yaml>> {
+}
+
+class "AccessType" <<TS29571_CommonData.yaml>> {
+}
+
+class "NFType" <<TS29510_Nnrf_NFManagement.yaml>> {
+}
+
+class "307" <<TS29571_CommonData.yaml>> {
+}
+
+class "308" <<TS29571_CommonData.yaml>> {
+}
+
+class "400" <<TS29571_CommonData.yaml>> {
+}
+
+class "401" <<TS29571_CommonData.yaml>> {
+}
+
+class "403" <<TS29571_CommonData.yaml>> {
+}
+
+class "404" <<TS29571_CommonData.yaml>> {
+}
+
+class "406" <<TS29571_CommonData.yaml>> {
+}
+
+class "414" <<TS29571_CommonData.yaml>> {
+}
+
+class "429" <<TS29571_CommonData.yaml>> {
+}
+
+class "500" <<TS29571_CommonData.yaml>> {
+}
+
+class "503" <<TS29571_CommonData.yaml>> {
+}
+
+"AuthorizedNetworkSliceInfo" --> "*" "AllowedNssai"  :  "allowedNssaiList"
+
+"AuthorizedNetworkSliceInfo" --> "*" "ConfiguredSnssai"  :  "configuredNssai"
+
+"AuthorizedNetworkSliceInfo" --> "*" "NfInstanceId"  :  "candidateAmfList"
+
+"AuthorizedNetworkSliceInfo" --> "*" "Snssai"  :  "rejectedNssaiInPlmn"
+
+"AuthorizedNetworkSliceInfo" --> "*" "Snssai"  :  "rejectedNssaiInTa"
+
+"AuthorizedNetworkSliceInfo" --> "0..1" "NsiInformation"  :  "nsiInformation"
+
+"AuthorizedNetworkSliceInfo" --> "0..1" "SupportedFeatures"  :  "supportedFeatures"
+
+"AuthorizedNetworkSliceInfo" --> "0..1" "Uri"  :  "nrfAmfSet"
+
+"AuthorizedNetworkSliceInfo" --> "0..1" "Uri"  :  "nrfAmfSetNfMgtUri"
+
+"AuthorizedNetworkSliceInfo" --> "0..1" "Uri"  :  "nrfAmfSetAccessTokenUri"
+
+"AuthorizedNetworkSliceInfo" --> "0..1" "NfServiceSetId"  :  "targetAmfServiceSet"
+
+"AuthorizedNetworkSliceInfo" --> "*" "Snssai"  :  "targetNssai"
+
+"SubscribedSnssai" --> "1" "Snssai"  :  "subscribedSnssai"
+
+"SubscribedSnssai" --> "*" "NsSrg"  :  "subscribedNsSrgList"
+
+"AllowedSnssai" --> "1" "Snssai"  :  "allowedSnssai"
+
+"AllowedSnssai" --> "*" "NsiInformation"  :  "nsiInformationList"
+
+"AllowedSnssai" --> "0..1" "Snssai"  :  "mappedHomeSnssai"
+
+"AllowedNssai" --> "*" "AllowedSnssai"  :  "allowedSnssaiList"
+
+"AllowedNssai" --> "1" "AccessType"  :  "accessType"
+
+"NsiInformation" --> "1" "Uri"  :  "nrfId"
+
+"NsiInformation" --> "0..1" "NsiId"  :  "nsiId"
+
+"NsiInformation" --> "0..1" "Uri"  :  "nrfNfMgtUri"
+
+"NsiInformation" --> "0..1" "Uri"  :  "nrfAccessTokenUri"
+
+"MappingOfSnssai" --> "1" "Snssai"  :  "servingSnssai"
+
+"MappingOfSnssai" --> "1" "Snssai"  :  "homeSnssai"
+
+"SliceInfoForRegistration" --> "*" "SubscribedSnssai"  :  "subscribedNssai"
+
+"SliceInfoForRegistration" --> "0..1" "AllowedNssai"  :  "allowedNssaiCurrentAccess"
+
+"SliceInfoForRegistration" --> "0..1" "AllowedNssai"  :  "allowedNssaiOtherAccess"
+
+"SliceInfoForRegistration" --> "*" "Snssai"  :  "sNssaiForMapping"
+
+"SliceInfoForRegistration" --> "*" "Snssai"  :  "requestedNssai"
+
+"SliceInfoForRegistration" --> "*" "MappingOfSnssai"  :  "mappingOfNssai"
+
+"SliceInfoForRegistration" --> "*" "Snssai"  :  "rejectedNssaiRa"
+
+"SliceInfoForPDUSession" --> "1" "Snssai"  :  "sNssai"
+
+"SliceInfoForPDUSession" --> "1" "RoamingIndication"  :  "roamingIndication"
+
+"SliceInfoForPDUSession" --> "0..1" "Snssai"  :  "homeSnssai"
+
+"SliceInfoForUEConfigurationUpdate" --> "*" "SubscribedSnssai"  :  "subscribedNssai"
+
+"SliceInfoForUEConfigurationUpdate" --> "0..1" "AllowedNssai"  :  "allowedNssaiCurrentAccess"
+
+"SliceInfoForUEConfigurationUpdate" --> "0..1" "AllowedNssai"  :  "allowedNssaiOtherAccess"
+
+"SliceInfoForUEConfigurationUpdate" --> "*" "Snssai"  :  "requestedNssai"
+
+"SliceInfoForUEConfigurationUpdate" --> "*" "MappingOfSnssai"  :  "mappingOfNssai"
+
+"ConfiguredSnssai" --> "1" "Snssai"  :  "configuredSnssai"
+
+"ConfiguredSnssai" --> "0..1" "Snssai"  :  "mappedHomeSnssai"
+
+"RoamingIndication.1" --|> "RoamingIndication"
+
+"RoamingIndication.2" --|> "RoamingIndication"
+
+"GET /network-slice-information.nf-type" --> "1" "NFType"
+
+"GET /network-slice-information" --> "1" "GET /network-slice-information.nf-type"  :  "nf-type"
+
+"GET /network-slice-information.nf-id" --> "1" "NfInstanceId"
+
+"GET /network-slice-information" --> "1" "GET /network-slice-information.nf-id"  :  "nf-id"
+
+"GET /network-slice-information" --> "0..1" "GET /network-slice-information.slice-info-request-for-registration"  :  "slice-info-request-for-registration"
+
+"GET /network-slice-information" --> "0..1" "GET /network-slice-information.slice-info-request-for-pdu-session"  :  "slice-info-request-for-pdu-session"
+
+"GET /network-slice-information" --> "0..1" "GET /network-slice-information.slice-info-request-for-ue-cu"  :  "slice-info-request-for-ue-cu"
+
+"GET /network-slice-information" --> "0..1" "GET /network-slice-information.home-plmn-id"  :  "home-plmn-id"
+
+"GET /network-slice-information" --> "0..1" "GET /network-slice-information.tai"  :  "tai"
+
+"GET /network-slice-information.supported-features" --> "1" "SupportedFeatures"
+
+"GET /network-slice-information" --> "0..1" "GET /network-slice-information.supported-features"  :  "supported-features"
+
+"GET /network-slice-information" ..> "1" "AuthorizedNetworkSliceInfo"  :  "200"
+
+"GET /network-slice-information" ..> "1" "307"  :  "307"
+
+"GET /network-slice-information" ..> "1" "308"  :  "308"
+
+"GET /network-slice-information" ..> "1" "400"  :  "400"
+
+"GET /network-slice-information" ..> "1" "401"  :  "401"
+
+"GET /network-slice-information" ..> "1" "403"  :  "403"
+
+"GET /network-slice-information" ..> "1" "404"  :  "404"
+
+"GET /network-slice-information" ..> "1" "406"  :  "406"
+
+"GET /network-slice-information" ..> "1" "414"  :  "414"
+
+"GET /network-slice-information" ..> "1" "429"  :  "429"
+
+"GET /network-slice-information" ..> "1" "500"  :  "500"
+
+"GET /network-slice-information" ..> "1" "503"  :  "503"
+
+"GET /network-slice-information" ..> "1" "GET /network-slice-information default"  :  "default"
+
+@enduml
