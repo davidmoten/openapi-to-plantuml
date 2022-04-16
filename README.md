@@ -17,7 +17,7 @@ Supports all features of OpenAPI 3.0 including
 
 **Limitations**
 
-* Only handles internal references ("#/*"), that is the yaml file should be self-contained. As of 0.1.9 external refs are displayed but not exploded.
+* Only handles internal references ("#/*"), that is the yaml file should be self-contained. As of 0.1.9 external refs are displayed but not exploded. Full external reference support is being considered.
 
 **TODO**
 * Model *Callbacks*
