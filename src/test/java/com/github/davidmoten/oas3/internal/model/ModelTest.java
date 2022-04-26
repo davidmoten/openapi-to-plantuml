@@ -24,5 +24,10 @@ public class ModelTest {
                 + "  Association [from=Thing, to=Other, type=ONE, responseCode=, "
                 + "responseContentType=, propertyOrParameterName=]\n" + "]", model.toString());
     }
+    
+    @Test
+    public void testModelWithExternalRefs() {
+        
+    }
 
 }

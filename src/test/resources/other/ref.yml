@@ -1,0 +1,19 @@
+openapi: 3.0.1
+info:
+  title: unit test
+  version: 0.0.1
+  
+components:
+  schemas:
+    agreement:
+      properties:
+        content:
+          type: string
+          minLength: 1
+        public:
+          type: boolean
+          default: false
+      required:
+      - content
+      
+    

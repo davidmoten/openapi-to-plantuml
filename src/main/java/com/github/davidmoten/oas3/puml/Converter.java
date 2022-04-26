@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -39,6 +40,14 @@ public final class Converter {
         // prevent instantiation
     }
 
+    public static String openApiToPuml(String openApi, Optional<Path> basePath) {
+        SwaggerParseResult result = new OpenAPIParser().readContents(openApi, null, null);
+        if (result.getOpenAPI() == null) {
+            throw new IllegalArgumentException("Not an OpenAPI definition");
+        }
+        return openApiToPuml(result.getOpenAPI(), basePath);
+    }
+    
     public static String openApiToPuml(InputStream in) throws IOException {
         return openApiToPuml(IOUtils.toString(in, StandardCharsets.UTF_8));
     }
@@ -54,12 +63,11 @@ public final class Converter {
         if (result.getOpenAPI() == null) {
             throw new IllegalArgumentException("Not an OpenAPI definition");
         }
-        return openApiToPuml(result.getOpenAPI());
+        return openApiToPuml(result.getOpenAPI(), Optional.empty());
     }
 
-    private static String openApiToPuml(OpenAPI a) {
-
-        Names names = new Names(a);
+    private static String openApiToPuml(OpenAPI a, Optional<Path> basePath) {
+        Names names = new Names(basePath, a);
         Model model = ComponentsHelper //
                 .toModel(names) //
                 .add(PathsHelper.toModel(names));

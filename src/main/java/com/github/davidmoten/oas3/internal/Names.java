@@ -2,6 +2,7 @@ package com.github.davidmoten.oas3.internal;
 
 import static com.github.davidmoten.oas3.internal.Util.nullMapToEmpty;
 
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,8 +29,10 @@ public final class Names {
     private final Map<String, Reference> refClassNames = new HashMap<>();
     private final Set<String> classNames = Sets.newHashSet(EMPTY_RESPONSE_CLASS_NAME);
     private final OpenAPI openapi;
+    private final Optional<Path> basePath;
 
-    public Names(OpenAPI a) {
+    public Names(Optional<Path> basePath, OpenAPI a) {
+        this.basePath = basePath;
         Components components = a.getComponents();
         this.openapi = a;
         if (components != null) {
