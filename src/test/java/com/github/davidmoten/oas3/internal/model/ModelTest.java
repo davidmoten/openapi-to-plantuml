@@ -2,9 +2,18 @@ package com.github.davidmoten.oas3.internal.model;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.util.Collections;
+
 import org.junit.Test;
 
 import com.github.davidmoten.guavamini.Lists;
+
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.parser.OpenAPIV3Parser;
+import io.swagger.v3.parser.core.models.ParseOptions;
+import io.swagger.v3.parser.core.models.SwaggerParseResult;
 
 public class ModelTest {
 
@@ -26,8 +35,14 @@ public class ModelTest {
     }
     
     @Test
-    public void testModelWithExternalRefs() {
-        
+    public void testModelWithExternalRefs() throws MalformedURLException {
+        File file = new File("src/test/resources/other/external-ref.yml");
+        ParseOptions o = new ParseOptions();
+        o.setResolveFully(true);
+        SwaggerParseResult r = new OpenAPIV3Parser().readLocation(file.toURI().toURL().toExternalForm(), Collections.emptyList(), o);
+        OpenAPI a = r.getOpenAPI();
+//        System.out.println(a);
+        a.getComponents().getSchemas().forEach((key, value) -> System.out.println(key + "->\n" + value));   
     }
 
 }

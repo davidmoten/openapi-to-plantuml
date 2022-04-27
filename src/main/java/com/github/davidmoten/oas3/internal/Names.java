@@ -114,7 +114,7 @@ public final class Names {
         Reference(Optional<Path> basePath, String ref, Set<String> classNames, Map<Path, Names> others) {
             Optional<Path> basePath2 = basePath.map(x -> {
                 try {
-                    return x.resolve(java.nio.file.Paths.get(new URI(ref)));
+                    return x.resolveSibling(java.nio.file.Paths.get(new URI(ref)));
                 } catch (URISyntaxException e) {
                     throw new RuntimeException(e);
                 }
