@@ -47,7 +47,7 @@ public class ConverterTest {
 
     @Test
     public void testConvertExternalRef() throws IOException {
-        Converter.openApiToPuml(new File("src/test/resources/inputs/external-ref.yml"));
+        Converter.openApiToPuml(new File("src/test/resources/inputs/external-ref-not-present.yml"));
     }
 
     @Test(expected = IllegalArgumentException.class)

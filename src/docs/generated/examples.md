@@ -49,10 +49,6 @@
 
 <img src="../../../src/docs/tests/simple-has-refs.puml.svg"/>
 
-* [external-ref.yml](../../../src/test/resources/inputs/external-ref.yml)
-
-<img src="../../../src/docs/tests/external-ref.puml.svg"/>
-
 * [array-property-level.yml](../../../src/test/resources/inputs/array-property-level.yml)
 
 <img src="../../../src/docs/tests/array-property-level.puml.svg"/>
@@ -100,6 +96,10 @@
 * [petstore-expanded.yml](../../../src/test/resources/inputs/petstore-expanded.yml)
 
 <img src="../../../src/docs/tests/petstore-expanded.puml.svg"/>
+
+* [external-ref-not-present.yml](../../../src/test/resources/inputs/external-ref-not-present.yml)
+
+<img src="../../../src/docs/tests/external-ref-not-present.puml.svg"/>
 
 * [parameter-ref-complex.yml](../../../src/test/resources/inputs/parameter-ref-complex.yml)
 

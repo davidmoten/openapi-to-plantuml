@@ -2,12 +2,14 @@ package com.github.davidmoten.oas3.puml;
 
 import static com.github.davidmoten.oas3.internal.Util.quote;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -28,6 +30,7 @@ import com.github.davidmoten.oas3.internal.model.Relationship;
 
 import io.swagger.parser.OpenAPIParser;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.parser.core.models.ParseOptions;
 import io.swagger.v3.parser.core.models.SwaggerParseResult;
 
 public final class Converter {
@@ -44,17 +47,39 @@ public final class Converter {
     }
 
     public static String openApiToPuml(File file) throws IOException {
-        try (InputStream in = new BufferedInputStream(new FileInputStream(file))) {
-            return openApiToPuml(in);
+        return openApiToPuml(file, Resolution.DEPENDENCIES_ONLY);
+    }
+    
+    public static String openApiToPuml(File file, Resolution resolution) throws IOException {
+        return openApiToPumlFromUrl(file.toPath().toUri().toURL().toExternalForm(), resolution);
+    }
+
+    public static String openApiToPumlFromUrl(String url) {
+        return openApiToPumlFromUrl(url, Resolution.DEPENDENCIES_ONLY);
+    }
+    
+    public static String openApiToPumlFromUrl(String url, Resolution resolution) {
+        ParseOptions options = new ParseOptions();
+        if (resolution == Resolution.FULL) {
+            options.setResolveFully(true);
+        } else if (resolution == Resolution.DEPENDENCIES_ONLY) {
+            options.setResolve(true);
         }
+        SwaggerParseResult result = new OpenAPIParser().readLocation(url, Collections.emptyList(), options);
+        if (result.getOpenAPI() == null) {
+            throw new IllegalArgumentException("Not an OpenAPI definition: " + url);
+        }
+        return openApiToPuml(result.getOpenAPI());
     }
 
     public static String openApiToPuml(String openApi) {
-        SwaggerParseResult result = new OpenAPIParser().readContents(openApi, null, null);
-        if (result.getOpenAPI() == null) {
-            throw new IllegalArgumentException("Not an OpenAPI definition");
+        try {
+            Path file = Files.createTempFile("openapi-", ".yml");
+            Files.write(file, openApi.getBytes(StandardCharsets.UTF_8));
+            return openApiToPumlFromUrl(file.toUri().toURL().toExternalForm());
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
-        return openApiToPuml(result.getOpenAPI());
     }
 
     private static String openApiToPuml(OpenAPI a) {
@@ -129,8 +154,7 @@ public final class Converter {
                 if (a.responseCode().isPresent()) {
                     arrow = "..>";
                     label = a.responseCode().get() + a.responseContentType()
-                            .filter(x -> !"application/json".equalsIgnoreCase(x))
-                            .map(x -> SPACE + x).orElse("");
+                            .filter(x -> !"application/json".equalsIgnoreCase(x)).map(x -> SPACE + x).orElse("");
                 } else {
                     arrow = "-->";
                     label = a.propertyOrParameterName().orElse("");
@@ -139,8 +163,7 @@ public final class Converter {
                 if (to.contains(Names.NAMESPACE_DELIMITER)) {
                     to = to.split(Names.NAMESPACE_DELIMITER)[1];
                 }
-                b.append("\n\n" + quote(a.from()) + SPACE + arrow + SPACE + quote(mult) + SPACE
-                        + quote(to)
+                b.append("\n\n" + quote(a.from()) + SPACE + arrow + SPACE + quote(mult) + SPACE + quote(to)
                         + (label.equals("") ? "" : SPACE + COLON + SPACE + quote(label)));
             } else {
                 Inheritance a = (Inheritance) r;
@@ -153,16 +176,14 @@ public final class Converter {
                     anonNumber++;
                     String diamond = "anon" + anonNumber;
                     b.append("\n\ndiamond " + diamond);
-                    b.append("\n\n" + quote(from) + SPACE + "-->" + quote(mult) + SPACE
-                            + quote(diamond) + a.propertyName().map(x -> COLON + quote(x)).orElse(""));
+                    b.append("\n\n" + quote(from) + SPACE + "-->" + quote(mult) + SPACE + quote(diamond)
+                            + a.propertyName().map(x -> COLON + quote(x)).orElse(""));
                     for (String otherClassName : a.to()) {
-                        b.append("\n\n" + quote(otherClassName) + SPACE + "--|>" + SPACE
-                                + quote(diamond));
+                        b.append("\n\n" + quote(otherClassName) + SPACE + "--|>" + SPACE + quote(diamond));
                     }
                 } else {
                     for (String otherClassName : a.to()) {
-                        b.append("\n\n" + quote(otherClassName) + SPACE + "--|>" + SPACE
-                                + quote(a.from()));
+                        b.append("\n\n" + quote(otherClassName) + SPACE + "--|>" + SPACE + quote(a.from()));
                     }
                 }
             }
