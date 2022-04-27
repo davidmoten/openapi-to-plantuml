@@ -2,6 +2,8 @@ package com.github.davidmoten.oas3.internal;
 
 import static com.github.davidmoten.oas3.internal.Util.nullMapToEmpty;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collections;
@@ -27,28 +29,31 @@ public final class Names {
     private static final String EMPTY_RESPONSE_CLASS_NAME = "Empty Response";
     public static final String NAMESPACE_DELIMITER = "::";
     private final Map<String, Reference> refClassNames = new HashMap<>();
-    private final Set<String> classNames = Sets.newHashSet(EMPTY_RESPONSE_CLASS_NAME);
+    private final Set<String> classNames;
     private final OpenAPI openapi;
     private final Optional<Path> basePath;
+    private final Map<Path, Names> others;
 
     public Names(Optional<Path> basePath, OpenAPI a) {
+        this(basePath, a, new HashMap<>(), Sets.newHashSet(EMPTY_RESPONSE_CLASS_NAME));
+    }
+
+    public Names(Optional<Path> basePath, OpenAPI a, Map<Path, Names> others, Set<String> classNames) {
         this.basePath = basePath;
+        this.others = others;
+        this.classNames = classNames;
         Components components = a.getComponents();
         this.openapi = a;
         if (components != null) {
             // resolve name clashes
-            nullMapToEmpty(components.getSchemas()).keySet().forEach(name ->
-                refClassNames.put("#/components/schemas/" + name, new Reference(name, classNames))
-            );
-            nullMapToEmpty(components.getRequestBodies()).keySet().forEach(name ->
-                refClassNames.put("#/components/requestBodies/" + name, new Reference(name, classNames))
-            );
-            nullMapToEmpty(components.getParameters()).keySet().forEach(name ->
-                refClassNames.put("#/components/parameters/" + name, new Reference(name, classNames))
-            );
-            nullMapToEmpty(components.getResponses()).keySet().forEach(name ->
-                refClassNames.put("#/components/responses/" + name, new Reference(name, classNames))
-            );
+            nullMapToEmpty(components.getSchemas()).keySet().forEach(
+                    name -> refClassNames.put("#/components/schemas/" + name, new Reference(basePath, name, classNames, others)));
+            nullMapToEmpty(components.getRequestBodies()).keySet().forEach(
+                    name -> refClassNames.put("#/components/requestBodies/" + name, new Reference(basePath, name, classNames, others)));
+            nullMapToEmpty(components.getParameters()).keySet().forEach(
+                    name -> refClassNames.put("#/components/parameters/" + name, new Reference(basePath, name, classNames, others)));
+            nullMapToEmpty(components.getResponses()).keySet().forEach(
+                    name -> refClassNames.put("#/components/responses/" + name, new Reference(basePath, name, classNames, others)));
         }
     }
 
@@ -92,7 +97,7 @@ public final class Names {
         Preconditions.checkNotNull(ref);
         Reference reference = refClassNames.get(ref);
         if (reference == null) {
-            Reference r = new Reference(ref, classNames);
+            Reference r = new Reference(basePath, ref, classNames, others);
             refClassNames.put(ref, r);
             // throw new RuntimeException("could not find ref=" + ref);
             return r;
@@ -106,7 +111,14 @@ public final class Names {
         private final String name;
         private final String className;
 
-        Reference(String ref, Set<String> classNames) {
+        Reference(Optional<Path> basePath, String ref, Set<String> classNames, Map<Path, Names> others) {
+            Optional<Path> basePath2 = basePath.map(x -> {
+                try {
+                    return x.resolve(java.nio.file.Paths.get(new URI(ref)));
+                } catch (URISyntaxException e) {
+                    throw new RuntimeException(e);
+                }
+            });
             int i = ref.lastIndexOf("#");
             if (i == -1) {
                 base = Optional.empty();
