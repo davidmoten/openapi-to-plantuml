@@ -105,7 +105,7 @@
         <dependency>
             <groupId>net.sourceforge.plantuml</groupId>
             <artifactId>plantuml</artifactId>
-            <version>1.2022.4</version>
+            <version>1.2022.5</version>
             <optional>true</optional>
         </dependency>
 
