@@ -300,7 +300,7 @@
                 <!-- NOTE: We don't need a groupId specification because 
                     the group is org.apache.maven.plugins ...which is assumed by default. -->
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>3.4.0</version>
                 <executions>
                     <execution>
                         <id>make-assembly</id>
