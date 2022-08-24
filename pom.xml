@@ -37,7 +37,7 @@
         <line.coverage>0.80</line.coverage>
         <branch.coverage>0.40</branch.coverage>
 
-        <slf4j.version>1.7.30</slf4j.version>
+        <slf4j.version>1.7.36</slf4j.version>
         <log4j.version>2.18.0</log4j.version>
 
     </properties>
