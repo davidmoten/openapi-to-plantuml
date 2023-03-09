@@ -7,9 +7,7 @@ hide empty fields
 set namespaceSeparator none
 
 class "Customer" {
-  {field} firstName : string
-  {field} lastName : string
-  {field} property : map {O}
+  {field} property : map
 }
 
 @enduml

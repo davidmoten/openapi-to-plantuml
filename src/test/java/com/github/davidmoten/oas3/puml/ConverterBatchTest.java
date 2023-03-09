@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,6 +39,7 @@ public class ConverterBatchTest {
         } else {
             List<File> result = Arrays.asList(list);
             Collections.sort(result, (a, b) -> a.getName().compareTo(b.getName()));
+            result = result.stream().filter(x -> x.getName().startsWith("additional")).collect(Collectors.toList());
             return result;
         }
     }

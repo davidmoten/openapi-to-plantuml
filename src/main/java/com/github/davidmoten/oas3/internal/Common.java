@@ -131,6 +131,9 @@ final class Common {
                             relationships.addAll(m.relationships());
                             addToOne(relationships, name, otherClassName, property,
                                     required.contains(property));
+                        } else if (type.equals("map")) {
+                            fields.add(new Field(entry.getKey(), type, type.endsWith("]"),
+                                    true));
                         } else {
                             fields.add(new Field(entry.getKey(), type, type.endsWith("]"),
                                     required.contains(entry.getKey())));

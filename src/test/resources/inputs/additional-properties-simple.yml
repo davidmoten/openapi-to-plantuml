@@ -6,10 +6,6 @@ components:
   schemas:
     Customer:
       properties:
-        firstName:
-          type: string
-        lastName:
-          type: string
         property:
           type: object
           additionalProperties:
