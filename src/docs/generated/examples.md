@@ -105,6 +105,10 @@
 
 <img src="../../../src/docs/tests/parameter-ref-complex.puml.svg"/>
 
+* [additional-properties-simple.yml](../../../src/test/resources/inputs/additional-properties-simple.yml)
+
+<img src="../../../src/docs/tests/additional-properties-simple.puml.svg"/>
+
 * [empty.yml](../../../src/test/resources/inputs/empty.yml)
 
 <img src="../../../src/docs/tests/empty.puml.svg"/>

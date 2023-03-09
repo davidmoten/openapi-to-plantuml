@@ -1,0 +1,15 @@
+@startuml
+hide <<Path>> circle
+hide <<Response>> circle
+hide <<Parameter>> circle
+hide empty methods
+hide empty fields
+set namespaceSeparator none
+
+class "Customer" {
+  {field} firstName : string
+  {field} lastName : string
+  {field} property : map {O}
+}
+
+@enduml
