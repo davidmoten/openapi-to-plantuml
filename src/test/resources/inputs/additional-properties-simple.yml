@@ -4,12 +4,9 @@ info:
   version: 0.0.1
 components:
   schemas:
-    Customer:
+    Thing:
       properties:
         property:
           type: object
           additionalProperties:
             type: string
-      required:
-        - firstName
-        - lastName

@@ -132,7 +132,9 @@ final class Common {
                             addToOne(relationships, name, otherClassName, property,
                                     required.contains(property));
                         } else if (type.equals("map")) {
-                            fields.add(new Field(entry.getKey(), type, type.endsWith("]"),
+                            MapSchema ms = (MapSchema) sch;
+                            String valueType = ((Schema<?>) ms.getAdditionalProperties()).getType();
+                            fields.add(new Field(entry.getKey(), "string -> " + valueType, type.endsWith("]"),
                                     true));
                         } else {
                             fields.add(new Field(entry.getKey(), type, type.endsWith("]"),

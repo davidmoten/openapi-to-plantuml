@@ -6,8 +6,8 @@ hide empty methods
 hide empty fields
 set namespaceSeparator none
 
-class "Customer" {
-  {field} property : map
+class "Thing" {
+  {field} property : string -> string
 }
 
 @enduml
