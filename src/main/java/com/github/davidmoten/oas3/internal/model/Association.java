@@ -9,15 +9,17 @@ public final class Association implements Relationship {
     private final Optional<String> responseCode;
     private final Optional<String> responseContentType;
     private final Optional<String> propertyOrParameterName;
+    private final boolean owns;
 
     private Association(String from, String to, AssociationType type, Optional<String> responseCode,
-            Optional<String> responseContentType, Optional<String> propertyOrParameterName) {
+            Optional<String> responseContentType, Optional<String> propertyOrParameterName, boolean owns) {
         this.from = from;
         this.to = to;
         this.type = type;
         this.responseCode = responseCode;
         this.responseContentType = responseContentType;
         this.propertyOrParameterName = propertyOrParameterName;
+        this.owns = owns;
     }
 
     public String from() {
@@ -42,6 +44,10 @@ public final class Association implements Relationship {
 
     public Optional<String> propertyOrParameterName() {
         return propertyOrParameterName;
+    }
+    
+    public boolean owns() {
+        return owns;
     }
 
     @Override
@@ -79,6 +85,7 @@ public final class Association implements Relationship {
         private Optional<String> propertyOrParameterName = Optional.empty();
         private Optional<String> responseCode = Optional.empty();
         private Optional<String> responseContentType = Optional.empty();
+        private boolean  owns = false;
 
         Builder(String from) {
             this.from = from;
@@ -114,7 +121,7 @@ public final class Association implements Relationship {
             b.type = type;
             return new Builder3(b);
         }
-
+        
     }
 
     public static final class Builder3 {
@@ -127,7 +134,7 @@ public final class Association implements Relationship {
 
         public Association build() {
             return new Association(b.from, b.to, b.type, b.responseCode, b.responseContentType,
-                    b.propertyOrParameterName);
+                    b.propertyOrParameterName, b.owns);
         }
 
         public Builder3 propertyOrParameterName(String label) {
@@ -146,6 +153,15 @@ public final class Association implements Relationship {
 
         public Builder3 propertyOrParameterName(Optional<String> propertyOrParameterName) {
             b.propertyOrParameterName = propertyOrParameterName;
+            return this;
+        }
+        
+        public Builder3 owns() {
+            return owns(true);
+        }
+        
+        public Builder3 owns(boolean owns) {
+            b.owns = owns;
             return this;
         }
     }

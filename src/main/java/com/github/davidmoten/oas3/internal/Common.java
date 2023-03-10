@@ -133,9 +133,22 @@ final class Common {
                                     required.contains(property));
                         } else if (type.equals("map")) {
                             MapSchema ms = (MapSchema) sch;
-                            String valueType = ((Schema<?>) ms.getAdditionalProperties()).getType();
-                            fields.add(new Field(entry.getKey(), "string -> " + valueType, type.endsWith("]"),
-                                    true));
+                            Schema<?> valueSchema = ((Schema<?>) ms.getAdditionalProperties());
+                            if (valueSchema.get$ref() != null) {
+                                String keyClassName = names.nextClassName(name + "." + property);
+                                ObjectSchema keySchema = new ObjectSchema();
+                                keySchema.addProperty("key", new StringSchema());
+                                keySchema.addRequiredItem("key");
+                                Model m = toModelClass(keyClassName, keySchema, names, ClassType.SCHEMA);
+                                classes.addAll(m.classes());
+                                relationships.addAll(m.relationships());
+                                addToMany(relationships, name, keyClassName, property, true);
+                                String valueClassName = names.refToClassName(valueSchema.get$ref()).className();
+                                addToOne(relationships, keyClassName, valueClassName, "value", true);
+                            } else {
+                                fields.add(new Field(entry.getKey(), "string -> string", type.endsWith("]"),
+                                        true));
+                            }
                         } else {
                             fields.add(new Field(entry.getKey(), type, type.endsWith("]"),
                                     required.contains(entry.getKey())));
@@ -264,9 +277,15 @@ final class Common {
 
     private static void addToMany(List<Relationship> relationships, String name,
             String otherClassName, String property) {
-        relationships.add(Association.from(name).to(otherClassName).many()
-                .propertyOrParameterName(Optional.ofNullable(property)).build());
+        addToMany(relationships, name, otherClassName, property, false);
     }
+    
+    private static void addToMany(List<Relationship> relationships, String name, String otherClassName, String property,
+            boolean owns) {
+        relationships.add(Association.from(name).to(otherClassName).many()
+                .propertyOrParameterName(Optional.ofNullable(property)).owns(owns).build());        
+    }
+
 
     private static void addToOne(List<Relationship> relationships, String name,
             String otherClassName, String property, boolean isToOne) {

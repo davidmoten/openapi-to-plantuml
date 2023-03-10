@@ -1,0 +1,28 @@
+openapi: 3.0.1
+info:
+  title: unit test
+  version: 0.0.1
+components:
+  schemas:
+    Thing:
+      properties:
+        name: 
+          type: string
+        description:
+          type: string
+        property:
+          type: object
+          additionalProperties:
+            $ref: "#/components/schemas/MyValue"
+      required:
+      - name
+    MyValue:
+      properties:
+         name: 
+           type: string
+         expiry:
+           type: string
+           format: date-time
+      required:
+      - name
+      - expiry

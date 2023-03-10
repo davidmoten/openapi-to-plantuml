@@ -39,7 +39,7 @@ public class ConverterBatchTest {
         } else {
             List<File> result = Arrays.asList(list);
             Collections.sort(result, (a, b) -> a.getName().compareTo(b.getName()));
-            result = result.stream().filter(x -> x.getName().startsWith("additional")).collect(Collectors.toList());
+//            result = result.stream().filter(x -> x.getName().startsWith("additional-properties-complex")).collect(Collectors.toList());
             return result;
         }
     }
