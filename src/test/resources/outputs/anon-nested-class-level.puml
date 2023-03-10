@@ -19,8 +19,8 @@ class "Customer" {
   {field} heightMetres : decimal {O}
 }
 
-"Customer.name" --> "0..1" "Customer.name.standardName"  :  "standardName"
+"Customer.name" *--> "0..1" "Customer.name.standardName"  :  "standardName"
 
-"Customer" --> "1" "Customer.name"  :  "name"
+"Customer" *--> "1" "Customer.name"  :  "name"
 
 @enduml
