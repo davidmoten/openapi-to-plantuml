@@ -279,11 +279,11 @@ final class Common {
             String otherClassName, String property) {
         addToMany(relationships, name, otherClassName, property, false);
     }
-    
+
     private static void addToMany(List<Relationship> relationships, String name, String otherClassName, String property,
             boolean owns) {
         relationships.add(Association.from(name).to(otherClassName).many()
-                .propertyOrParameterName(Optional.ofNullable(property)).owns(owns).build());        
+                .propertyOrParameterName(Optional.ofNullable(property)).owns(owns).build());
     }
 
 

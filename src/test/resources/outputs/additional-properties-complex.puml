@@ -1,0 +1,27 @@
+@startuml
+hide <<Path>> circle
+hide <<Response>> circle
+hide <<Parameter>> circle
+hide empty methods
+hide empty fields
+set namespaceSeparator none
+
+class "Thing.property" {
+  {field} key : string
+}
+
+class "Thing" {
+  {field} name : string
+  {field} description : string {O}
+}
+
+class "MyValue" {
+  {field} name : string
+  {field} expiry : timestamp
+}
+
+"Thing" *--> "*" "Thing.property"  :  "property"
+
+"Thing.property" --> "1" "MyValue"  :  "value"
+
+@enduml

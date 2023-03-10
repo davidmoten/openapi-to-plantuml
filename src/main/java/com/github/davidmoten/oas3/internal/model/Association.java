@@ -45,7 +45,7 @@ public final class Association implements Relationship {
     public Optional<String> propertyOrParameterName() {
         return propertyOrParameterName;
     }
-    
+
     public boolean owns() {
         return owns;
     }
@@ -121,7 +121,6 @@ public final class Association implements Relationship {
             b.type = type;
             return new Builder3(b);
         }
-        
     }
 
     public static final class Builder3 {
@@ -155,11 +154,11 @@ public final class Association implements Relationship {
             b.propertyOrParameterName = propertyOrParameterName;
             return this;
         }
-        
+
         public Builder3 owns() {
             return owns(true);
         }
-        
+
         public Builder3 owns(boolean owns) {
             b.owns = owns;
             return this;

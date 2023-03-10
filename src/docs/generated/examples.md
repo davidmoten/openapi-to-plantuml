@@ -89,6 +89,10 @@
 
 <img src="../../../src/docs/tests/one-of-property-level-required.puml.svg"/>
 
+* [additional-properties-complex.yml](../../../src/test/resources/inputs/additional-properties-complex.yml)
+
+<img src="../../../src/docs/tests/additional-properties-complex.puml.svg"/>
+
 * [all-of-class-level.yml](../../../src/test/resources/inputs/all-of-class-level.yml)
 
 <img src="../../../src/docs/tests/all-of-class-level.puml.svg"/>
