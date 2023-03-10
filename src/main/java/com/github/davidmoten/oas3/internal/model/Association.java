@@ -155,10 +155,6 @@ public final class Association implements Relationship {
             return this;
         }
 
-        public Builder3 owns() {
-            return owns(true);
-        }
-
         public Builder3 owns(boolean owns) {
             b.owns = owns;
             return this;
