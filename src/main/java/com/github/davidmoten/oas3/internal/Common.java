@@ -340,7 +340,6 @@ final class Common {
         } else if (schema instanceof UUIDSchema) {
             type = "string";
         } else if (schema instanceof MapSchema) {
-            // TODO handle MapSchema
             type = "map";
         } else if (schema instanceof ComposedSchema) {
             // TODO handle ComposedSchema
