@@ -115,7 +115,7 @@ final class Common {
                     String ref = sch.get$ref();
                     String otherClassName = names.refToClassName(ref).className();
                     addToOne(relationships, name, otherClassName, property,
-                            required.contains(entry.getKey()));
+                            required.contains(entry.getKey()), false);
                 } else {
                     Optional<String> t = getUmlTypeName(sch, names);
                     if (t.isPresent()) {
@@ -130,7 +130,7 @@ final class Common {
                             classes.addAll(m.classes());
                             relationships.addAll(m.relationships());
                             addToOne(relationships, name, otherClassName, property,
-                                    required.contains(property));
+                                    required.contains(property), true);
                         } else if (type.equals("map")) {
                             MapSchema ms = (MapSchema) sch;
                             Schema<?> valueSchema = ((Schema<?>) ms.getAdditionalProperties());
@@ -144,7 +144,7 @@ final class Common {
                                 relationships.addAll(m.relationships());
                                 addToMany(relationships, name, keyClassName, property, true);
                                 String valueClassName = names.refToClassName(valueSchema.get$ref()).className();
-                                addToOne(relationships, keyClassName, valueClassName, "value", true);
+                                addToOne(relationships, keyClassName, valueClassName, "value", true, false);
                             } else {
                                 fields.add(new Field(entry.getKey(), "string -> string", type.endsWith("]"),
                                         true));
@@ -228,7 +228,7 @@ final class Common {
         List<String> otherClassNames = addAnonymousClassesAndReturnOtherClassNames(classes,
                 relationships, name, schemas, names, propertyName);
         for (String otherClassName : otherClassNames) {
-            addToOne(relationships, name, otherClassName, propertyName, true);
+            addToOne(relationships, name, otherClassName, propertyName, true, false);
         }
     }
 
@@ -286,9 +286,8 @@ final class Common {
                 .propertyOrParameterName(Optional.ofNullable(property)).owns(owns).build());
     }
 
-
     private static void addToOne(List<Relationship> relationships, String name,
-            String otherClassName, String property, boolean isToOne) {
+            String otherClassName, String property, boolean isToOne, boolean owns) {
         relationships.add(Association //
                 .from(name) //
                 .to(otherClassName) //
@@ -296,6 +295,7 @@ final class Common {
                 .propertyOrParameterName(//
                         property == null || property.equals(otherClassName) ? Optional.empty()
                                 : Optional.of(property))
+                .owns(owns) //
                 .build());
     }
 
