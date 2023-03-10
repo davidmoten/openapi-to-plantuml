@@ -127,12 +127,12 @@ public final class Converter {
                 final String label;
                 final String arrow;
                 if (a.responseCode().isPresent()) {
-                    arrow = "..>";
+                    arrow = (a.owns() ? "*" : "") + "..>";
                     label = a.responseCode().get() + a.responseContentType()
                             .filter(x -> !"application/json".equalsIgnoreCase(x))
                             .map(x -> SPACE + x).orElse("");
                 } else {
-                    arrow = "-->";
+                    arrow = (a.owns() ? "*" : "") + "-->";
                     label = a.propertyOrParameterName().orElse("");
                 }
                 String to = a.to();
