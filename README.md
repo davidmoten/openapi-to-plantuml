@@ -53,6 +53,12 @@ Or use the standalone *jar-with-dependencies* artifact from [Maven Central](http
 ```bash
 java -jar openapi-to-plantuml-VERSION_HERE-jar-with-dependencies.jar openapi.yaml PNG openapi.png
 ```
+Large diagrams are better with SVG format (rendering is sharp at every zoom level) so just replace `PNG` in the above command with `SVG`. If you still want a PNG and you find it 
+is getting cut off then you need to increase the plantuml image size limit like below. Increase the limit till your diagram fits. You may need to increase memory using this JVM arg `-Xmx1024m`.
+
+```bash
+java -DPLANTUML_LIMIT_SIZE=8192 -jar openapi-to-plantuml-VERSION_HERE-jar-with-dependencies.jar openapi.yaml PNG openapi.png
+```
 
 ## Usage
 
