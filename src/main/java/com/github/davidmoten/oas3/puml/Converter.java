@@ -89,12 +89,30 @@ public final class Converter {
                 });
                 b.append("\n}");
             } else {
+                StringBuilder infoSb = new StringBuilder();
                 b.append("\n\nclass " + Util.quote(cls.name())
                         + toStereotype(cls.type()).map(x -> " <<" + x + ">>").orElse("") + " {");
                 cls.fields().stream().forEach(f -> {
-                    b.append("\n  {field} " + f.name() + COLON + f.type() + (f.isRequired() ? "" : " {O}"));
+                    b.append("\n  {field} " + f.name() + COLON + f.type() +((f.maxLength()>-1)?"(" + String.valueOf(f.maxLength())+")":"") + (f.isRequired() ? "" : " {O}"));
+
+                    StringBuilder infoFieldSb = new StringBuilder();
+                    //TODO add option
+                    if (f.description() != null) {
+                        infoFieldSb.append("\n\t<size:8>"+f.description()+"</size>");
+                    }
+                    if (f.example() != null) {
+                        infoFieldSb.append("\n\t<size:8><i>Ex:"+f.example()+"</i></size>");
+                    }
+                    if (infoFieldSb.length()>0) {
+                        infoSb.append("\nnote right of " + cls.name() + "::" + f.name());
+                        infoSb.append(infoFieldSb);
+                        infoSb.append("\nend note");
+                    }
                 });
                 b.append("\n}");
+                if (infoSb.length()>0) {
+                    b.append(infoSb);
+                }
             }
         }
         // add external ref classes

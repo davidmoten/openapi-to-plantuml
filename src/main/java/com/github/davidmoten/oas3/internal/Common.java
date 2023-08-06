@@ -150,8 +150,8 @@ final class Common {
                                         true));
                             }
                         } else {
-                            fields.add(new Field(entry.getKey(), type, type.endsWith("]"),
-                                    required.contains(entry.getKey())));
+                            fields.add(new FieldSchema(entry.getKey(), type, type.endsWith("]"),
+                                    required.contains(entry.getKey()),entry.getValue()));
                         }
                     }
                 }
