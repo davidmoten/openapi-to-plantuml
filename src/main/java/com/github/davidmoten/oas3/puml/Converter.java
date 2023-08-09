@@ -90,7 +90,7 @@ public final class Converter {
                 b.append("\n}");
             } else {
                 StringBuilder infoSb = new StringBuilder();
-                b.append("\n\nclass " + Util.quote(cls.name())
+                b.append("\n\nclass " + Util.quote(cls.name()).replaceAll("\\s", "")
                         + toStereotype(cls.type()).map(x -> " <<" + x + ">>").orElse("") + " {");
                 cls.fields().stream().forEach(f -> {
                     b.append("\n  {field} " + f.name() + COLON + f.type() +((f.maxLength()>-1)?"(" + String.valueOf(f.maxLength())+")":"") + (f.isRequired() ? " {R}" : ""));
@@ -104,7 +104,7 @@ public final class Converter {
                         infoFieldSb.append("\n\t<size:8><i>Ex:"+f.example()+"</i></size>");
                     }
                     if (infoFieldSb.length()>0) {
-                        infoSb.append("\nnote right of " + cls.name() + "::" + f.name());
+                        infoSb.append("\nnote right of " + cls.name().replaceAll("\\s", "")+ "::" + f.name());
                         infoSb.append(infoFieldSb);
                         infoSb.append("\nend note");
                     }
