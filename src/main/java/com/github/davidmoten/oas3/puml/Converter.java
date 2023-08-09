@@ -93,7 +93,7 @@ public final class Converter {
                 b.append("\n\nclass " + Util.quote(cls.name())
                         + toStereotype(cls.type()).map(x -> " <<" + x + ">>").orElse("") + " {");
                 cls.fields().stream().forEach(f -> {
-                    b.append("\n  {field} " + f.name() + COLON + f.type() +((f.maxLength()>-1)?"(" + String.valueOf(f.maxLength())+")":"") + (f.isRequired() ? "" : " {O}"));
+                    b.append("\n  {field} " + f.name() + COLON + f.type() +((f.maxLength()>-1)?"(" + String.valueOf(f.maxLength())+")":"") + (f.isRequired() ? " {R}" : ""));
 
                     StringBuilder infoFieldSb = new StringBuilder();
                     //TODO add option
