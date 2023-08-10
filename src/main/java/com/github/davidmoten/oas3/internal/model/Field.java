@@ -10,6 +10,7 @@ public class Field {
     private int maxLength;
     private String description;
     private String example;
+    private String format;
 
     public Field(String name, String type, boolean isArray, boolean required) {
         this.name = name;
@@ -56,6 +57,14 @@ public class Field {
 
     public void setExample(String example) {
         this.example=example;
+    }
+
+    public String format() {
+        return format;
+    }
+
+    public void setFormat(String format) {
+        this.format=format;
     }
 
 

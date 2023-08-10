@@ -100,8 +100,11 @@ public final class Converter {
                     if (f.description() != null) {
                         infoFieldSb.append("\n\t<size:8>"+f.description()+"</size>");
                     }
+                    if (f.format() != null) {
+                        infoFieldSb.append("\n\t<size:8>Format "+f.format()+"</size>");
+                    }
                     if (f.example() != null) {
-                        infoFieldSb.append("\n\t<size:8><i>Ex:"+f.example()+"</i></size>");
+                        infoFieldSb.append("\n\t<size:8><i>Ex: "+f.example()+"</i></size>");
                     }
                     if (infoFieldSb.length()>0) {
                         infoSb.append("\nnote right of " + cls.name().replaceAll("\\s", "")+ "::" + f.name());

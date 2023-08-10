@@ -17,6 +17,7 @@ public class FieldSchema extends Field {
             this.setMaxLength(Optional.ofNullable(schema.getMaxLength()).orElse(-1));
             this.setDescription(schema.getDescription());
             this.setExample(schema.getExample()==null?null:schema.getExample().toString());
+            this.setFormat(schema.getFormat());
         }
     }
 }
