@@ -103,6 +103,9 @@ public final class Converter {
                     if (f.format() != null) {
                         infoFieldSb.append("\n\t<size:8>Format "+f.format()+"</size>");
                     }
+                    if (f.extension() != null) {
+                        infoFieldSb.append("\n\t<size:8>"+f.extension()+"</size>");
+                    }
                     if (f.example() != null) {
                         infoFieldSb.append("\n\t<size:8><i>Ex: "+f.example()+"</i></size>");
                     }

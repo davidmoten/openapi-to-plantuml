@@ -11,6 +11,8 @@ public class Field {
     private String description;
     private String example;
     private String format;
+    private String extension;
+
 
     public Field(String name, String type, boolean isArray, boolean required) {
         this.name = name;
@@ -65,6 +67,14 @@ public class Field {
 
     public void setFormat(String format) {
         this.format=format;
+    }
+
+    public String extension() {
+        return extension;
+    }
+
+    public void setExtension(String extension) {
+        this.extension=extension;
     }
 
 

@@ -18,6 +18,9 @@ public class FieldSchema extends Field {
             this.setDescription(schema.getDescription());
             this.setExample(schema.getExample()==null?null:schema.getExample().toString());
             this.setFormat(schema.getFormat());
+            if (schema.getExtensions()!=null) {
+                this.setExtension(schema.getExtensions().toString());
+            }
         }
     }
 }
