@@ -13,12 +13,12 @@ public class FieldSchema extends Field {
     public FieldSchema(String name, String type, boolean isArray, boolean required, Schema<?> schema) {
         super(name, type, isArray, required);
         //this.schema = schema; // Not use
-        if (schema!=null) {
+        if (schema != null) {
             this.setMaxLength(Optional.ofNullable(schema.getMaxLength()).orElse(-1));
             this.setDescription(schema.getDescription());
-            this.setExample(schema.getExample()==null?null:schema.getExample().toString());
+            this.setExample(schema.getExample() == null ? null : schema.getExample().toString());
             this.setFormat(schema.getFormat());
-            if (schema.getExtensions()!=null) {
+            if (schema.getExtensions() != null) {
                 this.setExtension(schema.getExtensions().toString());
             }
         }

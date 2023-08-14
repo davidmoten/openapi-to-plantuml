@@ -112,14 +112,14 @@ final class Common {
                         }
                     }
                     fields.add(new FieldSchema(entry.getKey(), property, property.endsWith("]"),
-                            required.contains(entry.getKey()),entry.getValue()));
+                            required.contains(entry.getKey()), entry.getValue()));
                 } else if (sch.get$ref() != null) {
                     String ref = sch.get$ref();
                     String otherClassName = names.refToClassName(ref).className();
                     addToOne(relationships, name, otherClassName, property,
                             required.contains(entry.getKey()), false);
                     fields.add(new FieldSchema(entry.getKey(), otherClassName, otherClassName.endsWith("]"),
-                            required.contains(entry.getKey()),entry.getValue()));
+                            required.contains(entry.getKey()), entry.getValue()));
                 } else {
                     Optional<String> t = getUmlTypeName(sch, names);
                     if (t.isPresent()) {
@@ -150,14 +150,14 @@ final class Common {
                                 String valueClassName = names.refToClassName(valueSchema.get$ref()).className();
                                 addToOne(relationships, keyClassName, valueClassName, "value", true, false);
                             } else {
-                                type= "string -> string";
+                                type = "string -> string";
 //                                fields.add(new Field(entry.getKey(), "string -> string", type.endsWith("]"),
 //                                        true));
                             }
                         }
                         //else {
                             fields.add(new FieldSchema(entry.getKey(), type, type.endsWith("]"),
-                                    required.contains(entry.getKey()),entry.getValue()));
+                                    required.contains(entry.getKey()), entry.getValue()));
                         //}
                     }
                 }

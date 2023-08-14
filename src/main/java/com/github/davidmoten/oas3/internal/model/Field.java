@@ -42,7 +42,7 @@ public class Field {
     }
 
     public void setMaxLength(int length) {
-        this.maxLength=length;
+        this.maxLength = length;
     }
 
     public String description() {
@@ -58,7 +58,7 @@ public class Field {
     }
 
     public void setExample(String example) {
-        this.example=example;
+        this.example = example;
     }
 
     public String format() {
@@ -66,7 +66,7 @@ public class Field {
     }
 
     public void setFormat(String format) {
-        this.format=format;
+        this.format = format;
     }
 
     public String extension() {
@@ -74,7 +74,7 @@ public class Field {
     }
 
     public void setExtension(String extension) {
-        this.extension=extension;
+        this.extension = extension;
     }
 
 
