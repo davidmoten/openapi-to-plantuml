@@ -1,6 +1,6 @@
 package com.github.davidmoten.oas3.internal.model;
 
-public class Field {
+public final class Field {
 
     private final String name;
     // TODO convert to simpleType
@@ -19,6 +19,18 @@ public class Field {
         this.type = type;
         this.isArray = isArray;
         this.required = required;
+    }
+
+    public Field(String name, String type, boolean isArray, boolean required, int maxLength, String description, String example, String format, String extension) {
+        this.name = name;
+        this.type = type;
+        this.isArray = isArray;
+        this.required = required;
+        this.maxLength = maxLength;
+        this.description = description;
+        this.example = example;
+        this.format = format;
+        this.extension = extension;
     }
 
     public String name() {
@@ -41,42 +53,21 @@ public class Field {
         return maxLength;
     }
 
-    public void setMaxLength(int length) {
-        this.maxLength = length;
-    }
-
     public String description() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String example() {
         return example;
     }
 
-    public void setExample(String example) {
-        this.example = example;
-    }
-
     public String format() {
         return format;
-    }
-
-    public void setFormat(String format) {
-        this.format = format;
     }
 
     public String extension() {
         return extension;
     }
-
-    public void setExtension(String extension) {
-        this.extension = extension;
-    }
-
 
     @Override
     public String toString() {
