@@ -368,7 +368,7 @@ final class Common {
         String description = null;
         String example = null;
         String format = null;
-        String extension=null;
+        String extension = null;
         if (schema != null) {
             maxLength = Optional.ofNullable(schema.getMaxLength()).orElse(-1);
             description = schema.getDescription();
