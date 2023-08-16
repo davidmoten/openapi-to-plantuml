@@ -362,19 +362,20 @@ final class Common {
         return Optional.ofNullable(type);
     }
 
-    private static Field createFieldWithInfo(String name, String type, boolean isArray, boolean required, Schema<?> schema) {
-        int maxLength=-1;
-        String description=null;
-        String example=null;
-        String format=null;
+    private static Field createFieldWithInfo(String name, String type, boolean isArray, boolean required,
+            Schema<?> schema) {
+        int maxLength = -1;
+        String description = null;
+        String example = null;
+        String format = null;
         String extension=null;
         if (schema != null) {
-            maxLength=Optional.ofNullable(schema.getMaxLength()).orElse(-1);
-            description=schema.getDescription();
-            example=schema.getExample() == null ? null : schema.getExample().toString();
-            format=schema.getFormat();
+            maxLength = Optional.ofNullable(schema.getMaxLength()).orElse(-1);
+            description = schema.getDescription();
+            example = schema.getExample() == null ? null : schema.getExample().toString();
+            format = schema.getFormat();
             if (schema.getExtensions() != null) {
-                extension=schema.getExtensions().toString();
+                extension = schema.getExtensions().toString();
             }
         }
         return new Field(name, type, isArray, required, maxLength, description, example, format, extension);

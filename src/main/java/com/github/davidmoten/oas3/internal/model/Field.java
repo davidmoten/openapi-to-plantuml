@@ -21,7 +21,8 @@ public final class Field {
         this.required = required;
     }
 
-    public Field(String name, String type, boolean isArray, boolean required, int maxLength, String description, String example, String format, String extension) {
+    public Field(String name, String type, boolean isArray, boolean required, int maxLength,
+            String description, String example, String format, String extension) {
         this.name = name;
         this.type = type;
         this.isArray = isArray;
