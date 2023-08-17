@@ -6,25 +6,25 @@ hide empty methods
 hide empty fields
 set namespaceSeparator none
 
-class "Customer" {
-  {field} firstName : string {O}
-  {field} lastName : string {O}
+class "Customer" as Customer {
+  {field} firstName : string
+  {field} lastName : string
 }
 
-class "GET /customer/expired" <<Path>> {
+class "GET /customer/expired" as GET_/customer/expired <<Path>> {
 }
 
-class "GET /customer/expired.offset" <<Parameter>> {
-  {field} min : integer {O}
-  {field} max : integer {O}
+class "GET /customer/expired.offset" as GET_/customer/expired.offset <<Parameter>> {
+  {field} min : integer
+  {field} max : integer
 }
 
-class "GET /customer/expired.limit" <<Parameter>> {
-  {field} min : integer {O}
-  {field} max : integer {O}
+class "GET /customer/expired.limit" as GET_/customer/expired.limit <<Parameter>> {
+  {field} min : integer
+  {field} max : integer
 }
 
-class "GET /customer/expired 200" <<Response>> {
+class "GET /customer/expired 200" as GET_/customer/expired_200 <<Response>> {
 }
 
 "GET /customer/expired" --> "1" "GET /customer/expired.offset"  :  "offset"

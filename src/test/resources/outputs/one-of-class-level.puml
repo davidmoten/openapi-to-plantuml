@@ -6,15 +6,15 @@ hide empty methods
 hide empty fields
 set namespaceSeparator none
 
-class "employee" {
+class "employee" as employee {
 }
 
-class "nurse" {
-  {field} level : integer
+class "nurse" as nurse {
+  {field} level : integer {R}
 }
 
-class "doctor" {
-  {field} income : decimal
+class "doctor" as doctor {
+  {field} income : decimal {R}
 }
 
 "doctor" --|> "employee"

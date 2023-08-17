@@ -6,7 +6,7 @@ hide empty methods
 hide empty fields
 set namespaceSeparator none
 
-class "employee" {
+class "employee" as employee {
 }
 
 @enduml

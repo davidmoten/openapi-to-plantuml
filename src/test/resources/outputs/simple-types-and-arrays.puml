@@ -6,22 +6,46 @@ hide empty methods
 hide empty fields
 set namespaceSeparator none
 
-class "My.Customer" {
-  {field} firstName : string
-  {field} lastName : string
-  {field} secret : string {O}
-  {field} email : string {O}
-  {field} id : string {O}
-  {field} history : byte[] {O}
-  {field} history2 : byte[] {O}
-  {field} heightMetres : decimal {O}
-  {field} dateOfBirth : date
-  {field} lastSessionTime : timestamp {O}
-  {field} numberOfChildren : integer {O}
-  {field} alive : boolean {O}
-  {field} nicknames : string[] {O}
-  {field} favouriteNumbers : integer[] {O}
-  {field} picture : byte[] {O}
+class "My.Customer" as My.Customer {
+  {field} firstName : string {R}
+  {field} lastName : string {R}
+  {field} secret : string
+  {field} email : string
+  {field} id : string
+  {field} history : byte[]
+  {field} history2 : byte[]
+  {field} heightMetres : decimal
+  {field} dateOfBirth : date {R}
+  {field} lastSessionTime : timestamp
+  {field} numberOfChildren : integer
+  {field} alive : boolean
+  {field} nicknames : string[]
+  {field} favouriteNumbers : integer[]
+  {field} picture : byte[]
 }
+note right of My.Customer::"secret"
+	<size:8>Format password</size>
+end note
+note right of My.Customer::"email"
+	<size:8>Format email</size>
+end note
+note right of My.Customer::"id"
+	<size:8>Format uuid</size>
+end note
+note right of My.Customer::"history"
+	<size:8>Format binary</size>
+end note
+note right of My.Customer::"history2"
+	<size:8>Format byte</size>
+end note
+note right of My.Customer::"dateOfBirth"
+	<size:8>Format date</size>
+end note
+note right of My.Customer::"lastSessionTime"
+	<size:8>Format date-time</size>
+end note
+note right of My.Customer::"picture"
+	<size:8>Format binary</size>
+end note
 
 @enduml

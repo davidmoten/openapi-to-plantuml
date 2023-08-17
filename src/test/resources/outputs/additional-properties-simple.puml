@@ -6,7 +6,7 @@ hide empty methods
 hide empty fields
 set namespaceSeparator none
 
-class "Thing" {
+class "Thing" as Thing {
   {field} property : string -> string
 }
 

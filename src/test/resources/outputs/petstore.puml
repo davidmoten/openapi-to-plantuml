@@ -6,32 +6,38 @@ hide empty methods
 hide empty fields
 set namespaceSeparator none
 
-class "Pet" {
-  {field} id : integer
-  {field} name : string
-  {field} tag : string {O}
+class "Pet" as Pet {
+  {field} id : integer {R}
+  {field} name : string {R}
+  {field} tag : string
+}
+note right of Pet::"id"
+	<size:8>Format int64</size>
+end note
+
+class "Pets" as Pets {
 }
 
-class "Pets" {
+class "Error" as Error {
+  {field} code : integer {R}
+  {field} message : string {R}
+}
+note right of Error::"code"
+	<size:8>Format int32</size>
+end note
+
+class "GET /pets" as GET_/pets <<Path>> {
+  {field} limit : integer(0)
 }
 
-class "Error" {
-  {field} code : integer
-  {field} message : string
+class "POST /pets" as POST_/pets <<Path>> {
 }
 
-class "GET /pets" <<Path>> {
-  {field} limit : integer {O}
+class "POST /pets 201" as POST_/pets_201 <<Response>> {
 }
 
-class "POST /pets" <<Path>> {
-}
-
-class "POST /pets 201" <<Response>> {
-}
-
-class "GET /pets/{petId}" <<Path>> {
-  {field} petId : string
+class "GET /pets/{petId}" as GET_/pets/_petId_ <<Path>> {
+  {field} petId : string(0) {R}
 }
 
 "Pets" --> "*" "Pet"

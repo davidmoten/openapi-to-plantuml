@@ -6,17 +6,19 @@ hide empty methods
 hide empty fields
 set namespaceSeparator none
 
-class "Customer.name.standardName" {
-  {field} firstName : string
-  {field} lastName : string
+class "Customer.name.standardName" as Customer.name.standardName {
+  {field} firstName : string {R}
+  {field} lastName : string {R}
 }
 
-class "Customer.name" {
-  {field} origin : string {O}
+class "Customer.name" as Customer.name {
+  {field} standardName : object
+  {field} origin : string
 }
 
-class "Customer" {
-  {field} heightMetres : decimal {O}
+class "Customer" as Customer {
+  {field} name : object {R}
+  {field} heightMetres : decimal
 }
 
 "Customer.name" *--> "0..1" "Customer.name.standardName"  :  "standardName"

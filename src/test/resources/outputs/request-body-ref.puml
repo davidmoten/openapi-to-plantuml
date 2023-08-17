@@ -6,27 +6,36 @@ hide empty methods
 hide empty fields
 set namespaceSeparator none
 
-class "Customer" {
-  {field} firstName : string
-  {field} lastName : string
-  {field} heightMetres : decimal {O}
-  {field} dateOfBirth : date
-  {field} lastSessionTime : timestamp {O}
-  {field} numberOfChildren : integer {O}
-  {field} alive : boolean {O}
-  {field} nicknames : string[] {O}
-  {field} favouriteNumbers : integer[] {O}
-  {field} picture : byte[] {O}
+class "Customer" as Customer {
+  {field} firstName : string {R}
+  {field} lastName : string {R}
+  {field} heightMetres : decimal
+  {field} dateOfBirth : date {R}
+  {field} lastSessionTime : timestamp
+  {field} numberOfChildren : integer
+  {field} alive : boolean
+  {field} nicknames : string[]
+  {field} favouriteNumbers : integer[]
+  {field} picture : byte[]
+}
+note right of Customer::"dateOfBirth"
+	<size:8>Format date</size>
+end note
+note right of Customer::"lastSessionTime"
+	<size:8>Format date-time</size>
+end note
+note right of Customer::"picture"
+	<size:8>Format binary</size>
+end note
+
+class "repositories" as repositories <<RequestBody>> {
+  {field} repository_ids : integer[]
 }
 
-class "repositories" <<RequestBody>> {
-  {field} repository_ids : integer[] {O}
+class "GET /customer/expired" as GET_/customer/expired <<Path>> {
 }
 
-class "GET /customer/expired" <<Path>> {
-}
-
-class "GET /customer/expired 200" <<Response>> {
+class "GET /customer/expired 200" as GET_/customer/expired_200 <<Response>> {
 }
 
 "GET /customer/expired 200" --> "*" "Customer"

@@ -6,17 +6,18 @@ hide empty methods
 hide empty fields
 set namespaceSeparator none
 
-class "employee.role" {
-  {field} employeeType : string {O}
-  {field} level : integer
+class "employee.role" as employee.role {
+  {field} employeeType : string
+  {field} level : integer {R}
 }
 
-class "employee.role.1" {
-  {field} employeeType : string {O}
-  {field} income : decimal
+class "employee.role.1" as employee.role.1 {
+  {field} employeeType : string
+  {field} income : decimal {R}
 }
 
-class "employee" {
+class "employee" as employee {
+  {field} role : role
 }
 
 diamond anon1
