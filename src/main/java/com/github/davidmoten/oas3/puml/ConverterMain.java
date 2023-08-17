@@ -32,14 +32,18 @@ public final class ConverterMain {
     }
 
     public static void main(String[] args) throws IOException {
-        String usage = "Usage: java -jar openapi-to-plantuml-all.jar <OPENAPI_FILE> <FILE_FORMAT> <OUTPUT_FILE>"
+        String usage = "Usage: java -jar openapi-to-plantuml-all.jar <OPENAPI_FILE> <FILE_FORMAT> <OUTPUT_FILE> <SHOW_NOTE{0|1}>"
                 + "\n  File formats are:\n    PUML\n" + Arrays.stream(FileFormat.values())
                         .map(x -> "    " + x + "\n").collect(Collectors.joining());
-        if (args.length != 3) {
+        if ((args.length != 3) || (args.length != 4)) {
             System.out.println(usage);
-            throw new IllegalArgumentException("must pass 3 arguments");
+            throw new IllegalArgumentException("must pass 3 or 4 arguments");
         } else {
-            String puml = Converter.openApiToPuml(new File(args[0]));
+            boolean showNote = false;
+            if (args.length == 4) {
+                showNote = (args[4] == "1") ? true : false;
+            }
+            String puml = Converter.openApiToPuml(new File(args[0]), showNote);
             String format = args[1];
             File out = new File(args[2]);
             if (format.equals("PUML")) {

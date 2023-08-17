@@ -51,7 +51,7 @@ public class DemoBatchTest {
             File svg = new File(demos, input.getName().substring(0, input.getName().lastIndexOf('.')) + ".svg");
             String puml;
             try (InputStream def = new FileInputStream(input)) {
-                puml = com.github.davidmoten.oas3.puml.Converter.openApiToPuml(def);
+                puml = com.github.davidmoten.oas3.puml.Converter.openApiToPuml(def, true);
             }
             File pumlFile = new File(demos, input.getName().substring(0, input.getName().lastIndexOf('.')) + ".puml");
             pumlFile.delete();

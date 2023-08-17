@@ -39,25 +39,25 @@ public final class Converter {
         // prevent instantiation
     }
 
-    public static String openApiToPuml(InputStream in) throws IOException {
-        return openApiToPuml(IOUtils.toString(in, StandardCharsets.UTF_8));
+    public static String openApiToPuml(InputStream in, boolean showNote) throws IOException {
+        return openApiToPuml(IOUtils.toString(in, StandardCharsets.UTF_8), showNote);
     }
 
-    public static String openApiToPuml(File file) throws IOException {
+    public static String openApiToPuml(File file, boolean showNote) throws IOException {
         try (InputStream in = new BufferedInputStream(new FileInputStream(file))) {
-            return openApiToPuml(in);
+            return openApiToPuml(in, showNote);
         }
     }
 
-    public static String openApiToPuml(String openApi) {
+    public static String openApiToPuml(String openApi, boolean showNote) {
         SwaggerParseResult result = new OpenAPIParser().readContents(openApi, null, null);
         if (result.getOpenAPI() == null) {
             throw new IllegalArgumentException("Not an OpenAPI definition");
         }
-        return openApiToPuml(result.getOpenAPI());
+        return openApiToPuml(result.getOpenAPI(), showNote);
     }
 
-    private static String openApiToPuml(OpenAPI a) {
+    private static String openApiToPuml(OpenAPI a, boolean showNote) {
 
         Names names = new Names(a);
         Model model = ComponentsHelper //
@@ -73,11 +73,11 @@ public final class Converter {
                 // make sure that periods in class names aren't interpreted as namespace
                 // separators (which results in recursive boxing)
                 + "\nset namespaceSeparator none" //
-                + toPlantUml(model) //
+                + toPlantUml(model, showNote) //
                 + "\n\n@enduml";
     }
 
-    private static String toPlantUml(Model model) {
+    private static String toPlantUml(Model model, boolean showNote) {
         final String regexForFixBugOnNote =  "\\s|\\{|\\}|\\+";
         int anonNumber = 0;
         StringBuilder b = new StringBuilder();
@@ -99,23 +99,24 @@ public final class Converter {
                             + (f.isRequired() ? " {R}" : ""));
 
                     StringBuilder infoFieldSb = new StringBuilder();
-                    //TODO add option
-                    if (f.description() != null) {
-                        infoFieldSb.append("\n\t<size:8>" + f.description() + "</size>");
-                    }
-                    if (f.format() != null) {
-                        infoFieldSb.append("\n\t<size:8>Format " + f.format() + "</size>");
-                    }
-                    if (f.extension() != null) {
-                        infoFieldSb.append("\n\t<size:8>" + f.extension() + "</size>");
-                    }
-                    if (f.example() != null) {
-                        infoFieldSb.append("\n\t<size:8><i>Ex: " + f.example() + "</i></size>");
-                    }
-                    if (infoFieldSb.length() > 0) {
-                        infoSb.append("\nnote right of " + cls.name().replaceAll(regexForFixBugOnNote, "_") + "::" + Util.quote(f.name()));
-                        infoSb.append(infoFieldSb);
-                        infoSb.append("\nend note");
+                    if (showNote) {
+                        if (f.description() != null) {
+                            infoFieldSb.append("\n\t<size:8>" + f.description() + "</size>");
+                        }
+                        if (f.format() != null) {
+                            infoFieldSb.append("\n\t<size:8>Format " + f.format() + "</size>");
+                        }
+                        if (f.extension() != null) {
+                            infoFieldSb.append("\n\t<size:8>" + f.extension() + "</size>");
+                        }
+                        if (f.example() != null) {
+                            infoFieldSb.append("\n\t<size:8><i>Ex: " + f.example() + "</i></size>");
+                        }
+                        if (infoFieldSb.length() > 0) {
+                            infoSb.append("\nnote right of " + cls.name().replaceAll(regexForFixBugOnNote, "_") + "::" + Util.quote(f.name()));
+                            infoSb.append(infoFieldSb);
+                            infoSb.append("\nend note");
+                        }
                     }
                 });
                 b.append("\n}");

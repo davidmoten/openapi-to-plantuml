@@ -42,17 +42,17 @@ public class ConverterTest {
                 + "          type: array\n" + "          items:\n"
                 + "            $ref: '#/components/schemas/Customer'\n" + "      ";
 
-        Converter.openApiToPuml(openapi);
+        Converter.openApiToPuml(openapi, true);
     }
 
     @Test
     public void testConvertExternalRef() throws IOException {
-        Converter.openApiToPuml(new File("src/test/resources/inputs/external-ref.yml"));
+        Converter.openApiToPuml(new File("src/test/resources/inputs/external-ref.yml"), true);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testConvertEmpty() {
-        Converter.openApiToPuml("");
+        Converter.openApiToPuml("", true);
     }
 
     @Test
@@ -94,7 +94,7 @@ public class ConverterTest {
 
     static void writeSvg(File openApiFile, String filename) throws IOException {
         try (InputStream in = new FileInputStream(openApiFile)) {
-            String puml = Converter.openApiToPuml(in);
+            String puml = Converter.openApiToPuml(in, true);
             writeSvgFromPuml(puml, filename);
         }
     }
