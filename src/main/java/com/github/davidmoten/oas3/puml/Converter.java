@@ -78,6 +78,7 @@ public final class Converter {
     }
 
     private static String toPlantUml(Model model) {
+        final String regexForFixBugOnNote =  "\\s|\\{|\\}|\\+";
         int anonNumber = 0;
         StringBuilder b = new StringBuilder();
         for (Class cls : model.classes()) {
@@ -90,7 +91,7 @@ public final class Converter {
                 b.append("\n}");
             } else {
                 StringBuilder infoSb = new StringBuilder();
-                b.append("\n\nclass " + Util.quote(cls.name()).replaceAll("\\s", "")
+                b.append("\n\nclass " + Util.quote(cls.name()) + " as " + cls.name().replaceAll(regexForFixBugOnNote, "_")
                         + toStereotype(cls.type()).map(x -> " <<" + x + ">>").orElse("") + " {");
                 cls.fields().stream().forEach(f -> {
                     b.append("\n  {field} " + f.name() + COLON + f.type()
@@ -112,7 +113,7 @@ public final class Converter {
                         infoFieldSb.append("\n\t<size:8><i>Ex: " + f.example() + "</i></size>");
                     }
                     if (infoFieldSb.length() > 0) {
-                        infoSb.append("\nnote right of " + cls.name().replaceAll("\\s", "") + "::" + f.name());
+                        infoSb.append("\nnote right of " + cls.name().replaceAll(regexForFixBugOnNote, "_") + "::" + Util.quote(f.name()));
                         infoSb.append(infoFieldSb);
                         infoSb.append("\nend note");
                     }

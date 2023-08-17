@@ -186,10 +186,10 @@ final class Common {
                         && !isEmpty(schema.getEnum())) {
                     isEnum = true;
                     for (Object item: schema.getEnum()) {
-                        fields.add(new Field(item.toString(), type, false, false));
+                        fields.add(createFieldWithInfo(item.toString(), type, false, false, schema));
                     }
                 } else {
-                    fields.add(new Field("value", type, type.endsWith("]"), true));
+                    fields.add(createFieldWithInfo("value", type, type.endsWith("]"), true, schema));
                 }
             }
         }
