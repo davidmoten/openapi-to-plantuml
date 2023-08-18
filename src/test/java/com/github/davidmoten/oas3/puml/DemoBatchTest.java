@@ -57,7 +57,7 @@ public class DemoBatchTest {
             pumlFile.delete();
             Files.write(pumlFile.toPath(), puml.getBytes(StandardCharsets.UTF_8));
             svg.delete();
-            ConverterTest.writeSvg(input, svg.getPath());
+            ConverterTest.writeSvg(input, svg.getPath(), true);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
