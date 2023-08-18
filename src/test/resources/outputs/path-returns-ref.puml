@@ -36,6 +36,6 @@ class "GET /customer/expired" as GET_/customer/expired <<Path>> {
 
 "Customers" --> "*" "Customer"
 
-"GET /customer/expired" ..> "1" "Customers"  :  "200"
+"GET_/customer/expired" ..> "1" "Customers"  :  "200"
 
 @enduml

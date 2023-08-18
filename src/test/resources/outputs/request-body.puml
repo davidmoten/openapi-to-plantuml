@@ -38,10 +38,10 @@ class "GET /customer/expired Request" as GET_/customer/expired_Request <<Request
   {field} repository_ids : integer[]
 }
 
-"GET /customer/expired 200" --> "*" "Customer"
+"GET_/customer/expired_200" --> "*" "Customer"
 
-"GET /customer/expired" ..> "1" "GET /customer/expired 200"  :  "200"
+"GET_/customer/expired" ..> "1" "GET_/customer/expired_200"  :  "200"
 
-"GET /customer/expired" --> "1" "GET /customer/expired Request"
+"GET_/customer/expired" --> "1" "GET_/customer/expired_Request"
 
 @enduml

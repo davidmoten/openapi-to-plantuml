@@ -42,16 +42,16 @@ class "GET /pets/{petId}" as GET_/pets/_petId_ <<Path>> {
 
 "Pets" --> "*" "Pet"
 
-"GET /pets" ..> "1" "Pets"  :  "200"
+"GET_/pets" ..> "1" "Pets"  :  "200"
 
-"GET /pets" ..> "1" "Error"  :  "default"
+"GET_/pets" ..> "1" "Error"  :  "default"
 
-"POST /pets" ..> "1" "POST /pets 201"  :  "201"
+"POST_/pets" ..> "1" "POST_/pets_201"  :  "201"
 
-"POST /pets" ..> "1" "Error"  :  "default"
+"POST_/pets" ..> "1" "Error"  :  "default"
 
-"GET /pets/{petId}" ..> "1" "Pet"  :  "200"
+"GET_/pets/_petId_" ..> "1" "Pet"  :  "200"
 
-"GET /pets/{petId}" ..> "1" "Error"  :  "default"
+"GET_/pets/_petId_" ..> "1" "Error"  :  "default"
 
 @enduml

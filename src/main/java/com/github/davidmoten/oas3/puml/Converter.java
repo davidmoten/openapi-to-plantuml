@@ -140,7 +140,7 @@ public final class Converter {
                 String[] items = to.split(Names.NAMESPACE_DELIMITER);
                 String namespace = items[0];
                 String clsName = items[1];
-                b.append("\n\nclass " + Util.quote(clsName) + " <<" + namespace + ">>" + " {");
+                b.append("\n\nclass " + clsName.replaceAll(regexForFixBugOnNote, "_") + " <<" + namespace + ">>" + " {");
                 b.append("\n}");
                 added.add(to);
             }
@@ -167,8 +167,8 @@ public final class Converter {
                 if (to.contains(Names.NAMESPACE_DELIMITER)) {
                     to = to.split(Names.NAMESPACE_DELIMITER)[1];
                 }
-                b.append("\n\n" + quote(a.from()) + SPACE + arrow + SPACE + quote(mult) + SPACE
-                        + quote(to)
+                b.append("\n\n" + quote(a.from().replaceAll(regexForFixBugOnNote, "_")) + SPACE + arrow + SPACE + quote(mult) + SPACE
+                        + quote(to.replaceAll(regexForFixBugOnNote, "_"))
                         + (label.equals("") ? "" : SPACE + COLON + SPACE + quote(label)));
             } else {
                 Inheritance a = (Inheritance) r;
@@ -181,16 +181,16 @@ public final class Converter {
                     anonNumber++;
                     String diamond = "anon" + anonNumber;
                     b.append("\n\ndiamond " + diamond);
-                    b.append("\n\n" + quote(from) + SPACE + "-->" + quote(mult) + SPACE
+                    b.append("\n\n" + quote(from.replaceAll(regexForFixBugOnNote, "_")) + SPACE + "-->" + quote(mult) + SPACE
                             + quote(diamond) + a.propertyName().map(x -> COLON + quote(x)).orElse(""));
                     for (String otherClassName : a.to()) {
-                        b.append("\n\n" + quote(otherClassName) + SPACE + "--|>" + SPACE
+                        b.append("\n\n" + quote(otherClassName.replaceAll(regexForFixBugOnNote, "_")) + SPACE + "--|>" + SPACE
                                 + quote(diamond));
                     }
                 } else {
                     for (String otherClassName : a.to()) {
-                        b.append("\n\n" + quote(otherClassName) + SPACE + "--|>" + SPACE
-                                + quote(a.from()));
+                        b.append("\n\n" + quote(otherClassName.replaceAll(regexForFixBugOnNote, "_")) + SPACE + "--|>" + SPACE
+                                + quote(a.from().replaceAll(regexForFixBugOnNote, "_")));
                     }
                 }
             }

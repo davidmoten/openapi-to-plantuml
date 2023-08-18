@@ -55,24 +55,24 @@ class "DELETE /pets/{id} 204" as DELETE_/pets/_id__204 <<Response>> {
 
 "Pet" --> "1" "PetId"
 
-"GET /pets 200" --> "*" "Pet"
+"GET_/pets_200" --> "*" "Pet"
 
-"GET /pets" ..> "1" "GET /pets 200"  :  "200"
+"GET_/pets" ..> "1" "GET_/pets_200"  :  "200"
 
-"GET /pets" ..> "1" "Error"  :  "default"
+"GET_/pets" ..> "1" "Error"  :  "default"
 
-"POST /pets" ..> "1" "Pet"  :  "200"
+"POST_/pets" ..> "1" "Pet"  :  "200"
 
-"POST /pets" ..> "1" "Error"  :  "default"
+"POST_/pets" ..> "1" "Error"  :  "default"
 
-"POST /pets" --> "1" "NewPet"
+"POST_/pets" --> "1" "NewPet"
 
-"GET /pets/{id}" ..> "1" "Pet"  :  "200"
+"GET_/pets/_id_" ..> "1" "Pet"  :  "200"
 
-"GET /pets/{id}" ..> "1" "Error"  :  "default"
+"GET_/pets/_id_" ..> "1" "Error"  :  "default"
 
-"DELETE /pets/{id}" ..> "1" "DELETE /pets/{id} 204"  :  "204"
+"DELETE_/pets/_id_" ..> "1" "DELETE_/pets/_id__204"  :  "204"
 
-"DELETE /pets/{id}" ..> "1" "Error"  :  "default"
+"DELETE_/pets/_id_" ..> "1" "Error"  :  "default"
 
 @enduml

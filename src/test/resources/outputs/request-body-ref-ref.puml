@@ -43,10 +43,10 @@ class "GET /customer/expired 200" as GET_/customer/expired_200 <<Response>> {
 
 "repositories" --> "1" "repositoriesAlt"
 
-"GET /customer/expired 200" --> "*" "Customer"
+"GET_/customer/expired_200" --> "*" "Customer"
 
-"GET /customer/expired" ..> "1" "GET /customer/expired 200"  :  "200"
+"GET_/customer/expired" ..> "1" "GET_/customer/expired_200"  :  "200"
 
-"GET /customer/expired" --> "1" "repositories"
+"GET_/customer/expired" --> "1" "repositories"
 
 @enduml

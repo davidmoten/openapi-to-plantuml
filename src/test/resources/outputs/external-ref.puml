@@ -19,7 +19,7 @@ class "doctor" as doctor {
   {field} agreement : agreements.yml::agreement
 }
 
-class "agreement" <<agreements.yml>> {
+class agreement <<agreements.yml>> {
 }
 
 "employee" --> "1" "doctor"
