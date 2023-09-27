@@ -111,11 +111,15 @@ final class Common {
                                     associationType, names);
                         }
                     }
+                    fields.add(createFieldWithInfo(entry.getKey(), property, property.endsWith("]"),
+                            required.contains(entry.getKey()), entry.getValue()));
                 } else if (sch.get$ref() != null) {
                     String ref = sch.get$ref();
                     String otherClassName = names.refToClassName(ref).className();
                     addToOne(relationships, name, otherClassName, property,
                             required.contains(entry.getKey()), false);
+                    fields.add(createFieldWithInfo(entry.getKey(), otherClassName, otherClassName.endsWith("]"),
+                            required.contains(entry.getKey()), entry.getValue()));
                 } else {
                     Optional<String> t = getUmlTypeName(sch, names);
                     if (t.isPresent()) {
@@ -146,13 +150,15 @@ final class Common {
                                 String valueClassName = names.refToClassName(valueSchema.get$ref()).className();
                                 addToOne(relationships, keyClassName, valueClassName, "value", true, false);
                             } else {
-                                fields.add(new Field(entry.getKey(), "string -> string", type.endsWith("]"),
-                                        true));
+                                type = "string -> string";
+//                                fields.add(new Field(entry.getKey(), "string -> string", type.endsWith("]"),
+//                                        true));
                             }
-                        } else {
-                            fields.add(new Field(entry.getKey(), type, type.endsWith("]"),
-                                    required.contains(entry.getKey())));
                         }
+                        //else {
+                            fields.add(createFieldWithInfo(entry.getKey(), type, type.endsWith("]"),
+                                    required.contains(entry.getKey()), entry.getValue()));
+                        //}
                     }
                 }
             });
@@ -180,10 +186,10 @@ final class Common {
                         && !isEmpty(schema.getEnum())) {
                     isEnum = true;
                     for (Object item: schema.getEnum()) {
-                        fields.add(new Field(item.toString(), type, false, false));
+                        fields.add(createFieldWithInfo(item.toString(), type, false, false, schema));
                     }
                 } else {
-                    fields.add(new Field("value", type, type.endsWith("]"), true));
+                    fields.add(createFieldWithInfo("value", type, type.endsWith("]"), true, schema));
                 }
             }
         }
@@ -324,7 +330,7 @@ final class Common {
         } else if (schema instanceof ArraySchema) {
             ArraySchema a = (ArraySchema) schema;
             type = getUmlTypeName(a.getItems(), names) //
-                    .orElseThrow(() -> new RuntimeException("unexpected")) + "[]";
+                    .orElse("object") + "[]";
         } else if (schema instanceof BinarySchema) {
             type = "byte[]";
         } else if (schema instanceof ByteArraySchema) {
@@ -354,6 +360,25 @@ final class Common {
             throw new RuntimeException("not expected" + schema);
         }
         return Optional.ofNullable(type);
+    }
+
+    private static Field createFieldWithInfo(String name, String type, boolean isArray, boolean required,
+            Schema<?> schema) {
+        int maxLength = -1;
+        String description = null;
+        String example = null;
+        String format = null;
+        String extension = null;
+        if (schema != null) {
+            maxLength = Optional.ofNullable(schema.getMaxLength()).orElse(-1);
+            description = schema.getDescription();
+            example = schema.getExample() == null ? null : schema.getExample().toString();
+            format = schema.getFormat();
+            if (schema.getExtensions() != null) {
+                extension = schema.getExtensions().toString();
+            }
+        }
+        return new Field(name, type, isArray, required, maxLength, description, example, format, extension);
     }
 
 }

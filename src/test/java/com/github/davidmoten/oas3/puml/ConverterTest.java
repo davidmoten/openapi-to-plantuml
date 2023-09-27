@@ -42,28 +42,28 @@ public class ConverterTest {
                 + "          type: array\n" + "          items:\n"
                 + "            $ref: '#/components/schemas/Customer'\n" + "      ";
 
-        Converter.openApiToPuml(openapi);
+        Converter.openApiToPuml(openapi, true);
     }
 
     @Test
     public void testConvertExternalRef() throws IOException {
-        Converter.openApiToPuml(new File("src/test/resources/inputs/external-ref.yml"));
+        Converter.openApiToPuml(new File("src/test/resources/inputs/external-ref.yml"), true);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testConvertEmpty() {
-        Converter.openApiToPuml("");
+        Converter.openApiToPuml("", true);
     }
 
     @Test
     public void testConvertPumlToSvg() throws IOException {
-        writeSvg(OPENAPI_EXAMPLE, "target/openapi-example.svg");
+        writeSvg(OPENAPI_EXAMPLE, "target/openapi-example.svg", true);
     }
 
     @Test
     @Ignore
     public void updateDocs() throws IOException {
-        writeSvg(OPENAPI_EXAMPLE, "src/docs/openapi-example.svg");
+        writeSvg(OPENAPI_EXAMPLE, "src/docs/openapi-example.svg", true);
     }
 
     @Test
@@ -92,9 +92,9 @@ public class ConverterTest {
         return new String(Files.readAllBytes(new File(filename).toPath()), StandardCharsets.UTF_8);
     }
 
-    static void writeSvg(File openApiFile, String filename) throws IOException {
+    static void writeSvg(File openApiFile, String filename, boolean showNote) throws IOException {
         try (InputStream in = new FileInputStream(openApiFile)) {
-            String puml = Converter.openApiToPuml(in);
+            String puml = Converter.openApiToPuml(in, showNote);
             writeSvgFromPuml(puml, filename);
         }
     }
@@ -111,6 +111,6 @@ public class ConverterTest {
     }
 
     public static void main(String[] args) throws IOException {
-        writeSvg(new File(System.getProperty("user.home", "") + "/imdb.yml"), "target/imdb.svg");
+        writeSvg(new File(System.getProperty("user.home", "") + "/imdb.yml"), "target/imdb.svg", true);
     }
 }

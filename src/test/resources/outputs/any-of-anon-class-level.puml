@@ -6,17 +6,17 @@ hide empty methods
 hide empty fields
 set namespaceSeparator none
 
-class "employee.1" {
-  {field} employeeType : string {O}
-  {field} level : integer
+class "employee.1" as employee.1 {
+  {field} employeeType : string
+  {field} level : integer {R}
 }
 
-class "employee.2" {
-  {field} employeeType : string {O}
-  {field} income : decimal
+class "employee.2" as employee.2 {
+  {field} employeeType : string
+  {field} income : decimal {R}
 }
 
-class "employee" {
+class "employee" as employee {
 }
 
 "employee.1" --|> "employee"

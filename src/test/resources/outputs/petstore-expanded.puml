@@ -6,67 +6,73 @@ hide empty methods
 hide empty fields
 set namespaceSeparator none
 
-class "Pet" {
+class "Pet" as Pet {
 }
 
-class "PetId" {
-  {field} id : integer
+class "PetId" as PetId {
+  {field} id : integer {R}
+}
+note right of PetId::"id"
+	<size:8>Format int64</size>
+end note
+
+class "NewPet" as NewPet {
+  {field} name : string {R}
+  {field} tag : string
 }
 
-class "NewPet" {
-  {field} name : string
-  {field} tag : string {O}
+class "Error" as Error {
+  {field} code : integer {R}
+  {field} message : string {R}
+}
+note right of Error::"code"
+	<size:8>Format int32</size>
+end note
+
+class "GET /pets" as GET_/pets <<Path>> {
+  {field} tags : string[](0)
+  {field} limit : integer(0)
 }
 
-class "Error" {
-  {field} code : integer
-  {field} message : string
+class "GET /pets 200" as GET_/pets_200 <<Response>> {
 }
 
-class "GET /pets" <<Path>> {
-  {field} tags : string[] {O}
-  {field} limit : integer {O}
+class "POST /pets" as POST_/pets <<Path>> {
 }
 
-class "GET /pets 200" <<Response>> {
+class "GET /pets/{id}" as GET_/pets/_id_ <<Path>> {
+  {field} id : integer(0) {R}
 }
 
-class "POST /pets" <<Path>> {
+class "DELETE /pets/{id}" as DELETE_/pets/_id_ <<Path>> {
+  {field} id : integer(0) {R}
 }
 
-class "GET /pets/{id}" <<Path>> {
-  {field} id : integer
-}
-
-class "DELETE /pets/{id}" <<Path>> {
-  {field} id : integer
-}
-
-class "DELETE /pets/{id} 204" <<Response>> {
+class "DELETE /pets/{id} 204" as DELETE_/pets/_id__204 <<Response>> {
 }
 
 "Pet" --> "1" "NewPet"
 
 "Pet" --> "1" "PetId"
 
-"GET /pets 200" --> "*" "Pet"
+"GET_/pets_200" --> "*" "Pet"
 
-"GET /pets" ..> "1" "GET /pets 200"  :  "200"
+"GET_/pets" ..> "1" "GET_/pets_200"  :  "200"
 
-"GET /pets" ..> "1" "Error"  :  "default"
+"GET_/pets" ..> "1" "Error"  :  "default"
 
-"POST /pets" ..> "1" "Pet"  :  "200"
+"POST_/pets" ..> "1" "Pet"  :  "200"
 
-"POST /pets" ..> "1" "Error"  :  "default"
+"POST_/pets" ..> "1" "Error"  :  "default"
 
-"POST /pets" --> "1" "NewPet"
+"POST_/pets" --> "1" "NewPet"
 
-"GET /pets/{id}" ..> "1" "Pet"  :  "200"
+"GET_/pets/_id_" ..> "1" "Pet"  :  "200"
 
-"GET /pets/{id}" ..> "1" "Error"  :  "default"
+"GET_/pets/_id_" ..> "1" "Error"  :  "default"
 
-"DELETE /pets/{id}" ..> "1" "DELETE /pets/{id} 204"  :  "204"
+"DELETE_/pets/_id_" ..> "1" "DELETE_/pets/_id__204"  :  "204"
 
-"DELETE /pets/{id}" ..> "1" "Error"  :  "default"
+"DELETE_/pets/_id_" ..> "1" "Error"  :  "default"
 
 @enduml

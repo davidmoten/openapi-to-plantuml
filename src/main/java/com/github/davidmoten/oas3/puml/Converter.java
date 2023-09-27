@@ -39,25 +39,25 @@ public final class Converter {
         // prevent instantiation
     }
 
-    public static String openApiToPuml(InputStream in) throws IOException {
-        return openApiToPuml(IOUtils.toString(in, StandardCharsets.UTF_8));
+    public static String openApiToPuml(InputStream in, boolean showNote) throws IOException {
+        return openApiToPuml(IOUtils.toString(in, StandardCharsets.UTF_8), showNote);
     }
 
-    public static String openApiToPuml(File file) throws IOException {
+    public static String openApiToPuml(File file, boolean showNote) throws IOException {
         try (InputStream in = new BufferedInputStream(new FileInputStream(file))) {
-            return openApiToPuml(in);
+            return openApiToPuml(in, showNote);
         }
     }
 
-    public static String openApiToPuml(String openApi) {
+    public static String openApiToPuml(String openApi, boolean showNote) {
         SwaggerParseResult result = new OpenAPIParser().readContents(openApi, null, null);
         if (result.getOpenAPI() == null) {
             throw new IllegalArgumentException("Not an OpenAPI definition");
         }
-        return openApiToPuml(result.getOpenAPI());
+        return openApiToPuml(result.getOpenAPI(), showNote);
     }
 
-    private static String openApiToPuml(OpenAPI a) {
+    private static String openApiToPuml(OpenAPI a, boolean showNote) {
 
         Names names = new Names(a);
         Model model = ComponentsHelper //
@@ -73,11 +73,12 @@ public final class Converter {
                 // make sure that periods in class names aren't interpreted as namespace
                 // separators (which results in recursive boxing)
                 + "\nset namespaceSeparator none" //
-                + toPlantUml(model) //
+                + toPlantUml(model, showNote) //
                 + "\n\n@enduml";
     }
 
-    private static String toPlantUml(Model model) {
+    private static String toPlantUml(Model model, boolean showNote) {
+        final String regexForFixBugOnNote =  "\\s|\\{|\\}|\\+";
         int anonNumber = 0;
         StringBuilder b = new StringBuilder();
         for (Class cls : model.classes()) {
@@ -89,12 +90,39 @@ public final class Converter {
                 });
                 b.append("\n}");
             } else {
-                b.append("\n\nclass " + Util.quote(cls.name())
+                StringBuilder infoSb = new StringBuilder();
+                b.append("\n\nclass " + Util.quote(cls.name()) + " as " + cls.name().replaceAll(regexForFixBugOnNote, "_")
                         + toStereotype(cls.type()).map(x -> " <<" + x + ">>").orElse("") + " {");
                 cls.fields().stream().forEach(f -> {
-                    b.append("\n  {field} " + f.name() + COLON + f.type() + (f.isRequired() ? "" : " {O}"));
+                    b.append("\n  {field} " + f.name() + COLON + f.type()
+                            + ((f.maxLength() > -1) ? "(" + String.valueOf(f.maxLength()) + ")" : "")
+                            + (f.isRequired() ? " {R}" : ""));
+
+                    StringBuilder infoFieldSb = new StringBuilder();
+                    if (showNote) {
+                        if (f.description() != null) {
+                            infoFieldSb.append("\n\t<size:8>" + f.description() + "</size>");
+                        }
+                        if (f.format() != null) {
+                            infoFieldSb.append("\n\t<size:8>Format " + f.format() + "</size>");
+                        }
+                        if (f.extension() != null) {
+                            infoFieldSb.append("\n\t<size:8>" + f.extension() + "</size>");
+                        }
+                        if (f.example() != null) {
+                            infoFieldSb.append("\n\t<size:8><i>Ex: " + f.example() + "</i></size>");
+                        }
+                        if (infoFieldSb.length() > 0) {
+                            infoSb.append("\nnote right of " + cls.name().replaceAll(regexForFixBugOnNote, "_") + "::" + Util.quote(f.name()));
+                            infoSb.append(infoFieldSb);
+                            infoSb.append("\nend note");
+                        }
+                    }
                 });
                 b.append("\n}");
+                if (infoSb.length() > 0) {
+                    b.append(infoSb);
+                }
             }
         }
         // add external ref classes
@@ -112,7 +140,7 @@ public final class Converter {
                 String[] items = to.split(Names.NAMESPACE_DELIMITER);
                 String namespace = items[0];
                 String clsName = items[1];
-                b.append("\n\nclass " + Util.quote(clsName) + " <<" + namespace + ">>" + " {");
+                b.append("\n\nclass " + clsName.replaceAll(regexForFixBugOnNote, "_") + " <<" + namespace + ">>" + " {");
                 b.append("\n}");
                 added.add(to);
             }
@@ -139,8 +167,8 @@ public final class Converter {
                 if (to.contains(Names.NAMESPACE_DELIMITER)) {
                     to = to.split(Names.NAMESPACE_DELIMITER)[1];
                 }
-                b.append("\n\n" + quote(a.from()) + SPACE + arrow + SPACE + quote(mult) + SPACE
-                        + quote(to)
+                b.append("\n\n" + quote(a.from().replaceAll(regexForFixBugOnNote, "_")) + SPACE + arrow + SPACE + quote(mult) + SPACE
+                        + quote(to.replaceAll(regexForFixBugOnNote, "_"))
                         + (label.equals("") ? "" : SPACE + COLON + SPACE + quote(label)));
             } else {
                 Inheritance a = (Inheritance) r;
@@ -153,16 +181,16 @@ public final class Converter {
                     anonNumber++;
                     String diamond = "anon" + anonNumber;
                     b.append("\n\ndiamond " + diamond);
-                    b.append("\n\n" + quote(from) + SPACE + "-->" + quote(mult) + SPACE
+                    b.append("\n\n" + quote(from.replaceAll(regexForFixBugOnNote, "_")) + SPACE + "-->" + quote(mult) + SPACE
                             + quote(diamond) + a.propertyName().map(x -> COLON + quote(x)).orElse(""));
                     for (String otherClassName : a.to()) {
-                        b.append("\n\n" + quote(otherClassName) + SPACE + "--|>" + SPACE
+                        b.append("\n\n" + quote(otherClassName.replaceAll(regexForFixBugOnNote, "_")) + SPACE + "--|>" + SPACE
                                 + quote(diamond));
                     }
                 } else {
                     for (String otherClassName : a.to()) {
-                        b.append("\n\n" + quote(otherClassName) + SPACE + "--|>" + SPACE
-                                + quote(a.from()));
+                        b.append("\n\n" + quote(otherClassName.replaceAll(regexForFixBugOnNote, "_")) + SPACE + "--|>" + SPACE
+                                + quote(a.from().replaceAll(regexForFixBugOnNote, "_")));
                     }
                 }
             }

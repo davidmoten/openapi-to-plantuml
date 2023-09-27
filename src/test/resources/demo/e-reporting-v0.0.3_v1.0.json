@@ -1,0 +1,2360 @@
+{
+  "openapi" : "3.0.3",
+  "info" : {
+    "contact" : {
+      "email" : "api@contact.name",
+      "name" : "api@contact.name"
+    },
+    "description" : "### Avertissements\n- La publication des swaggers permet d’exposer de manière précise les interactions qui seront possibles à l'aide des API du PPF.\n- Il ne s’agit pas d’une version de production. Ces swaggers pourront être modifiés ultérieurement (méthodes, endpoints).\n- L’utilisation de ces swaggers sera possible dés lors qu’une application sera publiée sur PISTE, ce qui n'est pas le cas ce jour.\n---\n---\n# ppf-openapi-e-reporting-api-public\n\nL’API __ppf-openapi-e-reporting-api-public__ permet de :\n- Créer, consulter et rechercher des déclarations.\n- Télécharger une déclaration.\n- Consulter l'historique des statuts d'une déclaration.\n\n**Authentification :** via piste.\n\n**Attention :** les résultats de votre recherche dépendront de vos habilitations. Par exemple, un utilisateur simple ne peut avoir accès aux données d’immatriculation des Plateformes de Dématérialisation Partenaires (PDP) sauf pour ce qui concerne les données de l’organisation à laquelle il appartient.\n\n---\n## Déclaration\n\n- `POST /declaration` => Permet de soumettre des données de déclarations afin de créer une déclaration au format E-Reporting.\n  - Habilitations : _à définir_\n  - **Corps de requête** : `{ <Données de déclaration au format JSON> }`\n\n- `POST /declaration/recherche` => Permet de faire une recherche multicritère de déclarations. Retourne les identifiants de transmissions, les données essentielles de ces transmissions, statuts et liens vers la consultation et le téléchargement.\n  - Habilitations : _à définir_\n  - **Corps de requête** : `{ <Critères de recherche au format JSON> }`\n\n- `GET /declaration/{id}` => Permet de consulter une transmission à partir d’un identifiant de transmission. Retourne toutes les données liées à la transmission, son statut courant et le lien API de téléchargement de la transmission.\n  - Habilitations : _à définir_\n\n- `GET /declaration/{id}/telechargement/` => Permet de télécharger une transmission à partir d’un identifiant de transmission.\n  - Habilitations : _à définir_\n  - Avec en paramètre un `id`\n\n- `GET /declaration/{id}/historique-statuts:` => Restitue le statut courant de la transmission et l’historique des statuts par lesquels est passé la transmission.\n  - Habilitations : _à définir_\n  - Avec en paramètre un `id`\n\n### Cinématique\n\nExemple de cinématique :\n\n- `POST /declaration` => Création d’une nouvelle déclaration. Les données de la déclaration à créer sont passés dans le corps de la requête.\n\n- `POST /declaration/recherche` => Recherche des déclarations selon de multiples critères.\n\n- `GET /declaration/{id}` => Pour consulter le détail de l'une des déclaration recherchée précédemment, utiliser l'id de la déclaration.\n\n- `GET /declaration/{id}/telechargement/` => Téléchargement du fichier de déclaration toujours en utilisant l'un des id retournés par la recherche.\n\n- `GET /declaration/{id}/historique-statuts:` => Consultation de l'historique des statuts, toujours en fonction de l'id de la déclaration.\n\n---\n## Superviseur\n\n- `GET /healthcheck` => Permet de vérifier si l'API est ligne.\n  - Habilitations : _à définir_\n",
+    "title" : "PPF e-reporting API public",
+    "version" : "Incrément 2 - Specs Ext 2.2",
+    "x-audience" : "external-public",
+    "x-api-id" : "982a51d3-36d6-4563-bd17-271aab0ed90f"
+  },
+  "externalDocs" : {
+    "description" : "Spécifications externes du PPF v2.2",
+    "url" : "https://www.impots.gouv.fr/sites/default/files/media/1_metier/2_professionnel/EV/2_gestion/290_facturation_electronique/specification_externes_b2b/version_2-2_du_31_01_2023/spec_facturation_electronique_v2.2_31-01-2023.zip"
+  },
+  "servers" : [ {
+    "description" : "Url d’accès au micro-service e-reporting public",
+    "url" : "https://aife.economie.gouv.fr/ppf/e-reporting-public/v1"
+  } ],
+  "tags" : [ {
+    "description" : "Données des déclarations",
+    "name" : "Declaration"
+  }, {
+    "description" : "Réservé au superviseur",
+    "name" : "Superviseur"
+  } ],
+  "paths" : {
+    "/declaration" : {
+      "post" : {
+        "description" : "Permet de déposer des données de déclaration afin de créer une déclaration au format E-Reporting",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/requestBodyDeclaration"
+              }
+            }
+          },
+          "description" : "Données de déclarations.",
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/responseCreate"
+                }
+              }
+            },
+            "description" : "La déclaration est acceptée, stockée et en attente de traitement."
+          },
+          "400" : {
+            "description" : "Mauvaise requête. La requête était invalide ou ne peut aboutir."
+          },
+          "401" : {
+            "description" : "Non autorisé. La requête nécessite l'authentification de l'utilisateur."
+          },
+          "403" : {
+            "description" : "Non autorisé. Le serveur a compris la requête mais la refuse ou l'accès n'est pas autorisé."
+          },
+          "404" : {
+            "description" : "Non trouvée. Il n'y a pas de ressource à l'URI donnée."
+          },
+          "408" : {
+            "description" : "Délai de la requête dépassé."
+          },
+          "422" : {
+            "description" : "Erreur de validation des données."
+          },
+          "429" : {
+            "description" : "Le client a émis trop d'appels dans un délai donné."
+          },
+          "500" : {
+            "description" : "Erreur interne du serveur."
+          },
+          "501" : {
+            "description" : "Non implémenté."
+          },
+          "503" : {
+            "description" : "Service indisponible."
+          },
+          "default" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/erreur"
+                }
+              }
+            },
+            "description" : "Une erreur est survenue - voir le code status et le json problem pour plus d’information."
+          }
+        },
+        "security" : [ {
+          "bearer_auth" : [ "declaration.read" ]
+        } ],
+        "summary" : "Déposer des données de déclaration",
+        "tags" : [ "Declaration" ]
+      }
+    },
+    "/declaration/recherche" : {
+      "post" : {
+        "description" : "Permet de faire une recherche multicritère de déclarations. Retourne les identifiants de transmissions, les données essentielles de ces transmissions, statuts et liens vers la consultation et le téléchargement.",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/_declaration_recherche_post_request"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/responseSearch"
+                }
+              }
+            },
+            "description" : "La ou les déclarations correspondante(s) aux critères de recherche."
+          },
+          "206" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/responseSearch"
+                }
+              }
+            },
+            "description" : "Requête traitée sans erreur, mais dont le volume d’information renvoyée a été réduit."
+          },
+          "400" : {
+            "description" : "Mauvaise requête. La requête était invalide ou ne peut aboutir."
+          },
+          "401" : {
+            "description" : "Non autorisé. La requête nécessite l'authentification de l'utilisateur."
+          },
+          "403" : {
+            "description" : "Non autorisé. Le serveur a compris la requête mais la refuse ou l'accès n'est pas autorisé."
+          },
+          "404" : {
+            "description" : "Non trouvée. Il n'y a pas de ressource à l'URI donnée."
+          },
+          "408" : {
+            "description" : "Délai de la requête dépassé."
+          },
+          "422" : {
+            "description" : "Erreur de validation des données."
+          },
+          "429" : {
+            "description" : "Le client a émis trop d'appels dans un délai donné."
+          },
+          "500" : {
+            "description" : "Erreur interne du serveur."
+          },
+          "501" : {
+            "description" : "Non implémenté."
+          },
+          "503" : {
+            "description" : "Service indisponible."
+          },
+          "default" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/erreur"
+                }
+              }
+            },
+            "description" : "Une erreur est survenue - voir le code status et le json problem pour plus d’information."
+          }
+        },
+        "security" : [ {
+          "bearer_auth" : [ "declaration.read" ]
+        } ],
+        "summary" : "Rechercher des déclarations",
+        "tags" : [ "Declaration" ]
+      }
+    },
+    "/declaration/{id}" : {
+      "get" : {
+        "description" : "Permet de consulter une transmission à partir d’un identifiant de transmission. Retourne toutes les données liées à la transmission, son statut courant et le lien API de téléchargement de la transmission.",
+        "parameters" : [ {
+          "description" : "Identifiant de la transmission généré par l’émetteur",
+          "example" : "dcsc456sdcsdcs556",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "maxLength" : 50,
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/responseGet"
+                }
+              }
+            },
+            "description" : "Déclaration trouvée."
+          },
+          "400" : {
+            "description" : "Mauvaise requête. La requête était invalide ou ne peut aboutir."
+          },
+          "401" : {
+            "description" : "Non autorisé. La requête nécessite l'authentification de l'utilisateur."
+          },
+          "403" : {
+            "description" : "Non autorisé. Le serveur a compris la requête mais la refuse ou l'accès n'est pas autorisé."
+          },
+          "404" : {
+            "description" : "Non trouvée. Il n'y a pas de ressource à l'URI donnée."
+          },
+          "408" : {
+            "description" : "Délai de la requête dépassé."
+          },
+          "422" : {
+            "description" : "Erreur de validation des données."
+          },
+          "429" : {
+            "description" : "Le client a émis trop d'appels dans un délai donné."
+          },
+          "500" : {
+            "description" : "Erreur interne du serveur."
+          },
+          "501" : {
+            "description" : "Non implémenté."
+          },
+          "503" : {
+            "description" : "Service indisponible."
+          },
+          "default" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/erreur"
+                }
+              }
+            },
+            "description" : "Une erreur est survenue - voir le code status et le json problem pour plus d’information."
+          }
+        },
+        "security" : [ {
+          "bearer_auth" : [ "declaration.read" ]
+        } ],
+        "summary" : "Consulter une déclaration",
+        "tags" : [ "Declaration" ]
+      }
+    },
+    "/declaration/{id}/telechargement" : {
+      "get" : {
+        "description" : "Permet de télécharger une transmission à partir d’un identifiant de transmission.",
+        "parameters" : [ {
+          "description" : "Identifiant de la transmission généré par l’émetteur",
+          "example" : "dcsc456sdcsdcs556",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "maxLength" : 50,
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/responseDownload"
+                }
+              }
+            },
+            "description" : "Déclaration trouvée."
+          },
+          "400" : {
+            "description" : "Mauvaise requête. La requête était invalide ou ne peut aboutir."
+          },
+          "401" : {
+            "description" : "Non autorisé. La requête nécessite l'authentification de l'utilisateur."
+          },
+          "403" : {
+            "description" : "Non autorisé. Le serveur a compris la requête mais la refuse ou l'accès n'est pas autorisé."
+          },
+          "404" : {
+            "description" : "Non trouvée. Il n'y a pas de ressource à l'URI donnée."
+          },
+          "408" : {
+            "description" : "Délai de la requête dépassé."
+          },
+          "422" : {
+            "description" : "Erreur de validation des données."
+          },
+          "429" : {
+            "description" : "Le client a émis trop d'appels dans un délai donné."
+          },
+          "500" : {
+            "description" : "Erreur interne du serveur."
+          },
+          "501" : {
+            "description" : "Non implémenté."
+          },
+          "503" : {
+            "description" : "Service indisponible."
+          },
+          "default" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/erreur"
+                }
+              }
+            },
+            "description" : "Une erreur est survenue - voir le code status et le json problem pour plus d’information."
+          }
+        },
+        "security" : [ {
+          "bearer_auth" : [ "declaration.read" ]
+        } ],
+        "summary" : "Télécharger une déclaration",
+        "tags" : [ "Declaration" ]
+      }
+    },
+    "/declaration/{id}/historique-statuts" : {
+      "get" : {
+        "description" : "Restitue le statut courant de la transmission et l’historique des statuts par lesquels est passé la transmission.",
+        "parameters" : [ {
+          "description" : "Identifiant de la transmission généré par l’émetteur",
+          "example" : "dcsc456sdcsdcs556",
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "maxLength" : 50,
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/responseStatut"
+                }
+              }
+            },
+            "description" : "Déclaration et statuts trouvées."
+          },
+          "400" : {
+            "description" : "Mauvaise requête. La requête était invalide ou ne peut aboutir."
+          },
+          "401" : {
+            "description" : "Non autorisé. La requête nécessite l'authentification de l'utilisateur."
+          },
+          "403" : {
+            "description" : "Non autorisé. Le serveur a compris la requête mais la refuse ou l'accès n'est pas autorisé."
+          },
+          "404" : {
+            "description" : "Non trouvée. Il n'y a pas de ressource à l'URI donnée."
+          },
+          "408" : {
+            "description" : "Délai de la requête dépassé."
+          },
+          "422" : {
+            "description" : "Erreur de validation des données."
+          },
+          "429" : {
+            "description" : "Le client a émis trop d'appels dans un délai donné."
+          },
+          "500" : {
+            "description" : "Erreur interne du serveur."
+          },
+          "501" : {
+            "description" : "Non implémenté."
+          },
+          "503" : {
+            "description" : "Service indisponible."
+          },
+          "default" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/erreur"
+                }
+              }
+            },
+            "description" : "Une erreur est survenue - voir le code status et le json problem pour plus d’information."
+          }
+        },
+        "security" : [ {
+          "bearer_auth" : [ "declaration.read" ]
+        } ],
+        "summary" : "Obtenir le(s) statut(s) d’une déclaration",
+        "tags" : [ "Declaration" ]
+      }
+    },
+    "/healthcheck" : {
+      "get" : {
+        "description" : "Vérifier si la connexion API est opérationnelle.",
+        "operationId" : "getHealth",
+        "responses" : {
+          "200" : {
+            "description" : "La connexion vers l’API est fonctionnelle."
+          },
+          "500" : {
+            "description" : "Erreur interne du serveur."
+          },
+          "503" : {
+            "description" : "Service indisponible."
+          }
+        },
+        "security" : [ {
+          "bearer_auth" : [ "health.read" ]
+        } ],
+        "summary" : "Vérifier si la connexion API est opérationnelle.",
+        "tags" : [ "Superviseur" ]
+      }
+    }
+  },
+  "components" : {
+    "parameters" : {
+      "id-transmission" : {
+        "description" : "Identifiant de la transmission généré par l’émetteur",
+        "example" : "dcsc456sdcsdcs556",
+        "in" : "path",
+        "name" : "id",
+        "required" : true,
+        "schema" : {
+          "maxLength" : 50,
+          "type" : "string"
+        }
+      }
+    },
+    "responses" : {
+      "bad_request" : {
+        "description" : "Mauvaise requête. La requête était invalide ou ne peut aboutir."
+      },
+      "unauthorized" : {
+        "description" : "Non autorisé. La requête nécessite l'authentification de l'utilisateur."
+      },
+      "forbidden" : {
+        "description" : "Non autorisé. Le serveur a compris la requête mais la refuse ou l'accès n'est pas autorisé."
+      },
+      "not_found" : {
+        "description" : "Non trouvée. Il n'y a pas de ressource à l'URI donnée."
+      },
+      "request_timeout" : {
+        "description" : "Délai de la requête dépassé."
+      },
+      "unprocessable_entity" : {
+        "description" : "Erreur de validation des données."
+      },
+      "too_many_requests" : {
+        "description" : "Le client a émis trop d'appels dans un délai donné."
+      },
+      "internal_server_error" : {
+        "description" : "Erreur interne du serveur."
+      },
+      "not_implemented" : {
+        "description" : "Non implémenté."
+      },
+      "service_unavailable" : {
+        "description" : "Service indisponible."
+      }
+    },
+    "schemas" : {
+      "requestBodyDeclaration" : {
+        "properties" : {
+          "documentTransmission" : {
+            "$ref" : "#/components/schemas/documentTransmission"
+          },
+          "transmissionPaiements" : {
+            "$ref" : "#/components/schemas/transmissionPaiements"
+          },
+          "transmissionTransactions" : {
+            "$ref" : "#/components/schemas/transmissionTransactions"
+          }
+        },
+        "required" : [ "documentTransmission" ],
+        "title" : "declarationRequestBody",
+        "type" : "object"
+      },
+      "responseCreate" : {
+        "properties" : {
+          "idTransmission" : {
+            "$ref" : "#/components/schemas/idTransmission"
+          }
+        },
+        "type" : "object"
+      },
+      "erreur" : {
+        "properties" : {
+          "type" : {
+            "default" : "about:blank",
+            "example" : "/chemin/url-de-reference",
+            "format" : "uri-reference",
+            "type" : "string"
+          },
+          "titre" : {
+            "example" : "Le titre de l’erreur",
+            "type" : "string"
+          },
+          "statut" : {
+            "description" : "The HTTP status code generated by the origin server for this occurrence of the problem.\n",
+            "exclusiveMaximum" : true,
+            "format" : "int32",
+            "maximum" : 600,
+            "minimum" : 100,
+            "type" : "integer"
+          },
+          "detail" : {
+            "example" : "La description de l’erreur",
+            "type" : "string"
+          },
+          "instance" : {
+            "example" : "/chemin/url-de-reference#instance-du-contexte",
+            "format" : "uri-reference",
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "where" : {
+        "description" : "Critères pour la recherche multi-critères",
+        "example" : "A:100 AND B:200 OR C:150 (syntaxe à définir)",
+        "type" : "string"
+      },
+      "sort" : {
+        "description" : "Permet de trier la liste d’éléments retournés",
+        "example" : "[+A,-B]",
+        "items" : {
+          "example" : "+A",
+          "type" : "string"
+        },
+        "type" : "array"
+      },
+      "fields" : {
+        "description" : "Permet de filtrer les champs voulus dans la réponse comme décrit dans\n[Rule #157](https://opensource.zalando.com/restful-api-guidelines/#157)\n",
+        "example" : "[numero, statut]",
+        "items" : {
+          "example" : "numero",
+          "type" : "string"
+        },
+        "type" : "array"
+      },
+      "limit" : {
+        "description" : "Limite le nombre de résultats",
+        "example" : 50,
+        "format" : "int32",
+        "type" : "integer"
+      },
+      "offset" : {
+        "description" : "Nombre de résultat à ignorer",
+        "example" : 20,
+        "format" : "int32",
+        "type" : "integer"
+      },
+      "requestBodySearchDeclaration" : {
+        "properties" : {
+          "documentTransmission" : {
+            "$ref" : "#/components/schemas/documentTransmissionSearch"
+          },
+          "transmissionPaiements" : {
+            "$ref" : "#/components/schemas/transmissionPaiementsSearch"
+          },
+          "transmissionTransactions" : {
+            "$ref" : "#/components/schemas/transmissionTransactionsSearch"
+          }
+        },
+        "title" : "searchDeclarationRequestBody",
+        "type" : "object"
+      },
+      "responseSearch" : {
+        "description" : "Résultats de la recherche",
+        "items" : {
+          "$ref" : "#/components/schemas/responseSearch_inner"
+        },
+        "minItems" : 0,
+        "title" : "resultatsRecherche",
+        "type" : "array"
+      },
+      "responseGet" : {
+        "properties" : {
+          "donneeDeTransmisssion" : {
+            "$ref" : "#/components/schemas/declaration"
+          },
+          "dateStatut" : {
+            "$ref" : "#/components/schemas/dateStatut"
+          },
+          "codeStatutTrans" : {
+            "$ref" : "#/components/schemas/codeStatutTrans"
+          },
+          "libelleStatutTrans" : {
+            "$ref" : "#/components/schemas/libelleStatutTrans"
+          },
+          "urlTelechargementTrans" : {
+            "$ref" : "#/components/schemas/urlTelechargementTrans"
+          }
+        },
+        "type" : "object"
+      },
+      "responseDownload" : {
+        "properties" : {
+          "idTransmission" : {
+            "$ref" : "#/components/schemas/idTransmission"
+          },
+          "fichier" : {
+            "$ref" : "#/components/schemas/fichier"
+          }
+        },
+        "type" : "object"
+      },
+      "responseStatut" : {
+        "properties" : {
+          "idTransmission" : {
+            "$ref" : "#/components/schemas/idTransmission"
+          },
+          "listeStatuts" : {
+            "items" : {
+              "$ref" : "#/components/schemas/responseStatut_listeStatuts_inner"
+            },
+            "minItems" : 0,
+            "type" : "array"
+          }
+        },
+        "type" : "object"
+      },
+      "documentTransmission" : {
+        "properties" : {
+          "idTransmission" : {
+            "$ref" : "#/components/schemas/idTransmission"
+          },
+          "nomDocument" : {
+            "$ref" : "#/components/schemas/nomDocument"
+          },
+          "dateTransmission" : {
+            "$ref" : "#/components/schemas/dateTransmission"
+          },
+          "codeTypeTransmission" : {
+            "$ref" : "#/components/schemas/codeTypeTransmission"
+          },
+          "references" : {
+            "$ref" : "#/components/schemas/references"
+          },
+          "emetteurDocument" : {
+            "$ref" : "#/components/schemas/documentTransmissionEmetteur"
+          },
+          "declarantDocument" : {
+            "$ref" : "#/components/schemas/documentTransmissionDeclarant"
+          }
+        },
+        "required" : [ "codeTypeTransmission", "dateTransmission", "declarantDocument", "emetteurDocument", "idTransmission" ],
+        "title" : "documentTransmission",
+        "type" : "object"
+      },
+      "transmissionPaiements" : {
+        "properties" : {
+          "periodeTransmission" : {
+            "$ref" : "#/components/schemas/transmissionPaiementsPeriodeTransmission"
+          },
+          "facture" : {
+            "items" : {
+              "$ref" : "#/components/schemas/transmissionPaiementsFacture"
+            },
+            "minItems" : 0,
+            "type" : "array"
+          },
+          "transactions" : {
+            "items" : {
+              "$ref" : "#/components/schemas/transmissionPaiementsTransaction"
+            },
+            "minItems" : 0,
+            "type" : "array"
+          }
+        },
+        "required" : [ "periodeTransmission" ],
+        "title" : "transmissionPaiements",
+        "type" : "object"
+      },
+      "transmissionTransactions" : {
+        "properties" : {
+          "periodeTransmission" : {
+            "$ref" : "#/components/schemas/transmissionTransactionPeriodeTransmission"
+          },
+          "facture" : {
+            "items" : {
+              "$ref" : "#/components/schemas/transmissionTransactionFacture"
+            },
+            "minItems" : 0,
+            "type" : "array"
+          },
+          "transactions" : {
+            "items" : {
+              "$ref" : "#/components/schemas/transmissionTransactionTransactions"
+            },
+            "minItems" : 0,
+            "type" : "array"
+          }
+        },
+        "required" : [ "periodeTransmission" ],
+        "title" : "transmissionTransaction",
+        "type" : "object"
+      },
+      "idTransmission" : {
+        "description" : "Identifiant de la transmission générée par l’émetteur",
+        "example" : "06062023-1-rep",
+        "maxLength" : 50,
+        "type" : "string"
+      },
+      "documentTransmissionSearch" : {
+        "properties" : {
+          "idTransmission" : {
+            "$ref" : "#/components/schemas/idTransmission"
+          },
+          "dateTransmission" : {
+            "$ref" : "#/components/schemas/dateTransmission"
+          },
+          "emetteurDocument" : {
+            "$ref" : "#/components/schemas/documentTransmissionSearch_emetteurDocument"
+          },
+          "declarantDocument" : {
+            "$ref" : "#/components/schemas/documentTransmissionSearch_declarantDocument"
+          }
+        },
+        "title" : "documentTransmissionSearch",
+        "type" : "object"
+      },
+      "transmissionPaiementsSearch" : {
+        "properties" : {
+          "periodeTransmission" : {
+            "$ref" : "#/components/schemas/transmissionPaiementsSearch_periodeTransmission"
+          },
+          "facture" : {
+            "$ref" : "#/components/schemas/transmissionPaiementsSearch_facture"
+          },
+          "transactions" : {
+            "$ref" : "#/components/schemas/transmissionPaiementsSearch_transactions"
+          }
+        },
+        "title" : "transmissionPaiementsSearch",
+        "type" : "object"
+      },
+      "transmissionTransactionsSearch" : {
+        "properties" : {
+          "periodeTransmission" : {
+            "$ref" : "#/components/schemas/transmissionTransactionsSearch_periodeTransmission"
+          },
+          "facture" : {
+            "$ref" : "#/components/schemas/transmissionTransactionsSearch_facture"
+          },
+          "transactions" : {
+            "$ref" : "#/components/schemas/transmissionTransactionsSearch_transactions"
+          }
+        },
+        "title" : "transmissionTransactionSearch",
+        "type" : "object"
+      },
+      "dateTransmission" : {
+        "description" : "Date et heure de création de la transmission",
+        "example" : "2023-06-06T12:35:10Z",
+        "format" : "date-time",
+        "type" : "string"
+      },
+      "codeTypeTransmission" : {
+        "description" : "Correspond au type de la transmission.",
+        "enum" : [ "IN", "CO", "MO", "RE" ],
+        "example" : "IN",
+        "type" : "string"
+      },
+      "references" : {
+        "items" : {
+          "$ref" : "#/components/schemas/documentTransmissionReferences"
+        },
+        "minItems" : 0,
+        "type" : "array"
+      },
+      "refTransmissionPrec" : {
+        "description" : "Identifiant de la transmission précédente à rectifier",
+        "example" : "15002912",
+        "maxLength" : 50,
+        "pattern" : "^\\d+$",
+        "type" : "string"
+      },
+      "typeTransmissionPrec" : {
+        "description" : "Correspond au type de la transmission précédente à rectifier.",
+        "enum" : [ "0001", "0002", "0003" ],
+        "example" : "0003",
+        "type" : "string"
+      },
+      "idEmetteur" : {
+        "description" : "Identifiant de l’émetteur du document de transmission",
+        "example" : "100000000",
+        "pattern" : "^\\d+$",
+        "type" : "string"
+      },
+      "raisonSociale" : {
+        "description" : "Raison sociale de l’émetteur du document de transmission",
+        "example" : "FOURNISSEUR",
+        "maxLength" : 99,
+        "type" : "string"
+      },
+      "idEmetteurDeclarant" : {
+        "description" : "Identifiant du déclarant",
+        "example" : "21468",
+        "type" : "string"
+      },
+      "raisonSocialeDeclarant" : {
+        "description" : "Raison sociale du déclarant du document de transmission",
+        "example" : "Boulangerie Pascale",
+        "maxLength" : 99,
+        "type" : "string"
+      },
+      "dateDebPeriode" : {
+        "description" : "Date de début de la période de transmission",
+        "example" : "2023-01-01",
+        "format" : "date",
+        "type" : "string"
+      },
+      "dateFinPeriode" : {
+        "description" : "Date de fin de la période de transmission",
+        "example" : "2023-01-01",
+        "format" : "date",
+        "type" : "string"
+      },
+      "dateDebutPaiement" : {
+        "description" : "Date de début de la période de transmission",
+        "example" : "2023-01-01",
+        "format" : "date",
+        "type" : "string"
+      },
+      "dateFinPaiement" : {
+        "description" : "Date de fin de la période de transmission",
+        "example" : "2023-01-01",
+        "format" : "date",
+        "type" : "string"
+      },
+      "libelleStatutTrans" : {
+        "description" : "Indique le libellé du statut de la transmission",
+        "enum" : [ "Créée", "Transmise", "Reçue" ],
+        "example" : "Transmise",
+        "type" : "string"
+      },
+      "urlConsultationTrans" : {
+        "description" : "Lien API pour la consultation de la transmission",
+        "example" : "http://...",
+        "type" : "string"
+      },
+      "urlTelechargementTrans" : {
+        "description" : "Lien API pour le téléchargement de la transmission",
+        "example" : "http://...",
+        "type" : "string"
+      },
+      "nombreDePage" : {
+        "description" : "Permet d’indiquer le nombre de page total",
+        "example" : 5,
+        "type" : "number"
+      },
+      "page" : {
+        "description" : "Permet de restituer le numéro de la page de résultats",
+        "example" : 1,
+        "type" : "number"
+      },
+      "declaration" : {
+        "properties" : {
+          "documentTransmission" : {
+            "$ref" : "#/components/schemas/documentTransmission"
+          },
+          "transmissionPaiements" : {
+            "$ref" : "#/components/schemas/transmissionPaiements"
+          },
+          "transmissionTransactions" : {
+            "$ref" : "#/components/schemas/transmissionTransactions"
+          }
+        },
+        "required" : [ "documentTransmission" ],
+        "title" : "declaration",
+        "type" : "object"
+      },
+      "dateStatut" : {
+        "description" : "Date et heure de génération du statut",
+        "example" : "2023-06-06T12:35:10Z",
+        "format" : "date-time",
+        "type" : "string"
+      },
+      "codeStatutTrans" : {
+        "description" : "Code statut",
+        "enum" : [ "CR", "TR", "RE" ],
+        "example" : "TR",
+        "type" : "string"
+      },
+      "fichier" : {
+        "description" : "Fichier XML de la transmission encodé en base 64",
+        "example" : "PD94bWwgdmVyc2lvbj0iMS4wIj4gPC94bWw+",
+        "type" : "string"
+      },
+      "libelleMotifRejet" : {
+        "description" : "En cas de rejet, libellé de rejet",
+        "example" : "Sans objet",
+        "type" : "string"
+      },
+      "nomDocument" : {
+        "description" : "Nom du flux généré par l’émetteur.",
+        "example" : "Déclaration 6 juin 2023",
+        "maxLength" : 150,
+        "type" : "string"
+      },
+      "typeIdEmetteur" : {
+        "description" : "Type d’identifiant de l’émetteur.",
+        "enum" : [ "0009", "0300", "0301", "0302", "0303", "0304", "0305" ],
+        "example" : "0009",
+        "maxLength" : 4,
+        "type" : "string"
+      },
+      "codeRole" : {
+        "description" : "Correspond au rôle de l’émetteur du document de transmission.",
+        "enum" : [ "BY", "AB", "DL", "SE", "SU", "AG", "WK" ],
+        "example" : "BY",
+        "type" : "string"
+      },
+      "emailEmetteur" : {
+        "description" : "Adresse de courriel de l’émetteur du document de transmission",
+        "example" : "fournisseur@fournisseur.fr",
+        "format" : "email",
+        "maxLength" : 100,
+        "type" : "string"
+      },
+      "typeIdEmetteurDeclarant" : {
+        "description" : "Type d’identifiant (qualifiant)",
+        "enum" : [ "0009", "0300", "0301", "0302", "0303", "0304", "0305" ],
+        "example" : "0009",
+        "maxLength" : 4,
+        "type" : "string"
+      },
+      "codeRoleDeclarant" : {
+        "description" : "Correspond au rôle du déclarant du document de transmission.",
+        "enum" : [ "BY", "AB", "DL", "SE", "SU", "AG", "WK" ],
+        "example" : "BY",
+        "type" : "string"
+      },
+      "emailDec" : {
+        "description" : "Adresse de courriel du déclarant du document de transmission",
+        "example" : "fournisseur@fournisseur.fr",
+        "format" : "email",
+        "maxLength" : 100,
+        "type" : "string"
+      },
+      "numeroFacturePaiement" : {
+        "description" : "Numéro de facture. Peut contenir des chiffres et des lettres.",
+        "example" : "UC1_2023001_F",
+        "maxLength" : 20,
+        "type" : "string"
+      },
+      "dateEmissionFactPaiement" : {
+        "description" : "Date à laquelle la facture a été émise",
+        "example" : "2023-01-01",
+        "format" : "date",
+        "type" : "string"
+      },
+      "datePaiement" : {
+        "description" : "Date à laquelle la facture a été payée",
+        "example" : "2023-01-01",
+        "format" : "date",
+        "type" : "string"
+      },
+      "tauxPaiement" : {
+        "description" : "Taux d’imposition, exprimé sous forme de pour, applicable au type de TVA",
+        "example" : 20.0,
+        "format" : "double",
+        "type" : "number"
+      },
+      "codeDevisePaiement" : {
+        "description" : "Devise dans laquelle le montant du paiement est exprimé",
+        "example" : "EUR",
+        "maxLength" : 3,
+        "type" : "string"
+      },
+      "montantEncaissePaiement" : {
+        "description" : "Montant encaissé pour le taux d’imposition correspondant",
+        "example" : 180.004321,
+        "format" : "double",
+        "multipleOf" : 0.0000010,
+        "type" : "number"
+      },
+      "datePaiementTransaction" : {
+        "description" : "Date du paiement de la transaction",
+        "example" : "2023-01-01",
+        "format" : "date",
+        "type" : "string"
+      },
+      "tauxRepartitionTransactionPai" : {
+        "description" : "Taux d’imposition, exprimé sous forme de pour, applicable au type de TVA",
+        "example" : 20.0,
+        "format" : "double",
+        "type" : "number"
+      },
+      "codeDeviseTransactionPai" : {
+        "description" : "Devise dans laquelle le montant du paiement est exprimé",
+        "example" : "EUR",
+        "maxLength" : 3,
+        "type" : "string"
+      },
+      "montantEncaisseTransactionPai" : {
+        "description" : "Montant encaissé pour le taux d’imposition correspondant",
+        "example" : 180.004321,
+        "format" : "double",
+        "multipleOf" : 0.0000010,
+        "type" : "number"
+      },
+      "numeroFacture" : {
+        "description" : "Numéro de facture. Peut contenir des chiffres et des lettres.",
+        "example" : "UC1_2023001_F",
+        "maxLength" : 20,
+        "type" : "string"
+      },
+      "dateEmissionFact" : {
+        "description" : "Date à laquelle la facture a été émise",
+        "example" : "2023-01-01",
+        "format" : "date",
+        "type" : "string"
+      },
+      "codeTypeFacture" : {
+        "description" : "Code spécifiant le type fonctionnel de la facture",
+        "enum" : [ "261", "262", "380", "381", "384", "386", "389", "393", "396" ],
+        "example" : "380",
+        "maxLength" : 3,
+        "type" : "string"
+      },
+      "codeDevise" : {
+        "description" : "Devise dans laquelle tous les montants de la facture sont exprimés, à l’exception du montant total de la TVA dans la devise de comptabilisation",
+        "example" : "EUR",
+        "maxLength" : 3,
+        "type" : "string"
+      },
+      "codeDeviseTva" : {
+        "description" : "Devise utilisée pour la comptabilisation et la déclaration de la TVA, acceptée ou exigée dans le pays du Vendeur.",
+        "example" : "EUR",
+        "maxLength" : 3,
+        "type" : "string"
+      },
+      "optionPaiementTva" : {
+        "description" : "Code spécifiant la date à laquelle la TVA devient imputable pour le vendeur et pour l’acheter (https://service.unece.org/trade/untdid/d96a/uncl/uncl2005.htm)",
+        "example" : "77",
+        "maxLength" : 3,
+        "type" : "string"
+      },
+      "conditionPaiement" : {
+        "description" : "Description textuelle des conditions de paiement applicables au montant à payer (y compris la description des pénalités éventuelles)",
+        "example" : "Pas de conditions particulières de paiement",
+        "maxLength" : 1024,
+        "type" : "string"
+      },
+      "codeSujetNote" : {
+        "description" : "Sujet de la note en texte suivant",
+        "enum" : [ "AIV", "INV", "PMT", "AAB", "PMD", "REG", "AAC", "AAI", "SUR", "ABL", "TXD", "CUS" ],
+        "example" : "AIV",
+        "type" : "string"
+      },
+      "noteFacture" : {
+        "description" : "Commentaire fournissant des informations non structurées concernant la facture dans son ensemble.",
+        "example" : "Commentaire",
+        "maxLength" : 1024,
+        "type" : "string"
+      },
+      "typeProcessus" : {
+        "description" : "Identifie le contexte de processus métier dans lequel se déroule l’opération. Permet à l’acheteur de traiter la facture de manière appropriée*",
+        "enum" : [ "B1", "S1", "M1", "B2", "S2", "M2", "S3", "B4", "S4", "M4", "S5", "S6", "B7", "S7" ],
+        "example" : "B1",
+        "type" : "string"
+      },
+      "typeProfil" : {
+        "description" : "Identifiant de la spécification contenant la totalité des règles concernant le contenu sémantique, les cardinalités et les règles opérationnelles auxquelles se conforment les données contenues dans l’instance de document",
+        "example" : "urn.cpro.gouv.fr:1p0:ereporting",
+        "maxLength" : 255,
+        "type" : "string"
+      },
+      "referenceFactureAnterieure" : {
+        "description" : "Identification d’une facture précédemment envoyée par le Vendeur.",
+        "example" : "fac-04042023-1",
+        "maxLength" : 20,
+        "type" : "string"
+      },
+      "dateEmissionFactureAnterieure" : {
+        "description" : "Date à laquelle la facture antérieure a été émise",
+        "example" : "2023-01-01",
+        "format" : "date",
+        "type" : "string"
+      },
+      "identifiantComplementaireVendeur" : {
+        "description" : "Identifiant du vendeur",
+        "example" : "10000000900017",
+        "maxLength" : 14,
+        "pattern" : "^\\d+$",
+        "type" : "string"
+      },
+      "identifiantComplementaireSchemaVendeur" : {
+        "description" : "Identifiant du Schéma",
+        "enum" : [ "0009", "0300", "0301", "0302", "0303", "0304", "0305" ],
+        "example" : "0300",
+        "maxLength" : 5,
+        "type" : "string"
+      },
+      "numeroSirenVendeur" : {
+        "description" : "Numéro de SIREN",
+        "example" : "100000009",
+        "maxLength" : 9,
+        "pattern" : "^\\d+$",
+        "type" : "string"
+      },
+      "identifiantTvaVendeur" : {
+        "description" : "Identifiant à la TVA du vendeur",
+        "example" : "FR88100000009",
+        "maxLength" : 14,
+        "type" : "string"
+      },
+      "codePaysVendeur" : {
+        "description" : "Code pays vendeur",
+        "example" : "FR",
+        "maxLength" : 2,
+        "type" : "string"
+      },
+      "numeroSirenAcheteur" : {
+        "description" : "Numéro de SIREN",
+        "example" : "100000124",
+        "maxLength" : 9,
+        "type" : "string"
+      },
+      "identifiantSchemaIdentifiantAcheteur" : {
+        "description" : "Identifiant du Schéma de l’identifiant d’enregistrement légal de l’acheteur",
+        "enum" : [ "0009", "0300", "0301", "0302", "0303", "0304", "0305" ],
+        "example" : "0300",
+        "maxLength" : 5,
+        "type" : "string"
+      },
+      "identifiantTvaAcheteur" : {
+        "description" : "Identifiant à la TVA de l’acheteur",
+        "example" : "FR88100000009",
+        "maxLength" : 15,
+        "type" : "string"
+      },
+      "codePaysAcheteur" : {
+        "description" : "Code d’identification du pays",
+        "example" : "FR",
+        "maxLength" : 2,
+        "type" : "string"
+      },
+      "identifiantTvaRepresentantVendeur" : {
+        "description" : "Identifiant à la TVA de l’acheteur",
+        "example" : "FR88100000009",
+        "maxLength" : 13,
+        "type" : "string"
+      },
+      "dateLivraisonPrestation" : {
+        "description" : "Date à laquelle la livraison est effectuée",
+        "example" : "2023-01-01",
+        "format" : "date",
+        "type" : "string"
+      },
+      "dateDebutFacturation" : {
+        "description" : "Date à laquelle commence la période de facturation.",
+        "example" : "2023-01-01",
+        "format" : "date",
+        "type" : "string"
+      },
+      "dateFinFacturation" : {
+        "description" : "Date à laquelle se termine la période de facturation.",
+        "example" : "2023-01-01",
+        "format" : "date",
+        "type" : "string"
+      },
+      "codePaysLivraisonPrestation" : {
+        "description" : "Code d’identification du pays",
+        "example" : "FR",
+        "maxLength" : 2,
+        "type" : "string"
+      },
+      "indicateurCharge" : {
+        "description" : "L’indicateur de charge est un booléen (false = cas d’une remise, true = cas d’une charge ou de frais)",
+        "example" : false,
+        "type" : "boolean"
+      },
+      "montantRemiseDocument" : {
+        "description" : "Montant d’une remise de pied, hors TVA",
+        "example" : 15685.35,
+        "format" : "double",
+        "multipleOf" : 0.01,
+        "type" : "number"
+      },
+      "codeTypeTvaRemiseDocument" : {
+        "description" : "Identification codée du type de TVA applicable à la remise au niveau du document",
+        "enum" : [ "S", "Z", "E", "AE", "K", "G", "O", "L", "M" ],
+        "example" : "S",
+        "maxLength" : 2,
+        "type" : "string"
+      },
+      "tauxTvaRemiseDocument" : {
+        "description" : "Taux de TVA (sous forme de pourcentage) applicable à la remise au niveau du document",
+        "example" : 20.0,
+        "format" : "double",
+        "type" : "number"
+      },
+      "montantChargeDocument" : {
+        "description" : "Montant de charges et frais, hors TVA",
+        "example" : 0.0,
+        "format" : "double",
+        "multipleOf" : 0.01,
+        "type" : "number"
+      },
+      "codeTypeTvaChargeDocument" : {
+        "description" : "Identification codée du type de TVA applicable aux charges ou frais au niveau du document",
+        "enum" : [ "S", "Z", "E", "AE", "K", "G", "O", "L", "M" ],
+        "example" : "S",
+        "maxLength" : 2,
+        "type" : "string"
+      },
+      "tauxTvaChargeDocument" : {
+        "description" : "Taux de TVA (sous forme de pourcentage) applicable aux charges ou aux frais au niveau du document",
+        "example" : 20.0,
+        "format" : "double",
+        "type" : "number"
+      },
+      "montantTotalFactureHorsTva" : {
+        "description" : "Montant total de la facture sans la TVA",
+        "example" : 0.0,
+        "format" : "double",
+        "multipleOf" : 0.0000010,
+        "type" : "number"
+      },
+      "montantTotalTvaFacture" : {
+        "description" : "Montant total de la facture sans la TVA",
+        "example" : 0.0,
+        "format" : "double",
+        "multipleOf" : 0.01,
+        "type" : "number"
+      },
+      "montantTotalTvaDeviseFacture" : {
+        "description" : "Montant total de la TVA de la facture exprimé dans la devise de comptabilisation acceptée ou exigée dans le pays du Vendeur",
+        "example" : 0.0,
+        "format" : "double",
+        "multipleOf" : 0.01,
+        "type" : "number"
+      },
+      "baseImpositionTva" : {
+        "description" : "Base d’imposition du type de TVA",
+        "example" : 180.0,
+        "format" : "double",
+        "multipleOf" : 0.01,
+        "type" : "number"
+      },
+      "montantTypeTva" : {
+        "description" : "Montant de la TVA pour chaque type de TVA",
+        "example" : 36.0,
+        "format" : "double",
+        "multipleOf" : 0.01,
+        "type" : "number"
+      },
+      "codeTypeTva" : {
+        "description" : "Code de type de TVA",
+        "enum" : [ "S", "Z", "E", "AE", "K", "G", "O", "L", "M" ],
+        "example" : "S",
+        "maxLength" : 2,
+        "type" : "string"
+      },
+      "tauxTypeTva" : {
+        "description" : "Taux de type de TVA",
+        "example" : 20.0,
+        "format" : "double",
+        "type" : "number"
+      },
+      "motifExonerationTva" : {
+        "description" : "Motif d’exonération de la TVA",
+        "example" : "Sans",
+        "maxLength" : 1024,
+        "type" : "string"
+      },
+      "codeMotifExonerationTva" : {
+        "description" : "Code de motif d’exonération de la TVA",
+        "example" : "Aucun",
+        "maxLength" : 30,
+        "type" : "string"
+      },
+      "identifiantLigne" : {
+        "description" : "Identifiant de ligne de facture",
+        "example" : 1,
+        "format" : "int64",
+        "maximum" : 999999,
+        "minimum" : 0,
+        "type" : "integer"
+      },
+      "noteLigne" : {
+        "description" : "Note de ligne de facture",
+        "example" : "Note ligne 1.1",
+        "maxLength" : 255,
+        "type" : "string"
+      },
+      "quantiteFactureLigne" : {
+        "description" : "Quantité facturée",
+        "example" : 5.0,
+        "format" : "double",
+        "multipleOf" : 0.00010,
+        "type" : "number"
+      },
+      "codeQuantiteFactureLigne" : {
+        "description" : "Code de l’unité de mesure de la quantité facturée",
+        "example" : "S1",
+        "maxLength" : 3,
+        "type" : "string"
+      },
+      "montantNetFactureLigne" : {
+        "description" : "Montant net de ligne de facture",
+        "example" : 200.0,
+        "format" : "double",
+        "multipleOf" : 0.0000010,
+        "type" : "number"
+      },
+      "dateDebutFacturationLigne" : {
+        "description" : "Date de début de période de facturation d’une ligne",
+        "example" : "2023-01-01",
+        "format" : "date",
+        "type" : "string"
+      },
+      "dateFinFacturationLigne" : {
+        "description" : "Date de fin de période de facturation d’une ligne",
+        "example" : "2023-01-01",
+        "format" : "date",
+        "type" : "string"
+      },
+      "montantRemiseHorsTvaLigne" : {
+        "description" : "Montant d’une remise, hors TVA",
+        "example" : 0.0,
+        "format" : "double",
+        "multipleOf" : 0.0000010,
+        "type" : "number"
+      },
+      "montantChargeLigneFacture" : {
+        "description" : "Montant des charges ou frais",
+        "example" : 0.0,
+        "format" : "double",
+        "multipleOf" : 0.0000010,
+        "type" : "number"
+      },
+      "prixNetArticle" : {
+        "description" : "Prix d’un article, hors TVA, après application du rabais sur le prix de l’article",
+        "example" : 40.0,
+        "format" : "double",
+        "multipleOf" : 0.0000010,
+        "type" : "number"
+      },
+      "rabaisPrixArticle" : {
+        "description" : "Remise totale qui, une fois soustraite du prix brut de l’article, donne le prix net de l’article.",
+        "example" : 0.0,
+        "format" : "double",
+        "multipleOf" : 0.0000010,
+        "type" : "number"
+      },
+      "prixBrutArticle" : {
+        "description" : "Prix unitaire, hors TVA, avant application du rabais sur le prix de l’article",
+        "example" : 0.0,
+        "format" : "double",
+        "multipleOf" : 0.0000010,
+        "type" : "number"
+      },
+      "quantiteBasePrixArticle" : {
+        "description" : "Nombre d’articles sur lequel s’applique le prix",
+        "example" : 1,
+        "format" : "double",
+        "multipleOf" : 0.00010,
+        "type" : "number"
+      },
+      "codeQuantitePrixArticle" : {
+        "description" : "Unité de mesure applicable à la quantité de base du prix de l’article",
+        "example" : "k",
+        "maxLength" : 3,
+        "type" : "string"
+      },
+      "codeTypeTvaArticle" : {
+        "description" : "Identification codée du type de TVA applicable à l’article facturé",
+        "enum" : [ "S", "Z", "E", "AE", "K", "G", "O", "L", "M" ],
+        "example" : "S",
+        "maxLength" : 2,
+        "type" : "string"
+      },
+      "tauxTvaArticle" : {
+        "description" : "Taux de TVA, exprimé sous forme de pourcentage, applicable à l’article facturé",
+        "example" : 20.0,
+        "format" : "double",
+        "type" : "number"
+      },
+      "designationArticle" : {
+        "description" : "Nom de l’article",
+        "example" : "Prestation de ligne 1",
+        "maxLength" : 40,
+        "type" : "string"
+      },
+      "dateTransaction" : {
+        "description" : "Date des Transactions",
+        "example" : "2023-01-01",
+        "format" : "date",
+        "type" : "string"
+      },
+      "codeDeviseTransaction" : {
+        "description" : "Devise dans laquelle tous les montants de la facture sont exprimés, à l’exception du montant total de la TVA dans la devise de comptabilisation",
+        "example" : "EUR",
+        "maxLength" : 3,
+        "type" : "string"
+      },
+      "codeDeviseTvaTransaction" : {
+        "description" : "Devise utilisée pour la comptabilisation et la déclaration de la TVA, acceptée ou exigée dans le pays du Vendeur",
+        "example" : "EUR",
+        "maxLength" : 3,
+        "type" : "string"
+      },
+      "optionPaiementTvaTransaction" : {
+        "description" : "Code spécifiant la date à laquelle la TVA devient imputable pour le Vendeur et pour l’Acheteur (https://service.unece.org/trade/untdid/d96a/uncl/uncl2005.htm)",
+        "example" : "77",
+        "maxLength" : 2,
+        "type" : "string"
+      },
+      "categorieTransaction" : {
+        "description" : "Catégorie de la transaction",
+        "enum" : [ "TLB1", "TPS1", "TNT1", "TMA1" ],
+        "example" : "TPS1",
+        "maxLength" : 10,
+        "type" : "string"
+      },
+      "montantTotalHtTransaction" : {
+        "description" : "Montant total de la facture sans la TVA",
+        "example" : 0.0,
+        "format" : "double",
+        "multipleOf" : 0.0000010,
+        "type" : "number"
+      },
+      "montantTotalTvaTransaction" : {
+        "description" : "Montant total de la TVA de la facture",
+        "example" : 0.0,
+        "format" : "double",
+        "multipleOf" : 0.0000010,
+        "type" : "number"
+      },
+      "montantTotalTvaDeviseTransaction" : {
+        "description" : "Montant total de la TVA exprimé dans la devise de comptabilisation acceptée ou exigée dans le pays du Vendeur",
+        "example" : 0.0,
+        "format" : "double",
+        "multipleOf" : 0.0000010,
+        "type" : "number"
+      },
+      "nombreTransaction" : {
+        "description" : "Nombre de transactions comptabilisées",
+        "example" : "480",
+        "maxLength" : 9,
+        "pattern" : "^\\d+$",
+        "type" : "string"
+      },
+      "tauxTvaTransaction" : {
+        "description" : "Taux de TVA, exprimé sous forme de pourcentage, applicable au type de TVA correspondant",
+        "example" : 20.0,
+        "format" : "double",
+        "type" : "number"
+      },
+      "baseImpositionTvaTransaction" : {
+        "description" : "Somme de tous les montants imposables assujettis à un code et à un taux de type de TVA  spécifiques (si le taux de type de TVA est applicable)",
+        "example" : 180.001234,
+        "format" : "double",
+        "multipleOf" : 0.0000010,
+        "type" : "number"
+      },
+      "montantTvaTransaction" : {
+        "description" : "Montant total de la TVA pour un type donnée de TVA",
+        "example" : 180.004321,
+        "format" : "double",
+        "multipleOf" : 0.0000010,
+        "type" : "number"
+      },
+      "_declaration_recherche_post_request" : {
+        "properties" : {
+          "where" : {
+            "$ref" : "#/components/schemas/where"
+          },
+          "sort" : {
+            "$ref" : "#/components/schemas/sort"
+          },
+          "fields" : {
+            "$ref" : "#/components/schemas/fields"
+          },
+          "limit" : {
+            "$ref" : "#/components/schemas/limit"
+          },
+          "offset" : {
+            "$ref" : "#/components/schemas/offset"
+          },
+          "filters" : {
+            "$ref" : "#/components/schemas/requestBodySearchDeclaration"
+          }
+        },
+        "type" : "object"
+      },
+      "responseSearch_inner" : {
+        "properties" : {
+          "idTransmission" : {
+            "$ref" : "#/components/schemas/idTransmission"
+          },
+          "dateTransmission" : {
+            "$ref" : "#/components/schemas/dateTransmission"
+          },
+          "codeTypeTransmission" : {
+            "$ref" : "#/components/schemas/codeTypeTransmission"
+          },
+          "references" : {
+            "$ref" : "#/components/schemas/references"
+          },
+          "idEmetteur" : {
+            "$ref" : "#/components/schemas/idEmetteur"
+          },
+          "raisonSociale" : {
+            "$ref" : "#/components/schemas/raisonSociale"
+          },
+          "idEmetteurDeclarant" : {
+            "$ref" : "#/components/schemas/idEmetteurDeclarant"
+          },
+          "raisonSocialeDeclarant" : {
+            "$ref" : "#/components/schemas/raisonSocialeDeclarant"
+          },
+          "dateDebPeriode" : {
+            "$ref" : "#/components/schemas/dateDebPeriode"
+          },
+          "dateFinPeriode" : {
+            "$ref" : "#/components/schemas/dateFinPeriode"
+          },
+          "dateDebutPaiement" : {
+            "$ref" : "#/components/schemas/dateDebutPaiement"
+          },
+          "dateFinPaiement" : {
+            "$ref" : "#/components/schemas/dateFinPaiement"
+          },
+          "libelleStatutTrans" : {
+            "$ref" : "#/components/schemas/libelleStatutTrans"
+          },
+          "urlConsultationTrans" : {
+            "$ref" : "#/components/schemas/urlConsultationTrans"
+          },
+          "urlTelechargementTrans" : {
+            "$ref" : "#/components/schemas/urlTelechargementTrans"
+          },
+          "nombreDePage" : {
+            "$ref" : "#/components/schemas/nombreDePage"
+          },
+          "page" : {
+            "$ref" : "#/components/schemas/page"
+          }
+        },
+        "type" : "object"
+      },
+      "responseStatut_listeStatuts_inner" : {
+        "properties" : {
+          "dateStatut" : {
+            "$ref" : "#/components/schemas/dateStatut"
+          },
+          "codeStatutTrans" : {
+            "$ref" : "#/components/schemas/codeStatutTrans"
+          },
+          "libelleStatutTrans" : {
+            "$ref" : "#/components/schemas/libelleStatutTrans"
+          },
+          "libelleMotifRejet" : {
+            "$ref" : "#/components/schemas/libelleMotifRejet"
+          }
+        },
+        "type" : "object"
+      },
+      "documentTransmissionEmetteur" : {
+        "properties" : {
+          "typeIdEmetteur" : {
+            "$ref" : "#/components/schemas/typeIdEmetteur"
+          },
+          "idEmetteur" : {
+            "$ref" : "#/components/schemas/idEmetteur"
+          },
+          "raisonSociale" : {
+            "$ref" : "#/components/schemas/raisonSociale"
+          },
+          "codeRole" : {
+            "$ref" : "#/components/schemas/codeRole"
+          },
+          "emailEmetteur" : {
+            "$ref" : "#/components/schemas/emailEmetteur"
+          }
+        },
+        "required" : [ "codeRole", "idEmetteur", "raisonSociale", "typeIdEmetteur" ],
+        "title" : "documentTransmissionEmetteur",
+        "type" : "object"
+      },
+      "documentTransmissionDeclarant" : {
+        "properties" : {
+          "typeIdEmetteurDeclarant" : {
+            "$ref" : "#/components/schemas/typeIdEmetteurDeclarant"
+          },
+          "idEmetteurDeclarant" : {
+            "$ref" : "#/components/schemas/idEmetteurDeclarant"
+          },
+          "raisonSocialeDeclarant" : {
+            "$ref" : "#/components/schemas/raisonSocialeDeclarant"
+          },
+          "codeRoleDeclarant" : {
+            "$ref" : "#/components/schemas/codeRoleDeclarant"
+          },
+          "emailDec" : {
+            "$ref" : "#/components/schemas/emailDec"
+          }
+        },
+        "required" : [ "codeRoleDeclarant", "idEmetteurDeclarant", "raisonSocialeDeclarant", "typeIdEmetteurDeclarant" ],
+        "title" : "documentTransmissionDeclarant",
+        "type" : "object"
+      },
+      "transmissionPaiementsPeriodeTransmission" : {
+        "properties" : {
+          "dateDebutPaiement" : {
+            "$ref" : "#/components/schemas/dateDebutPaiement"
+          },
+          "dateFinPaiement" : {
+            "$ref" : "#/components/schemas/dateFinPaiement"
+          }
+        },
+        "required" : [ "dateDebutPaiement", "dateFinPaiement" ],
+        "title" : "transmissionPaiementsPeriodeTransmission",
+        "type" : "object"
+      },
+      "transmissionPaiementsFacturePaiementRepartitionTaux" : {
+        "properties" : {
+          "tauxPaiement" : {
+            "$ref" : "#/components/schemas/tauxPaiement"
+          },
+          "codeDevisePaiement" : {
+            "$ref" : "#/components/schemas/codeDevisePaiement"
+          },
+          "montantEncaissePaiement" : {
+            "$ref" : "#/components/schemas/montantEncaissePaiement"
+          }
+        },
+        "required" : [ "codeDevisePaiement", "montantEncaissePaiement", "tauxPaiement" ],
+        "title" : "transmissionPaiementsFacturePaiementRepartitionTaux",
+        "type" : "object"
+      },
+      "transmissionPaiementsFacturePaiement" : {
+        "properties" : {
+          "datePaiement" : {
+            "$ref" : "#/components/schemas/datePaiement"
+          },
+          "repartitionTaux" : {
+            "items" : {
+              "$ref" : "#/components/schemas/transmissionPaiementsFacturePaiementRepartitionTaux"
+            },
+            "minItems" : 1,
+            "type" : "array"
+          }
+        },
+        "required" : [ "datePaiement", "repartitionTaux" ],
+        "title" : "transmissionPaiementsFacturePaiement",
+        "type" : "object"
+      },
+      "transmissionPaiementsFacture" : {
+        "properties" : {
+          "numeroFacturePaiement" : {
+            "$ref" : "#/components/schemas/numeroFacturePaiement"
+          },
+          "dateEmissionFactPaiement" : {
+            "$ref" : "#/components/schemas/dateEmissionFactPaiement"
+          },
+          "paiement" : {
+            "$ref" : "#/components/schemas/transmissionPaiementsFacturePaiement"
+          }
+        },
+        "required" : [ "dateEmissionFactPaiement", "numeroFacturePaiement", "paiement" ],
+        "title" : "transmissionPaiementsFacture",
+        "type" : "object"
+      },
+      "transmissionPaiementsTransactionPaiementRepartitionTva" : {
+        "properties" : {
+          "tauxRepartitionTransactionPai" : {
+            "$ref" : "#/components/schemas/tauxRepartitionTransactionPai"
+          },
+          "codeDeviseTransactionPai" : {
+            "$ref" : "#/components/schemas/codeDeviseTransactionPai"
+          },
+          "montantEncaisseTransactionPai" : {
+            "$ref" : "#/components/schemas/montantEncaisseTransactionPai"
+          }
+        },
+        "required" : [ "codeDeviseTransactionPai", "montantEncaisseTransactionPai", "tauxRepartitionTransactionPai" ],
+        "title" : "transmissionPaiementsTransactionPaiementRepartitionTva",
+        "type" : "object"
+      },
+      "transmissionPaiementsTransactionPaiement" : {
+        "properties" : {
+          "datePaiementTransaction" : {
+            "$ref" : "#/components/schemas/datePaiementTransaction"
+          },
+          "repartitionTauxTransaction" : {
+            "items" : {
+              "$ref" : "#/components/schemas/transmissionPaiementsTransactionPaiementRepartitionTva"
+            },
+            "minItems" : 1,
+            "type" : "array"
+          }
+        },
+        "required" : [ "datePaiementTransaction", "repartitionTauxTransaction" ],
+        "title" : "transmissionPaiementsTransactionPaiement",
+        "type" : "object"
+      },
+      "transmissionPaiementsTransaction" : {
+        "properties" : {
+          "paiement" : {
+            "$ref" : "#/components/schemas/transmissionPaiementsTransactionPaiement"
+          }
+        },
+        "required" : [ "paiement" ],
+        "title" : "transmissionPaiementsTransaction",
+        "type" : "object"
+      },
+      "transmissionTransactionPeriodeTransmission" : {
+        "properties" : {
+          "dateDebPeriode" : {
+            "$ref" : "#/components/schemas/dateDebPeriode"
+          },
+          "dateFinPeriode" : {
+            "$ref" : "#/components/schemas/dateFinPeriode"
+          }
+        },
+        "required" : [ "dateDebPeriode", "dateFinPeriode" ],
+        "title" : "transmissionTransactionPeriodeTransmission",
+        "type" : "object"
+      },
+      "transmissionTransactionFactureNoteFacture" : {
+        "properties" : {
+          "codeSujetNote" : {
+            "$ref" : "#/components/schemas/codeSujetNote"
+          },
+          "noteFacture" : {
+            "$ref" : "#/components/schemas/noteFacture"
+          }
+        },
+        "title" : "transmissionTransactionFactureNoteFacture",
+        "type" : "object"
+      },
+      "transmissionTransactionFactureControleProcessus" : {
+        "properties" : {
+          "typeProcessus" : {
+            "$ref" : "#/components/schemas/typeProcessus"
+          },
+          "typeProfil" : {
+            "$ref" : "#/components/schemas/typeProfil"
+          }
+        },
+        "title" : "transmissionTransactionFactureControleProcessus",
+        "type" : "object"
+      },
+      "transmissionTransactionRefFactureAnterieure" : {
+        "properties" : {
+          "referenceFactureAnterieure" : {
+            "$ref" : "#/components/schemas/referenceFactureAnterieure"
+          },
+          "dateEmissionFactureAnterieure" : {
+            "$ref" : "#/components/schemas/dateEmissionFactureAnterieure"
+          }
+        },
+        "required" : [ "referenceFactureAnterieure" ],
+        "title" : "transmissionTransactionRefFactureAnterieure",
+        "type" : "object"
+      },
+      "transmissionTransactionFactureVendeur" : {
+        "properties" : {
+          "identifiantComplementaireVendeur" : {
+            "items" : {
+              "$ref" : "#/components/schemas/identifiantComplementaireVendeur"
+            },
+            "minItems" : 0,
+            "type" : "array"
+          },
+          "identifiantComplementaireSchemaVendeur" : {
+            "$ref" : "#/components/schemas/identifiantComplementaireSchemaVendeur"
+          },
+          "numeroSirenVendeur" : {
+            "$ref" : "#/components/schemas/numeroSirenVendeur"
+          },
+          "identifiantTvaVendeur" : {
+            "$ref" : "#/components/schemas/identifiantTvaVendeur"
+          },
+          "codePaysVendeur" : {
+            "$ref" : "#/components/schemas/codePaysVendeur"
+          }
+        },
+        "title" : "transmissionTransactionFactureVendeur",
+        "type" : "object"
+      },
+      "transmissionTransactionFactureAcheteurAdressePostale" : {
+        "properties" : {
+          "codePaysAcheteur" : {
+            "$ref" : "#/components/schemas/codePaysAcheteur"
+          }
+        },
+        "title" : "transmissionTransactionFactureAcheteurAdressePostale",
+        "type" : "object"
+      },
+      "transmissionTransactionFactureAcheteur" : {
+        "properties" : {
+          "numeroSirenAcheteur" : {
+            "$ref" : "#/components/schemas/numeroSirenAcheteur"
+          },
+          "identifiantSchemaIdentifiantAcheteur" : {
+            "$ref" : "#/components/schemas/identifiantSchemaIdentifiantAcheteur"
+          },
+          "identifiantTvaAcheteur" : {
+            "$ref" : "#/components/schemas/identifiantTvaAcheteur"
+          },
+          "adressePostaleAcheteur" : {
+            "$ref" : "#/components/schemas/transmissionTransactionFactureAcheteurAdressePostale"
+          }
+        },
+        "title" : "transmissionTransactionFactureAcheteur",
+        "type" : "object"
+      },
+      "transmissionTransactionFactureRepresentantFiscalVendeur" : {
+        "properties" : {
+          "identifiantTvaRepresentantVendeur" : {
+            "$ref" : "#/components/schemas/identifiantTvaRepresentantVendeur"
+          }
+        },
+        "required" : [ "identifiantTvaRepresentantVendeur" ],
+        "title" : "transmissionTransactionFactureRepresentantFiscalVendeur",
+        "type" : "object"
+      },
+      "transmissionTransactionFactureLivraisonPrestationService" : {
+        "properties" : {
+          "dateLivraisonPrestation" : {
+            "$ref" : "#/components/schemas/dateLivraisonPrestation"
+          }
+        },
+        "title" : "transmissionTransactionFactureLivraisonPrestationService",
+        "type" : "object"
+      },
+      "transmissionTransactionFacturePeriodeFacturation" : {
+        "properties" : {
+          "dateDebutFacturation" : {
+            "$ref" : "#/components/schemas/dateDebutFacturation"
+          },
+          "dateFinFacturation" : {
+            "$ref" : "#/components/schemas/dateFinFacturation"
+          }
+        },
+        "title" : "transmissionTransactionFacturePeriodeFacturation",
+        "type" : "object"
+      },
+      "transmissionTransactionFactureAdresseLivraisonRealService" : {
+        "properties" : {
+          "codePaysLivraisonPrestation" : {
+            "$ref" : "#/components/schemas/codePaysLivraisonPrestation"
+          }
+        },
+        "required" : [ "codePaysLivraisonPrestation" ],
+        "title" : "transmissionTransactionFactureAdresseLivraisonRealService",
+        "type" : "object"
+      },
+      "transmissionTransactionFactureRemiseDocument" : {
+        "properties" : {
+          "indicateurCharge" : {
+            "$ref" : "#/components/schemas/indicateurCharge"
+          },
+          "montantRemiseDocument" : {
+            "$ref" : "#/components/schemas/montantRemiseDocument"
+          },
+          "codeTypeTvaRemiseDocument" : {
+            "$ref" : "#/components/schemas/codeTypeTvaRemiseDocument"
+          },
+          "tauxTvaRemiseDocument" : {
+            "$ref" : "#/components/schemas/tauxTvaRemiseDocument"
+          }
+        },
+        "required" : [ "codeTypeTvaRemiseDocument", "indicateurCharge", "montantRemiseDocument" ],
+        "title" : "transmissionTransactionFactureRemiseDocument",
+        "type" : "object"
+      },
+      "transmissionTransactionFactureChargeDocument" : {
+        "properties" : {
+          "indicateurCharge" : {
+            "$ref" : "#/components/schemas/indicateurCharge"
+          },
+          "montantChargeDocument" : {
+            "$ref" : "#/components/schemas/montantChargeDocument"
+          },
+          "codeTypeTvaChargeDocument" : {
+            "$ref" : "#/components/schemas/codeTypeTvaChargeDocument"
+          },
+          "tauxTvaChargeDocument" : {
+            "$ref" : "#/components/schemas/tauxTvaChargeDocument"
+          }
+        },
+        "required" : [ "codeTypeTvaChargeDocument", "indicateurCharge", "montantChargeDocument" ],
+        "title" : "transmissionTransactionFactureChargeDocument",
+        "type" : "object"
+      },
+      "transmissionTransactionFactureTotauxDocument" : {
+        "properties" : {
+          "montantTotalFactureHorsTva" : {
+            "$ref" : "#/components/schemas/montantTotalFactureHorsTva"
+          },
+          "montantTotalTvaFacture" : {
+            "$ref" : "#/components/schemas/montantTotalTvaFacture"
+          },
+          "montantTotalTvaDeviseFacture" : {
+            "$ref" : "#/components/schemas/montantTotalTvaDeviseFacture"
+          }
+        },
+        "required" : [ "montantTotalFactureHorsTva", "montantTotalTvaDeviseFacture" ],
+        "title" : "transmissionTransactionFactureTotauxDocument",
+        "type" : "object"
+      },
+      "transmissionTransactionFactureVentilationTva" : {
+        "properties" : {
+          "baseImpositionTva" : {
+            "$ref" : "#/components/schemas/baseImpositionTva"
+          },
+          "montantTypeTva" : {
+            "$ref" : "#/components/schemas/montantTypeTva"
+          },
+          "codeTypeTva" : {
+            "$ref" : "#/components/schemas/codeTypeTva"
+          },
+          "tauxTypeTva" : {
+            "$ref" : "#/components/schemas/tauxTypeTva"
+          },
+          "motifExonerationTva" : {
+            "$ref" : "#/components/schemas/motifExonerationTva"
+          },
+          "codeMotifExonerationTva" : {
+            "$ref" : "#/components/schemas/codeMotifExonerationTva"
+          }
+        },
+        "required" : [ "baseImpositionTva", "montantTypeTva", "tauxTypeTva" ],
+        "title" : "transmissionTransactionFactureVentilationTva",
+        "type" : "object"
+      },
+      "transmissionTransactionFactureLigneFacturePeriodeFacturation" : {
+        "properties" : {
+          "dateDebutFacturationLigne" : {
+            "$ref" : "#/components/schemas/dateDebutFacturationLigne"
+          },
+          "dateFinFacturationLigne" : {
+            "$ref" : "#/components/schemas/dateFinFacturationLigne"
+          }
+        },
+        "title" : "transmissionTransactionFactureLigneFacturePeriodeFacturation",
+        "type" : "object"
+      },
+      "transmissionTransactionFactureLigneFactureRemises" : {
+        "properties" : {
+          "montantRemiseHorsTvaLigne" : {
+            "$ref" : "#/components/schemas/montantRemiseHorsTvaLigne"
+          }
+        },
+        "title" : "transmissionTransactionFactureLigneFactureRemises",
+        "type" : "object"
+      },
+      "transmissionTransactionFactureLigneFactureCharges" : {
+        "properties" : {
+          "montantChargeLigneFacture" : {
+            "$ref" : "#/components/schemas/montantChargeLigneFacture"
+          }
+        },
+        "title" : "transmissionTransactionFactureLigneFactureCharges",
+        "type" : "object"
+      },
+      "transmissionTransactionFactureLigneFactureDetailPrix" : {
+        "properties" : {
+          "prixNetArticle" : {
+            "$ref" : "#/components/schemas/prixNetArticle"
+          },
+          "rabaisPrixArticle" : {
+            "$ref" : "#/components/schemas/rabaisPrixArticle"
+          },
+          "prixBrutArticle" : {
+            "$ref" : "#/components/schemas/prixBrutArticle"
+          },
+          "quantiteBasePrixArticle" : {
+            "$ref" : "#/components/schemas/quantiteBasePrixArticle"
+          },
+          "codeQuantitePrixArticle" : {
+            "$ref" : "#/components/schemas/codeQuantitePrixArticle"
+          }
+        },
+        "title" : "transmissionTransactionFactureLigneFactureDetailPrix",
+        "type" : "object"
+      },
+      "transmissionTransactionFactureLigneFactureInfoTva" : {
+        "properties" : {
+          "codeTypeTvaArticle" : {
+            "$ref" : "#/components/schemas/codeTypeTvaArticle"
+          },
+          "tauxTvaArticle" : {
+            "$ref" : "#/components/schemas/tauxTvaArticle"
+          }
+        },
+        "title" : "transmissionTransactionFactureLigneFactureInfoTva",
+        "type" : "object"
+      },
+      "transmissionTransactionFactureLigneFactureInfoArticle" : {
+        "properties" : {
+          "designationArticle" : {
+            "$ref" : "#/components/schemas/designationArticle"
+          }
+        },
+        "required" : [ "designationArticle" ],
+        "title" : "transmissionTransactionFactureLigneFactureInfoArticle",
+        "type" : "object"
+      },
+      "transmissionTransactionFactureLigneFacture" : {
+        "properties" : {
+          "identifiantLigne" : {
+            "$ref" : "#/components/schemas/identifiantLigne"
+          },
+          "noteLigne" : {
+            "$ref" : "#/components/schemas/noteLigne"
+          },
+          "quantiteFactureLigne" : {
+            "$ref" : "#/components/schemas/quantiteFactureLigne"
+          },
+          "codeQuantiteFactureLigne" : {
+            "$ref" : "#/components/schemas/codeQuantiteFactureLigne"
+          },
+          "montantNetFactureLigne" : {
+            "$ref" : "#/components/schemas/montantNetFactureLigne"
+          },
+          "periodeFacturationLigne" : {
+            "$ref" : "#/components/schemas/transmissionTransactionFactureLigneFacturePeriodeFacturation"
+          },
+          "remiseLigneFacture" : {
+            "items" : {
+              "$ref" : "#/components/schemas/transmissionTransactionFactureLigneFactureRemises"
+            },
+            "minItems" : 0,
+            "type" : "array"
+          },
+          "chargeLigneFacture" : {
+            "items" : {
+              "$ref" : "#/components/schemas/transmissionTransactionFactureLigneFactureCharges"
+            },
+            "minItems" : 0,
+            "type" : "array"
+          },
+          "detailPrix" : {
+            "$ref" : "#/components/schemas/transmissionTransactionFactureLigneFactureDetailPrix"
+          },
+          "informationTva" : {
+            "$ref" : "#/components/schemas/transmissionTransactionFactureLigneFactureInfoTva"
+          },
+          "informationArticle" : {
+            "$ref" : "#/components/schemas/transmissionTransactionFactureLigneFactureInfoArticle"
+          }
+        },
+        "required" : [ "informationArticle" ],
+        "title" : "transmissionTransactionFactureLigneFacture",
+        "type" : "object"
+      },
+      "transmissionTransactionFacture" : {
+        "properties" : {
+          "numeroFacture" : {
+            "$ref" : "#/components/schemas/numeroFacture"
+          },
+          "dateEmissionFact" : {
+            "$ref" : "#/components/schemas/dateEmissionFact"
+          },
+          "codeTypeFacture" : {
+            "$ref" : "#/components/schemas/codeTypeFacture"
+          },
+          "codeDevise" : {
+            "$ref" : "#/components/schemas/codeDevise"
+          },
+          "codeDeviseTva" : {
+            "$ref" : "#/components/schemas/codeDeviseTva"
+          },
+          "optionPaiementTva" : {
+            "$ref" : "#/components/schemas/optionPaiementTva"
+          },
+          "conditionPaiement" : {
+            "$ref" : "#/components/schemas/conditionPaiement"
+          },
+          "noteDeFacture" : {
+            "items" : {
+              "$ref" : "#/components/schemas/transmissionTransactionFactureNoteFacture"
+            },
+            "minItems" : 0,
+            "type" : "array"
+          },
+          "controleProcessus" : {
+            "$ref" : "#/components/schemas/transmissionTransactionFactureControleProcessus"
+          },
+          "referenceFactureAnterieure" : {
+            "items" : {
+              "$ref" : "#/components/schemas/transmissionTransactionRefFactureAnterieure"
+            },
+            "minItems" : 0,
+            "type" : "array"
+          },
+          "vendeur" : {
+            "$ref" : "#/components/schemas/transmissionTransactionFactureVendeur"
+          },
+          "acheteur" : {
+            "$ref" : "#/components/schemas/transmissionTransactionFactureAcheteur"
+          },
+          "representantFiscalVendeur" : {
+            "$ref" : "#/components/schemas/transmissionTransactionFactureRepresentantFiscalVendeur"
+          },
+          "livraisonPrestationService" : {
+            "$ref" : "#/components/schemas/transmissionTransactionFactureLivraisonPrestationService"
+          },
+          "periodeFacturation" : {
+            "$ref" : "#/components/schemas/transmissionTransactionFacturePeriodeFacturation"
+          },
+          "adresseLivraisonRealisationService" : {
+            "$ref" : "#/components/schemas/transmissionTransactionFactureAdresseLivraisonRealService"
+          },
+          "remiseNiveauDocument" : {
+            "items" : {
+              "$ref" : "#/components/schemas/transmissionTransactionFactureRemiseDocument"
+            },
+            "minItems" : 0,
+            "type" : "array"
+          },
+          "chargeNiveauDocument" : {
+            "items" : {
+              "$ref" : "#/components/schemas/transmissionTransactionFactureChargeDocument"
+            },
+            "minItems" : 0,
+            "type" : "array"
+          },
+          "totauxDocument" : {
+            "$ref" : "#/components/schemas/transmissionTransactionFactureTotauxDocument"
+          },
+          "ventilationTva" : {
+            "items" : {
+              "$ref" : "#/components/schemas/transmissionTransactionFactureVentilationTva"
+            },
+            "minItems" : 1,
+            "type" : "array"
+          },
+          "ligneFacture" : {
+            "items" : {
+              "$ref" : "#/components/schemas/transmissionTransactionFactureLigneFacture"
+            },
+            "minItems" : 0,
+            "type" : "array"
+          }
+        },
+        "required" : [ "codeDevise", "codeTypeFacture", "dateEmissionFact", "numeroFacture", "totauxDocument", "vendeur", "ventilationTva" ],
+        "title" : "transmissionTransactionFacture",
+        "type" : "object"
+      },
+      "transmissionTransactionTransactionsRepartitionTva" : {
+        "properties" : {
+          "tauxTvaTransaction" : {
+            "$ref" : "#/components/schemas/tauxTvaTransaction"
+          },
+          "baseImpositionTvaTransaction" : {
+            "$ref" : "#/components/schemas/baseImpositionTvaTransaction"
+          },
+          "montantTvaTransaction" : {
+            "$ref" : "#/components/schemas/montantTvaTransaction"
+          }
+        },
+        "required" : [ "baseImpositionTvaTransaction", "montantTvaTransaction", "tauxTvaTransaction" ],
+        "title" : "transmissionTransactionTransactionsRepartitionTva",
+        "type" : "object"
+      },
+      "transmissionTransactionTransactions" : {
+        "properties" : {
+          "dateTransaction" : {
+            "$ref" : "#/components/schemas/dateTransaction"
+          },
+          "codeDeviseTransaction" : {
+            "$ref" : "#/components/schemas/codeDeviseTransaction"
+          },
+          "codeDeviseTvaTransaction" : {
+            "$ref" : "#/components/schemas/codeDeviseTvaTransaction"
+          },
+          "optionPaiementTvaTransaction" : {
+            "$ref" : "#/components/schemas/optionPaiementTvaTransaction"
+          },
+          "categorieTransaction" : {
+            "$ref" : "#/components/schemas/categorieTransaction"
+          },
+          "montantTotalHtTransaction" : {
+            "$ref" : "#/components/schemas/montantTotalHtTransaction"
+          },
+          "montantTotalTvaTransaction" : {
+            "$ref" : "#/components/schemas/montantTotalTvaTransaction"
+          },
+          "montantTotalTvaDeviseTransaction" : {
+            "$ref" : "#/components/schemas/montantTotalTvaDeviseTransaction"
+          },
+          "nombreTransaction" : {
+            "$ref" : "#/components/schemas/nombreTransaction"
+          },
+          "repartitionTva" : {
+            "items" : {
+              "$ref" : "#/components/schemas/transmissionTransactionTransactionsRepartitionTva"
+            },
+            "minItems" : 1,
+            "type" : "array"
+          }
+        },
+        "required" : [ "categorieTransaction", "codeDeviseTransaction", "codeDeviseTvaTransaction", "dateTransaction", "montantTotalHtTransaction", "montantTotalTvaDeviseTransaction", "montantTotalTvaTransaction", "nombreTransaction", "optionPaiementTvaTransaction", "repartitionTva" ],
+        "title" : "transmissionTransactionTransactions",
+        "type" : "object"
+      },
+      "documentTransmissionSearch_emetteurDocument" : {
+        "properties" : {
+          "idEmetteur" : {
+            "$ref" : "#/components/schemas/idEmetteur"
+          }
+        },
+        "type" : "object"
+      },
+      "documentTransmissionSearch_declarantDocument" : {
+        "properties" : {
+          "idEmetteurDeclarant" : {
+            "$ref" : "#/components/schemas/idEmetteurDeclarant"
+          }
+        },
+        "type" : "object"
+      },
+      "transmissionPaiementsSearch_periodeTransmission" : {
+        "properties" : {
+          "dateDebutPaiement" : {
+            "$ref" : "#/components/schemas/dateDebutPaiement"
+          },
+          "dateFinPaiement" : {
+            "$ref" : "#/components/schemas/dateFinPaiement"
+          }
+        },
+        "type" : "object"
+      },
+      "transmissionPaiementsSearch_facture_paiement" : {
+        "properties" : {
+          "datePaiement" : {
+            "$ref" : "#/components/schemas/datePaiement"
+          }
+        },
+        "type" : "object"
+      },
+      "transmissionPaiementsSearch_facture" : {
+        "properties" : {
+          "numeroFacturePaiement" : {
+            "$ref" : "#/components/schemas/numeroFacturePaiement"
+          },
+          "dateEmissionFactPaiement" : {
+            "$ref" : "#/components/schemas/dateEmissionFactPaiement"
+          },
+          "paiement" : {
+            "$ref" : "#/components/schemas/transmissionPaiementsSearch_facture_paiement"
+          }
+        },
+        "type" : "object"
+      },
+      "transmissionPaiementsSearch_transactions_paiement_repartitionTauxTransaction" : {
+        "properties" : {
+          "montantEncaisseTransactionPai" : {
+            "$ref" : "#/components/schemas/montantEncaisseTransactionPai"
+          }
+        },
+        "type" : "object"
+      },
+      "transmissionPaiementsSearch_transactions_paiement" : {
+        "properties" : {
+          "datePaiementTransaction" : {
+            "$ref" : "#/components/schemas/datePaiementTransaction"
+          },
+          "repartitionTauxTransaction" : {
+            "$ref" : "#/components/schemas/transmissionPaiementsSearch_transactions_paiement_repartitionTauxTransaction"
+          }
+        },
+        "type" : "object"
+      },
+      "transmissionPaiementsSearch_transactions" : {
+        "properties" : {
+          "paiement" : {
+            "$ref" : "#/components/schemas/transmissionPaiementsSearch_transactions_paiement"
+          }
+        },
+        "type" : "object"
+      },
+      "transmissionTransactionsSearch_periodeTransmission" : {
+        "properties" : {
+          "dateDebPeriode" : {
+            "$ref" : "#/components/schemas/dateDebPeriode"
+          },
+          "dateFinPeriode" : {
+            "$ref" : "#/components/schemas/dateFinPeriode"
+          }
+        },
+        "type" : "object"
+      },
+      "transmissionTransactionsSearch_facture_vendeur" : {
+        "properties" : {
+          "numeroSirenVendeur" : {
+            "$ref" : "#/components/schemas/numeroSirenVendeur"
+          }
+        },
+        "type" : "object"
+      },
+      "transmissionTransactionsSearch_facture" : {
+        "properties" : {
+          "numeroFacture" : {
+            "$ref" : "#/components/schemas/numeroFacture"
+          },
+          "dateEmissionFact" : {
+            "$ref" : "#/components/schemas/dateEmissionFact"
+          },
+          "vendeur" : {
+            "$ref" : "#/components/schemas/transmissionTransactionsSearch_facture_vendeur"
+          }
+        },
+        "type" : "object"
+      },
+      "transmissionTransactionsSearch_transactions" : {
+        "properties" : {
+          "dateTransaction" : {
+            "$ref" : "#/components/schemas/dateTransaction"
+          },
+          "montantTotalHtTransaction" : {
+            "$ref" : "#/components/schemas/montantTotalHtTransaction"
+          }
+        },
+        "type" : "object"
+      },
+      "documentTransmissionReferences" : {
+        "properties" : {
+          "refTransmissionPrec" : {
+            "$ref" : "#/components/schemas/refTransmissionPrec"
+          },
+          "typeTransmissionPrec" : {
+            "$ref" : "#/components/schemas/typeTransmissionPrec"
+          }
+        },
+        "required" : [ "refTransmissionPrec", "typeTransmissionPrec" ],
+        "title" : "documentTransmissionReferences",
+        "type" : "object"
+      }
+    },
+    "securitySchemes" : {
+      "bearer_auth" : {
+        "bearerFormat" : "JWT",
+        "scheme" : "bearer",
+        "type" : "http"
+      }
+    }
+  }
+}

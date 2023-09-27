@@ -6,12 +6,13 @@ hide empty methods
 hide empty fields
 set namespaceSeparator none
 
-class "Customers.names" {
-  {field} firstName : string
-  {field} lastName : string
+class "Customers.names" as Customers.names {
+  {field} firstName : string {R}
+  {field} lastName : string {R}
 }
 
-class "Customers" {
+class "Customers" as Customers {
+  {field} names : object[]
 }
 
 "Customers" --> "*" "Customers.names"  :  "names"

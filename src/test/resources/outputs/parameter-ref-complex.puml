@@ -6,26 +6,26 @@ hide empty methods
 hide empty fields
 set namespaceSeparator none
 
-class "Customer" {
-  {field} firstName : string {O}
-  {field} lastName : string {O}
+class "Customer" as Customer {
+  {field} firstName : string
+  {field} lastName : string
 }
 
-class "CustomerId" <<Parameter>> {
-  {field} id : string {O}
-  {field} prefix : string {O}
+class "CustomerId" as CustomerId <<Parameter>> {
+  {field} id : string
+  {field} prefix : string
 }
 
-class "GET /customer/expired" <<Path>> {
+class "GET /customer/expired" as GET_/customer/expired <<Path>> {
 }
 
-class "GET /customer/expired 200" <<Response>> {
+class "GET /customer/expired 200" as GET_/customer/expired_200 <<Response>> {
 }
 
-"GET /customer/expired" --> "1" "CustomerId"  :  "customerId"
+"GET_/customer/expired" --> "1" "CustomerId"  :  "customerId"
 
-"GET /customer/expired 200" --> "*" "Customer"
+"GET_/customer/expired_200" --> "*" "Customer"
 
-"GET /customer/expired" ..> "1" "GET /customer/expired 200"  :  "200"
+"GET_/customer/expired" ..> "1" "GET_/customer/expired_200"  :  "200"
 
 @enduml

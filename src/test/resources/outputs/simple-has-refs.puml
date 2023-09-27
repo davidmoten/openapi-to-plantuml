@@ -6,14 +6,20 @@ hide empty methods
 hide empty fields
 set namespaceSeparator none
 
-class "CustomerType" {
-  {field} value : string
+class "CustomerType" as CustomerType {
+  {field} value : string {R}
 }
+note right of CustomerType::"value"
+	<size:8><i>Ex: Example value</i></size>
+end note
 
-class "Customer" {
-  {field} firstName : string
-  {field} lastName : string
-  {field} heightMetres : decimal {O}
+class "Customer" as Customer {
+  {field} firstName : string {R}
+  {field} lastName : string {R}
+  {field} heightMetres : decimal
+  {field} type : CustomerType {R}
+  {field} friends : Customer[]
+  {field} favouritePartner : Customer
 }
 
 "Customer" --> "1" "CustomerType"  :  "type"

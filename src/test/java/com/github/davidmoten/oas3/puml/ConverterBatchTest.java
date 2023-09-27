@@ -46,7 +46,7 @@ public class ConverterBatchTest {
     public void test() {
         System.out.println("checking " + input);
         try (InputStream in = new FileInputStream(input)) {
-            String puml = Converter.openApiToPuml(in).trim();
+            String puml = Converter.openApiToPuml(in, true).trim();
             File pumlFile = new File("target/outputs",
                     input.getName().substring(0, input.getName().lastIndexOf('.')) + ".puml");
             pumlFile.getParentFile().mkdirs();
@@ -58,7 +58,7 @@ public class ConverterBatchTest {
                 System.out.println(puml);
             }
             String expected = com.github.davidmoten.junit.Files.readUtf8(output).trim();
-            ConverterTest.writeSvg(input, "target/outputs/" + output.getName() + ".svg");
+            ConverterTest.writeSvg(input, "target/outputs/" + output.getName() + ".svg", true);
             assertEquals(expected, puml);
         } catch (IOException e) {
             throw new UncheckedIOException(e);

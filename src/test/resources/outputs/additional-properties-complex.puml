@@ -6,19 +6,23 @@ hide empty methods
 hide empty fields
 set namespaceSeparator none
 
-class "Thing.property" {
-  {field} key : string
+class "Thing.property" as Thing.property {
+  {field} key : string {R}
 }
 
-class "Thing" {
-  {field} name : string
-  {field} description : string {O}
+class "Thing" as Thing {
+  {field} name : string {R}
+  {field} description : string
+  {field} property : map
 }
 
-class "MyValue" {
-  {field} name : string
-  {field} expiry : timestamp
+class "MyValue" as MyValue {
+  {field} name : string {R}
+  {field} expiry : timestamp {R}
 }
+note right of MyValue::"expiry"
+	<size:8>Format date-time</size>
+end note
 
 "Thing" *--> "*" "Thing.property"  :  "property"
 

@@ -6,29 +6,29 @@ hide empty methods
 hide empty fields
 set namespaceSeparator none
 
-class "Customer" {
-  {field} firstName : string {O}
-  {field} lastName : string {O}
+class "Customer" as Customer {
+  {field} firstName : string
+  {field} lastName : string
 }
 
-class "GET /customer/expired" <<Path>> {
+class "GET /customer/expired" as GET_/customer/expired <<Path>> {
 }
 
-class "GET /customer/expired.offset" <<Parameter>> {
+class "GET /customer/expired.offset" as GET_/customer/expired.offset <<Parameter>> {
 }
 
-class "GET /customer/expired.limit" <<Parameter>> {
+class "GET /customer/expired.limit" as GET_/customer/expired.limit <<Parameter>> {
 }
 
-class "GET /customer/expired 200" <<Response>> {
+class "GET /customer/expired 200" as GET_/customer/expired_200 <<Response>> {
 }
 
-"GET /customer/expired" --> "1" "GET /customer/expired.offset"  :  "offset"
+"GET_/customer/expired" --> "1" "GET_/customer/expired.offset"  :  "offset"
 
-"GET /customer/expired" --> "0..1" "GET /customer/expired.limit"  :  "limit"
+"GET_/customer/expired" --> "0..1" "GET_/customer/expired.limit"  :  "limit"
 
-"GET /customer/expired 200" --> "*" "Customer"
+"GET_/customer/expired_200" --> "*" "Customer"
 
-"GET /customer/expired" ..> "1" "GET /customer/expired 200"  :  "200"
+"GET_/customer/expired" ..> "1" "GET_/customer/expired_200"  :  "200"
 
 @enduml
