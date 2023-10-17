@@ -1,0 +1,5065 @@
+openapi: 3.0.3
+info:
+  version: 1.0.0
+  x-logo:
+    url: 'https://developers.unqork.io/unqork-logo.png'
+    backgroundColor: '#FFFFFF'
+  title: Unqork Customer API
+  description: >
+
+    Unqork's customer REST API, based on open standards, allows you to set and retrieve module submission data, as well as control other
+    aspects of your Unqork environment. You can use any web development language to access the API, as communication is over secured HTTP. IP whitelisting can be implemented on request.
+
+    ## URI Structure and Methods
+
+    All API communication will occur over SSL (HTTPS). All API responses are in JSON format.
+
+    All Unqork requests begin with the prefix:
+
+
+    ```
+      https://{yourSubdomain}.unqork.io/api/1.0
+    ```
+
+
+    For example, if your subdomain is **xyzfinancial**, you would use the prefix
+    `https://xyzfinancial.unqork.io/api/1.0`.
+
+
+    The next segment of the URI path will vary based on the endpoint of the request.
+
+
+    A given endpoint (resource) has a series of actions (methods) associated
+    with it. The Unqork API supports these standard HTTP methods:
+
+
+    - **GET** - retrieves data
+
+
+    - **PUT** - updates existing data
+
+
+    - **POST** - creates new data
+
+
+    - **DELETE** - deletes existing data
+
+
+    For example, you can use the POST action on the module submission
+    resource to create a new module submission.
+
+    ## Authentication
+
+    The Unqork API implements the [OAuth 2.0 Password Grant](https://tools.ietf.org/html/rfc6749#section-1.3.3).
+    Access via OAuth2 Password Grant can be enabled for all users in Environment Administration. Once enabled, all Unqork users can use their Unqork username/password to retrieve an access token.
+
+
+    In order to utilize any of the API resources, you must first retrieve an access token by POSTing your credentials to the access token URL, e.g. using `curl`:
+
+
+    ```
+      $ curl -X POST https://xyzfinancial.unqork.io/api/1.0/oauth2/access_token -d "grant_type=password&username={username}&password={password}"
+    ```
+
+    This returns an "access_token", which you would then retain and use in any
+    subsequent resource requests. **Access tokens expire after one hour, at which point you must retrieve a new one.**
+    The access token should be included in a request header:
+
+
+    ```
+      $ curl -H "Authorization: Bearer {access_token}" https://xyzfinancial.unqork.io/api/1.0/{endpoint}
+    ```
+
+
+    ## Paging
+
+    Paged endpoints use the [Link header](https://www.w3.org/wiki/LinkHeader). If the link header "next" is present, then there are more items to retrieve, and the "next" should be followed.
+
+    ## Cloud Storage Delivery
+
+    Unqork exposes generated PDFs, uploaded attachments, and other file-like pieces of submission data via Cloud Storage Delivery URLs.
+    These are signed, expiring links that allow the user to securely retrieve files stored in Unqork.
+    Links can appear inside raw submission data, or they can be returned from PDF transform submission endpoints.
+
+
+    These links cannot be shared with other parties; only the user who generated the link will be able to use the link.
+    This means that the user must be authenticated (either in the browser, or by passing a valid OAuth Bearer token) in order to retrieve the file.
+
+
+    Cloud Storage Delivery URLs will look like this:
+
+
+    `https://xyzfinancial.unqork.io/fbu/files/{filePath}?signature={signature}`
+
+
+    The file can be retrieved by accessing the link in the browser, or like this:
+
+
+    ```
+      $ curl -H "Authorization: Bearer {access_token}" https://xyzfinancial.unqork.io/fbu/files/{filePath}?signature={signature}
+    ```
+
+    ## Nomenclature
+
+    Previously, "Modules" were called "Forms". This nomenclature change affects all endpoints documented here in paths, request parameters, and response bodies (e.g. `forms -> modules`, `formId -> moduleId`;
+    however, the behaviors of the endpoints are the same. The previous endpoints will continue to be supported, but they will be deprecated in the future.
+servers:
+  - url: https://{host}/api/1.0
+    variables:
+      host:
+        default: env.unqork.io
+        description: Environment host
+paths:
+  /referstring:
+    post:
+      x-unqork-service: true
+      tags:
+        - Authentication
+      summary: Generates an encrypted referstring for authentication
+      operationId: generateReferString
+      description: >
+        This endpoint will generate encrypted refer strings that can be used to authenticate users into an Unqork environment
+
+         Environment Variables - The following Environment Variables are required
+         - key : key for encryption
+         - cipher : method of encryption. The default and recommended cipher is aes-256-gcm.
+
+         Include this refer string in the link to an Unqork resource as follows
+           ```
+           <hostname>?refer=<referString>/#/display/<resource_id>
+           ```
+           - hostname - host name of Unqork server
+           - referString - referString returned from API
+           - resource_id - Id of the Unqork resource to viewFor example, https://client.unqork.io?refer=<referString>/#/display/abcd123
+
+         Examples
+
+           Example 1: Generate Refer String for 1 day (default role)
+
+           Request
+
+           ```
+            {
+              "userId": "user123",
+              "expireOffset": 1,
+              "expireMeasure": "days"
+            }
+           ```
+
+           Response
+
+           ```
+            {
+              "referString": "<encrypted refer string>"
+            }
+           ```
+           Example 2: Generate Refer String for single use (recommended)
+
+           Request
+
+           ```
+            {
+              "userId": "user123",
+              "expireOffset": 1,
+              "expireMeasure": "days",
+              "oneTimeUse": true
+            }
+           ```
+
+           Response
+
+           ```
+            {
+              "referString": "<encrypted refer string>"
+            }
+           ```
+
+           Example 3: Generate Refer String for custom role
+
+           Request
+          ```
+            {
+              "userId": "user123",
+              "expireOffset": 1,
+              "expireMeasure": "days",
+              "additionalParams": {
+                "role": "customRole"
+              }
+            }
+          ```
+
+           Response
+          ```
+            {
+              "referString": "<encrypted refer string>"
+            }
+          ```
+
+           Example 4: Generate Refer String with custom user parameters
+
+           Request
+          ```
+            {
+              "userId": "user123",
+              "expireOffset": 1,
+              "expireMeasure": "days",
+              "additionalParams": {
+                "custom1": "custom value 1",
+                "custom1": "custom value 2",
+                "custom1": "custom value 3"
+              }
+            }
+          ```
+
+           Response
+          ```
+            {
+              "referString": "<encrypted refer string>"
+            }
+          ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReferStringRequest'
+      responses:
+        '200':
+          description: Successful Generation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - referString
+                properties:
+                  referString:
+                    description: The encrypted refer string containing user information
+                    type: string
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/modules/{moduleId}/submissions':
+    get:
+      x-unqork-service: true
+      tags:
+        - Submissions
+      summary: Get Module Submissions
+      operationId: getModuleSubmissions
+      description: Returns module submission objects for a given module. This is a paged endpoint (see Paging). Module submission data is transformed and returned in a specific format, based on the specified transform. JSON submission data is returned as an object, XML data is returned as a string, and PDF data is returned as a [Cloud Storage Delivery URL](#section/Cloud-Storage-Delivery) to the rendered PDF (and optionally base 64 data).
+      parameters:
+        - $ref: '#/components/parameters/ModuleID'
+        - name: transformName
+          in: query
+          description: Transform to apply to module for output. Transform must be configured and designated for for output. Available transforms may be listed via the /transforms endpoint
+          schema:
+            type: string
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+        - $ref: '#/components/parameters/SubmissionSortBy'
+        - $ref: '#/components/parameters/SubmissionSortOrder'
+        - $ref: '#/components/parameters/IncludeDeleted'
+        - $ref: '#/components/parameters/MetadataFilterString'
+        - name: includeRaw
+          in: query
+          description: Whether to include the untransformed raw submission data in addition to the transformed data. Raw submission data may contain [Cloud Storage Delivery URLs](#section/Cloud-Storage-Delivery).
+          schema:
+            type: boolean
+        - name: includeBase64
+          in: query
+          description: Whether to include base64 PDF data in addition to the PDF url (for "njk-pdf" transforms)
+          schema:
+            type: boolean
+        - name: resolveCloudStorageUrls
+          in: query
+          description: When `transformName` is specified, Cloud Storage URLs are already resolved to the original base64 value. When this flag is specified, resolve Cloud Storage URLs to base64 data inside "rawData", as well.
+          schema:
+            type: boolean
+        - $ref: '#/components/parameters/DataFields'
+        - name: filter
+          in: query
+          description: >
+            Filter conditions against submissions. Currently supported filter conditions are `userId`, `created`, and `modified`. The filters should be `;` separated, as shown below.
+            NOTE: When filtering on `created` and `modified`, all timestamps are in UTC.
+
+
+            Examples:
+              - `filter=userId=john@doe.com` will fetch all submissions owned by "john@doe.com"
+              - `filter=userId=john@doe.com;created>2019-06-11T21:50:57.067Z` will fetch all submissions owned by "john@doe.com" and created after "2019-06-11T21:50:57.067Z" (UTC)
+              - `filter=modified=2019-06-11T21:50:57.067Z` will fetch submissions modified at exactly "2019-06-11T21:50:57.067Z" (UTC)
+              - `filter=created>2019-06-11T00:00:00.000Z;created<2019-06-20T00:00:00.000Z` will fetch submissions created between "2019-06-11T00:00:00.000Z" (UTC) and "2019-06-20T00:00:00.000Z" (UTC)
+
+
+            Supported operators (as specified in this library [api-query-params](https://github.com/loris/api-query-params)):
+              - key=val  `type=public`
+              - key>val  `count>5`
+              - key>=val  `rating>=9.5`
+              - key<val  `createdAt<2016-01-01`
+              - key<=val  `score<=-5`
+              - key!=val  `status!=success`
+              - key=val1,val2  `country=GB,US`
+              - key!=val1,val2  `lang!=fr,en`
+              - key  `phone`
+              - !key  `!email`
+              - key=/value/<opts>  `email=/@gmail\.com$/i`
+              - key!=/value/<opts> `phone!=/^06/`
+
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Submissions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RetrievedSubmissionResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      x-unqork-service: true
+      tags:
+        - Submissions
+      summary: Create Module Submission(s)
+      operationId: createModuleSubmissions
+      description: Creates one or more new module submission. Submission ID is auto-generated and returned. Module submission data must be provided as a JSON object. In case of multiple submissions, Request Body must contain an Array of below defined request body structure. Max Limit per request is 50.
+      parameters:
+        - $ref: '#/components/parameters/ModuleID'
+        - name: transformName
+          in: query
+          description: Transform to apply to module for input. Transform must be configured and designated for for input. Available transform types may be listed via the /transforms endpoint.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewSubmissionRequest'
+      responses:
+        '201':
+          description: Submission created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SavedSubmissionResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      x-unqork-service: true
+      tags:
+        - Submissions
+      summary: Update Multiple Module Submissions
+      operationId: updateModuleSubmissions
+      description: >
+        Updates multiple module submissions. This operation supports partial "data" updates,
+        i.e. data that is sent in "data" may include some but not all of the submission data.
+        Partial metadata updates are supported without including the entire metadata object.
+        To increment a numeric data key (will also initialize), use "incrementData"
+        To delete a data key, use "unsetData".
+        To delete a metadata key, use "unsetMetadata".
+        To replace the entire data object, use the "replaceData" flag.
+        Module submission data must be provided as a JSON object.
+        Max Limit per request is 50.
+      parameters:
+        - $ref: '#/components/parameters/ModuleID'
+        - name: replaceData
+          in: query
+          description: Whether to completely replace the submission data with the object passed in "data". This option is available to "Administrator" users only.
+          schema:
+            type: boolean
+            default: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateSubmissionsRequest'
+      responses:
+        '200':
+          description: Submission updates
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdatedSubmissionsResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      x-unqork-service: true
+      tags:
+        - Submissions
+      summary: Deletes Multiple Module Submissions
+      operationId: deleteModuleSubmissions
+      description: >
+        Deletes multiple module submission based on the ID supplied.
+        Note that module submissions are soft-deleted (marked deleted, but not removed).
+        Default Max Limit per request is 50
+      parameters:
+        - $ref: '#/components/parameters/ModuleID'
+        - name: destroy
+          in: query
+          description: Whether to hard delete the submission from database. Value of 'destroy=true' will delete the submission. This option requires administrator privileges. Once deleted, the submission cannot be retrieved.
+          schema:
+            type: boolean
+            default: false
+        - name: ids
+          in: query
+          description: >
+            A comma seperated list of the ids required to be deleted.
+            Note - Max limit is 50 Per Request
+            Example - ?ids=id1,id2,id3....
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Submission deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdatedSubmissionsResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/modules/{moduleId}/submissions/{submissionId}':
+    get:
+      x-unqork-service: true
+      tags:
+        - Submissions
+      summary: Get Module Submission
+      operationId: getModuleSubmission
+      description: Gets a single module submission. Module submission data is transformed and returned is a specific format, based on the specified transform. JSON submission data is returned as an object, XML data is returned as a string, and PDF data is returned as a [Cloud Storage Delivery URL](#section/Cloud-Storage-Delivery) to the rendered PDF (and optionally base 64 data).
+      parameters:
+        - $ref: '#/components/parameters/ModuleID'
+        - name: submissionId
+          in: path
+          description: ID of module submission to retrieve
+          required: true
+          schema:
+            type: string
+        - name: transformName
+          in: query
+          description: Transform to apply to module for output. Transform must be configured and designated for for output. Available transforms may be listed via the /transforms endpoint
+          schema:
+            type: string
+        - name: includeRaw
+          in: query
+          description: Whether to include the untransformed raw submission data in addition to the transformed data. Raw submission data may contain [Cloud Storage Delivery URLs](#section/Cloud-Storage-Delivery).
+          schema:
+            type: boolean
+        - name: includeBase64
+          in: query
+          description: Whether to include base64 PDF data in addition to the PDF url (for "njk-pdf" transforms)
+          schema:
+            type: boolean
+        - name: resolveCloudStorageUrls
+          in: query
+          description: When `transformName` is specified, Cloud Storage URLs are already resolved to the original base64 value. When this flag is specified, resolve Cloud Storage URLs to base64 data inside "rawData", as well.
+          schema:
+            type: boolean
+        - $ref: '#/components/parameters/DataFields'
+      responses:
+        '200':
+          description: Submission
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetrievedSubmissionResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      x-unqork-service: true
+      tags:
+        - Submissions
+      summary: Update Module Submission
+      operationId: updateModuleSubmission
+      description: >
+        Updates a single module submission. This operation supports partial "data" updates,
+        i.e. data that is sent in "data" may include some but not all of the submission data.
+        Partial metadata updates are supported without including the entire metadata object.
+        To increment a numeric data key (will also initialize), use "incrementData"
+        To delete a data key, use "unsetData".
+        To delete a metadata key, use "unsetMetadata".
+        Module submission data must be provided as a JSON object.
+      parameters:
+        - $ref: '#/components/parameters/ModuleID'
+        - name: submissionId
+          in: path
+          description: ID of module submission to update
+          required: true
+          schema:
+            type: string
+        - name: transformName
+          in: query
+          description: Transform to apply to module for input. Transform must be configured and designated for for input. Available transform types may be listed via the /transforms endpoint.
+          schema:
+            type: string
+        - name: replaceData
+          in: query
+          description: Whether to completely replace the submission data with the object passed in "data". This option is available to "Administrator" users only.
+          schema:
+            type: boolean
+            default: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatedSubmissionRequest'
+      responses:
+        '200':
+          description: Submission updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SavedSubmissionResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - Submissions
+      summary: Delete Module Submission
+      operationId: deleteModuleSubmission
+      description: Deletes a single module submission based on the ID supplied. Note that module submissions are soft-deleted (marked deleted, but not removed).
+      parameters:
+        - $ref: '#/components/parameters/ModuleID'
+        - name: submissionId
+          in: path
+          description: ID of module submission to delete
+          required: true
+          schema:
+            type: string
+        - name: destroy
+          in: query
+          description: Whether to hard delete the submission from database. Value of 'destroy=true' will delete the submission. This option requires administrator privileges. Once deleted, the submission cannot be retrieved back.
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '204':
+          description: Submission deleted
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/modules/{moduleId}/submissions/{submissionId}/revisions':
+    get:
+      x-unqork-service: true
+      tags:
+        - Revisions
+      summary: Get Module Submission Revisions
+      operationId: getModuleSubmissionRevisions
+      description: Get all revisions for a submission. The data field is left empty.
+      parameters:
+        - $ref: '#/components/parameters/ModuleID'
+        - name: submissionId
+          in: path
+          description: ID of module submission to retrieve revisions for
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+        - $ref: '#/components/parameters/SubmissionSortBy'
+        - $ref: '#/components/parameters/SubmissionSortOrder'
+        - $ref: '#/components/parameters/MetadataFilterString'
+      responses:
+        '200':
+          description: Revisions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RetrievedRevisionResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/modules/{moduleId}/submissions/{submissionId}/revisions/{revisionId}':
+    get:
+      x-unqork-service: true
+      tags:
+        - Revisions
+      summary: Get Module Submission Revision
+      operationId: getModuleSubmissionRevision
+      description: Gets a single revision for a submission. Revision data is transformed and returned in a specific format, based on the specified transform. JSON revisions data is returned as an object, XML data is returned as a string, and PDF data is returned as a [Cloud Storage Delivery URL](#section/Cloud-Storage-Delivery) to the rendered PDF (and optionally base 64 data).
+      parameters:
+        - $ref: '#/components/parameters/ModuleID'
+        - name: submissionId
+          in: path
+          description: ID of module submission to retrieve revisions for
+          required: true
+          schema:
+            type: string
+        - name: revisionId
+          in: path
+          description: ID of the particular submission revision to retrieve. To retrieve all submission revisions, do not include this path parameter
+          required: true
+          schema:
+            type: string
+        - name: transformName
+          in: query
+          description: Transform to apply to module for output. Transform must be configured and designated for output. Available transforms may be listed via the /transforms endpoint. Only available for single revisions
+          schema:
+            type: string
+        - name: includeRaw
+          in: query
+          description: Whether to include the untransformed raw submission data in addition to the transformed data. Raw submission data may contain [Cloud Storage Delivery URLs](#section/Cloud-Storage-Delivery). Only available for single revisions
+          schema:
+            type: boolean
+        - name: includeBase64
+          in: query
+          description: Whether to include base64 PDF data in addition to the PDF url (for "njk-pdf" transforms). Only available for single revisions
+          schema:
+            type: boolean
+        - name: resolveCloudStorageUrls
+          in: query
+          description: When `transformName` is specified, Cloud Storage URLs are already resolved to the original base64 value. When this flag is specified, resolve Cloud Storage URLs to base64 data inside "rawData", as well. Only available for single revisions
+          schema:
+            type: boolean
+        - $ref: '#/components/parameters/DataFields'
+      responses:
+        '200':
+          description: Revision
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetrievedRevisionResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/modules/{moduleId}/submissions/{submissionId}/restore':
+    post:
+      x-unqork-service: true
+      tags:
+        - Submissions
+      summary: Restore a Deleted Module Submission
+      operationId: restoreDeletedModuleSubmission
+      description: Restore a soft-deleted submission.
+      parameters:
+        - $ref: '#/components/parameters/ModuleID'
+        - name: submissionId
+          in: path
+          description: ID of module submission to restore
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Successfully Restored
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/workflows/{workflowId}/submissions/{submissionId}/revisions':
+    get:
+      x-unqork-service: true
+      tags:
+        - Revisions
+      summary: Get Workflow Submission Revisions
+      operationId: getWorkflowSubmissionRevisions
+      description: Gets all revisions for a submission. The data field is left empty.
+      parameters:
+        - $ref: '#/components/parameters/WorkflowID'
+        - name: submissionId
+          in: path
+          description: ID of workflow submission to retrieve revisions for
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+        - $ref: '#/components/parameters/SubmissionSortBy'
+        - $ref: '#/components/parameters/SubmissionSortOrder'
+        - $ref: '#/components/parameters/MetadataFilterString'
+      responses:
+        '200':
+          description: Revisions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RetrievedRevisionResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/workflows/{workflowId}/submissions/{submissionId}/revisions/{revisionId}':
+    get:
+      x-unqork-service: true
+      tags:
+        - Revisions
+      summary: Get Workflow Submission Revision
+      operationId: getWorkflowSubmissionRevision
+      description: Gets a single revision for a submission. Revision data is transformed and returned is a specific format, based on the specified transform. JSON revisions data is returned as an object, XML data is returned as a string, and PDF data is returned as a [Cloud Storage Delivery URL](#section/Cloud-Storage-Delivery) to the rendered PDF (and optionally base 64 data).
+      parameters:
+        - $ref: '#/components/parameters/WorkflowID'
+        - name: submissionId
+          in: path
+          description: ID of workflow submission to retrieve revisions for
+          required: true
+          schema:
+            type: string
+        - name: revisionId
+          in: path
+          description: ID of the particular submission revision to retrieve. To retrieve all submission revisions, do not include this path parameter
+          required: true
+          schema:
+            type: string
+        - name: transformName
+          in: query
+          description: Transform to apply to workflow for output. Transform must be configured and designated for output. Available transforms may be listed via the /transforms endpoint. Only available for single revisions
+          schema:
+            type: string
+        - name: includeRaw
+          in: query
+          description: Whether to include the untransformed raw submission data in addition to the transformed data. Raw submission data may contain [Cloud Storage Delivery URLs](#section/Cloud-Storage-Delivery). Only available for single revisions
+          schema:
+            type: boolean
+        - name: includeBase64
+          in: query
+          description: Whether to include base64 PDF data in addition to the PDF url (for "njk-pdf" transforms). Only available for single revisions
+          schema:
+            type: boolean
+        - name: resolveCloudStorageUrls
+          in: query
+          description: When `transformName` is specified, Cloud Storage URLs are already resolved to the original base64 value. When this flag is specified, resolve Cloud Storage URLs to base64 data inside "rawData", as well. Only available for single revisions
+          schema:
+            type: boolean
+        - $ref: '#/components/parameters/DataFields'
+      responses:
+        '200':
+          description: Revision
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetrievedRevisionResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/workflows/{workflowId}/submissions/{submissionId}/restore':
+    post:
+      x-unqork-service: true
+      tags:
+        - Submissions
+      summary: Restore a Deleted Workflow Submission
+      operationId: restoreDeletedWorkflowSubmission
+      description: Restore a soft-deleted submission.
+      parameters:
+        - $ref: '#/components/parameters/WorkflowID'
+        - name: submissionId
+          in: path
+          description: ID of workflow submission to restore
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Successfully Restored
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/workflows/{workflowPath}/timerstart':
+    get:
+      x-unqork-service: true
+      tags:
+        - Workflow
+      summary: List of timer start nodes and statuses
+      operationId: listTimerStartNodes
+      description: Get a list of all timer start nodes and their activity status in a workflow
+      parameters:
+        - $ref: '#/components/parameters/WorkflowPath'
+      responses:
+        '200':
+          description: List of timer start nodes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetrievedTimerStartResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/workflows/{workflowPath}/timedEvents/{submissionId}':
+    get:
+      x-unqork-service: true
+      tags:
+        - Workflow
+      summary: List of Timed Events for Submission Id
+      operationId: listTimedEventsBySubmissionId
+      description: Get a list of all timed events that have been queued for a submission Id
+      parameters:
+        - $ref: '#/components/parameters/WorkflowPath'
+        - name: submissionId
+          in: path
+          description: ID of workflow submission to retrieve
+          required: true
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: Status of timed event action
+          required: false
+          schema:
+            type: string
+            enum:
+            - ACTIVE
+            - CANCELLED
+            - EXECUTED
+            - EXECUTION_FAILED
+            - SLA_TRACKING_ERROR
+        - name: actionType
+          in: query
+          description: Type of action
+          required: false
+          schema:
+            type: string
+            enum:
+            - message
+            - changePath
+        - name: timedEventNode
+          in: query
+          description: Path of timed event node the action is part of
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of timed event actions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetrievedTimedEventsBySubmissionIdResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/workflows/{workflowPath}/timerstart/{timerStartNodePath}/start':
+    post:
+      x-unqork-service: true
+      tags:
+        - Workflow
+      summary: Start a Timer Start Node
+      operationId: startTimerStartNode
+      description: Trigger a timer start node to start which will create and execute workflow submissions at the configured frequency
+      parameters:
+        - $ref: '#/components/parameters/WorkflowPath'
+        - $ref: '#/components/parameters/TimerStartNodePath'
+      responses:
+        '200':
+          description: TimerStart node sucessfully started
+        '404':
+          description: Timer start node not found'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/workflows/{workflowPath}/timerstart/{timerStartNodePath}/stop':
+    post:
+      x-unqork-service: true
+      tags:
+        - Workflow
+      summary: Stop a Timer Start Node
+      operationId: stopTimerStartNode
+      description: Trigger a timer start node to stop which will cancel the scheduled creation and execution of workflow submissions
+      parameters:
+        - $ref: '#/components/parameters/WorkflowPath'
+        - $ref: '#/components/parameters/TimerStartNodePath'
+      responses:
+        '200':
+          description: Deleted {deleteCount} start timer node queued jobs
+        '404':
+          description: Timer start node not found
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/workflows/{workflowPath}/timerstart/{timerStartNodePath}/run-once':
+    post:
+      x-unqork-service: true
+      tags:
+        - Workflow
+      summary: Run a Timer Start Node Once (Test Run)
+      operationId: runTimerStartNodeOnce
+      description: Trigger a timer start node to run once (test run) which will create and execute a workflow submission a single time
+      parameters:
+        - $ref: '#/components/parameters/WorkflowPath'
+        - $ref: '#/components/parameters/TimerStartNodePath'
+      responses:
+        '200':
+          description: TimerStart node sucessfully started for single run
+        '404':
+          description: Timer start node not found
+        '400':
+          description: TimerStart run once is already running
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /submissions:
+    get:
+      tags:
+        - Submissions
+      summary: Get Submissions Across Modules and Workflows
+      operationId: getAllSubmissions
+      description: Returns submission objects across all modules and workflows. This is a paged endpoint (see Paging). This endpoint is available to "Administrator" users only.
+      parameters:
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+        - $ref: '#/components/parameters/SubmissionSortBy'
+        - $ref: '#/components/parameters/SubmissionSortOrder'
+        - $ref: '#/components/parameters/IncludeDeleted'
+        - $ref: '#/components/parameters/MetadataFilterString'
+        - $ref: '#/components/parameters/DataFields'
+      responses:
+        '200':
+          description: Submissions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RetrievedSubmissionResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /submissions/merge/{submissionIds}:
+    get:
+      x-unqork-service: true
+      tags:
+        - Submissions
+      summary: Get Merged Submissions
+      operationId: getMergedSubmissions
+      description: Submission super access is required. This endpoint returns the merged submission object across provided submission ids. The submissions are merged in the order specified by sortOrder and sortBy. If not specified, the submission objects are applied from left to right. Subsequent submission overwrite property assignment of previous sources.
+      parameters:
+        - name: submissionIds
+          in: path
+          description: A comma separated list of submission ids to merge.
+          required: true
+          schema:
+            type: string
+        - name: conflictCheckFields
+          in: query
+          description: A comma separated list of fields to report conflicts on.
+          schema:
+            type: string
+        - name: reportConflicts
+          in: query
+          description: If `reportConflicts` is specified, an array called 'conflicts' will be appended at the top level of the object.
+          schema:
+            type: string
+        - name: sortBy
+          in: query
+          description: A comma separated list of fields to sort by.
+          required: false
+          schema:
+            type: string
+        - name: sortOrder
+          in: query
+          description: A comma separated list of sort orders. If `sortOrder` is unspecified, all values are sorted in ascending order. Otherwise, specify an order of "desc" for descending or "asc" for ascending sort order of corresponding values.
+          required: false
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+            default: asc
+      responses:
+        '200':
+          description: Submissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetrievedSubmissionMergeResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /users:
+    get:
+      tags:
+        - Users
+      summary: Get Users
+      operationId: getUsers
+      description: Returns user objects. This is a paged endpoint (see Paging). This endpoint is available to "Administrator" users only.
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of results to return (default 50, maximum 500)
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 50
+            maximum: 500
+        - name: sort
+          in: query
+          description: Field to sort by. Use [field name] for ascending and -[field name] for descending order. You can `,` seperate for multiple sort orders.
+          required: false
+          schema:
+            type: string
+        - name: filter
+          in: query
+          description: >
+            Filter conditions for searching users, formatted like `?filter=name=Bill`. The filters should be `;` separated, as shown below. Supported fields are "role", "name", "phone", "email", "userId", "groups", "applicationRoles". All filter conditions are "starts with".
+            NOTE: When filtering on `created` and `modified`, all timestamps are in UTC.
+            You need to encode reserved url characters if they are part of the data you are filtering.  Example, * ' ( ) : @ & = + $ , / ? % # [ ]
+            You need to double encode `;` as `%253B` if it is a part of the data you are filtering.
+
+
+            Examples:
+              - `filter=email=john@doe.com` will fetch all users starting with email "john@doe.com"
+              - `filter=role=Admin;created>2019-06-11T21:50:57.067Z` will fetch all user with role starting with "Admin" and created after "2019-06-11T21:50:57.067Z" (UTC)
+              - `filter=modified=2019-06-11T21:50:57.067Z` will fetch users modified at exactly "2019-06-11T21:50:57.067Z" (UTC)
+              - `filter=created>2019-06-11T00:00:00.000Z;created<2019-06-20T00:00:00.000Z` will fetch users created between "2019-06-11T00:00:00.000Z" (UTC) and "2019-06-20T00:00:00.000Z" (UTC)
+
+
+            Supported operators (as specified in this library [api-query-params](https://github.com/loris/api-query-params)):
+              - key=val  `type=public`
+              - key>val  `count>5`
+              - key>=val  `rating>=9.5`
+              - key<val  `createdAt<2016-01-01`
+              - key<=val  `score<=-5`
+              - key!=val  `status!=success`
+              - key=val1,val2  `country=GB,US`
+              - key!=val1,val2  `lang!=fr,en`
+              - key  `phone`
+              - !key  `!email`
+              - key=/value/<opts>  `email=/@gmail\.com$/i`
+              - key!=/value/<opts> `phone!=/^06/`
+
+          schema:
+            type: string
+        - name: showServiceUsers
+          in: query
+          description: >
+            Whether to allow show all users or all non service users.
+            Note - The value should be passed as true/false
+
+            Examples:
+              - `showServiceUsers=true` will show all the users in the system
+              - `showServiceUsers=false` will show all the non service users
+              - If the argument is not passed, by default all non service users will be displayed.
+
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - Users
+      summary: Create User
+      operationId: createUser
+      description: Creates a new user. If userId is not specified, it is auto-generated and returned. This endpoint is available to "Administrator" users only.
+      parameters:
+        - name: shouldNotify
+          in: query
+          description: Whether to notify the user via email of their temporary password.
+          schema:
+            type: boolean
+        - name: skipTemporaryPassword
+          in: query
+          description: Whether to set the user's password as permanent immediately. A password must be provided in the body if this flag is set. This flag cannot be used if "shouldNotify" is also set.
+          schema:
+            type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPost'
+      responses:
+        '201':
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/users/{userId}':
+    get:
+      tags:
+        - Users
+      summary: Get User
+      operationId: getUser
+      description: Returns a user object based on a user ID. This endpoint is available to "Administrator" users only.
+      parameters:
+        - name: userId
+          in: path
+          description: ID of user to retrieve
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+        - Users
+      summary: Update User
+      operationId: updateUser
+      description: Updates a single user. Partial updates are supported. To delete a specific custom attribute, pass null for that attribute. This endpoint is available to "Administrator" users only.
+      parameters:
+        - name: userId
+          in: path
+          description: ID of user to update
+          required: true
+          schema:
+            type: string
+        - name: shouldNotify
+          in: query
+          description: Whether to notify the user via email of their temporary password (only works if the user never changed their temporary password). This option MUST be specified if you want to change the user's temporary password to a different temporary password.
+          schema:
+            type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPut'
+      responses:
+        '200':
+          description: User updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - Users
+      summary: Delete User
+      operationId: deleteUser
+      description: >
+        Deletes a user based on the user ID supplied. Note that users are hard-deleted, and this is not reversible. This endpoint is available to "Administrator" users only.
+        If a user is a system user, it cannot be deleted.
+      parameters:
+        - name: userId
+          in: path
+          description: ID of user to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: User deleted
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/users/{userId}/passwordStatus':
+    get:
+      tags:
+        - Users
+      summary: Get User Password Status
+      operationId: getUserPasswordStatus
+      description: Returns the user's password status based on a user ID. This endpoint is available to "Administrator" users only.
+      parameters:
+        - name: userId
+          in: path
+          description: ID of user to retrieve
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User Password Status
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - userId
+                  - passwordStatus
+                properties:
+                  userId:
+                    type: string
+                  passwordStatus:
+                    type: string
+                    description: >
+                      Status of the user's password:
+
+                      * `TEMPORARY` - User must change password at first login. If temporary password has expired, a new one must be resent using PUT.
+
+                      * `OK` - User has already changed their temporary password.
+
+                      * `N/A` - Not applicable
+                    enum:
+                      - OK
+                      - TEMPORARY
+                      - N/A
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /groups:
+    get:
+      tags:
+        - Groups
+      summary: Get Groups
+      operationId: getGroups
+      description: Returns group objects. This is a paged endpoint (see Paging). This endpoint is available to "Administrator" users only.
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of results to return (default 1000, maximum 1000)
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 1000
+            maximum: 1000
+      responses:
+        '200':
+          description: Groups
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Group'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - Groups
+      summary: Create Group
+      operationId: createGroup
+      description: Creates a new group. This endpoint is available to "Administrator" users only.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupPost'
+      responses:
+        '201':
+          description: Group created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/groups/{groupName}':
+    get:
+      tags:
+        - Groups
+      summary: Get Group
+      operationId: getGroup
+      description: Returns a group object based on a group name. This endpoint is available to "Administrator" users only.
+      parameters:
+        - name: groupName
+          in: path
+          description: Name of group to retrieve
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Group
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+        - Groups
+      summary: Update Group
+      operationId: updateGroup
+      description: Updates a single group. Partial updates are supported. This endpoint is available to "Administrator" users only.
+      parameters:
+        - name: groupName
+          in: path
+          description: Name of group to update
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupPut'
+      responses:
+        '200':
+          description: Group updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - Groups
+      summary: Delete Group
+      operationId: deleteGroup
+      description: Deletes a group based on the group name supplied. Note that groups are hard-deleted, and this is not reversible. This endpoint is available to "Administrator" users only.
+      parameters:
+        - name: groupName
+          in: path
+          description: Name of group to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Group deleted
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /modules/{moduleId}/transforms:
+    get:
+      tags:
+        - Transforms
+      summary: Get Transforms
+      operationId: getTransforms
+      description: Returns transform objects. This is a paged endpoint (see Paging). This endpoint is available to "Administrator" users only.
+      parameters:
+        - $ref: '#/components/parameters/ModuleID'
+        - name: limit
+          in: query
+          description: Maximum number of results to return (default 50, maximum 1000)
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 50
+            maximum: 1000
+      responses:
+        '200':
+          description: Transforms
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TransformResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - Transforms
+      summary: Create Transform
+      operationId: createTransform
+      description: Creates a new transform. This endpoint is available to "Administrator" users only.
+      parameters:
+        - $ref: '#/components/parameters/ModuleID'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransformPost'
+      responses:
+        '201':
+          description: Transform created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransformResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/modules/{moduleId}/transforms/{transformName}':
+    get:
+      tags:
+        - Transforms
+      summary: Get Transform
+      operationId: getTransform
+      description: Returns a transform object based on a module ID and transform name. This endpoint is available to "Administrator" users only.
+      parameters:
+        - $ref: '#/components/parameters/ModuleID'
+        - name: transformName
+          in: path
+          description: Name of transform
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Transform
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransformResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+        - Transforms
+      summary: Update Transform
+      operationId: updateTransform
+      description: Updates a single transform. This endpoint is available to "Administrator" users only.
+      parameters:
+        - $ref: '#/components/parameters/ModuleID'
+        - name: transformName
+          in: path
+          description: Name of transform to update
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransformPut'
+      responses:
+        '200':
+          description: Transform updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransformResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - Transforms
+      summary: Delete Transform
+      operationId: deleteTransform
+      description: Deletes a transform based on the transform name supplied. This endpoint is available to "Administrator" users only.
+      parameters:
+        - $ref: '#/components/parameters/ModuleID'
+        - name: transformName
+          in: path
+          description: Name of transform to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Transform deleted
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /modules:
+    get:
+      tags:
+        - Modules
+      summary: Get Modules
+      operationId: getModules
+      description: Returns module objects. This is a paged endpoint (see Paging). This endpoint is available to "Administrator" users only.
+      parameters:
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Modules
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ModuleResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/modules/{moduleId}':
+    get:
+      tags:
+        - Modules
+      summary: Get Module
+      operationId: getModule
+      description: Returns a module object based on a module ID. This endpoint is available to "Administrator" users only.
+      parameters:
+        - name: moduleId
+          in: path
+          description: ID of module to retrieve
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Module
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModuleResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/modules/{moduleId}/restore':
+    post:
+      tags:
+        - Modules
+      summary: Restore a Deleted Module
+      operationId: restoreDeletedModule
+      description: >
+        Restores a soft-deleted module.
+      parameters:
+        - name: moduleId
+          in: path
+          description: ID of module to restore
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: >
+          NOTE: Any of the options below will override existing relationships the module had at the time of deletion.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                shareToEnvironment:
+                  description: >
+                    Whether to share the module to the environment
+
+
+                    NOTE: If specified, request cannot include `workspaceId` or `applicationId`.
+                  type: boolean
+                workspaceId:
+                  description: >
+                    Workspace ID module will be shared with
+
+
+
+                    Examples
+
+                      Restore and share to workspace ID: `6053e968afcc293120198785`
+
+                      Request
+
+                      ```
+                       {
+                         "workspaceId": "6053e968afcc293120198785",
+                       }
+                      ```
+
+
+                    NOTE: If `applicationId` also specified, will connect the module to the application (the application must be part of the workspace)
+
+
+                    Restore and connect to application `6078e938d87660707f31c624` in workspace `6053e968afcc293120198785`
+
+                     Request
+
+                     ```
+                      {
+                        "workspaceId": "6053e968afcc293120198785",
+                        "applicationId": "6078e938d87660707f31c624"
+                      }
+                     ```
+
+                  type: string
+                applicationId:
+                  description: >
+                    Application ID to which the module will be restored (will not share the module)
+
+
+                    Example
+
+                     Request
+
+                     ```
+                      {
+                        "applicationId": "6078e938d87660707f31c624"
+                      }
+                     ```
+                  type: string
+      responses:
+        '204':
+          description: Successfully Restored
+        '422':
+          description: App/workspace relationship does not exist/or options specified are invalid
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/modules/{moduleId}/execute':
+    put:
+      x-unqork-service: true
+      tags:
+        - Modules
+      summary: Execute Module
+      operationId: executeModule
+      description: >
+        Execute module rules/validations configured in specified module with specified submission data, optionally save data.
+        The response will include the saved submission data that would be available in the specified module.
+      parameters:
+        - name: moduleId
+          in: path
+          description: ID of module to use to execute submission
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModuleExecuteRequest'
+      responses:
+        '200':
+          description: Submission executed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModuleExecuteResponse'
+        '412':
+          description: Validation and/or execution error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailedExecuteResponse'
+        '2XX':
+          description: Custom HTTP status code if set by server side execution for API modules
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/ModuleExecuteResponse'
+        '4XX':
+          description: Custom HTTP status code if set by server side execution for API modules
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailedExecuteResponse'
+        '5XX':
+          description: Custom HTTP status code if set by server side execution for API modules
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /modules/{moduleId}/api:
+    get:
+      x-unqork-service: true
+      tags:
+        - Modules
+      summary: Execute via Proxy - GET
+      operationId: apiProxySSEGet
+      description: >
+        API request layer for Server Side Execute to allow HTTPS calls to Execute a Module.
+        The path and query string are flexible.
+      parameters:
+        - name: moduleId
+          in: path
+          description: >
+            The module specified by moduleId must meet the following requirements -
+              - It MUST be marked as Server-side Execute Only
+              - It MAY be marked as anonymous
+              - It MAY reference a submission data getter for object key _request
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Submission validated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModuleExecuteResponse'
+        '412':
+          description: Validation and/or execution error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailedExecuteResponse'
+        '2XX':
+          description: Custom HTTP status code if set by server side execution for API modules
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/ModuleExecuteResponse'
+        '4XX':
+          description: Custom HTTP status code if set by server side execution for API modules
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailedExecuteResponse'
+        '5XX':
+          description: Custom HTTP status code if set by server side execution for API modules
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      x-unqork-service: true
+      tags:
+        - Modules
+      summary: Execute via Proxy - POST
+      operationId: apiProxySSEPost
+      description: >
+        API request layer for Server Side Execute to allow HTTPS calls to Execute a Module.
+        The request format is flexible and may include files, text, xml or JSON Object.
+        The path and query string are also flexible.
+      parameters:
+        - name: moduleId
+          in: path
+          description: >
+            The module specified by moduleId must meet the following requirements -
+              - It MUST be marked as Server-side Execute Only
+              - It MAY be marked as anonymous
+              - It MAY reference a submission data getter for object key _request
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Submission validated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModuleExecuteResponse'
+        '412':
+          description: Validation and/or execution error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailedExecuteResponse'
+        '2XX':
+          description: Custom HTTP status code if set by server side execution for API modules
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/ModuleExecuteResponse'
+        '4XX':
+          description: Custom HTTP status code if set by server side execution for API modules
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailedExecuteResponse'
+        '5XX':
+          description: Custom HTTP status code if set by server side execution for API modules
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      x-unqork-service: true
+      tags:
+        - Modules
+      summary: Execute via Proxy - PUT
+      operationId: apiProxySSEPut
+      description: >
+        API request layer for Server Side Execute to allow HTTPS calls to Execute a Module.
+        The request format is flexible and may include files, text, xml or JSON Object.
+        The path and query string are also flexible.
+      parameters:
+        - name: moduleId
+          in: path
+          description: >
+            The module specified by moduleId must meet the following requirements -
+              - It MUST be marked as Server-side Execute Only
+              - It MAY be marked as anonymous
+              - It MAY reference a submission data getter for object key _request
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Submission validated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModuleExecuteResponse'
+        '412':
+          description: Validation and/or execution error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailedExecuteResponse'
+        '2XX':
+          description: Custom HTTP status code if set by server side execution for API modules
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/ModuleExecuteResponse'
+        '4XX':
+          description: Custom HTTP status code if set by server side execution for API modules
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailedExecuteResponse'
+        '5XX':
+          description: Custom HTTP status code if set by server side execution for API modules
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      x-unqork-service: true
+      tags:
+        - Modules
+      summary: Execute via Proxy - PATCH
+      operationId: apiProxySSEPatch
+      description: >
+        API request layer for Server Side Execute to allow HTTPS calls to Execute a Module.
+        The request format is flexible and may include files, text, xml or JSON Object.
+        The path and query string are also flexible.
+      parameters:
+        - name: moduleId
+          in: path
+          description: >
+            The module specified by moduleId must meet the following requirements -
+              - It MUST be marked as Server-side Execute Only
+              - It MAY be marked as anonymous
+              - It MAY reference a submission data getter for object key _request
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Submission validated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModuleExecuteResponse'
+        '412':
+          description: Validation and/or execution error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailedExecuteResponse'
+        '2XX':
+          description: Custom HTTP status code if set by server side execution for API modules
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/ModuleExecuteResponse'
+        '4XX':
+          description: Custom HTTP status code if set by server side execution for API modules
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailedExecuteResponse'
+        '5XX':
+          description: Custom HTTP status code if set by server side execution for API modules
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      x-unqork-service: true
+      tags:
+        - Modules
+      summary: Execute via Proxy - DELETE
+      operationId: apiProxySSEDelete
+      description: >
+        API request layer for Server Side Execute to allow HTTPS calls to Execute a Module.
+        The path and query string are flexible.
+      parameters:
+        - name: moduleId
+          in: path
+          description: >
+            The module specified by moduleId must meet the following requirements -
+              - It MUST be marked as Server-side Execute Only
+              - It MAY be marked as anonymous
+              - It MAY reference a submission data getter for object key _request
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Submission validated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModuleExecuteResponse'
+        '412':
+          description: Validation and/or execution error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailedExecuteResponse'
+        '2XX':
+          description: Custom HTTP status code if set by server side execution for API modules
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/ModuleExecuteResponse'
+        '4XX':
+          description: Custom HTTP status code if set by server side execution for API modules
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailedExecuteResponse'
+        '5XX':
+          description: Custom HTTP status code if set by server side execution for API modules
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/modules/{moduleId}/accessibleDataCollections':
+    get:
+      tags:
+        - Data Collections
+      summary: Get Module Accessible Data Collections
+      operationId: getDataCollectionList
+      description: Returns an array of objects containing the data collections name
+      parameters:
+        - name: moduleId
+          in: path
+          description: ID of module to retrieve
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Data Collections
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    iname:
+                        type: string
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/workflows/{workflowId}/submissions':
+    get:
+      x-unqork-service: true
+      tags:
+        - Submissions
+      summary: Get Workflow Submissions
+      operationId: getWorkflowSubmissions
+      description: Returns workflow submission objects for a given workflow. This is a paged endpoint (see Paging). Workflow submission data is transformed and returned in a specific format, based on the specified transform. JSON submission data is returned as an object, XML data is returned as a string, and PDF data is returned as a [Cloud Storage Delivery URL](#section/Cloud-Storage-Delivery) to the rendered PDF (and optionally base 64 data).
+      parameters:
+        - $ref: '#/components/parameters/WorkflowID'
+        - name: transformName
+          in: query
+          description: Transform to apply to form for output. Transform must be configured and designated for for output. Available transforms may be listed via the /transforms endpoint
+          schema:
+            type: string
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+        - $ref: '#/components/parameters/SubmissionSortBy'
+        - $ref: '#/components/parameters/SubmissionSortOrder'
+        - $ref: '#/components/parameters/IncludeDeleted'
+        - $ref: '#/components/parameters/MetadataFilterString'
+        - name: includeRaw
+          in: query
+          description: Whether to include the untransformed raw submission data in addition to the transformed data. Raw submission data may contain [Cloud Storage Delivery URLs](#section/Cloud-Storage-Delivery).
+          schema:
+            type: boolean
+        - name: includeBase64
+          in: query
+          description: Whether to include base64 PDF data in addition to the PDF url (for "njk-pdf" transforms)
+          schema:
+            type: boolean
+        - name: resolveCloudStorageUrls
+          in: query
+          description: When `transformName` is specified, Cloud Storage URLs are already resolved to the original base64 value. When this flag is specified, resolve Cloud Storage URLs to base64 data inside "rawData", as well.
+          schema:
+            type: boolean
+        - $ref: '#/components/parameters/DataFields'
+        - name: filter
+          in: query
+          description: >
+            Filter conditions against submissions. Currently supported filter conditions are `userId`, `created`, and `modified`. The filters should be `;` separated, as shown below.
+            NOTE: When filtering on `created` and `modified`, all timestamps are in UTC.
+
+
+            Examples:
+              - `filter=userId=john@doe.com` will fetch all submissions owned by "john@doe.com"
+              - `filter=userId=john@doe.com;created>2019-06-11T21:50:57.067Z` will fetch all submissions owned by "john@doe.com" and created after "2019-06-11T21:50:57.067Z" (UTC)
+              - `filter=modified=2019-06-11T21:50:57.067Z` will fetch submissions modified at exactly "2019-06-11T21:50:57.067Z" (UTC)
+              - `filter=created>2019-06-11T00:00:00.000Z;created<2019-06-20T00:00:00.000Z` will fetch submissions created between "2019-06-11T00:00:00.000Z" (UTC) and "2019-06-20T00:00:00.000Z" (UTC)
+
+
+            Supported operators (as specified in this library [api-query-params](https://github.com/loris/api-query-params)):
+              - key=val  `type=public`
+              - key>val  `count>5`
+              - key>=val  `rating>=9.5`
+              - key<val  `createdAt<2016-01-01`
+              - key<=val  `score<=-5`
+              - key!=val  `status!=success`
+              - key=val1,val2  `country=GB,US`
+              - key!=val1,val2  `lang!=fr,en`
+              - key  `phone`
+              - !key  `!email`
+              - key=/value/<opts>  `email=/@gmail\.com$/i`
+              - key!=/value/<opts> `phone!=/^06/`
+
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Submissions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RetrievedSubmissionResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      x-unqork-service: true
+      tags:
+        - Submissions
+      summary: Deletes Multiple Workflow Submissions
+      operationId: deleteWorkflowSubmissions
+      description:
+        Deletes multiple workflow submissions based on the ID(s) supplied.
+        Note that workflow submissions are soft-deleted (marked deleted, but not removed).
+        Default Max Limit per request is 50
+      parameters:
+        - $ref: '#/components/parameters/WorkflowID'
+        - name: destroy
+          in: query
+          description: Whether to hard delete the submission(s) from database. Value of 'destroy=true' will delete the submission(s). This option requires administrator privileges. Once deleted, the submission(s) cannot be retrieved.
+          schema:
+            type: boolean
+            default: false
+        - name: ids
+          in: query
+          description: >
+            A comma separated list of the ID(s) to be deleted.
+            Note - Max limit is 50 Per Request
+            Example - ?ids=id1,id2,id3....
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Submission(s) deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdatedSubmissionsResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/workflows/{workflowId}/submissions/{submissionId}':
+    get:
+      x-unqork-service: true
+      tags:
+        - Submissions
+      summary: Get Workflow Submission
+      operationId: getWorkflowSubmission
+      description: Gets a single workflow submission. Workflow submission data is transformed and returned is a specific format, based on the specified transform. JSON submission data is returned as an object, XML data is returned as a string, and PDF data is returned as a [Cloud Storage Delivery URL](#section/Cloud-Storage-Delivery) to the rendered PDF (and optionally base 64 data).
+      parameters:
+        - $ref: '#/components/parameters/WorkflowID'
+        - name: submissionId
+          in: path
+          description: ID of workflow submission to retrieve
+          required: true
+          schema:
+            type: string
+        - name: transformName
+          in: query
+          description: Transform to apply to workflow for output. Transform must be configured and designated for for output. Available transforms may be listed via the /transforms endpoint
+          schema:
+            type: string
+        - name: includeRaw
+          in: query
+          description: Whether to include the untransformed raw submission data in addition to the transformed data. Raw submission data may contain [Cloud Storage Delivery URLs](#section/Cloud-Storage-Delivery).
+          schema:
+            type: boolean
+        - name: includeBase64
+          in: query
+          description: Whether to include base64 PDF data in addition to the PDF url (for "njk-pdf" transforms)
+          schema:
+            type: boolean
+        - name: resolveCloudStorageUrls
+          in: query
+          description: When transformName is specified, Cloud Storage URLs are already resolved to the original base64 value. When this flag is specified, resolve Cloud Storage URLs to base64 data inside "rawData", as well.
+          schema:
+            type: boolean
+        - $ref: '#/components/parameters/DataFields'
+      responses:
+        '200':
+          description: Submission
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetrievedSubmissionResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - Submissions
+      summary: Delete Workflow Submission
+      operationId: deleteWorkflowSubmission
+      description: Deletes a single workflow submission based on the ID supplied. Note that workflow submissions are soft-deleted (marked deleted, but not removed).
+      parameters:
+        - $ref: '#/components/parameters/WorkflowID'
+        - name: submissionId
+          in: path
+          description: ID of workflow submission to delete
+          required: true
+          schema:
+            type: string
+        - name: destroy
+          in: query
+          description: Whether to hard delete the submission from database. Value of 'destroy=true' will delete the submission. This option requires administrator privileges. Once deleted, the submission cannot be retrieved back.
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '204':
+          description: Submission deleted
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      x-unqork-service: true
+      tags:
+        - Submissions
+      summary: Update Workflow Submission
+      operationId: updateWorkflowSubmission
+      description: >
+        This endpoint is available to "Administrator" users only.
+        Updates a single workflow submission based on submission ID and, if passed, dataFilter and metadataFilter.
+        This operation supports partial "data" updates,
+        i.e. data that is sent in "data" may include some but not all of the submission data.
+        Update of the owner/user is supported through "userId".
+        Update of current status is supported through "currentStatus".
+        Partial metadata updates are supported without including the entire metadata object.
+        To increment a numeric data key (will also initialize), use "incrementData"
+        To delete a data key, use "unsetData".
+        To delete a metadata key, use "unsetMetadata".
+        Workflow submission data must be provided as a JSON object.
+      parameters:
+        - name: workflowId
+          in: path
+          description: ID of workflow the submission belongs to
+          required: true
+          schema:
+            type: string
+        - name: submissionId
+          in: path
+          description: ID of workflow submission to update
+          required: true
+          schema:
+            type: string
+        - name: replaceData
+          in: query
+          description: Whether to completely replace the submission data with the object passed in "data".
+          schema:
+            type: boolean
+            default: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkflowUpdateSubmissionRequest'
+      responses:
+        '200':
+          description: Successfully updated workflow submission
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowUpdateSubmissionResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/workflow-execute/{workflowPath}':
+    post:
+      x-unqork-service: true
+      tags:
+        - Workflow
+      summary: Create Workflow Submission
+      operationId: createWorkflowSubmission
+      description: Creates a new workflow submission. Submission ID is auto-generated and returned. Workflow submission data must be provided as a JSON object. The default start node will be used.
+      parameters:
+        - $ref: '#/components/parameters/WorkflowPath'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkflowStartRequest'
+      responses:
+        '200':
+          description: Submissions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WorkflowCreateSubmissionResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/workflow-execute/{workflowPath}/{stepPath}':
+    post:
+      x-unqork-service: true
+      tags:
+        - Workflow
+      summary: Create Workflow Submission from Step
+      operationId: createWorkflowSubmissionFromStep
+      description: Creates a new workflow submission. Submission ID is auto-generated and returned. Workflow submission data must be provided as a JSON object.
+      parameters:
+        - $ref: '#/components/parameters/WorkflowPath'
+        - $ref: '#/components/parameters/StepPath'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkflowStartRequest'
+      responses:
+        '200':
+          description: Submissions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WorkflowCreateSubmissionResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/workflow-execute/{workflowPath}/resume/{resumePathName}/submission/{submissionId}':
+    post:
+      x-unqork-service: true
+      tags:
+        - Workflow
+      summary: Resume workflow
+      operationId: resumeWorkflow
+      description: >
+        Resume a workflow that has encountered a Service Task.
+      parameters:
+        - name: workflowPath
+          in: path
+          description: Path of the workflow that is being loaded
+          required: true
+          schema:
+            type: string
+        - name: resumePathName
+          in: path
+          description: Service Task path
+          required: true
+          schema:
+            type: string
+        - name: submissionId
+          in: path
+          description: ID of submission to use.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResumeWorkflowRequest'
+      responses:
+        '200':
+          description: Workflow advanced
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResumeWorkflowResponse'
+        default:
+          description: Failed to advance workflow
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailedResumeWorkflowResponse'
+  '/workflow/{workflowPath}/handoff':
+    put:
+      x-unqork-service: true
+      tags:
+        - Workflow
+      summary: Handoff submission
+      operationId: handoffSubmission
+      description: Hands off existing submission to specified workflow. This endpoint is available to "Administrator" users only.
+      parameters:
+        - name: workflowPath
+          in: path
+          description: Path of the workflow to handoff submission
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HandoffSubmissionToWorkflowRequest'
+      responses:
+        '200':
+          description: Successfully handed off submission
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandoffSubmissionToWorkflowResponse'
+        default:
+          description: Failed to hand off submission
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailedHandoffSubmissionToWorkflowResponse'
+  '/workflows/{workflowId}/restore':
+    post:
+      tags:
+        - Workflow
+      summary: Restore a Deleted Workflow
+      operationId: restoreDeletedWorkflow
+      description: Restores a soft-deleted workflow
+      parameters:
+        - name: workflowId
+          in: path
+          description: ID of workflow to restore
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Successfully Restored
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/promote/hosts':
+    get:
+      tags:
+        - Promotions
+      summary: Promotion Hosts
+      operationId: getPromotionHosts
+      description: >
+        Returns list of environments authorized for promotion
+      responses:
+        '200':
+          description: Hosts Loaded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromotionHosts'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/promote/module':
+    post:
+      tags:
+        - Promotions
+      summary: Promote Module
+      operationId: promoteModule
+      description: >
+        Promote a specific module
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PromotionModuleExecuteRequest'
+      responses:
+        '204':
+          description: Job Executed
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/promote/referenceData':
+    post:
+      tags:
+        - Promotions
+      summary: Promote Reference Data
+      operationId: promoteDataCollection
+      description: >
+        Promote a collection of reference data
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PromotionReferenceDataExecuteRequest'
+      responses:
+        '204':
+          description: Job Executed
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/promote/applicationByItems':
+    post:
+      tags:
+        - Promotions
+      summary: Promote Application by items
+      operationId: promoteApplicationByItems
+      description: >
+        Promote a specific application with Modules, Workflows, Data Schemas, Data Collections, Module Archives, or Workflow Archives
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PromotionApplicationByItemExecuteRequest'
+      responses:
+        '200':
+          description: Job Execution Initiated.
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/promote/style':
+    post:
+      tags:
+        - Promotions
+      summary: Promote Style
+      operationId: promoteStyle
+      description: >
+        Promote a specific Style
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PromotionStyleExecuteRequest'
+      responses:
+        '204':
+          description: Job Executed
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/promote/groups':
+    post:
+      tags:
+        - Promotions
+      summary: Promote Groups
+      operationId: promoteGroups
+      description: >
+        Promote specific groups or all groups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PromotionGroupExecuteRequest'
+      responses:
+        '204':
+          description: Job Executed
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/promote/roles':
+    post:
+      tags:
+        - Promotions
+      summary: Promote Roles
+      operationId: promoteRoles
+      description: >
+        Promote all roles
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PromotionRoleExecuteRequest'
+      responses:
+        '204':
+          description: Job Executed
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /globalvars:
+    get:
+      tags:
+        - Global Variables
+      summary: Get Global Variables
+      operationId: promoteGlobalVariables
+      description: Returns Global Variables objects. This endpoint is available to "Administrator" users only.
+      responses:
+        '200':
+          description: Global Variables
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GlobalVariable'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - Global Variables
+      summary: Create Global Variables
+      operationId: createGlobalVariable
+      description: Creates a new Global Variable. 'key' needs to be unique. This endpoint is available to "Administrator" users only.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GlobalVariablePost'
+      responses:
+        '201':
+          description: Global Variable created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GlobalVariable'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/globalvars/{globalVariableId}':
+    get:
+      tags:
+        - Global Variables
+      summary: Get Global Variable
+      operationId: getGlobalVariable
+      description: Returns a global variable object based on a global variable Id. This endpoint is available to "Administrator" users only.
+      parameters:
+        - name: globalVariableId
+          in: path
+          description: Id of global variable to retrieve
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Global Variable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GlobalVariable'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      tags:
+        - Global Variables
+      summary: Update Global Variable
+      operationId: updateGlobalVariable
+      description: Updates a single global variable. 'key' needs to be unique. Partial updates are supported. This endpoint is available to "Administrator" users only.
+      parameters:
+        - name: globalVariableId
+          in: path
+          description: Id of global variable to update
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GlobalVariablePatch'
+      responses:
+        '200':
+          description: Global Variable updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GlobalVariable'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - Global Variables
+      summary: Delete Global Variable
+      operationId: deleteGlobalVariable
+      description: Soft deletes a single global variable. This endpoint is available to "Administrator" users only.
+      parameters:
+        - name: globalVariableId
+          in: path
+          description: Id of global variable to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Global Variable deleted
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/dataCollections/{collection}/import':
+    post:
+      tags:
+        - Data Collections
+      summary: Update Data Collection via Import
+      operationId: importDataCollection
+      description: >
+        Update an existing data collection via uploading an attached csv file. The CSV file generation endpoint returns a valid file object that can be imported.
+      parameters:
+        - name: collection
+          in: path
+          required: true
+          schema:
+            type: string
+          description: >
+            name of the data collection
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - file
+              properties:
+                file:
+                  type: string
+                  description: >
+                    file to import
+                  format: binary
+      responses:
+        '200':
+          description: Collection updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataCollectionImportExecuteResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/applications/{applicationId}/{appType}/{resourceId}/isInApplication':
+    get:
+      tags:
+        - Applications
+      summary: Determine if a resource is in an application
+      operationId: isInApplication
+      description: >
+        Determines if a resource is in an application.
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+        - name: appType
+          in: path
+          required: true
+          schema:
+            type: string
+          description: >
+            Type of application, either 'module' or 'workflow'
+        - name: resourceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: >
+            Unique identifier for a resource
+      responses:
+        '200':
+          description: JSON containing a boolean status property
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - status
+                properties:
+                  status:
+                    type: boolean
+                    description: A true or false value describing if the resource is contained in the application
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/applications/{applicationId}/components/export':
+    get:
+      tags:
+        - Applications
+      summary: Get components export
+      operationId: applicationsComponentsExport
+      description: >
+        Builds and returns a CSV file export of application components.
+
+
+        A file will be downloaded if triggered in the browser with the file name of `application-{applicationId}-components.csv`
+
+
+        Header:
+
+
+          `"Module Name","Component Type","Component Label","Component Property Name","Is Hidden? (Y/N)","Is Disabled? (Y/N)","Is Persistent? (Y/N)","Field Tags","Is Required? (Y/N)"`
+
+        Example:
+
+
+          `"testapp","textfield","Text Field","firstName","N","N","Y","textField,name","N"`
+
+          `"testapp","button","Submit","btn","N","N","N","","N"`
+
+          `"testapp","textarea","Text Area Field","textareaField","N","N","Y","","N"`
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      responses:
+        '200':
+          description: CSV string containing application component data
+          content:
+            text/csv:
+              schema:
+                type: string
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/applications/{applicationId}/submissionDataModel':
+    get:
+      tags:
+        - Applications
+      summary: Get submission data model
+      operationId: applicationsSubmissionDataModel
+      description: >
+        Builds a summary of the submission data model for an application.
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      responses:
+        '200':
+          description: JSON describing the application submission data model schema
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - schema
+                  - modules
+                properties:
+                  schema:
+                    type: object
+                    description: JSON object containing properties within an application.
+                    properties:
+                      type:
+                        type: string
+                      properties:
+                        type: object
+                  modules:
+                    type: object
+                    description: JSON object containing all modules within an application.
+                    properties:
+                      moduleId:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          title:
+                            type: string
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/applications/{applicationId}/dependencies':
+    get:
+      tags:
+        - Applications
+      summary: Get application dependencies
+      operationId: applicationsDependencies
+      description: >
+        Builds an application's module dependency tree.
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      responses:
+        '200':
+          description: JSON describing the application module dependency tree
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    moduleId:
+                      type: string
+                      description: Unique identifier for a module
+                    moduleName:
+                      type: string
+                      description: Name of a module
+                    moduleTitle:
+                      type: string
+                      description: Title of a module
+                    sharedAnywhere:
+                      type: boolean
+                    parentApplicationTitle:
+                      type: string
+                      description: Title of parent application
+                    isRootDependency:
+                      type: boolean
+                      description: Describes if the dependency is a root dependency
+                    children:
+                      type: array
+                      description: List of children dependencies
+                      items:
+                        type: object
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/applications/{applicationId}/dataModels/dependencies':
+    get:
+      tags:
+        - Applications
+      summary: Get application's data models dependencies
+      operationId: applicationsDataModelsDependencies
+      description: >
+        Returns the dependency list for application's data models
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      responses:
+        '200':
+          description: JSON describing the application's data models dependencies
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  dataModels:
+                    type: array
+                    description: Data Models dependencies
+                    items:
+                      type: object
+                  schemas:
+                    type: array
+                    description: Schema dependencies
+                    items:
+                      type: object
+                  modules:
+                    type: array
+                    description: Modules dependencies
+                    items:
+                      type: object
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/applications/{applicationId}/modules':
+    get:
+      tags:
+        - Applications
+      summary: Get application modules
+      operationId: applicationModules
+      description: >
+        Gets a list of modules tied to an application.
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+        - name: collation
+          in: query
+          description: Collation locale
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: Maximum number of modules to return
+          schema:
+            type: string
+            default: 50
+        - name: offset
+          in: query
+          description: Index of search results at which to begin returning results
+          schema:
+            type: integer
+            default: 0
+        - name: sortBy
+          in: query
+          description: Field to sort the results by
+          schema:
+            type: string
+        - name: sortOrder
+          in: query
+          description: Order to sort results by (`1` = ascending, `-1` = decending)
+          schema:
+            type: integer
+        - name: includeShared
+          in: query
+          description: Include modules shared to parent workspace or the environment
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: Array containing JSON ojects describing modules
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - id
+                    - name
+                    - title
+                    - created
+                    - modified
+                  properties:
+                    id:
+                      type: string
+                      description: Id of module
+                    name:
+                      type: string
+                      description: Name of module
+                    title:
+                      type: string
+                      description: Title of module
+                    created:
+                      type: string
+                      description: Date of when the module was created
+                    modified:
+                      type: string
+                      description: Date of when the module was last modified/updated
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/applications/unique':
+    get:
+      tags:
+        - Applications
+      summary: Determine if an application's name is unique
+      operationId: applicationsUniqueName
+      description: >
+        Determines if an application's name is unique.
+      parameters:
+        - name: name
+          in: query
+          required: true
+          schema:
+            type: string
+          description: >
+            Name to check if it is a unique application name
+      responses:
+        '200':
+          description: Boolean describing if the supplied name is a unique application name
+          content:
+            application/json:
+              schema:
+                type: boolean
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/applications/{applicationId}/workspace':
+    get:
+      tags:
+        - Applications
+      summary: Get application workspace
+      operationId: applicationsWorkspace
+      description: >
+        Gets the workspace that contains the application.
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      responses:
+        '200':
+          description: JSON object describing found workspace
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - private
+                  - parent
+                  - _id
+                  - name
+                  - owner
+                  - created
+                  - modified
+                properties:
+                  private:
+                    type: boolean
+                    description: If the workspace is private or not
+                  parent:
+                    type: string
+                    description: Parent workspace Id
+                  _id:
+                    type: string
+                    description: Unique identifier of the workspace
+                  name:
+                    type: string
+                    description: Name of the workspace
+                  owner:
+                    type: string
+                    description: Owner of the workspace
+                  created:
+                    type: string
+                    description: Date of when the workspace was created
+                  modified:
+                    type: string
+                    description: Date of when the last modification of the workspace took place
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/applications/{applicationId}/restore':
+    post:
+      tags:
+        - Applications
+      summary: Restore application
+      operationId: applicationsRestore
+      description: >
+        Restores an application.
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                workspaceId:
+                  type: string
+                  description: Unique identifier for the workspace to restore the application to
+      responses:
+        '200':
+          description: JSON object describing restored application
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/applications/{applicationId}/connect':
+    put:
+      tags:
+        - Applications
+      summary: Connect application
+      operationId: applicationsConnect
+      description: >
+        Connects elements to an application.
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - elementType
+                - elementKeys
+              properties:
+                elementType:
+                  type: string
+                  description: Describes the element being connected to the application. Value should be either 'module' or 'referenceDataCollection'.
+                elementKeys:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: Successfully connected
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/applications':
+    post:
+      tags:
+        - Applications
+      summary: Create application
+      operationId: applicationsCreate
+      description: >
+        Create a new application.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - id
+                - name
+                - type
+                - title
+              properties:
+                id:
+                  type: string
+                  description: Id of the new application
+                name:
+                  type: string
+                  description: Name of the new application
+                settings:
+                  type: object
+                revisions:
+                  type: boolean
+                title:
+                  type: string
+                  description: Title of the new application
+                type:
+                  type: string
+                  description: Type of the new application ('form' or 'workflow')
+                workspaceId:
+                  type: string
+                  description: Workspace Id that should contain the new application (default workspace will be used)
+      responses:
+        '201':
+          description: JSON describing the new application
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      tags:
+        - Applications
+      summary: Get applications
+      operationId: applicationsGet
+      description: >
+        Get a list of matching applications, will be filtered by your accessible workspaces based on permissions.
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 1000
+          description: >
+            Integer to limit the number of applications returned (Cannot exceed 1000)
+        - name: sortBy
+          in: query
+          schema:
+            type: string
+            default: created
+          description: >
+            Field to sort found applications by
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+          description: >
+            Offset for paginated results
+        - name: sortOrder
+          in: query
+          schema:
+            type: integer
+            default: 1
+          description: >
+            Sort order for found applications (1 = ascending, -1 = descending)
+        - name: requireEntrypoint
+          in: query
+          schema:
+            type: boolean
+            default: true
+          description: >
+            Remove applications that do not have an entrypoint module/workflow
+      responses:
+        '200':
+          description: Array containing JSON objects of each found application
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApplicationResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/applications/{applicationId}':
+    get:
+      tags:
+        - Applications
+      summary: Get application
+      operationId: applicationsGetById
+      description: >
+        Retrieves application data.
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      responses:
+        '200':
+          description: JSON describing the found application
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+        - Applications
+      summary: Update application
+      operationId: applicationsUpdate
+      description: >
+        Updates an existing application.
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  type: string
+                  description: Updated name
+                settings:
+                  type: object
+                  description: Updated settings
+                title:
+                  type: string
+                  description: Updated title
+                workspaceId:
+                  type: string
+                  description: Updated workspace Id
+      responses:
+        '200':
+          description: JSON describing the updated application
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - Applications
+      summary: Delete application
+      operationId: applicationsDeleteById
+      description: >
+        Deletes application.
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      responses:
+        '204':
+          description: Deleted
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/logs/audit-logs':
+    get:
+      tags:
+        - Logs
+      summary:
+        Get Audit Logs
+      operationId:
+        listAuditLogs
+      description: >
+        Retrieve audit logs for a given time period.
+        The time interval between startDatetime and endDatetime must be 1 hour or less.
+      parameters:
+        - name: startDatetime
+          in: query
+          required: true
+          description: >
+            An international datetime string representing the starting point of the interval to retrieve logs.
+            The timestamp is in UTC. For example, '2023-05-17T15:00:00.000Z' is 15:00 / 3:00PM UTC on May 17th 2023.
+          schema:
+            type: string
+        - name: endDatetime
+          in: query
+          required: true
+          description: >
+            An international datetime string representing the ending point of the interval to retrieve logs.
+            The timestamp is in UTC. For example, '2023-05-17T16:00:00.000Z' is 16:00 / 4:00PM UTC on May 17th 2023.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: JSON array containing links to log files
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListAuditLogsResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+
+components:
+  schemas:
+    ReferStringRequest:
+      type: object
+      required:
+        - userId
+      properties:
+        userId:
+          type: string
+          description: Unique ID of the user, as a string
+        expireOffset:
+          type: integer
+          description: Provides an amount of time until expiry, used in conjunction with the units from expireMeasure. Maximum offset 30 days or equivalent. Default offset 1 (default unit is hours).
+        expireMeasure:
+          type: string
+          description: String with the units for the expireOffset parameter (e.g. hours, days). Maximum offset 8 days or equivalent. Default measure hours (Default offset is 1)
+        oneTimeUse:
+          type: boolean
+          description: Whether to limit the refer string to one use. For best security, it is recommended to set `oneTimeUse` to `true`.
+        additionalParams:
+          type: object
+          description: An object with anything else to be added to referstring
+    ApplicationResponse:
+      type: object
+      required:
+        - created
+        - createdBy
+        - dataSchemas
+        - description
+        - id
+        - modified
+        - modifiedBy
+        - name
+        - promotions
+        - settings
+        - title
+        - type
+        - workspaceId
+      properties:
+        created:
+          type: string
+          description: Date of when the application was created
+        createdBy:
+          type: string
+          description: User who created the application
+        dataSchemas:
+          type: array
+          items:
+            type: object
+        description:
+          type: string
+          description: Description of the application
+        id:
+          type: string
+          description: Unique identifier of the application
+        modified:
+          type: string
+          description: Date of when the application was last modified
+        modifiedBy:
+          type: string
+          description: User who modified the application last
+        name:
+          type: string
+          description: Name of the application
+        promotions:
+          type: object
+        settings:
+          type: object
+        title:
+          type: string
+          description: Title of the application
+        type:
+          type: string
+          description: Type of application ('form' or 'workflow')
+        workspaceId:
+          type: string
+          description: Unique identifier of the workspace containing the application
+    RetrievedSubmissionMergeResponse:
+      type: object
+      required:
+        - id
+        - form
+        - created
+        - modified
+        - data
+      properties:
+        id:
+          type: string
+        owner:
+          type: string
+          description: Submission owner
+        form:
+          type: string
+        created:
+          type: string
+          format: date-time
+        modified:
+          type: string
+          format: date-time
+        deleted:
+          type: string
+          format: date-time
+        isRevision:
+          type: boolean
+        formArchive:
+          type: string
+          description: The form version the revision was saved under
+        data:
+          type: object
+          description: Transformed output data
+          properties:
+            format:
+              type: string
+              enum:
+                - json
+                - xml
+                - pdf
+            jsonData:
+              type: object
+            xmlData:
+              type: string
+            pdfUrl:
+              type: string
+              format: url
+            pdfData:
+              type: string
+            rawData:
+              type: object
+        conflicts:
+          type: array
+          items:
+            example: ["feildA", "feildB"]
+        validationErrors:
+          $ref: '#/components/schemas/ValidationErrors'
+    RetrievedSubmissionResponse:
+      type: object
+      required:
+        - id
+        - moduleId
+        - created
+        - modified
+        - data
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+          description: Submission owner
+        moduleId:
+          type: string
+        created:
+          type: string
+          format: date-time
+        modified:
+          type: string
+          format: date-time
+        deleted:
+          type: string
+          format: date-time
+        data:
+          type: object
+          description: Transformed output data
+          properties:
+            format:
+              type: string
+              enum:
+                - json
+                - xml
+                - pdf
+            jsonData:
+              type: object
+            xmlData:
+              type: string
+            pdfUrl:
+              type: string
+              format: url
+            pdfData:
+              type: string
+            rawData:
+              type: object
+        metadata:
+          type: object
+        validationErrors:
+          $ref: '#/components/schemas/ValidationErrors'
+    RetrievedRevisionResponse:
+      type: object
+      required:
+        - id
+        - submission
+      properties:
+        id:
+          type: string
+          description: Revision id
+        created:
+          type: string
+          description: Date of when the submission was created or modified (might be missing in old submissions)
+        createdBy:
+          type: string
+          description: Creator or modifier of the submission (might be missing in old submissions)
+        persistedInWormStorage:
+          type: boolean
+          description: whether the revision is WORM (Write-Once-Read-Many) compliant. [Click here](https://www.17a-4.com/regulations-summary/) for more information
+        submission:
+          type: object
+          description: Submission object
+          properties:
+            id:
+              type: string
+            userId:
+              type: string
+              description: Submission owner
+            formId:
+              type: string
+            created:
+              type: string
+              format: date-time
+            modified:
+              type: string
+              format: date-time
+            deleted:
+              type: string
+              format: date-time
+            metadata:
+              type: object
+            formArchive:
+              type: string
+              description: The form version the revision was saved under
+            data:
+              type: object
+              description: Transformed output data. Empty for calls that return multiple revisions
+              properties:
+                format:
+                  type: string
+                  enum:
+                    - json
+                    - xml
+                    - pdf
+                jsonData:
+                  type: object
+                xmlData:
+                  type: string
+                pdfUrl:
+                  type: string
+                  format: url
+                pdfData:
+                  type: string
+                rawData:
+                  type: object
+        validationErrors:
+          $ref: '#/components/schemas/ValidationErrors'
+    SavedSubmissionResponse:
+      type: object
+      required:
+        - id
+        - moduleId
+        - created
+        - modified
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+          description: Submission owner
+        moduleId:
+          type: string
+        created:
+          type: string
+          format: date-time
+        modified:
+          type: string
+          format: date-time
+        deleted:
+          type: string
+          format: date-time
+        data:
+          type: object
+          description: Raw output data
+          properties:
+            rawData:
+              type: object
+        metadata:
+          type: object
+        validationErrors:
+          $ref: '#/components/schemas/ValidationErrors'
+    UpdatedSubmissionsResponse:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+          status:
+            type: integer
+          message:
+            type: string
+            description: Failure message
+    ModuleExecuteResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+          description: Submission owner
+        moduleId:
+          type: string
+        created:
+          type: string
+          format: date-time
+        modified:
+          type: string
+          format: date-time
+        deleted:
+          type: string
+          format: date-time
+        data:
+          type: object
+          description: Raw output data
+          properties:
+            rawData:
+              type: object
+              description: Saved submission data
+            resolved:
+              type: object
+              description: Submission data resulting from execution
+        metadata:
+          type: object
+        validationErrors:
+          $ref: '#/components/schemas/ValidationErrors'
+        invalidNavigationPanels:
+          $ref: '#/components/schemas/InvalidNavigationPanels'
+    NewSubmissionRequest:
+      type: object
+      required:
+        - data
+      properties:
+        userId:
+          type: string
+          description: Submission owner
+        data:
+          type: object
+          description: Raw input data
+        metadata:
+          $ref: '#/components/schemas/MetadataRequest'
+    UpdateSubmissionsRequest:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+          data:
+            type: object
+            description: Raw input data
+          dataFilter:
+            $ref: '#/components/schemas/DataFilter'
+          incrementData:
+            type: object
+            description: 'Object containing data keys that should be incremented, and by what number (e.g. `{"incrementData":{"key1":1,"key2":10}}`)'
+          unsetData:
+            type: object
+            description: 'Object containing data keys that should be deleted (e.g. `{"unsetData":{"key1":"","key2":""}}`)'
+          metadata:
+            $ref: '#/components/schemas/MetadataRequest'
+          metadataFilter:
+            $ref: '#/components/schemas/MetadataFilter'
+          unsetMetadata:
+            type: object
+            description: 'Object containing metadata keys that should be deleted (e.g. `{"unsetMetadata":{"key.one":"","key.two":""}}`)'
+    UpdatedSubmissionRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: Submission owner (can be updated by "Administrator" users only)
+        data:
+          type: object
+          description: Raw input data
+        dataFilter:
+          $ref: '#/components/schemas/DataFilter'
+        incrementData:
+          type: object
+          description: 'Object containing data keys that should be incremented, and by what number (e.g. `{"incrementData":{"key1":1,"key2":10}}`)'
+        unsetData:
+          type: object
+          description: 'Object containing data keys that should be deleted (e.g. `{"unsetData":{"key1":"","key2":""}}`)'
+        metadata:
+          $ref: '#/components/schemas/MetadataRequest'
+        metadataFilter:
+          $ref: '#/components/schemas/MetadataFilter'
+        unsetMetadata:
+          type: object
+          description: 'Object containing metadata keys that should be deleted (e.g. `{"unsetMetadata":{"key.one":"","key.two":""}}`)'
+    UserPost:
+      type: object
+      required:
+        - name
+        - email
+      properties:
+        userId:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+          maxLength: 254
+          format: email
+          description: 'Quotes and special characters `"(),:;<>@[]\` are not allowed. The local portion of the email (e.g. local@domain.com) must be > 0 characters and < 64 charaters. There cannot be consecutive dots (e.g. `..`) in the email'
+        phone:
+          type: string
+          description: 'Must be a valid US phone number unless the country code is specified, in which case it is validated with [libphonenumber-js](https://gitlab.com/catamphetamine/libphonenumber-js#definitions)'
+        role:
+          type: string
+          description: One of the roles configured in Unqork
+          default: Authenticated
+          deprecated: true
+        expressRoles:
+          type: array
+          items: 
+            type: string
+          description: Express roles configured in Unqork
+          default: [Authenticated]
+        groups:
+          type: array
+          items:
+            type: string
+          description: List of groups configured in Unqork OR comma-separated list of groups configured in Unqork (e.g. "group1,group2")
+          default: []
+        applicationRoles:
+          type: object
+          description: 'Map of applications to roles OR comma-separated list of application-role mappings (e.g. "application1:role1,application2:role2")'
+        password:
+          type: string
+          format: password
+        isServiceUser:
+          type: boolean
+          format: true/false
+        ...customAttributes:
+          type: string
+          description: Custom attributes can be included as additional keys in the request body. Only string values of custom attributes are supported.
+    UserPut:
+      type: object
+      properties:
+        userId:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+          maxLength: 254
+          format: email
+          description: 'Quotes and special characters `"(),:;<>@[]\` are not allowed. The local portion of the email (e.g. local@domain.com) must be > 0 characters and < 64 charaters. There cannot be consecutive dots (e.g. `..`) in the email'
+        phone:
+          type: string
+          description: 'Must be a valid US phone number unless the country code is specified, in which case it is validated with [libphonenumber-js](https://gitlab.com/catamphetamine/libphonenumber-js#definitions)'
+        role:
+          type: string
+          description: One of the roles configured in Unqork
+          deprecated: true
+        expressRoles:
+          type: array
+          items:
+            type: string
+          description: Express roles configured in Unqork
+        groups:
+          type: array
+          items:
+            type: string
+          description: List of groups configured in Unqork OR comma-separated list of groups configured in Unqork (e.g. "group1,group2")
+        applicationRoles:
+          type: object
+          description: 'Map of applications to roles OR comma-separated list of application-role mappings (e.g. "application1:role1,application2:role2")'
+        password:
+          type: string
+          format: password
+        isServiceUser:
+          type: boolean
+          format: true/false
+        ...customAttributes:
+          type: string
+          description: Custom attributes can be included as additional keys in the request body. Only string values of custom attributes are supported.
+    UserResponse:
+      type: object
+      required:
+        - userId
+        - name
+        - email
+        - created
+        - modified
+      properties:
+        userId:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        role:
+          type: string
+          description: One of the roles configured in Unqork
+          default: Authenticated
+          deprecated: true
+        expressRoles:
+          type: array
+          items:
+            type: string
+          description: Express roles configured in Unqork
+          default: [Authenticated]
+        groups:
+          type: array
+          items:
+            type: string
+          description: List of groups configured in Unqork
+          default: []
+        applicationRoles:
+          type: object
+          description: Map of applications to roles
+        created:
+          type: string
+          format: date-time
+        modified:
+          type: string
+          format: date-time
+        isServiceUser:
+          type: boolean
+          format: true/false
+        lastLogin:
+          type: string
+          format: date-time
+        ...customAttributes:
+          type: string
+          description: Custom attributes will be included as additional keys in the response body.
+    Group:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        type:
+          type: string
+          description: See Group Administration screen for definitions
+          enum:
+            - role_descendents
+            - own_role_and_descendents
+            - ignore_role
+    GroupPost:
+      type: object
+      required:
+        - name
+        - type
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        type:
+          type: string
+          description: See Group Administration screen for definitions
+          enum:
+            - role_descendents
+            - own_role_and_descendents
+            - ignore_role
+    GroupPut:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        type:
+          type: string
+          description: See Group Administration screen for definitions
+          enum:
+            - role_descendents
+            - own_role_and_descendents
+            - ignore_role
+    TransformPost:
+      type: object
+      required:
+        - name
+        - type
+        - io
+      properties:
+        name:
+          type: string
+          description: Can only contain alphanumerics and hyphens
+        type:
+          type: string
+          enum:
+            - njk-xml
+            - njk-pdf
+            - njk-txt
+            - njk
+            - xsl
+        io:
+          type: string
+          enum:
+            - in
+            - out
+        template:
+          type: string
+        validationSchema:
+          type: string
+          description: 'XSD schema used to validate XML transform output'
+    TransformPut:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: Can only contain alphanumerics and hyphens
+        type:
+          type: string
+          enum:
+            - njk-xml
+            - njk-pdf
+            - njk-txt
+            - njk
+            - xsl
+        io:
+          type: string
+          enum:
+            - in
+            - out
+        template:
+          type: string
+        validationSchema:
+          type: string
+          description: 'XSD schema used to validate XML transform output'
+    TransformResponse:
+      type: object
+      required:
+        - name
+        - moduleId
+        - type
+        - io
+      properties:
+        name:
+          type: string
+        moduleId:
+          type: string
+        type:
+          type: string
+          enum:
+            - njk-xml
+            - njk-pdf
+            - njk
+            - xsl
+        io:
+          type: string
+          enum:
+            - in
+            - out
+        template:
+          type: string
+        validationSchema:
+          type: string
+          description: 'XSD schema used to validate XML transform output'
+    ModuleResponse:
+      type: object
+      required:
+        - id
+        - name
+        - title
+        - created
+        - modified
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        title:
+          type: string
+        created:
+          type: string
+          format: date-time
+        modified:
+          type: string
+          format: date-time
+    ModuleExecuteRequest:
+      type: object
+      properties:
+        submissionId:
+          description: ID of module submission to use. If `submissionId` is unspecified and `save` is specified, a new submission will be created with `moduleId` as the module being executed and `userId` as the user making the request.
+          type: string
+        data:
+          description: Raw data to include in submission data when executing (and saving, if specified).
+          type: object
+        metadata:
+          $ref: '#/components/schemas/MetadataRequest'
+        validate:
+          description: Whether or not to validate submission data post-execution.
+          type: boolean
+          default: false
+        save:
+          description: Whether to save data for the existing submission (or create a new submission) after execution. Data will never be saved when an execution error is encountered.
+          type: boolean
+          default: false
+        saveOnValidationError:
+          description: If set to `true` (and both save and validate are also set to `true`), will save and send back a 2xx response, even if validation errors occurred.
+          type: boolean
+          default: false
+        hydrateDataInitially:
+          description: If set to `true`, will fully populate data object before module begins execution.
+          type: boolean
+          default: false
+    WorkflowStartRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: Submission owner
+        data:
+          description: Raw data to include in submission.
+          type: object
+    WorkflowCreateSubmissionResponse:
+      type: object
+      properties:
+        submissionId:
+          type: string
+          description: ID of submission
+        submission:
+          $ref: '#/components/schemas/SavedSubmissionResponse'
+        statusCode:
+          type: integer
+          description: Error or success response code
+    HandoffSubmissionToWorkflowRequest:
+      type: object
+      required:
+        - submissionId
+      properties:
+        submissionId:
+          type: string
+          description: ID of submission to use.
+        startNode:
+          type: string
+          description: Path of the start node in handoff workflow. Default start node will be used when startNode is not provided.
+    HandoffSubmissionToWorkflowResponse:
+      type: object
+      properties:
+        submissionId:
+          type: string
+          description: ID of submission
+        workflowId:
+          type: string
+          description: ID of workflow after handoff
+        state:
+          type: string
+          description: Current state of the submission
+        statusCode:
+          type: integer
+          format: int32
+          enum:
+            - 200
+        submission:
+          type: object
+          description: Submission data
+    FailedHandoffSubmissionToWorkflowResponse:
+      type: object
+      description: 'Handoff Submission Workflow Validation and/or execution error'
+      properties:
+        submissionId:
+          type: string
+          description: ID of submission
+        statusCode:
+          type: integer
+          format: int32
+          enum:
+            - 400
+            - 401
+            - 403
+            - 404
+            - 412
+            - 500
+        message:
+          description: Error message
+          type: string
+        formattedError:
+          type: object
+          properties:
+            validationErrors:
+              $ref: '#/components/schemas/ValidationErrors'
+            invalidNavigationPanels:
+              $ref: '#/components/schemas/InvalidNavigationPanels'
+            executionError:
+              $ref: '#/components/schemas/ExecutionError'
+    WorkflowUpdateSubmissionRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: Submission owner
+        data:
+          type: object
+          description: Raw input data
+        dataFilter:
+          $ref: '#/components/schemas/DataFilter'
+        incrementData:
+          type: object
+          description: 'Object containing data keys that should be incremented, and by what number (e.g. `{"incrementData":{"key1":1,"key2":10}}`)'
+        unsetData:
+          type: object
+          description: 'Object containing data keys that should be deleted (e.g. `{"unsetData":{"key1":"","key2":""}}`)'
+        metadata:
+          $ref: '#/components/schemas/MetadataRequest'
+        metadataFilter:
+          $ref: '#/components/schemas/MetadataFilter'
+        unsetMetadata:
+          type: object
+          description: 'Object containing metadata keys that should be deleted (e.g. `{"unsetMetadata":{"key.one":"","key.two":""}}`)'
+        currentStatus:
+          type: string
+          description: 'Most recently set status message for the submission'
+    WorkflowUpdateSubmissionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        moduleId:
+          type: string
+        userId:
+          type: string
+          description: Submission owner
+        created:
+          type: string
+          format: date-time
+        modified:
+          type: string
+          format: date-time
+        deleted:
+          type: string
+          format: date-time
+        data:
+          type: object
+          description: Raw output data
+          properties:
+            rawData:
+              type: object
+        metadata:
+          type: object
+        validationErrors:
+          $ref: '#/components/schemas/ValidationErrors'
+        status:
+          type: object
+          description: History of all statuses and current status
+          properties:
+            all:
+              type: array
+              items:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  user:
+                    type: string
+                  time:
+                    type: string
+            currentStatus:
+              type: array
+              items:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  user:
+                    type: string
+                  time:
+                    type: string
+    ResumeWorkflowRequest:
+      type: object
+      properties:
+        data:
+          description: Raw data to include in submission.
+          type: object
+    ResumeWorkflowResponse:
+      type: object
+      properties:
+        submissionId:
+          type: string
+          description: ID of submission
+        state:
+          type: string
+          description: Current state of the submission
+        statusCode:
+          type: integer
+          format: int32
+          enum:
+            - 200
+        submission:
+          type: object
+          description: Submission data
+    FailedResumeWorkflowResponse:
+      type: object
+      description: 'Resume Workflow Validation and/or execution error'
+      properties:
+        submissionId:
+          type: string
+          description: ID of submission
+        state:
+          type: string
+          description: Current state of the submission
+        statusCode:
+          description: Error codes or custom http status codes if returned for api modules
+          type: integer
+          format: int32
+          enum:
+            - 400
+            - 401
+            - 403
+            - 404
+            - 412
+            - 500
+        message:
+          description: Error message
+          type: string
+        formattedError:
+          type: object
+          properties:
+            validationErrors:
+              $ref: '#/components/schemas/ValidationErrors'
+            invalidNavigationPanels:
+              $ref: '#/components/schemas/InvalidNavigationPanels'
+            executionError:
+              $ref: '#/components/schemas/ExecutionError'
+    RetrievedTimerStartResponse:
+      type: object
+      description: List of timer start nodes and their statuses in a particular workflow
+      properties:
+        path:
+          type: string
+          description: workflow path
+        nodes:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: timer start node name
+              path:
+                type: string
+                description: timer start node path
+              started:
+                type: boolean
+                description: whether a timer start node is active or not
+        statusCode:
+          type: integer
+          format: int32
+          enum:
+            - 200
+    RetrievedTimedEventsBySubmissionIdResponse:
+      type: array
+      description: List of timed event actions and their statuses in a particular workflow submission
+      items:
+        type: object
+        properties:
+          startTime:
+            type: string
+            format: date-time
+            description: Date-Time the timed event action was queued
+          endTime:
+            type: string
+            format: date-time
+            description: Date-Time the timed event action was completed
+          executionTime:
+            type: string
+            format: date-time
+            description: Date-Time the timed event action is set to be exectued
+          label:
+            type: string
+            description: The label of the timed event action, if provided
+          status:
+            type: string
+            description: The current status of the timed event action (ACTIVE, CANCELLED, EXECUTED, EXECUTION_FAILED, SLA_TRACKING_ERROR)
+          actionType:
+            type: string
+            description: The type of the action (message, changePath)
+          duration:
+            type: object
+            description: The configured duration on the timed event action
+            properties:
+              days:
+                type: string
+              hours:
+                type: string
+              minutes:
+                type: string
+          timedEventNode:
+            type: string
+            description: Path of the timed event node the action is part of
+          parentNode:
+            type: string
+            description: The Task or Subprocess node that triggered the action to be queued
+          totalDurationSeconds:
+            type: integer
+            format: int32
+            description: The calculated duration to wait before executing the action, in seconds
+    DataCollectionImportExecuteResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+    Error:
+      type: object
+      description: 'Error'
+      required:
+        - code
+        - message
+      properties:
+        code:
+          description: HTTP status code
+          type: integer
+          format: int32
+          enum:
+            - 400
+            - 401
+            - 403
+            - 404
+            - 412
+            - 500
+        message:
+          description: Error message
+          type: string
+    FailedExecuteResponse:
+      type: object
+      properties:
+        validationErrors:
+          $ref: '#/components/schemas/ValidationErrors'
+        invalidNavigationPanels:
+          $ref: '#/components/schemas/InvalidNavigationPanels'
+        executionError:
+          $ref: '#/components/schemas/ExecutionError'
+    PromotionGroupExecuteRequest:
+      type: object
+      required:
+        - clientName
+        - clientLevel
+      properties:
+        clientName:
+          type: string
+          description: Target environment name
+        clientLevel:
+          type: string
+          description: Level of the environment (qa, uat, production, etc.)
+        groupNames:
+          description: Names of the groups to promote
+          type: array
+          items:
+            type: string
+    PromotionRoleExecuteRequest:
+      type: object
+      required:
+        - clientName
+        - clientLevel
+      properties:
+        clientName:
+          type: string
+          description: Target environment name
+        clientLevel:
+          type: string
+          description: Level of the environment (qa, uat, production, etc.)
+    PromotionModuleExecuteRequest:
+      type: object
+      required:
+        - clientName
+        - clientLevel
+        - moduleId
+      properties:
+        clientName:
+          type: string
+          description: Target environment name
+        clientLevel:
+          type: string
+          description: Level of the environment (qa, uat, production, etc.)
+        moduleId:
+          description: ID of module to Promote
+          type: string
+    PromotionApplicationByItemExecuteRequest:
+      type: object
+      required:
+        - clientName
+        - clientLevel
+        - applicationId
+      properties:
+        clientName:
+          type: string
+          description: Target environment name
+        clientLevel:
+          type: string
+          description: Level of the environment (qa, uat, production, etc.)
+        applicationId:
+          description: applicationId of the application to promote
+          type: string
+        modules:
+          description: Array of Modules to Promote
+          type: array
+          items:
+            type: string
+          example:
+            - moduleId1
+            - moduleId2
+        referenceDataCollections:
+          description: Array of Reference Data Collections to Promote
+          type: array
+          items:
+            type: string
+          example:
+            - collectionName1
+            - collectionName2
+        moduleArchives:
+          description: >
+            Array of Module Archives to Promote. Must include the moduleId
+          type: array
+          items:
+            type: object
+            required:
+              - moduleId
+              - archiveId
+            properties:
+              moduleId:
+                type: string
+                description: ID of the Module whose archive needs to be promoted
+              archiveId:
+                type: string
+                description: Archive Id of the Module
+            example:
+              moduleId: moduleId
+              archiveId: archiveId of the Module
+        workflowArchives:
+          description: Array of Workflow Archives to Promote
+          type: array
+          items:
+            description: Archive Id of the Workflow
+            type: string
+          example:
+            - workflowArchiveId1
+            - workflowArchiveId2
+        workflows:
+          description: Array of Workflows to Promote
+          type: array
+          items:
+            type: string
+          example:
+            - workflowId1
+            - workflowId2
+        dataSchemaIds:
+          description: Array of Data Schemas to Promote
+          type: array
+          items:
+            type: string
+          example:
+            - dataSchemaId1
+            - dataSchemaId2
+        dataModels:
+          description: Array of Data Models to Promote
+          type: array
+          items:
+            type: string
+          example:
+            - dataModelId1
+            - dataModelId2
+        schemas:
+          description: Array of Data Model Schemas to Promote
+          type: array
+          items:
+            type: string
+          example:
+            - schemaId1
+            - schemaId2
+        searchConfigs:
+          description: Array of Search Configs to Promote
+          type: array
+          items:
+            type: string
+          example:
+            - searchConfigId1
+            - searchConfigId2
+    PromotionReferenceDataExecuteRequest:
+      type: object
+      required:
+        - clientName
+        - clientLevel
+        - collectionName
+      properties:
+        clientName:
+          type: string
+          description: Target environment name
+        clientLevel:
+          type: string
+          description: Level of the environment (qa, uat, production, etc.)
+        collectionName:
+          description: Name of the reference data collection to promote
+          type: string
+    PromotionStyleExecuteRequest:
+      type: object
+      required:
+        - clientName
+        - clientLevel
+        - styleName
+      properties:
+        clientName:
+          type: string
+          description: Target environment name
+        clientLevel:
+          type: string
+          description: Level of the environment (qa, uat, production, etc.)
+        styleName:
+          description: Style name of the style to promote
+          type: string
+    PromotionHosts:
+      type: array
+      items:
+        type: object
+        properties:
+          clientName:
+            type: string
+            description: Target environment name
+          clientLevel:
+            type: string
+            description: Level of the environment (qa, uat, production, etc.)
+    GlobalVariable:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Id of the global variable
+        key:
+          type: string
+          description: Name of the key of the global variable
+        value:
+          type: string
+          description: Value of the key of the global variable
+        description:
+          type: string
+          description: Description for the global variable
+        serverSideOnly:
+          type: boolean
+          description: Whether the global variable is available server side only
+        created:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+          description: Creator of the global variable
+        modified:
+          type: string
+          format: date-time
+        modifiedBy:
+          type: string
+          description: Last modifier of the global variable
+        deleted:
+          type: string
+          format: date-time
+    GlobalVariablePost:
+      type: object
+      required:
+        - key
+      properties:
+        key:
+          type: string
+          description: Name of the key of the global variable
+        value:
+          type: string
+          description: Value of the key of the global variable
+        description:
+          type: string
+          description: Description for the global variable
+        serverSideOnly:
+          type: boolean
+          description: Whether the global variable is available server side only
+    GlobalVariablePatch:
+      type: object
+      properties:
+        key:
+          type: string
+          description: Name of the key of the global variable
+        value:
+          type: string
+          description: Value of the key of the global variable
+        description:
+          type: string
+          description: Description for the global variable
+        serverSideOnly:
+          type: boolean
+          description: Whether the global variable is available server side only
+    MetadataRequest:
+      type: object
+      description: 'Object containing key-value pairs. To set nested values, this must be an object like `{"statuses.complete": "yes", "statuses.processed": "no"}`, which is MongoDB [dot notation](https://docs.mongodb.com/manual/core/document/#dot-notation).'
+    DataFilter:
+      description: >
+        Filter condition against submission "data" field. Value must be a MongoDB query condition (see Examples, below).
+
+
+        NOTE: MongoDB selectors that can be nested inside queries
+        (such as [Comparison](https://docs.mongodb.com/manual/reference/operator/query/#comparison) and [Element](https://docs.mongodb.com/manual/reference/operator/query/#element) Selectors,
+        e.g. `$eq`, `$in`, `$exists`) are supported.
+        The following [Logical](https://docs.mongodb.com/manual/reference/operator/query/#logical) Selectors are also supported: `$and`, `$or`, `$nor`
+
+
+        Examples:
+
+        - `dataFilter: {"age": 30}`
+
+        - `dataFilter: {"age": {"$gt": 30}, "people.1.gender": "male"}`
+
+          - Will match submission where age > 30 and gender for the 2nd people element equals "male"
+      type: object
+    MetadataFilter:
+      description: >
+        Filter condition against submission "metadata" field. Value must be a MongoDB query condition (see Examples, below). MongoDB [dot notation](https://docs.mongodb.com/manual/core/document/#dot-notation) is supported for keys.
+
+
+        NOTE: MongoDB selectors that can be nested inside queries
+        (such as [Comparison](https://docs.mongodb.com/manual/reference/operator/query/#comparison) and [Element](https://docs.mongodb.com/manual/reference/operator/query/#element) Selectors,
+        e.g. `$eq`, `$in`, `$exists`) are supported.
+        The following [Logical](https://docs.mongodb.com/manual/reference/operator/query/#logical) Selectors are also supported: `$and`, `$or`, `$nor`
+
+
+        Examples:
+
+        - `metadataFilter: {"checkpoints.complete": 1234}`
+
+        - `metadataFilter: {"checkpoints.complete": {"$exists": true}, "checkpoints.processed": {"$exists": false}}`
+
+          - Will return submissions where both `metadata.checkpoints.complete` exists AND `metadata.checkpoints.processed` does not exist
+      type: object
+    ValidationErrors:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+          path:
+            type: string
+          label:
+            type: string
+          parent:
+            type: string
+          message:
+            type: string
+    ExecutionError:
+      type: object
+      properties:
+        type:
+          type: string
+        url:
+          type: string
+        component:
+          type: string
+        message:
+          type: string
+        code:
+          type: integer
+    InvalidNavigationPanels:
+      type: array
+      items:
+        type: object
+        properties:
+          key:
+            type: string
+          label:
+            type: string
+    ListAuditLogsResponse:
+      type: object
+      properties:
+        logLocations:
+          type: array
+          description: Array of links to audit log files.
+          items:
+            type: string
+
+  parameters:
+    ModuleID:
+      name: moduleId
+      in: path
+      description: Unique module ID
+      required: true
+      schema:
+        type: string
+    WorkflowID:
+      name: workflowId
+      in: path
+      description: Unique workflow ID
+      required: true
+      schema:
+        type: string
+    WorkflowPath:
+      name: workflowPath
+      in: path
+      description: Unique workflow path
+      required: true
+      schema:
+        type: string
+    StepPath:
+      name: stepPath
+      in: path
+      description: Unique path of workflow step, usually "start"
+      required: true
+      schema:
+        type: string
+    TimerStartNodePath:
+      name: timerStartNodePath
+      in: path
+      description: Unique path of a timer start node in a workflow
+      required: true
+      schema:
+        type: string
+    Limit:
+      name: limit
+      in: query
+      description: Maximum number of results to return (default 50, maximum 50)
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 50
+        maximum: 50
+    Offset:
+      name: offset
+      in: query
+      description: Number of results to skip before selecting results. Offset is zero based.
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    SubmissionSortBy:
+      name: sortBy
+      in: query
+      description: Field to sort by (currently supported - `"created"`, `"modified"`)
+      required: false
+      schema:
+        type: string
+    SubmissionSortOrder:
+      name: sortOrder
+      in: query
+      description: Order of sort, if `sortBy` is specified.  One of [`1` (ascending),`-1` (descending)]
+      required: false
+      schema:
+        type: integer
+        enum:
+          - 1
+          - -1
+        default: 1
+    IncludeDeleted:
+      name: includeDeleted
+      in: query
+      description: Whether to include deleted objects in response
+      required: false
+      schema:
+        type: boolean
+        default: false
+    MetadataFilterString:
+      name: metadataFilter
+      in: query
+      description: >
+        Filter condition against submission "metadata" field. Value must be a stringified MongoDB query condition (see Examples, below). MongoDB [dot notation](https://docs.mongodb.com/manual/core/document/#dot-notation) is supported for keys.
+
+
+        NOTE: MongoDB selectors that can be nested inside queries
+        (such as [Comparison](https://docs.mongodb.com/manual/reference/operator/query/#comparison) and [Element](https://docs.mongodb.com/manual/reference/operator/query/#element) Selectors,
+        e.g. `$eq`, `$in`, `$exists`) are supported.
+        The following [Logical](https://docs.mongodb.com/manual/reference/operator/query/#logical) Selectors are also supported: `$and`, `$or`, `$nor`
+
+
+        Examples:
+
+        - `metadataFilter: {"checkpoints.complete": 1234}`
+
+        - `metadataFilter: {"checkpoints.complete": {"$exists": true}, "checkpoints.processed": {"$exists": false}}`
+
+          - Will return submissions where both `metadata.checkpoints.complete` exists AND `metadata.checkpoints.processed` does not exist
+      schema:
+        type: string
+    DataFields:
+      name: dataFields
+      in: query
+      description: >
+        Comma-separated list of dot-notation `data` fields to retrieve;
+        for example, `&dataFields=field1,also.field2` will retrieve `{"data":{"field1":"v1","also":{"field2":"v2"}}}`.
+        Do not include "data" in front of each field. All other submission fields will always be retrieved.
+      schema:
+        type: string
+    ApplicationId:
+      name: applicationId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: >
+        Unique identifier for an application
+
+tags:
+  - name: Users
+    description: >
+
+      The following endpoints are available to "Administrator" users only.
+
+  - name: Groups
+    description: >
+
+      The following endpoints are available to "Administrator" users only.
+
+  - name: Promotions
+    description: >
+
+      The following endpoints are available to "Administrator" users and users with the "Promote" permission for the resource.
+
+  - name: Applications
+    description: >
+
+      An application is the parent of a group of one or more elements. An application can be of either 'Module' (type is `form` in DB) or 'Workflow' type.
+      'Module' type application cannot have workflow but can have data collections. 'Workflow' type application can have both modules and data collections.
+      There can be only a single workflow in an application.
+
+
+      The following endpoints are available to "Administrator" users only.
+
+  - name: Transforms
+    description: >
+
+      The following endpoints are available to "Administrator" users only.
+
+      Transforms should expect the following input data structure:
+
+
+      ***NJK (in):***<br/>
+      Input includes only the `data.rawData` part of the submission object.
+        ```
+        {
+          "firstName": "Al"
+        }
+        ```
+
+
+      ***NJK (out):***<br/>
+      Input includes all of the top-level properties of the submission object, except `data` here refers to `data.rawData`.
+        ```
+        {
+          "data": {
+            "firstName": "Al"
+          },
+          "metadata": {},
+          "created": "2018-01-01T00:00:00.000Z",
+          ...
+        }
+        ```
+
+
+      ***XML (out):***<br/>
+      Input includes all of the top-level properties of the submission object, except `data` here refers to `data.rawData`.
+        ```
+        <submission>
+          <data>
+            <firstName>Al</firstName>
+          </data>
+          <metadata>
+          </metadata>
+          <created>2018-01-01T00:00:00.000Z</created>
+          ...
+        </submission>
+        ```
