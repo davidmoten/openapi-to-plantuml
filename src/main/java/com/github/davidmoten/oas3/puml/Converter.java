@@ -24,6 +24,7 @@ import com.github.davidmoten.oas3.internal.model.Class;
 import com.github.davidmoten.oas3.internal.model.ClassType;
 import com.github.davidmoten.oas3.internal.model.Inheritance;
 import com.github.davidmoten.oas3.internal.model.Model;
+import com.github.davidmoten.oas3.internal.model.ModelConverterLinksThreshold;
 import com.github.davidmoten.oas3.internal.model.Relationship;
 
 import io.swagger.parser.OpenAPIParser;
@@ -78,6 +79,7 @@ public final class Converter {
     }
 
     private static String toPlantUml(Model model) {
+        model = new ModelConverterLinksThreshold(5).apply(model);
         int anonNumber = 0;
         StringBuilder b = new StringBuilder();
         for (Class cls : model.classes()) {
@@ -129,8 +131,7 @@ public final class Converter {
                 if (a.responseCode().isPresent()) {
                     arrow = (a.owns() ? "*" : "") + "..>";
                     label = a.responseCode().get() + a.responseContentType()
-                            .filter(x -> !"application/json".equalsIgnoreCase(x))
-                            .map(x -> SPACE + x).orElse("");
+                            .filter(x -> !"application/json".equalsIgnoreCase(x)).map(x -> SPACE + x).orElse("");
                 } else {
                     arrow = (a.owns() ? "*" : "") + "-->";
                     label = a.propertyOrParameterName().orElse("");
@@ -139,8 +140,7 @@ public final class Converter {
                 if (to.contains(Names.NAMESPACE_DELIMITER)) {
                     to = to.split(Names.NAMESPACE_DELIMITER)[1];
                 }
-                b.append("\n\n" + quote(a.from()) + SPACE + arrow + SPACE + quote(mult) + SPACE
-                        + quote(to)
+                b.append("\n\n" + quote(a.from()) + SPACE + arrow + SPACE + quote(mult) + SPACE + quote(to)
                         + (label.equals("") ? "" : SPACE + COLON + SPACE + quote(label)));
             } else {
                 Inheritance a = (Inheritance) r;
@@ -153,16 +153,14 @@ public final class Converter {
                     anonNumber++;
                     String diamond = "anon" + anonNumber;
                     b.append("\n\ndiamond " + diamond);
-                    b.append("\n\n" + quote(from) + SPACE + "-->" + quote(mult) + SPACE
-                            + quote(diamond) + a.propertyName().map(x -> COLON + quote(x)).orElse(""));
+                    b.append("\n\n" + quote(from) + SPACE + "-->" + quote(mult) + SPACE + quote(diamond)
+                            + a.propertyName().map(x -> COLON + quote(x)).orElse(""));
                     for (String otherClassName : a.to()) {
-                        b.append("\n\n" + quote(otherClassName) + SPACE + "--|>" + SPACE
-                                + quote(diamond));
+                        b.append("\n\n" + quote(otherClassName) + SPACE + "--|>" + SPACE + quote(diamond));
                     }
                 } else {
                     for (String otherClassName : a.to()) {
-                        b.append("\n\n" + quote(otherClassName) + SPACE + "--|>" + SPACE
-                                + quote(a.from()));
+                        b.append("\n\n" + quote(otherClassName) + SPACE + "--|>" + SPACE + quote(a.from()));
                     }
                 }
             }
