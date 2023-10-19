@@ -79,7 +79,7 @@ public final class Converter {
     }
 
     private static String toPlantUml(Model model) {
-        model = new ModelConverterLinksThreshold(5).apply(model);
+        model = new ModelConverterLinksThreshold(10).apply(model);
         int anonNumber = 0;
         StringBuilder b = new StringBuilder();
         for (Class cls : model.classes()) {
