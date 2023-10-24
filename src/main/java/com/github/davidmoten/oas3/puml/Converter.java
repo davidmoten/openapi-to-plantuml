@@ -24,6 +24,7 @@ import com.github.davidmoten.oas3.internal.model.Class;
 import com.github.davidmoten.oas3.internal.model.ClassType;
 import com.github.davidmoten.oas3.internal.model.Inheritance;
 import com.github.davidmoten.oas3.internal.model.Model;
+import com.github.davidmoten.oas3.internal.model.ModelConverterExtract;
 import com.github.davidmoten.oas3.internal.model.ModelConverterLinksThreshold;
 import com.github.davidmoten.oas3.internal.model.Relationship;
 
@@ -80,6 +81,7 @@ public final class Converter {
 
     private static String toPlantUml(Model model) {
         model = new ModelConverterLinksThreshold(10).apply(model);
+//        model = new ModelConverterExtract("GET.*article").apply(model);
         int anonNumber = 0;
         StringBuilder b = new StringBuilder();
         for (Class cls : model.classes()) {

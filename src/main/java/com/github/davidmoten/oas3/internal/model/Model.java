@@ -23,7 +23,7 @@ public final class Model {
     public Model(List<Class> classes, List<? extends Relationship> relationships) {
         this.classes = classes;
         this.relationships = relationships;
-        this.map = classes.stream().collect(Collectors.toMap(c -> c.name(), c-> c));
+        this.map = classes.stream().collect(Collectors.toMap(c -> c.name(), c -> c));
     }
 
     public Model(Class cls, Relationship r) {
@@ -59,7 +59,7 @@ public final class Model {
     public List<? extends Relationship> relationships() {
         return relationships;
     }
-    
+
     public Optional<Class> cls(String name) {
         return Optional.ofNullable(map.get(name));
     }

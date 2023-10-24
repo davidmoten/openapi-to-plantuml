@@ -69,7 +69,7 @@ public final class Association implements Relationship {
         b.append("]");
         return b.toString();
     }
-    
+
     @Override
     public int hashCode() {
         return Objects.hash(from, owns, propertyOrParameterName, responseCode, responseContentType, to, type);
@@ -77,12 +77,15 @@ public final class Association implements Relationship {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null)  {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Association other = (Association) obj;
         return Objects.equals(from, other.from) && owns == other.owns
                 && Objects.equals(propertyOrParameterName, other.propertyOrParameterName)
