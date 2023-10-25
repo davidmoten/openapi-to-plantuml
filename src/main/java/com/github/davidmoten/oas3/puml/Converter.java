@@ -8,9 +8,12 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.io.IOUtils;
 
@@ -50,7 +53,7 @@ public final class Converter {
         }
     }
 
-    public static String openApiToPuml(String openApi, ModelTransformer transformer) {
+    public static List<String> openApiToPuml(String openApi, ModelTransformer transformer) {
         SwaggerParseResult result = new OpenAPIParser().readContents(openApi, null, null);
         if (result.getOpenAPI() == null) {
             throw new IllegalArgumentException("Not an OpenAPI definition");
@@ -59,27 +62,30 @@ public final class Converter {
     }
 
     public static String openApiToPuml(String openApi) {
-       return openApiToPuml(openApi, x -> x);
+        return openApiToPuml(openApi, x -> Collections.singletonList(x)).get(0);
     }
 
-    private static String openApiToPuml(OpenAPI a, ModelTransformer transformer) {
+    private static List<String> openApiToPuml(OpenAPI a, ModelTransformer transformer) {
 
         Names names = new Names(a);
-        Model model = transformer.apply(ComponentsHelper //
+        List<Model> models = transformer.apply(ComponentsHelper //
                 .toModel(names) //
                 .add(PathsHelper.toModel(names)));
 
-        return "@startuml" //
-                + "\nhide <<" + toStereotype(ClassType.METHOD).get() + ">> circle" //
-                + "\nhide <<" + toStereotype(ClassType.RESPONSE).get() + ">> circle" //
-                + "\nhide <<" + toStereotype(ClassType.PARAMETER).get() + ">> circle" //
-                + "\nhide empty methods" //
-                + "\nhide empty fields" //
-                // make sure that periods in class names aren't interpreted as namespace
-                // separators (which results in recursive boxing)
-                + "\nset namespaceSeparator none" //
-                + toPlantUml(model) //
-                + "\n\n@enduml";
+        return models //
+                .stream() //
+                .map(model -> "@startuml" //
+                        + "\nhide <<" + toStereotype(ClassType.METHOD).get() + ">> circle" //
+                        + "\nhide <<" + toStereotype(ClassType.RESPONSE).get() + ">> circle" //
+                        + "\nhide <<" + toStereotype(ClassType.PARAMETER).get() + ">> circle" //
+                        + "\nhide empty methods" //
+                        + "\nhide empty fields" //
+                        // make sure that periods in class names aren't interpreted as namespace
+                        // separators (which results in recursive boxing)
+                        + "\nset namespaceSeparator none" //
+                        + toPlantUml(model) //
+                        + "\n\n@enduml") //
+                .collect(Collectors.toList());
     }
 
     private static String toPlantUml(Model model) {

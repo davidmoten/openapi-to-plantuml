@@ -18,7 +18,7 @@ public final class ModelTransformerLinksThreshold implements ModelTransformer {
     }
 
     @Override
-    public Model apply(Model m) {
+    public List<Model> apply(Model m) {
         Map<String, Integer> counts = new HashMap<>();
         associations(m).forEach(a -> {
             addToCounts(a.from(), counts);
@@ -67,7 +67,7 @@ public final class ModelTransformerLinksThreshold implements ModelTransformer {
                     }
                 }) //
                 .toList().get();
-        return new Model(classes, rels);
+        return Collections.singletonList(new Model(classes, rels));
     }
 
     private static Stream<Association> associations(Model m) {
