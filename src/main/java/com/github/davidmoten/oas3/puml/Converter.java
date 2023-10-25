@@ -57,7 +57,7 @@ public final class Converter {
         }
         return openApiToPuml(result.getOpenAPI(), transformer);
     }
-    
+
     public static String openApiToPuml(String openApi) {
        return openApiToPuml(openApi, x -> x);
     }
