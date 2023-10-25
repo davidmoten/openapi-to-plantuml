@@ -8,11 +8,7 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.stream.Collectors;
-
-import com.github.davidmoten.oas3.internal.model.ModelTransformerExtract;
 
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
@@ -36,7 +32,8 @@ public final class ConverterMain {
     }
 
     public static void main(String[] args) throws IOException {
-        String usage = "Usage: java -jar openapi-to-plantuml-all.jar (single|split) <OPENAPI_FILE> <FILE_FORMAT> <OUTPUT_FILE>"
+        String usage = "Usage: java -jar openapi-to-plantuml-all.jar (single|split)"
+                + " <OPENAPI_FILE> <FILE_FORMAT> <OUTPUT_FILE>"
                 + "\n  File formats are:\n    PUML\n"
                 + Arrays.stream(FileFormat.values()).map(x -> "    " + x + "\n").collect(Collectors.joining());
         if (args.length != 4) {
@@ -45,12 +42,10 @@ public final class ConverterMain {
         } else {
             String mode = args[0];
             if (mode.equals("split")) {
-                List<String> puml = Converter.openApiToPuml(new File(args[1]), m -> 
-                    m.classes().stream().map(c -> new ModelTransformerExtract(Collections.singleton(c.name()), false)).apply(m)()) 
-                );
-                String format = args[2];
-                File out = new File(args[3]);
-                out.mkdirs();
+//                String format = args[2];
+//                File out = new File(args[3]);
+//                out.mkdirs();
+                throw new UnsupportedOperationException();
             } else {
                 String puml = Converter.openApiToPuml(new File(args[1]));
                 String format = args[2];

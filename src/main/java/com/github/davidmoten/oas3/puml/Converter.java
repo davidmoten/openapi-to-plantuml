@@ -9,10 +9,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.apache.commons.io.IOUtils;
 
@@ -43,21 +41,26 @@ public final class Converter {
         // prevent instantiation
     }
 
-    public static List<String> openApiToPuml(InputStream in, ModelTransformer transformer) throws IOException {
+    public static String openApiToPuml(InputStream in) throws IOException {
+        return openApiToPuml(in, ModelTransformer.identity()).puml();
+    }
+
+    public static <T extends HasPuml> T openApiToPuml(InputStream in, ModelTransformer<T> transformer)
+            throws IOException {
         return openApiToPuml(IOUtils.toString(in, StandardCharsets.UTF_8), transformer);
     }
 
-    public static List<String> openApiToPuml(File file, ModelTransformer transformer) throws IOException {
+    public static String openApiToPuml(File file) throws IOException {
+        return openApiToPuml(file, ModelTransformer.identity()).puml();
+    }
+
+    public static <T extends HasPuml> T openApiToPuml(File file, ModelTransformer<T> transformer) throws IOException {
         try (InputStream in = new BufferedInputStream(new FileInputStream(file))) {
             return openApiToPuml(in, transformer);
         }
     }
 
-    public static String openApiToPuml(File file) throws IOException {
-        return openApiToPuml(file, ModelTransformer.IDENTITY).get(0);
-    }
-
-    public static List<String> openApiToPuml(String openApi, ModelTransformer transformer) {
+    public static <T extends HasPuml> T openApiToPuml(String openApi, ModelTransformer<T> transformer) {
         SwaggerParseResult result = new OpenAPIParser().readContents(openApi, null, null);
         if (result.getOpenAPI() == null) {
             throw new IllegalArgumentException("Not an OpenAPI definition");
@@ -66,17 +69,24 @@ public final class Converter {
     }
 
     public static String openApiToPuml(String openApi) {
-        return openApiToPuml(openApi, ModelTransformer.IDENTITY).get(0);
+        return openApiToPuml(openApi, ModelTransformer.identity()).puml();
     }
 
     private static <T extends HasPuml> T openApiToPuml(OpenAPI a, ModelTransformer<T> transformer) {
+        Model m = toModel(a);
+        Model model = transformer.apply(m);
+        return transformer.createHasPuml(toPlantUmlWrapped(model));
+    }
 
+    private static Model toModel(OpenAPI a) {
         Names names = new Names(a);
-        Model model = transformer.apply(ComponentsHelper //
+        return ComponentsHelper //
                 .toModel(names) //
-                .add(PathsHelper.toModel(names)));
+                .add(PathsHelper.toModel(names));
+    }
 
-        return transformer.createHasPuml("@startuml" //
+    private static String toPlantUmlWrapped(Model model) {
+        return "@startuml" //
                 + "\nhide <<" + toStereotype(ClassType.METHOD).get() + ">> circle" //
                 + "\nhide <<" + toStereotype(ClassType.RESPONSE).get() + ">> circle" //
                 + "\nhide <<" + toStereotype(ClassType.PARAMETER).get() + ">> circle" //
@@ -86,7 +96,7 @@ public final class Converter {
                 // separators (which results in recursive boxing)
                 + "\nset namespaceSeparator none" //
                 + toPlantUml(model) //
-                + "\n\n@enduml");
+                + "\n\n@enduml";
     }
 
     private static String toPlantUml(Model model) {

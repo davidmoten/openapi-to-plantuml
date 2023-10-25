@@ -27,7 +27,7 @@ public class ConverterMainTest {
 
     @Test
     public void testToPuml() throws IOException {
-        String[] args = new String[] {"src/test/resources/openapi-example.yml", "PUML",
+        String[] args = new String[] {"single", "src/test/resources/openapi-example.yml", "PUML",
                 "target/converted.puml"};
         ConverterMain.main(args);
     }
