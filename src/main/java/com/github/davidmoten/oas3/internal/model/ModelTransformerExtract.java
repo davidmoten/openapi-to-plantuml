@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 import org.davidmoten.kool.Stream;
 
-public final class ModelTransformerExtract implements ModelTransformer {
+public final class ModelTransformerExtract implements ModelTransformer<PumlExtract> {
 
     private final Set<String> classNamesFrom;
     private boolean regex;
@@ -22,7 +22,7 @@ public final class ModelTransformerExtract implements ModelTransformer {
     }
 
     @Override
-    public List<Model> apply(Model m) {
+    public Model apply(Model m) {
         Set<Class> set = m.classes().stream().filter(c -> {
             if (regex) {
                 return classNamesFrom.stream().anyMatch(className -> {
@@ -102,12 +102,18 @@ public final class ModelTransformerExtract implements ModelTransformer {
                     }
                 }) //
                 .collect(Collectors.toList());
-        return Collections.singletonList(new Model(classes, rels));
+        return new Model(classes, rels);
     }
 
     private static Stream<Association> associations(Model m) {
         return Stream.from(m.relationships()).filter(r -> r instanceof Association) //
                 .map(r -> (Association) r);
+    }
+
+
+    @Override
+    public PumlExtract createHasPuml(String puml) {
+        return new PumlExtract(puml, classNamesFrom);
     }
 
 }

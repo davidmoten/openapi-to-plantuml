@@ -8,7 +8,11 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
+
+import com.github.davidmoten.oas3.internal.model.ModelTransformerExtract;
 
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
@@ -21,8 +25,8 @@ public final class ConverterMain {
         // prevent instantiation
     }
 
-    static DiagramDescription writeFileFormatFromPuml(String puml, String filename,
-            FileFormat fileFormat) throws IOException {
+    static DiagramDescription writeFileFormatFromPuml(String puml, String filename, FileFormat fileFormat)
+            throws IOException {
         File file = new File(filename);
         SourceStringReader reader = new SourceStringReader(puml);
         try (OutputStream os = new BufferedOutputStream(new FileOutputStream(file))) {
@@ -32,21 +36,31 @@ public final class ConverterMain {
     }
 
     public static void main(String[] args) throws IOException {
-        String usage = "Usage: java -jar openapi-to-plantuml-all.jar <OPENAPI_FILE> <FILE_FORMAT> <OUTPUT_FILE>"
-                + "\n  File formats are:\n    PUML\n" + Arrays.stream(FileFormat.values())
-                        .map(x -> "    " + x + "\n").collect(Collectors.joining());
-        if (args.length != 3) {
+        String usage = "Usage: java -jar openapi-to-plantuml-all.jar (single|split) <OPENAPI_FILE> <FILE_FORMAT> <OUTPUT_FILE>"
+                + "\n  File formats are:\n    PUML\n"
+                + Arrays.stream(FileFormat.values()).map(x -> "    " + x + "\n").collect(Collectors.joining());
+        if (args.length != 4) {
             System.out.println(usage);
             throw new IllegalArgumentException("must pass 3 arguments");
         } else {
-            String puml = Converter.openApiToPuml(new File(args[0]));
-            String format = args[1];
-            File out = new File(args[2]);
-            if (format.equals("PUML")) {
-                Files.write(out.toPath(), puml.getBytes(StandardCharsets.UTF_8));
+            String mode = args[0];
+            if (mode.equals("split")) {
+                List<String> puml = Converter.openApiToPuml(new File(args[1]), m -> 
+                    m.classes().stream().map(c -> new ModelTransformerExtract(Collections.singleton(c.name()), false)).apply(m)()) 
+                );
+                String format = args[2];
+                File out = new File(args[3]);
+                out.mkdirs();
             } else {
-                FileFormat ff = FileFormat.valueOf(format);
-                writeFileFormatFromPuml(puml, out.getPath(), ff);
+                String puml = Converter.openApiToPuml(new File(args[1]));
+                String format = args[2];
+                File out = new File(args[3]);
+                if (format.equals("PUML")) {
+                    Files.write(out.toPath(), puml.getBytes(StandardCharsets.UTF_8));
+                } else {
+                    FileFormat ff = FileFormat.valueOf(format);
+                    writeFileFormatFromPuml(puml, out.getPath(), ff);
+                }
             }
         }
     }

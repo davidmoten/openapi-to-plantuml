@@ -8,7 +8,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +24,7 @@ import com.github.davidmoten.oas3.internal.model.Association;
 import com.github.davidmoten.oas3.internal.model.AssociationType;
 import com.github.davidmoten.oas3.internal.model.Class;
 import com.github.davidmoten.oas3.internal.model.ClassType;
+import com.github.davidmoten.oas3.internal.model.HasPuml;
 import com.github.davidmoten.oas3.internal.model.Inheritance;
 import com.github.davidmoten.oas3.internal.model.Model;
 import com.github.davidmoten.oas3.internal.model.ModelTransformer;
@@ -43,14 +43,18 @@ public final class Converter {
         // prevent instantiation
     }
 
-    public static String openApiToPuml(InputStream in) throws IOException {
-        return openApiToPuml(IOUtils.toString(in, StandardCharsets.UTF_8));
+    public static List<String> openApiToPuml(InputStream in, ModelTransformer transformer) throws IOException {
+        return openApiToPuml(IOUtils.toString(in, StandardCharsets.UTF_8), transformer);
+    }
+
+    public static List<String> openApiToPuml(File file, ModelTransformer transformer) throws IOException {
+        try (InputStream in = new BufferedInputStream(new FileInputStream(file))) {
+            return openApiToPuml(in, transformer);
+        }
     }
 
     public static String openApiToPuml(File file) throws IOException {
-        try (InputStream in = new BufferedInputStream(new FileInputStream(file))) {
-            return openApiToPuml(in);
-        }
+        return openApiToPuml(file, ModelTransformer.IDENTITY).get(0);
     }
 
     public static List<String> openApiToPuml(String openApi, ModelTransformer transformer) {
@@ -62,30 +66,27 @@ public final class Converter {
     }
 
     public static String openApiToPuml(String openApi) {
-        return openApiToPuml(openApi, x -> Collections.singletonList(x)).get(0);
+        return openApiToPuml(openApi, ModelTransformer.IDENTITY).get(0);
     }
 
-    private static List<String> openApiToPuml(OpenAPI a, ModelTransformer transformer) {
+    private static <T extends HasPuml> T openApiToPuml(OpenAPI a, ModelTransformer<T> transformer) {
 
         Names names = new Names(a);
-        List<Model> models = transformer.apply(ComponentsHelper //
+        Model model = transformer.apply(ComponentsHelper //
                 .toModel(names) //
                 .add(PathsHelper.toModel(names)));
 
-        return models //
-                .stream() //
-                .map(model -> "@startuml" //
-                        + "\nhide <<" + toStereotype(ClassType.METHOD).get() + ">> circle" //
-                        + "\nhide <<" + toStereotype(ClassType.RESPONSE).get() + ">> circle" //
-                        + "\nhide <<" + toStereotype(ClassType.PARAMETER).get() + ">> circle" //
-                        + "\nhide empty methods" //
-                        + "\nhide empty fields" //
-                        // make sure that periods in class names aren't interpreted as namespace
-                        // separators (which results in recursive boxing)
-                        + "\nset namespaceSeparator none" //
-                        + toPlantUml(model) //
-                        + "\n\n@enduml") //
-                .collect(Collectors.toList());
+        return transformer.createHasPuml("@startuml" //
+                + "\nhide <<" + toStereotype(ClassType.METHOD).get() + ">> circle" //
+                + "\nhide <<" + toStereotype(ClassType.RESPONSE).get() + ">> circle" //
+                + "\nhide <<" + toStereotype(ClassType.PARAMETER).get() + ">> circle" //
+                + "\nhide empty methods" //
+                + "\nhide empty fields" //
+                // make sure that periods in class names aren't interpreted as namespace
+                // separators (which results in recursive boxing)
+                + "\nset namespaceSeparator none" //
+                + toPlantUml(model) //
+                + "\n\n@enduml");
     }
 
     private static String toPlantUml(Model model) {

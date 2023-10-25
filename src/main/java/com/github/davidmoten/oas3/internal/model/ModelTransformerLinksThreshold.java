@@ -9,7 +9,7 @@ import java.util.Set;
 
 import org.davidmoten.kool.Stream;
 
-public final class ModelTransformerLinksThreshold implements ModelTransformer {
+public final class ModelTransformerLinksThreshold implements ModelTransformer<Puml> {
 
     private final int threshold;
 
@@ -18,7 +18,7 @@ public final class ModelTransformerLinksThreshold implements ModelTransformer {
     }
 
     @Override
-    public List<Model> apply(Model m) {
+    public Model apply(Model m) {
         Map<String, Integer> counts = new HashMap<>();
         associations(m).forEach(a -> {
             addToCounts(a.from(), counts);
@@ -67,7 +67,7 @@ public final class ModelTransformerLinksThreshold implements ModelTransformer {
                     }
                 }) //
                 .toList().get();
-        return Collections.singletonList(new Model(classes, rels));
+        return new Model(classes, rels);
     }
 
     private static Stream<Association> associations(Model m) {
@@ -78,6 +78,11 @@ public final class ModelTransformerLinksThreshold implements ModelTransformer {
     private static void addToCounts(String className, Map<String, Integer> map) {
         Integer count = map.getOrDefault(className, 0);
         map.put(className, count + 1);
+    }
+
+    @Override
+    public Puml createHasPuml(String puml) {
+        return new Puml(puml);
     }
 
 }

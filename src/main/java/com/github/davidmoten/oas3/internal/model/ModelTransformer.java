@@ -1,9 +1,9 @@
 package com.github.davidmoten.oas3.internal.model;
 
-import java.util.List;
 import java.util.function.Function;
 
-@FunctionalInterface
-public interface ModelTransformer extends Function<Model, List<Model>> {
+public interface ModelTransformer<T extends HasPuml> extends Function<Model, Model> {
+    
+    T createHasPuml(String puml);
 
 }
