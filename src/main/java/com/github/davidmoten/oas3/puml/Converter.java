@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -80,8 +81,8 @@ public final class Converter {
     }
 
     private static String toPlantUml(Model model) {
-        model = new ModelConverterLinksThreshold(10).apply(model);
-//        model = new ModelConverterExtract("GET.*article").apply(model);
+//        model = new ModelConverterLinksThreshold(10).apply(model);
+        model = new ModelConverterExtract(Collections.singleton("GET.*athletes.*routes"), true).apply(model);
         int anonNumber = 0;
         StringBuilder b = new StringBuilder();
         for (Class cls : model.classes()) {

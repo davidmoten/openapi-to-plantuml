@@ -13,16 +13,26 @@ import org.davidmoten.kool.Stream;
 
 public final class ModelConverterExtract implements ModelConverter {
 
-    private final Pattern classNamePatternFrom;
+    private final Set<String> classNamesFrom;
+    private boolean regex;
 
-    public ModelConverterExtract(String classNamePatternFrom) {
-        this.classNamePatternFrom = Pattern.compile(classNamePatternFrom);
+    public ModelConverterExtract(Set<String> classNamesFrom, boolean regex) {
+        this.classNamesFrom = classNamesFrom;
+        this.regex = regex;
     }
 
     @Override
     public Model apply(Model m) {
-        Set<Class> set = m.classes().stream().filter(x -> classNamePatternFrom.matcher(x.name()).matches())
-                .collect(Collectors.toSet());
+        Set<Class> set = m.classes().stream().filter(c -> {
+            if (regex) {
+                return classNamesFrom.stream().anyMatch(className -> {
+                    Pattern pattern = Pattern.compile(className);
+                    return pattern.matcher(c.name()).matches();
+                });
+            } else {
+                return classNamesFrom.contains(c.name());
+            }
+        }).collect(Collectors.toSet());
         while (true) {
             int size = set.size();
             m.relationships().forEach(r -> {
@@ -45,6 +55,7 @@ public final class ModelConverterExtract implements ModelConverter {
                 break;
             }
         }
+        set.forEach(c -> System.out.println("  " + c.name()));
 
         Map<String, Set<Association>> froms = new HashMap<>();
         associations(m) //
@@ -57,7 +68,7 @@ public final class ModelConverterExtract implements ModelConverter {
                     s.add(a);
                 });
 
-        List<Class> classes = Stream.from(m.classes()) //
+        List<Class> classes = Stream.from(set) //
                 .map(c -> {
                     Set<Association> ass = froms.getOrDefault(c.name(), Collections.emptySet());
                     List<Field> extras = Stream.from(ass) //
