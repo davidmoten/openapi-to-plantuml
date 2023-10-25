@@ -9,11 +9,11 @@ import java.util.Set;
 
 import org.davidmoten.kool.Stream;
 
-public final class ModelConverterLinksThreshold implements ModelConverter {
+public final class ModelTransformerLinksThreshold implements ModelTransformer {
 
     private final int threshold;
 
-    public ModelConverterLinksThreshold(int threshold) {
+    public ModelTransformerLinksThreshold(int threshold) {
         this.threshold = threshold;
     }
 

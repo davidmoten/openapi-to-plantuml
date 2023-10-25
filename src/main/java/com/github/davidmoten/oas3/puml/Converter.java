@@ -8,7 +8,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -25,8 +24,7 @@ import com.github.davidmoten.oas3.internal.model.Class;
 import com.github.davidmoten.oas3.internal.model.ClassType;
 import com.github.davidmoten.oas3.internal.model.Inheritance;
 import com.github.davidmoten.oas3.internal.model.Model;
-import com.github.davidmoten.oas3.internal.model.ModelConverterExtract;
-import com.github.davidmoten.oas3.internal.model.ModelConverterLinksThreshold;
+import com.github.davidmoten.oas3.internal.model.ModelTransformer;
 import com.github.davidmoten.oas3.internal.model.Relationship;
 
 import io.swagger.parser.OpenAPIParser;
@@ -52,20 +50,24 @@ public final class Converter {
         }
     }
 
-    public static String openApiToPuml(String openApi) {
+    public static String openApiToPuml(String openApi, ModelTransformer transformer) {
         SwaggerParseResult result = new OpenAPIParser().readContents(openApi, null, null);
         if (result.getOpenAPI() == null) {
             throw new IllegalArgumentException("Not an OpenAPI definition");
         }
-        return openApiToPuml(result.getOpenAPI());
+        return openApiToPuml(result.getOpenAPI(), transformer);
+    }
+    
+    public static String openApiToPuml(String openApi) {
+       return openApiToPuml(openApi, x -> x);
     }
 
-    private static String openApiToPuml(OpenAPI a) {
+    private static String openApiToPuml(OpenAPI a, ModelTransformer transformer) {
 
         Names names = new Names(a);
-        Model model = ComponentsHelper //
+        Model model = transformer.apply(ComponentsHelper //
                 .toModel(names) //
-                .add(PathsHelper.toModel(names));
+                .add(PathsHelper.toModel(names)));
 
         return "@startuml" //
                 + "\nhide <<" + toStereotype(ClassType.METHOD).get() + ">> circle" //
@@ -81,8 +83,8 @@ public final class Converter {
     }
 
     private static String toPlantUml(Model model) {
-//        model = new ModelConverterLinksThreshold(10).apply(model);
-        model = new ModelConverterExtract(Collections.singleton("GET.*athletes.*routes"), true).apply(model);
+////        model = new ModelConverterLinksThreshold(10).apply(model);
+//        model = new ModelConverterExtract(Collections.singleton("GET.*athletes.*routes"), true).apply(model);
         int anonNumber = 0;
         StringBuilder b = new StringBuilder();
         for (Class cls : model.classes()) {

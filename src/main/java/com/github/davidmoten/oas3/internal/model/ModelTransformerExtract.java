@@ -11,12 +11,12 @@ import java.util.stream.Collectors;
 
 import org.davidmoten.kool.Stream;
 
-public final class ModelConverterExtract implements ModelConverter {
+public final class ModelTransformerExtract implements ModelTransformer {
 
     private final Set<String> classNamesFrom;
     private boolean regex;
 
-    public ModelConverterExtract(Set<String> classNamesFrom, boolean regex) {
+    public ModelTransformerExtract(Set<String> classNamesFrom, boolean regex) {
         this.classNamesFrom = classNamesFrom;
         this.regex = regex;
     }
