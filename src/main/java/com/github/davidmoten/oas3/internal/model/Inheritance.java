@@ -1,6 +1,7 @@
 package com.github.davidmoten.oas3.internal.model;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public final class Inheritance implements Relationship {
@@ -47,4 +48,24 @@ public final class Inheritance implements Relationship {
         return b.toString();
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(from, propertyName, to, type);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Inheritance other = (Inheritance) obj;
+        return Objects.equals(from, other.from) && Objects.equals(propertyName, other.propertyName)
+                && Objects.equals(to, other.to) && type == other.type;
+    }
 }

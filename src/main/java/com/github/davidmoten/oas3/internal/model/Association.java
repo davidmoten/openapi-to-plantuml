@@ -1,5 +1,6 @@
 package com.github.davidmoten.oas3.internal.model;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public final class Association implements Relationship {
@@ -67,6 +68,30 @@ public final class Association implements Relationship {
         b.append(str(propertyOrParameterName));
         b.append("]");
         return b.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(from, owns, propertyOrParameterName, responseCode, responseContentType, to, type);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null)  {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Association other = (Association) obj;
+        return Objects.equals(from, other.from) && owns == other.owns
+                && Objects.equals(propertyOrParameterName, other.propertyOrParameterName)
+                && Objects.equals(responseCode, other.responseCode)
+                && Objects.equals(responseContentType, other.responseContentType) && Objects.equals(to, other.to)
+                && type == other.type;
     }
 
     private static String str(Optional<?> o) {
@@ -160,5 +185,4 @@ public final class Association implements Relationship {
             return this;
         }
     }
-
 }

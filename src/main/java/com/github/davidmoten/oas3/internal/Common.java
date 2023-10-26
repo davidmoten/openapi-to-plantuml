@@ -293,7 +293,7 @@ final class Common {
                 .to(otherClassName) //
                 .type(isToOne ? AssociationType.ONE : AssociationType.ZERO_ONE) //
                 .propertyOrParameterName(//
-                        property == null || property.equals(otherClassName) ? Optional.empty()
+                        property == null || property.equalsIgnoreCase(otherClassName) ? Optional.empty()
                                 : Optional.of(property))
                 .owns(owns) //
                 .build());

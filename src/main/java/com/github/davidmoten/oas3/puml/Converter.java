@@ -8,9 +8,12 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.io.IOUtils;
 
@@ -22,8 +25,12 @@ import com.github.davidmoten.oas3.internal.model.Association;
 import com.github.davidmoten.oas3.internal.model.AssociationType;
 import com.github.davidmoten.oas3.internal.model.Class;
 import com.github.davidmoten.oas3.internal.model.ClassType;
+import com.github.davidmoten.oas3.internal.model.HasPuml;
 import com.github.davidmoten.oas3.internal.model.Inheritance;
 import com.github.davidmoten.oas3.internal.model.Model;
+import com.github.davidmoten.oas3.internal.model.ModelTransformer;
+import com.github.davidmoten.oas3.internal.model.ModelTransformerExtract;
+import com.github.davidmoten.oas3.internal.model.PumlExtract;
 import com.github.davidmoten.oas3.internal.model.Relationship;
 
 import io.swagger.parser.OpenAPIParser;
@@ -40,30 +47,75 @@ public final class Converter {
     }
 
     public static String openApiToPuml(InputStream in) throws IOException {
-        return openApiToPuml(IOUtils.toString(in, StandardCharsets.UTF_8));
+        return openApiToPuml(in, ModelTransformer.identity()).puml();
     }
 
-    public static String openApiToPuml(File file) throws IOException {
+    public static List<PumlExtract> openApiToPumlSplitByMethod(File file) throws IOException {
         try (InputStream in = new BufferedInputStream(new FileInputStream(file))) {
-            return openApiToPuml(in);
+            return openApiToPumlSplitByMethod(in);
         }
     }
 
-    public static String openApiToPuml(String openApi) {
+    public static List<PumlExtract> openApiToPumlSplitByMethod(InputStream in) throws IOException {
+        OpenAPI api = parseOpenApi(IOUtils.toString(in, StandardCharsets.UTF_8));
+        Model m = toModel(api);
+        return m //
+                .classes() //
+                .stream() //
+                .filter(c -> c.type() == ClassType.METHOD) //
+                .map(c -> {
+                    ModelTransformerExtract t = new ModelTransformerExtract(Collections.singleton(c.name()), false);
+                    Model model = t.apply(m);
+                    return t.createHasPuml(toPlantUml(model));
+                }) //
+                .collect(Collectors.toList());
+    }
+
+    public static <T extends HasPuml> T openApiToPuml(InputStream in, ModelTransformer<T> transformer)
+            throws IOException {
+        return openApiToPuml(IOUtils.toString(in, StandardCharsets.UTF_8), transformer);
+    }
+
+    public static String openApiToPuml(File file) throws IOException {
+        return openApiToPuml(file, ModelTransformer.identity()).puml();
+    }
+
+    public static <T extends HasPuml> T openApiToPuml(File file, ModelTransformer<T> transformer) throws IOException {
+        try (InputStream in = new BufferedInputStream(new FileInputStream(file))) {
+            return openApiToPuml(in, transformer);
+        }
+    }
+
+    public static <T extends HasPuml> T openApiToPuml(String openApi, ModelTransformer<T> transformer) {
+        return openApiToPuml(parseOpenApi(openApi), transformer);
+    }
+
+    private static OpenAPI parseOpenApi(String openApi) {
         SwaggerParseResult result = new OpenAPIParser().readContents(openApi, null, null);
         if (result.getOpenAPI() == null) {
             throw new IllegalArgumentException("Not an OpenAPI definition");
         }
-        return openApiToPuml(result.getOpenAPI());
+        return result.getOpenAPI();
     }
 
-    private static String openApiToPuml(OpenAPI a) {
+    public static String openApiToPuml(String openApi) {
+        return openApiToPuml(openApi, ModelTransformer.identity()).puml();
+    }
 
+    private static <T extends HasPuml> T openApiToPuml(OpenAPI a, ModelTransformer<T> transformer) {
+        Model m = toModel(a);
+        Model model = transformer.apply(m);
+        return transformer.createHasPuml(toPlantUml(model));
+    }
+
+    private static Model toModel(OpenAPI a) {
         Names names = new Names(a);
-        Model model = ComponentsHelper //
+        return ComponentsHelper //
                 .toModel(names) //
                 .add(PathsHelper.toModel(names));
+    }
 
+    private static String toPlantUml(Model model) {
         return "@startuml" //
                 + "\nhide <<" + toStereotype(ClassType.METHOD).get() + ">> circle" //
                 + "\nhide <<" + toStereotype(ClassType.RESPONSE).get() + ">> circle" //
@@ -73,11 +125,13 @@ public final class Converter {
                 // make sure that periods in class names aren't interpreted as namespace
                 // separators (which results in recursive boxing)
                 + "\nset namespaceSeparator none" //
-                + toPlantUml(model) //
+                + toPlantUmlInner(model) //
                 + "\n\n@enduml";
     }
 
-    private static String toPlantUml(Model model) {
+    private static String toPlantUmlInner(Model model) {
+////        model = new ModelConverterLinksThreshold(10).apply(model);
+//        model = new ModelConverterExtract(Collections.singleton("GET.*athletes.*routes"), true).apply(model);
         int anonNumber = 0;
         StringBuilder b = new StringBuilder();
         for (Class cls : model.classes()) {
@@ -129,8 +183,7 @@ public final class Converter {
                 if (a.responseCode().isPresent()) {
                     arrow = (a.owns() ? "*" : "") + "..>";
                     label = a.responseCode().get() + a.responseContentType()
-                            .filter(x -> !"application/json".equalsIgnoreCase(x))
-                            .map(x -> SPACE + x).orElse("");
+                            .filter(x -> !"application/json".equalsIgnoreCase(x)).map(x -> SPACE + x).orElse("");
                 } else {
                     arrow = (a.owns() ? "*" : "") + "-->";
                     label = a.propertyOrParameterName().orElse("");
@@ -139,8 +192,7 @@ public final class Converter {
                 if (to.contains(Names.NAMESPACE_DELIMITER)) {
                     to = to.split(Names.NAMESPACE_DELIMITER)[1];
                 }
-                b.append("\n\n" + quote(a.from()) + SPACE + arrow + SPACE + quote(mult) + SPACE
-                        + quote(to)
+                b.append("\n\n" + quote(a.from()) + SPACE + arrow + SPACE + quote(mult) + SPACE + quote(to)
                         + (label.equals("") ? "" : SPACE + COLON + SPACE + quote(label)));
             } else {
                 Inheritance a = (Inheritance) r;
@@ -153,16 +205,14 @@ public final class Converter {
                     anonNumber++;
                     String diamond = "anon" + anonNumber;
                     b.append("\n\ndiamond " + diamond);
-                    b.append("\n\n" + quote(from) + SPACE + "-->" + quote(mult) + SPACE
-                            + quote(diamond) + a.propertyName().map(x -> COLON + quote(x)).orElse(""));
+                    b.append("\n\n" + quote(from) + SPACE + "-->" + quote(mult) + SPACE + quote(diamond)
+                            + a.propertyName().map(x -> COLON + quote(x)).orElse(""));
                     for (String otherClassName : a.to()) {
-                        b.append("\n\n" + quote(otherClassName) + SPACE + "--|>" + SPACE
-                                + quote(diamond));
+                        b.append("\n\n" + quote(otherClassName) + SPACE + "--|>" + SPACE + quote(diamond));
                     }
                 } else {
                     for (String otherClassName : a.to()) {
-                        b.append("\n\n" + quote(otherClassName) + SPACE + "--|>" + SPACE
-                                + quote(a.from()));
+                        b.append("\n\n" + quote(otherClassName) + SPACE + "--|>" + SPACE + quote(a.from()));
                     }
                 }
             }

@@ -15,8 +15,7 @@ public class ConverterMainTest {
     public void testToImages() throws IOException {
         for (FileFormat ff : new FileFormat[] {FileFormat.PNG, FileFormat.SVG, FileFormat.LATEX}) {
             try {
-                String[] args = new String[] {"src/test/resources/openapi-example.yml",
-                        ff.toString(),
+                String[] args = new String[] {"single", "src/test/resources/openapi-example.yml", ff.toString(),
                         new File("target/converted." + ff.getFileSuffix()).getPath()};
                 ConverterMain.main(args);
             } catch (Throwable e) {
@@ -26,8 +25,18 @@ public class ConverterMainTest {
     }
 
     @Test
+    public void testSplit() throws IOException {
+        for (FileFormat ff : new FileFormat[] {FileFormat.PNG, FileFormat.SVG, FileFormat.LATEX}) {
+            System.out.println("writing unqork split in format " + ff);
+            String[] args = new String[] {"split", "src/test/resources/demo/unqork.yml", ff.toString(),
+                    new File("target/unqork" + ff.getFileSuffix()).getPath()};
+            ConverterMain.main(args);
+        }
+    }
+
+    @Test
     public void testToPuml() throws IOException {
-        String[] args = new String[] {"src/test/resources/openapi-example.yml", "PUML",
+        String[] args = new String[] {"single", "src/test/resources/openapi-example.yml", "PUML",
                 "target/converted.puml"};
         ConverterMain.main(args);
     }

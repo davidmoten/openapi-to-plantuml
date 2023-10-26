@@ -2,6 +2,7 @@ package com.github.davidmoten.oas3.internal.model;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import com.google.common.base.Preconditions;
 
@@ -39,6 +40,27 @@ public final class Class {
 
     public boolean isEnum() {
         return isEnum;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(fields, isEnum, name, type);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Class other = (Class) obj;
+        return Objects.equals(fields, other.fields) && isEnum == other.isEnum && Objects.equals(name, other.name)
+                && type == other.type;
     }
 
     @Override

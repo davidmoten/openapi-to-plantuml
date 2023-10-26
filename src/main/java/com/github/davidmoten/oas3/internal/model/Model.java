@@ -5,6 +5,9 @@ import static java.util.stream.Collectors.joining;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.github.davidmoten.guavamini.Lists;
 
@@ -13,11 +16,14 @@ public final class Model {
     public static final Model EMPTY = new Model(Collections.emptyList(), Collections.emptyList());
 
     private final List<Class> classes;
-    private final List<Relationship> relationships;
+    private final List<? extends Relationship> relationships;
 
-    public Model(List<Class> classes, List<Relationship> relationships) {
+    private final Map<String, Class> map;
+
+    public Model(List<Class> classes, List<? extends Relationship> relationships) {
         this.classes = classes;
         this.relationships = relationships;
+        this.map = classes.stream().collect(Collectors.toMap(c -> c.name(), c -> c, (a, b) -> a));
     }
 
     public Model(Class cls, Relationship r) {
@@ -50,8 +56,12 @@ public final class Model {
         return classes;
     }
 
-    public List<Relationship> relationships() {
+    public List<? extends Relationship> relationships() {
         return relationships;
+    }
+
+    public Optional<Class> cls(String name) {
+        return Optional.ofNullable(map.get(name));
     }
 
     @Override
