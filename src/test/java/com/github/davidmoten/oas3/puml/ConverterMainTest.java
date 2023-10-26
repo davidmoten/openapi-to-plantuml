@@ -2,6 +2,7 @@ package com.github.davidmoten.oas3.puml;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 
 import org.junit.Test;
 
@@ -29,7 +30,7 @@ public class ConverterMainTest {
         for (FileFormat ff : new FileFormat[] {FileFormat.PNG, FileFormat.SVG, FileFormat.LATEX}) {
             System.out.println("writing unqork split in format " + ff);
             String[] args = new String[] {"split", "src/test/resources/demo/unqork.yml", ff.toString(),
-                    new File("target/unqork" + ff.getFileSuffix()).getPath()};
+                    new File("target/unqork-" + ff.name().toLowerCase(Locale.ENGLISH)).getPath()};
             ConverterMain.main(args);
         }
     }

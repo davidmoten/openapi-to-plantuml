@@ -48,7 +48,9 @@ public final class ConverterMain {
                 String inputFilename = args[1];
                 String format = args[2];
                 File out = new File(args[3]);
-                assert out.mkdirs();
+                if (!out.mkdirs()) {
+                    System.out.println("mkdirs returned false!");
+                }
                 List<PumlExtract> list = Converter.openApiToPumlSplitByMethod(new File(inputFilename));
                 for (PumlExtract puml : list) {
                     String filename = puml.classNameFrom().iterator().next().replace(" ", "_").replace("/", "_")
