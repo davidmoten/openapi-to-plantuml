@@ -27,9 +27,9 @@ public class ConverterMainTest {
     @Test
     public void testSplit() throws IOException {
         for (FileFormat ff : new FileFormat[] {FileFormat.PNG, FileFormat.SVG, FileFormat.LATEX}) {
+            System.out.println("writing unqork split in format " + ff);
             String[] args = new String[] {"split", "src/test/resources/demo/unqork.yml", ff.toString(),
                     new File("target/unqork" + ff.getFileSuffix()).getPath()};
-            System.out.println("writing unqork split in format " + ff);
             ConverterMain.main(args);
         }
     }
