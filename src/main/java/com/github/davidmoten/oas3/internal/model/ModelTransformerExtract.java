@@ -55,7 +55,6 @@ public final class ModelTransformerExtract implements ModelTransformer<PumlExtra
                 break;
             }
         }
-        set.forEach(c -> System.out.println("  " + c.name()));
 
         Map<String, Set<Association>> froms = new HashMap<>();
         associations(m) //

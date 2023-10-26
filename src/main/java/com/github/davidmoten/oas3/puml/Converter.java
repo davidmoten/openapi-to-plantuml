@@ -8,9 +8,12 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.io.IOUtils;
 
@@ -26,6 +29,8 @@ import com.github.davidmoten.oas3.internal.model.HasPuml;
 import com.github.davidmoten.oas3.internal.model.Inheritance;
 import com.github.davidmoten.oas3.internal.model.Model;
 import com.github.davidmoten.oas3.internal.model.ModelTransformer;
+import com.github.davidmoten.oas3.internal.model.ModelTransformerExtract;
+import com.github.davidmoten.oas3.internal.model.PumlExtract;
 import com.github.davidmoten.oas3.internal.model.Relationship;
 
 import io.swagger.parser.OpenAPIParser;
@@ -45,6 +50,27 @@ public final class Converter {
         return openApiToPuml(in, ModelTransformer.identity()).puml();
     }
 
+    public static List<PumlExtract> openApiToPumlSplitByMethod(File file) throws IOException {
+        try (InputStream in = new BufferedInputStream(new FileInputStream(file))) {
+            return openApiToPumlSplitByMethod(in);
+        }
+    }
+
+    public static List<PumlExtract> openApiToPumlSplitByMethod(InputStream in) throws IOException {
+        OpenAPI api = parseOpenApi(IOUtils.toString(in, StandardCharsets.UTF_8));
+        Model m = toModel(api);
+        return m //
+                .classes() //
+                .stream() //
+                .filter(c -> c.type() == ClassType.METHOD) //
+                .map(c -> {
+                    ModelTransformerExtract t = new ModelTransformerExtract(Collections.singleton(c.name()), false);
+                    Model model = t.apply(m);
+                    return t.createHasPuml(toPlantUml(model));
+                }) //
+                .collect(Collectors.toList());
+    }
+
     public static <T extends HasPuml> T openApiToPuml(InputStream in, ModelTransformer<T> transformer)
             throws IOException {
         return openApiToPuml(IOUtils.toString(in, StandardCharsets.UTF_8), transformer);
@@ -61,11 +87,15 @@ public final class Converter {
     }
 
     public static <T extends HasPuml> T openApiToPuml(String openApi, ModelTransformer<T> transformer) {
+        return openApiToPuml(parseOpenApi(openApi), transformer);
+    }
+
+    private static OpenAPI parseOpenApi(String openApi) {
         SwaggerParseResult result = new OpenAPIParser().readContents(openApi, null, null);
         if (result.getOpenAPI() == null) {
             throw new IllegalArgumentException("Not an OpenAPI definition");
         }
-        return openApiToPuml(result.getOpenAPI(), transformer);
+        return result.getOpenAPI();
     }
 
     public static String openApiToPuml(String openApi) {
@@ -75,7 +105,7 @@ public final class Converter {
     private static <T extends HasPuml> T openApiToPuml(OpenAPI a, ModelTransformer<T> transformer) {
         Model m = toModel(a);
         Model model = transformer.apply(m);
-        return transformer.createHasPuml(toPlantUmlWrapped(model));
+        return transformer.createHasPuml(toPlantUml(model));
     }
 
     private static Model toModel(OpenAPI a) {
@@ -85,7 +115,7 @@ public final class Converter {
                 .add(PathsHelper.toModel(names));
     }
 
-    private static String toPlantUmlWrapped(Model model) {
+    private static String toPlantUml(Model model) {
         return "@startuml" //
                 + "\nhide <<" + toStereotype(ClassType.METHOD).get() + ">> circle" //
                 + "\nhide <<" + toStereotype(ClassType.RESPONSE).get() + ">> circle" //
@@ -95,11 +125,11 @@ public final class Converter {
                 // make sure that periods in class names aren't interpreted as namespace
                 // separators (which results in recursive boxing)
                 + "\nset namespaceSeparator none" //
-                + toPlantUml(model) //
+                + toPlantUmlInner(model) //
                 + "\n\n@enduml";
     }
 
-    private static String toPlantUml(Model model) {
+    private static String toPlantUmlInner(Model model) {
 ////        model = new ModelConverterLinksThreshold(10).apply(model);
 //        model = new ModelConverterExtract(Collections.singleton("GET.*athletes.*routes"), true).apply(model);
         int anonNumber = 0;
