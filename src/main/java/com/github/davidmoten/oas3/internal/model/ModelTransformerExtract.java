@@ -24,6 +24,7 @@ public final class ModelTransformerExtract implements ModelTransformer<PumlExtra
 
     @Override
     public Model apply(Model m) {
+
         Set<Class> set = m.classes().stream().filter(c -> {
             if (regex) {
                 return classNamesFrom.stream().anyMatch(className -> {
@@ -46,24 +47,39 @@ public final class ModelTransformerExtract implements ModelTransformer<PumlExtra
                     s.add(a);
                 });
 
+        Map<String, Set<Class>> subClasses = new HashMap<>();
+        inheritances(m) //
+                .forEach(inh -> {
+                    for (String to : inh.to()) {
+                        m.cls(to).ifPresent(c -> {
+                            Set<Class> s = subClasses.get(inh.from());
+                            if (s == null) {
+                                s = new HashSet<>();
+                                subClasses.put(inh.from(), s);
+                            }
+                            s.add(c);
+                        });
+                    }
+                });
+
         Map<String, Set<Inheritance>> superClasses = new HashMap<>();
         inheritances(m) //
                 .forEach(a -> a //
                         .to() //
                         .stream() //
                         .forEach(x -> {
-                            m.cls(x) //
-                                    .ifPresent(c -> {
-                                        Set<Inheritance> s = superClasses.get(x);
-                                        if (s == null) {
-                                            s = new HashSet<>();
-                                            superClasses.put(x, s);
-                                        }
-                                    });
+                            m.cls(x).ifPresent(c -> {
+                                Set<Inheritance> s = superClasses.get(x);
+                                if (s == null) {
+                                    s = new HashSet<>();
+                                    superClasses.put(x, s);
+                                }
+                                s.add(a);
+                            });
                         }));
 
         for (Class c : new ArrayList<>(set)) {
-            addRelated(m, set, froms, superClasses, c);
+            addRelated(m, set, froms, superClasses, subClasses, c);
         }
 
         List<Class> classes = Stream.from(set) //
@@ -119,23 +135,34 @@ public final class ModelTransformerExtract implements ModelTransformer<PumlExtra
     }
 
     private static void addRelated(Model model, Set<Class> set, Map<String, Set<Association>> froms,
-            Map<String, Set<Inheritance>> superClasses, Class a) {
+            Map<String, Set<Inheritance>> superClasses, Map<String, Set<Class>> subClasses, Class a) {
         set.add(a);
         Set<Association> associations = froms.getOrDefault(a.name(), Collections.emptySet());
         for (Association ass : associations) {
             model.cls(ass.to()).ifPresent(cls -> {
                 if (!set.contains(cls)) {
-                    addRelated(model, set, froms, superClasses, cls);
+                    addRelated(model, set, froms, superClasses, subClasses, cls);
                 }
             });
+        }
+        Set<Class> subs = subClasses.getOrDefault(a.name(), Collections.emptySet());
+        for (Class sub : subs) {
+            addRelated(model, set, froms, superClasses, subClasses, sub);
         }
         Set<Inheritance> supers = superClasses.getOrDefault(a.name(), Collections.emptySet());
         for (Inheritance sup : supers) {
             model.cls(sup.from()).ifPresent(cls -> {
                 if (!set.contains(cls)) {
-                    addRelated(model, set, froms, superClasses, cls);
+                    addRelated(model, set, froms, superClasses, subClasses, cls);
                 }
             });
+            for (String to : sup.to()) {
+                model.cls(to).ifPresent(cls -> {
+                    if (!set.contains(cls)) {
+                        addRelated(model, set, froms, superClasses, subClasses, cls);
+                    }
+                });
+            }
         }
     }
 
