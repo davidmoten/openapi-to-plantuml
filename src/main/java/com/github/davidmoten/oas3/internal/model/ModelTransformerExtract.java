@@ -1,5 +1,6 @@
 package com.github.davidmoten.oas3.internal.model;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -33,28 +34,6 @@ public final class ModelTransformerExtract implements ModelTransformer<PumlExtra
                 return classNamesFrom.contains(c.name());
             }
         }).collect(Collectors.toSet());
-        while (true) {
-            int size = set.size();
-            m.relationships().forEach(r -> {
-                if (r instanceof Association) {
-                    Association a = (Association) r;
-                    Class c = m.cls(a.from()).get();
-                    if (set.contains(c)) {
-                        set.add(m.cls(a.to()).get());
-                    }
-                } else {
-                    Inheritance a = (Inheritance) r;
-                    List<Class> list = Stream.of(a.from()).concatWith(Stream.from(a.to())).map(x -> m.cls(x).get())
-                            .toList().get();
-                    if (list.stream().anyMatch(c -> set.contains(c))) {
-                        set.addAll(list);
-                    }
-                }
-            });
-            if (set.size() == size) {
-                break;
-            }
-        }
 
         Map<String, Set<Association>> froms = new HashMap<>();
         associations(m) //
@@ -66,6 +45,10 @@ public final class ModelTransformerExtract implements ModelTransformer<PumlExtra
                     }
                     s.add(a);
                 });
+
+        for (Class c : new ArrayList<>(set)) {
+            addRelated(m, set, froms, c);
+        }
 
         List<Class> classes = Stream.from(set) //
                 .map(c -> {
@@ -104,11 +87,22 @@ public final class ModelTransformerExtract implements ModelTransformer<PumlExtra
         return new Model(classes, rels);
     }
 
+    private static void addRelated(Model model, Set<Class> set, Map<String, Set<Association>> froms, Class a) {
+        set.add(a);
+        Set<Association> associations = froms.getOrDefault(a.name(), Collections.emptySet());
+        for (Association ass : associations) {
+            model.cls(ass.to()).ifPresent(cls -> {
+                if (!set.contains(cls)) {
+                    addRelated(model, set, froms, cls);
+                }
+            });
+        }
+    }
+
     private static Stream<Association> associations(Model m) {
         return Stream.from(m.relationships()).filter(r -> r instanceof Association) //
                 .map(r -> (Association) r);
     }
-
 
     @Override
     public PumlExtract createHasPuml(String puml) {

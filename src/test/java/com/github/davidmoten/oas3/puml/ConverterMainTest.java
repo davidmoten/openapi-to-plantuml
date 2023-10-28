@@ -36,6 +36,17 @@ public class ConverterMainTest {
     }
 
     @Test
+    public void testSplitStripePumlOnly() throws IOException {
+        System.out.println("writing stripe split pumls");
+        long t = System.currentTimeMillis();
+        String[] args = new String[] {"split", "src/test/resources/other/stripe.yml", "PUML",
+                new File("target/stripe-puml").getCanonicalPath()};
+        ConverterMain.main(args);
+        t = System.currentTimeMillis() - t;
+        System.out.println("written stripe in " + t + "ms");
+    }
+
+    @Test
     public void testToPuml() throws IOException {
         String[] args = new String[] {"single", "src/test/resources/openapi-example.yml", "PUML",
                 "target/converted.puml"};

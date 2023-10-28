@@ -91,6 +91,7 @@ public final class Converter {
     }
 
     private static OpenAPI parseOpenApi(String openApi) {
+        System.setProperty("maxYamlCodePoints", "999999999");
         SwaggerParseResult result = new OpenAPIParser().readContents(openApi, null, null);
         if (result.getOpenAPI() == null) {
             throw new IllegalArgumentException("Not an OpenAPI definition");
