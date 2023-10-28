@@ -12,6 +12,7 @@ Supports all features of OpenAPI 3.0 including
 * Mixed types (*oneOf*, *anyOf*, *allOf*) 
 * Multiple levels of indirection (`$ref` -> `$ref` for example) 
 * Multiple response content types
+* Can produce diagram-per-path (great for large APIs)
 
 **Status:** Released to Maven Central 
 
