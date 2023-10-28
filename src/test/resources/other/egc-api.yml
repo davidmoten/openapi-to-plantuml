@@ -1,0 +1,1225 @@
+openapi: 3.0.0
+info:
+    
+  version: '1.0-alpha'
+
+  title: EGC API
+
+  ## Note that description fields may use Common Markdown 
+  ## (supported by OpenApi 3)
+ 
+  description: | 
+    # EGC API
+    
+    ## Design considerations
+    
+    ### Two-phase send
+    
+    Sending a new MSI is two-phase (create then send). This is
+    because the msiId value is a critical piece of information
+    for the client (to be able to check status and/or cancel)
+    and the API design must ensure that the client is safely 
+    in possession of msiID before a send happens. If the 
+    method was one phase then there would be no guarantee that
+    the msiID was received (a failure could happen in any link
+    in the return snetworking chain like a router, firewall, proxy 
+    server or indeed a problem at the client application end
+    that prevented persistence of the msiID for later use).
+    Moreover, if the method was one phase and a failure in the
+    network chain occurred then not only would an orphan MSI 
+    be sent by the provider but the client would not have
+    knowledge that the MSI had been successfully queued for
+    sending and would naturally retry the send (multiple times
+    even) and we end up with the same MSI being sent 2+ times.
+    
+    To further clarify the problem being solved by a two phase
+    send here is a [discussion](https://stackoverflow.com/questions/49444723/how-to-make-sure-the-http-response-was-delivered) 
+    of the delivery guarantees of HTTP responses. 
+    
+    Note that a one phase call where the client generated a new 
+    unique id (using a UUID for instance) is a possible solution 
+    but is less desirable because it introduces a problematic 
+    edge case where the client accidentally uses the same id more
+    than once. If two different messages are sent with the same id
+    (concurrently even) then the service should ensure that only 
+    one message is accepted and that the service consumer is aware 
+    that the other message failed. To do this demands coordination
+    with a single transactional resource (like a relational database) which 
+    also demands that that resource is highly available (relational 
+    databases are often not great at that during upgrade cycles). There 
+    are ways to get high availability (highly available cloud services like 
+    DynamoDB and many more can offer conditional updates) but there is
+    a much simpler way with two-phase. 
+    
+    If instead of the one-phase call the server creates the msiId and communicates 
+    it to the client then the server side can potentially be scaled
+    with ease if the msiID is a [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier) 
+    for instance (which is effectively unique without coordination
+    with other nodes). 
+    
+    For example, a highly available and scalable 
+    service could be constructed in AWS cloud using API Gateway with
+    Lambda integrations that for the create message and send actions
+    does this
+    
+      * **Create:** Generate a new UUID, place the message content and UUID on 
+    to a queue for processing , return the UUID
+      * **Send:** Place the UUID parameter on to a queue for processing
+    
+    A separate component then actions items on the queue(s). When both 
+    the send and create messages have been read then an actual send can take 
+    place. What is clear from this design is that many concurrent nodes could
+    be receiving messages without coordinating with a central node/service 
+    to ensure id uniqueness.
+    
+    Note also that to support two-phase send the status value of
+     `CREATED` is included.
+    
+    ### Pagination
+    
+    The List MSIs action uses a paginated response as the number of 
+    MSIs in a response can get large. Pagination can reduce server
+    overhead and improve response times. Client-driven pagination is 
+    where the client specifies an offset (skip) field and that number
+    of rows is skipped by the server to return the next page. This
+    can be inefficient for the server-side (see [discussion](
+    https://use-the-index-luke.com/no-offset)) and it is preferred to 
+    use server-driven pagination which is where each page returned 
+    also includes a continuation token to be included in the next page 
+    call. The nice thing about this approach is that the server side
+    can simply return an offset in the continuation token if desired but 
+    we enable more efficient techniques if wanted later.
+    
+    ### Client specific identifiers
+    
+    Early versions of this API have suggested the inclusion of a 
+    `NationalSASId` field in the created MSI with the purpose of allowing 
+    a client to correlate an MSI with its internal data. 
+    
+    This field is a convenience only and thus theoretically should not be
+    included. A client should manage its correlations itself by storing the
+    unique msiId returned by the service paired with its internal identifiers. 
+    
+    If something is required then it should be labelled something 
+    like `tag` and have arbitrary values so that the client can use it for 
+    anything. Labelling it `NationalSASId` suggests more meaning to the
+    field than it may have. **TODO** confirm.
+    
+    ### Geometry
+    
+    Note that the api below allows for float precision locations for 
+    geographic circles and rectangles. An implementation of this API 
+    may choose to use the location with reduced precision (for example
+    lat longs rounded to nearest integer).
+    
+    ### Cancellation
+    
+    A PUT to an `/msi/[id}` path ]with content like `{"isCancelled":true}` 
+    has been suggested as a way of cancelling a broadcast. This can be 
+    achieved in a much simpler way with the DELETE verb without content 
+    (a cancel action can be considered as a logical delete in the context
+    of this API). A cancelled broadcast cannot be changed in status but 
+    can be queried. 
+    
+    ### Abstraction of C-Codes
+    
+    Initial proposals for the API suggested a partial abstraction of C-Codes. 
+    In particular Priority, MsiType and AreaType were abstracted. This API 
+    demonstrates a full abstraction of C-Codes. It is equivalent to C-Codes
+    but has an easier to read and process representation and the mapping to C-Codes 
+    then becomes a server-side implementation detail. By using the data modelling
+    constructs of OpenAPI v3 and JSON Schema users can generate code for their 
+    API-consuming application that imposes compile-time checking (varies on language)
+    instead of experiencing runtime failures.
+    
+    **TODO** is there a requirement for full explicit C-Code support (zero 
+    abstraction)?
+    
+    ### Auth
+    
+    Initial proposals for this API included a re-authenticate 
+    method whereby a new token was returned if a currently valid token was 
+    supplied. This is a security hole in that anyone in possession of one 
+    valid token (but not the username and password) can stay authenticated 
+    forever. In the same vein, a sensible limit on validity duration of a 
+    token should be imposed so that a leaked token cannot be used for long. 
+    Given the likely usage of the API (in terms of the number of calls made
+    in a time interval by a client) there should be no significant performance
+    penalty forcing a refresh of the token each hour (or even less).
+    
+    Bearer authentication is used ([RFC6750](https://www.rfc-editor.org/rfc/rfc6750.html#page-5)).
+    Bearer authentication is carried in the `Authorization` request header in this format:
+    
+        Authorization: Bearer BASE64_ENCODED_TOKEN
+    
+    **TODO** The encoded content of the token is not defined (for example, JWT could be used)
+    but is left to the implementer. Should the authentication flow follow an existing 
+    standard like OAuth 2.0? 
+    
+    ### Naming
+    Previous API drafts used the field names `startDate` and `endDate` for an MSI.
+    Given that those fields refer to timestamps not just dates the names `startTime`
+    and `endTime` have been used.
+    
+    ### Acknowledgments
+    Iridium can at times provide receive and read acknowledgements. **TODO** get 
+    better documentation of the capability and a proper specification for their
+    response from a list acks call.
+    
+    ### Timings
+    There may be use cases for the following additional fields on an MSI:
+    
+    * createdTime
+    * cancelledTime
+    
+    A user could record in their own systems when they created or cancelled a broadcast 
+    but it might help problem diagnosis if that information was together.
+    
+    **TODO** confirm
+    
+    It would also be useful in some circumstances for users to know exactly when a
+    message was broadcast by satellite. Although messages may be scheduled for 
+    immediate or later broadcast there may be significant delays till the broadcast
+    occurs and the user should be able to see the actual broadcast times.
+    
+    **TODO** discuss with satellite providers
+    
+paths:
+
+  /authenticate:
+
+    ###############################################
+    ## Authenticate
+    ###############################################   
+    post:
+      operationId: getToken
+      summary: Authenticate
+      description: |
+        Obtains a token that will be passed in a request header to calls
+        to other paths on this API for authentication and authorization
+        purposes.
+      requestBody:
+        description: | 
+          username and password
+        required: true
+        content:
+          application/json: 
+            schema:
+              $ref: '#/components/schemas/AuthenticationRequestBody'
+      responses:
+        '200':    
+          description: token and expiry time
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/AuthenticationResponse' 
+        '400':    
+          $ref: '#/components/responses/BadRequest'
+        '401': 
+          $ref: '#/components/responses/Unauthorized'
+        '500':    
+          $ref: '#/components/responses/ServerError' 
+      security: []   # No security                     
+  
+  /msi:
+  
+    ###############################################
+    ## Create an MSI
+    ###############################################      
+    post:
+      operationId: createMsi
+      summary: Create MSI
+      description: |
+        Submits message content and returns a unique id (across all 
+        users) that is to be used in the send method. It is ok for
+        a message to never be sent but the provider should have the 
+        freedom to clean up (delete) unsent messages after some 
+        reasonable period or after more than N unsent messages are created.
+        (**TODO** ask providers what is reasonable minimum period and 
+        maximum number of unsent messages so it can be documented here). 
+      requestBody:
+        description: |
+          Describes the message content
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MsiContent'
+      responses:
+        '201':    
+          description: The unique identifier of the newly created MSI
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/MsiId' 
+        '400':    
+          $ref: '#/components/responses/BadRequest'
+        '401': 
+          $ref: '#/components/responses/Unauthorized'
+        '403': 
+          $ref: '#/components/responses/Forbidden'          
+        '500':    
+          $ref: '#/components/responses/ServerError'
+                
+    ###############################################
+    ## List MSIs
+    ###############################################      
+    get:
+      operationId: getMsis
+      summary: List MSIs
+      description: |
+        Returns Maritime Safety Information broadcasts requested to
+        be sent by the user. 
+        
+        Note that none of the parameters are required. If no parameters
+        are supplied then all MSIs for the current user will be returned
+        (paged).
+        
+        The `limit` field may not be honoured exactly by the server
+        side (in that it might exceed a maximum limit of the server).
+        
+        The results of this query may return in any order and that order
+        may vary in repeated calls (for example, the returned MSIs *may* 
+        not be ordered by timestamp). If the client requires an ordering
+        by time then all pages should be requested and then sorted 
+        client-side. **TODO** confirm expectations
+      parameters:
+        - in: query
+          name: startTimeMin
+          description: | 
+            If startTimeMinInclusive is true (the default value if not specified)
+            then filters MSIs on startTime >= startTimeMin.
+            
+            If startTimeMinInclusive is false then filters MSIs
+            on startTime > startTimeMin.
+          schema:
+            type: string
+            format: date-time
+            example: '2022-04-20T18:25:43.511Z' 
+        - in: query
+          name: startTimeMinInclusive
+          description: |
+            If startTimeMinInclusive is true (the default value if not specified)
+            then filters MSIs on startTime >= startTimeMin.
+            
+            If startTimeMinInclusive is false then filters MSIs
+            on startTime > startTimeMin.
+            
+            If startTimeMinInclusive not specified then has no effect.
+          schema:
+            type: boolean
+            default: true
+            example: true
+        - in: query
+          name: startTimeMax
+          description: |
+            If startTimeMaxInclusive is true (the default value if not specified)
+            then filters MSIs on startTime <= startTimeMax.
+            
+            If startTimeMaxInclusive is false then filters MSIs
+            on startTime < startTimeMax.
+          schema:
+            type: string
+            format: date-time
+            example: '2022-04-24T23:25:43.511Z'
+        - in: query
+          name: startTimeMaxInclusive
+          description: |
+            If startTimeMaxInclusive is true (the default value if not specified)
+            then filters MSIs on startTime <= startTimeMax.
+            
+            If startTimeMaxInclusive is false then filters MSIs
+            on startTime < startTimeMax.
+            
+            If startTimeMaxInclusive not specified then has no effect.
+          schema:
+            type: boolean
+            default: true
+            example: true
+        - in: query
+          name: endTimeMin
+          description: | 
+            If endTimeMinInclusive is true (the default value if not specified)
+            then filters MSIs on startTime >= startTimeMin.
+            
+            If startTimeMinInclusive is false then filters MSIs
+            on startTime > startTimeMin.
+          schema:
+            type: string
+            format: date-time
+            example: '2022-04-21T18:25:43.511Z'
+        - in: query
+          name: endTimeMinInclusive
+          description: |
+            If endTimeMinInclusive is true (the default value if not specified)
+            then filters MSIs on endTime >= endTimeMin.
+            
+            If endTimeMinInclusive is false then filters MSIs
+            on endTime > endTimeMin.
+            
+            If endTimeMinInclusive not specified then has no effect.
+          schema:
+            type: boolean
+            example: true 
+        - in: query
+          name: endTimeMax
+          description: |
+            If endTimeMaxInclusive is true (the default value if not specified)
+            then filters MSIs on endTime <= endTimeMax.
+            
+            If endTimeMaxInclusive is false then filters MSIs
+            on endTime < endTimeMax.
+          schema:
+            type: string
+            format: date-time
+            example: '2022-04-25T14:18:23.000Z'
+        - in: query
+          name: endTimeMaxInclusive
+          description: |
+            If endTimeMaxInclusive is true (the default value if not specified)
+            then filters MSIs on endTime <= endTimeMax.
+            
+            If endTimeMaxInclusive is false then filters MSIs
+            on endTime < endTimeMax.
+            
+            If endTimeMaxInclusive not specified then has no effect.
+          schema:
+            type: boolean
+            default: true
+            example: true             
+        - in: query
+          name: limit
+          description: |
+            Requests that at most `limit` MSIs are returned in the call.
+            The server may cap the requested `limit` (fewer items may be
+            returned). To request the next page available include the 
+            returned `continuationToken` in the next call. If there are 
+            no more items available then the response will not contain
+            a `continuationToken`.
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            default: 10
+        - in: query
+          name: status
+          description: |
+            Only MSIs that have a status in the given list
+            are returned. If the list is empty (or the parameter
+            is not present) then no filtering on status occurs.
+            **TODO** support multi-status filtering or just one?
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Status'
+            example:
+            - CREATED
+            - CANCELLED
+        - in: query
+          name: broadcastType
+          description: the type of broadcast
+          schema:
+            $ref: '#/components/schemas/BroadcastType' 
+        - in: query
+          name: continuationToken
+          description: |
+            Describes to the server the starting point of 
+            the next page of results and is obtained from 
+            the current page. May contain an offset if desired
+            but is at the discretion of implementer. Note that
+            it is possible that a call specifying a continuation
+            token may return en empty list (but an empty list return 
+            should not have a continuation token on it so at 
+            that point paging would stop).
+          schema:
+            $ref: '#/components/schemas/ContinuationToken' 
+        ## review other fields, acks etc.
+      responses:
+        '200':    
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: |
+                  A list of MSIs and an optional continuation token (
+                  to retrieve the next page of MSIs). If the list of
+                  MSIs is empty there should be no continuation token. 
+                type: object
+                properties:
+                  msis:
+                    type: array
+                    items: 
+                      $ref: '#/components/schemas/Msi'
+                  continuationToken:
+                    $ref: '#/components/schemas/ContinuationToken'
+                required: [msis]
+        '400':    
+          $ref: '#/components/responses/BadRequest'
+        '401': 
+          $ref: '#/components/responses/Unauthorized'
+        '403': 
+          $ref: '#/components/responses/Forbidden'          
+        '500':    
+          $ref: '#/components/responses/ServerError'
+                
+  /msi/{id}:
+    
+    parameters:
+      - $ref: '#/components/parameters/MsiId'
+    
+    ###############################################
+    ## Get an MSI
+    ############################################### 
+    get:
+      operationId: getMsi
+      summary: Get MSI
+      description: |
+        Returns the details of an MSI broadcast using the unique MSI identifier.
+      responses:
+        '200':    
+          description: OK
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Msi'
+        '400':    
+          $ref: '#/components/responses/BadRequest'
+        '401': 
+          $ref: '#/components/responses/Unauthorized'
+        '403': 
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'          
+        '500':    
+          $ref: '#/components/responses/ServerError'
+
+    ###############################################
+    ## Send an MSI
+    ###############################################      
+    put:
+      operationId: sendMsi
+      summary: Send MSI
+      description: |
+        Requests that an existing unsent MSI be sent. If the MSI 
+        has already been sent or the MSI has been cancelled then 
+        nothing occurs (this method is idempotent). 
+      responses:
+        '204':    
+          description: OK
+        '400':    
+          $ref: '#/components/responses/BadRequest'
+        '401': 
+          $ref: '#/components/responses/Unauthorized'
+        '403': 
+          $ref: '#/components/responses/Forbidden'    
+        '404':
+          $ref: '#/components/responses/NotFound'                
+        '500':    
+          $ref: '#/components/responses/ServerError'
+
+    ###############################################
+    ## Cancel an MSI
+    ############################################### 
+    delete:
+      operationId: cancelMsi
+      summary: Cancel MSI 
+      description: |
+        This is a logical delete of a broadcast in that it
+        prevents future broadcasts happening for this msiId
+        (be it a single or repeating broadcast). Once cancelled
+        an MSI cannot be resent. However, the broadcast details 
+        are still available to be queried.
+      responses:
+        '204':    
+          description: OK (No Content)
+        '400':    
+          $ref: '#/components/responses/BadRequest'
+        '401': 
+          $ref: '#/components/responses/Unauthorized'
+        '403': 
+          $ref: '#/components/responses/Forbidden'   
+        '404':
+          $ref: '#/components/responses/NotFound'                 
+        '500':    
+          $ref: '#/components/responses/ServerError'       
+
+  /msi/{id}/status:
+    
+    parameters:
+      - $ref: '#/components/parameters/MsiId'
+    
+    ###############################################
+    ## Get the status of an MSI
+    ############################################### 
+    get:
+      operationId: getMsiStatus
+      summary: Get status of an MSI
+      description: |
+        Returns the status of an MSI broadcast using the unique MSI identifier.
+      responses:
+        '200':    
+          description: OK
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/StatusExtended'
+        '400':    
+          $ref: '#/components/responses/BadRequest'
+        '401': 
+          $ref: '#/components/responses/Unauthorized'
+        '403': 
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'          
+        '500':    
+          $ref: '#/components/responses/ServerError'
+
+components:
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      description: |
+        As per RFC6750: `Authorization: Bearer BASE_64_ENCODED_TOKEN`
+       
+  parameters:
+    MsiId:
+      in: path
+      name: id
+      schema:
+        $ref: '#/components/schemas/MsiId'
+      description: unique msi identifier
+      required: true
+        
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+        text/*:
+          schema:
+            type: string
+
+    NotFound:
+      description: Resource Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'    
+        text/*:
+          schema:
+            type: string        
+            
+    Unauthorized:
+      description: Unauthorized (must authenticate)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+        text/*:
+          schema:
+            type: string
+            
+    Forbidden:
+      description: Not allowed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+        text/*:
+          schema:
+            type: string
+                                    
+    ServerError:
+      description: Unexpected error on the server
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+        text/*:
+          schema:
+            type: string
+                      
+  schemas:
+    Error:
+      description: an error message (response)
+      type: object
+      properties:
+        ## all properties optional
+        statusCode: 
+          type: integer
+          format: int32
+          minimum: 100
+          maximum: 599
+        errorMessage: 
+          type: string
+          example: an error occurred
+        errorType:
+          type: string
+        stackTrace:
+          type: string
+        cause:
+          $ref: '#/components/schemas/Error' 
+      example:
+        errorMessage: an error occurred
+        errorType: SomethingWentWrongException
+
+    AuthenticationRequestBody:
+      description: |
+        Holds the credentials and validity preference used to 
+        create a token to be passed as a request header in calls
+        to the API
+      type: object
+      properties:
+        username:
+          type: string
+          minLength: 1
+          example: myrcc
+        password:
+          type: string
+          minLength: 1
+          example: a-nice-strong-password
+        validityMinutes:
+          description: | 
+            The duration in minutes that the token will be valid, 
+            capped by the maximum allowed server-decided duration.  
+            If not supplied (this parameter is optional) then the
+            server default will be applied. Either way the response
+            from this method supplies the expiry time for the
+            token. The token should be refreshed before the expiry 
+            time to avoid auth related failures. Note that this field
+            is only a suggestion to the service and may be ignored.
+          type: integer
+          format: int32
+          minimum: 1
+          example: 60
+      required: [username, password]
+      example:
+        username: myrcc
+        password: a-nice-strong-password
+        validityMinutes: 60
+        
+    AuthenticationResponse:
+      type: object
+      properties:
+        token: 
+          type: string
+          minLength: 1
+          example: '1/mZ1edKKACtPAb7zGlwSzvs72PvhAbGmB8K1ZrGxpcNM'
+        expiryTime:
+          type: string
+          format: date-time
+          description: |
+            An expiryTime should always accompany the token
+            because a requested validity duration may be 
+            capped by the server and the client needs to know 
+            what the resultant expiry time was.
+          example: '2022-04-23T18:25:43.511Z'
+      required: [token, expiryTime]
+        
+    MsiId:
+      type: string
+      minLength: 1
+      maxLength: 255
+      example: 289ee192-fdf5-4070-befc-3bf7291c1386
+      
+    SARPriority:
+      type: string
+      enum: [SAFETY, URGENCY, DISTRESS]
+      example: SAFETY
+    
+    NonSARPriority:
+      type: string
+      enum: [SAFETY, URGENCY]
+      example: URGENCY
+      
+    Status:
+      type: string
+      enum: [CREATED, SCHEDULED, ACTIVE, FINISHED, CANCELLING, CANCELLED, BROADCAST_ERROR, CANCEL_ERROR]
+      example: ACTIVE
+      description: |
+        ACTIVE means that the MSI has been taken off the submission queue
+        and marked as ready for broadcast (either immediately or at the next 
+        scheduled time depending on the type of broadcast). TODO discuss 
+        with satellite providers what this represents for them so that we can
+        end up with a common significance for clients.
+        
+        These are the expected transitions between states (in PlantUML format):
+        ```
+        @startuml
+        [*] --> CREATED: create
+        CREATED --> SCHEDULED: send
+        SCHEDULED --> ACTIVE: active
+        ACTIVE --> FINISHED: finished
+        SCHEDULED --> CANCELLING: cancel
+        CANCELLING --> CANCELLED: cancelled
+        CANCELLING --> CANCEL_ERROR: cancelError
+        ACTIVE --> CANCELLING: cancel
+        ACTIVE --> BROADCAST_ERROR: broadcastError
+        SCHEDULED --> BROADCAST_ERROR: broadcastError
+        CREATED --> CANCELLED: cancel
+        @enduml
+        ```
+      
+    StatusExtended:
+      description: |
+        The `message` property is expected to be used when the status is 
+        BROADCAST_ERROR or CANCEL_ERROR and might describe a problem with 
+        the submitted message or a problem with the delivery of the message
+        on the part of the satellite service provider. In general message 
+        problems should be discovered at the message creation step (and a
+        suitable error message returned synchronously when that call made).
+        However, we need to be able to represent an unexpected or 
+        asynchronously discovered problem also (be it caused by a bad 
+        message or by a satellite service provider problem). 
+      type: object
+      properties:
+        status: 
+          $ref: '#/components/schemas/Status'
+        message: 
+          type: string
+      required: [status]
+      example:
+        status: ACTIVE
+      
+    BroadcastType:
+      type: string
+      enum: [SARBroadcast, MetBroadcast, NavBroadcast, PiracyBroadcast]
+      example: SARBroadcast
+      
+    Payload:
+      description: |
+        the ASCII message text to broadcast. **TODO** what max length is appropriate?
+      type: string
+      minLength: 1
+      maxLength: 65535 ## TODO what max length is appropriate?
+      example: a message to be broadcast 
+
+    Latitude:
+      type: number
+      format: float
+      minimum: -90
+      maximum: 90
+      example: -45.5
+      
+    Longitude:
+      type: number
+      format: float
+      minimum: -180
+      maximum: 180
+      example: 145.44
+      
+    Circle:
+      type: object
+      properties:
+        lat:
+          $ref: '#/components/schemas/Latitude' 
+        lon:
+          $ref: '#/components/schemas/Longitude' 
+        radiusNm:
+          type: number
+          format: float
+          minimum: 0
+      required: [lat, lon, radiusNm]
+      
+    Rectangle:
+      type: object
+      properties: 
+        minLat: 
+          $ref: '#/components/schemas/Latitude'
+        leftLon: 
+          $ref: '#/components/schemas/Longitude' 
+        heightDegrees:
+          type: number
+          format: float
+          minimum: 0
+          exclusiveMinimum: true
+          maximum: 180
+        widthDegrees:
+          type: number
+          format: float
+          minimum: 0
+          exclusiveMinimum: true
+          maximum: 360
+      required: [minLat, leftLon, heightDegrees, widthDegrees]
+                
+    Geometry:
+      oneOf:
+      - $ref: '#/components/schemas/Rectangle'
+      - $ref: '#/components/schemas/Circle'
+      example:
+        lat: -42.5
+        lon: 135.884
+        radiusNm: 100.5
+        
+    Broadcast:
+      description: the details of the broadcast particular to the broadcast type
+      oneOf:
+      - $ref: '#/components/schemas/SARBroadcast'
+      - $ref: '#/components/schemas/MetBroadcast'
+      - $ref: '#/components/schemas/NavBroadcast'
+      - $ref: '#/components/schemas/PiracyBroadcast'
+      example:
+        sarArea: 
+          lat: -34.5
+          lon: 145.44
+          radiusNm: 150
+        priority: SAFETY
+                
+    MsiContent:
+      type: object
+      description: |
+        Used to create a new MSI. `repetition` is optional. If omitted
+        once only is assumed (no repetition). `startTime` and
+        `endTime` are optional fields and 0, 1 or both can be
+        present.
+      properties:
+        broadcast:
+          $ref: '#/components/schemas/Broadcast'
+        startTime:
+          type: string
+          format: date-time
+          description: |
+            the scheduled time of the initial broadcast. If omitted is assumed
+            to be ASAP. A delayed start may not be supported by the service 
+            provider, check service provider documentation. TODO confirm
+          example: '2022-04-23T10:30:43.511Z'
+        endTime:
+          type: string
+          format: date-time
+          description: |
+            the time after which no more broadcasts should be made of this MSI.
+            This field may or may not be honoured by the service provider. The 
+            service provider may expect an explicit cancellation for ongoing
+            broadcasts (like CAT-B). TODO confirm
+          example: '2022-04-24T10:25:43.511Z'
+        payload: 
+          $ref: '#/components/schemas/Payload'   
+        echo: 
+          description: |
+            If the satellite provider supports echo then setting this field to true
+            will request a repeat broadcast is made a short time after the first 
+            (Inmarsat applies a 6 minute interval). Consult the satellite provider
+            documentation about under what circumstances the echo will be honoured.
+          type: boolean
+          default: false        
+        repetition:
+          $ref: '#/components/schemas/Repetition'
+        readAcksEnabled:
+          description: |
+            If the satellite provider supports read acknowledgements then setting this 
+            field to true will enable acknowledgements to the satellite provider
+            that the message has been read by the receiving vessel.
+          type: boolean
+          example: false
+        receiveAcksEnabled:
+          description: |
+            If the satellite provider supports receive acknowledgements then setting this 
+            field to true will enable acknowledgements to the satellite provider
+            that the message has been received by the vessel.
+          type: boolean
+          example: false 
+      ## repetition is optional
+      required: [broadcast, payload]
+        
+    Msi:
+      type: object
+      description: |
+        Represents a created MMSI (with an identifier).
+        
+        `repetition` is optional. If omitted once only is assumed
+        (no repetition). `startTime` and `endTime`
+        are optional fields and 0, 1 or both can be present.
+        
+        Note that additionalProperties is enabled for this object which means 
+        that the service provider can effectively extend this data model with 
+        its own data. Enabling this extra data *may* happen via query parameters
+        that are not documented here (they will be the responsibility of the 
+        individual service providers to document separately). Information 
+        communicated via additionalProperties can be promoted after review to 
+        explicit properties in a later version of this API.
+        
+      additionalProperties: true
+      properties:
+        id: 
+          $ref: '#/components/schemas/MsiId'
+        broadcast:
+          $ref: '#/components/schemas/Broadcast'
+        createdTime:
+          type: string
+          format: date-time
+          description: |
+            when the MSI was set to CREATED status
+          example: '2022-04-23T10:25:43.511Z'
+        startTime:
+          type: string
+          format: date-time
+          description: |
+            Start time of the broadcast schedule. If a start time is not specified 
+            on creation of an Msi then this time should be set by the service provider
+            as close as practical to the expected initial broadcast time. If that time
+            is difficult to ascertain then a late stage time in the processing can be
+            used (for example the time that the broadcast was uploaded to the satellite 
+            system, or even simply the time that the sendMsi method was called if no 
+            later time can be reliably found). TODO confirm
+          example: '2022-04-23T10:30:43.511Z'
+        endTime:
+          type: string
+          format: date-time
+          description: |
+            End time of the broadcast schedule if known. When set by the service consumer
+            this field may or may not be honoured by a service provider (TODO discuss) and
+            service documentation should be consulted on this. The service provider may 
+            expect explicit cancellation of a broadcast via the cancelMsi method. For a 
+            non-ongoing broadcast (CAT-A) the service can calculate the expected end-time
+            (as close as practical) and set the field with that calculated time. When a 
+            broadcast is cancelled the endTime should be the cancellation time or, if known,
+            the time of the final broadcast (whichever is later). TODO add detail here to
+            cover the Iridium-style method that involves acknowledgements from individual 
+            vessels (which may occur over an extended period).
+          example: '2022-04-24T10:25:43.511Z'
+        sentTime:
+          type: string
+          format: date-time
+          description: |
+            when the MSI was set to SCHEDULED status
+          example: '2022-04-23T10:26:40s.511Z'
+        cancellingTime:
+          type: string
+          format: date-time
+          description: |
+            when the MSI was set to CANCELLING status
+          example: '2022-04-23T10:26:40s.511Z'
+        cancelledTime:
+          type: string
+          format: date-time
+          description: |
+            when the MSI was set to CANCELLED status 
+          example: '2022-04-24T13:28:43.511Z'
+        activeTime:
+          type: string
+          format: date-time
+          description: |
+            when the MSI was set to ACTIVE status 
+          example: '2022-04-24T13:29:47.511Z'          
+        finishedTime:
+          type: string
+          format: date-time
+          description: |
+            when the MSI was set to FINISHED status
+          example: '2022-04-24T13:45:50.511Z'                    
+        errorTime:
+          type: string
+          format: date-time
+          description: |
+            when the MSI was set to an error status (BROADCAST_ERROR or CANCEL_ERROR)
+          example: '2022-04-24T13:48:50.511Z'                              
+        payload: 
+          $ref: '#/components/schemas/Payload'
+        status:
+          $ref: '#/components/schemas/Status' 
+        statusMessage:
+          description: |
+            only expected when status is BROADCAST_ERROR or CANCEL_ERROR and should describe the nature
+            of the error
+          type: string
+        echo: 
+          description: |
+            If the satellite provider supports echo then setting this field to true
+            will request a repeat broadcast is made a short time after the first 
+            (Inmarsat applies a 6 minute interval). Consult the satellite provider
+            documentation about under what circumstances the echo will be honoured.
+          type: boolean
+          default: false     
+        repetition:
+          $ref: '#/components/schemas/Repetition'
+        readAcksEnabled:
+          description: |
+            If the satellite provider supports read acknowledgements then setting this 
+            field to true will enable acknowledgements to the satellite provider
+            that the message has been read by the receiving vessel.
+          type: boolean
+          example: false
+        receiveAcksEnabled:
+          description: |
+            If the satellite provider supports receive acknowledgements then setting this 
+            field to true will enable acknowledgements to the satellite provider
+            that the message has been received by the vessel.
+          type: boolean
+          example: false 
+      ## repetition is optional
+      required: [id, broadcast, payload, createdTime, startTime, status]
+        
+    SARBroadcast:
+      type: object
+      description: |
+        area is optional. If omitted then corresponds to the
+        entire coverage area.
+      properties: 
+        sarArea:
+          $ref: '#/components/schemas/SARBroadcastArea'
+        serviceType:
+          $ref: '#/components/schemas/SARServiceType'
+        priority:
+          $ref: '#/components/schemas/SARPriority'
+      required: [priority, serviceType]
+          
+    SARBroadcastArea:
+      oneOf:
+      - $ref: '#/components/schemas/Geometry'
+      - $ref: '#/components/schemas/NavArea'
+      
+    SARServiceType:
+      type: string
+      enum: [SHORE_TO_SHIP_DISTRESS_ALERT, SAR_COORDINATION, SHORE_TO_SHIP_URGENCY_OR_SAFETY, GENERAL]
+         
+    MetBroadcast:
+      type: object
+      properties:
+        area:
+          $ref: '#/components/schemas/MetBroadcastArea' 
+        priority:
+          $ref: '#/components/schemas/NonSARPriority'
+      required: [area, priority]
+      
+    MetBroadcastArea:
+      oneOf:
+      - $ref: '#/components/schemas/Geometry'
+      - $ref: '#/components/schemas/MetArea'
+      - $ref: '#/components/schemas/MetCoastalWarningArea'
+        
+    NavBroadcast:
+      type: object
+      properties:
+        ## need to differentiate from PiracyBroadcast so that 
+        ## oneOf resolution works
+        navBroadcastArea:
+          $ref: '#/components/schemas/NavOrPiracyBroadcastArea' 
+        priority:
+          $ref: '#/components/schemas/NonSARPriority'
+      required: [navBroadcastArea, priority]    
+      
+    PiracyBroadcast:
+      type: object
+      properties:
+        piracyBroadcastArea:
+          $ref: '#/components/schemas/NavOrPiracyBroadcastArea' 
+        priority:
+          $ref: '#/components/schemas/NonSARPriority'
+      required: [piracyBroadcastArea, priority]    
+        
+    NavOrPiracyBroadcastArea:
+      oneOf:
+      - $ref: '#/components/schemas/Geometry'
+      - $ref: '#/components/schemas/NavArea'
+      - $ref: '#/components/schemas/NavCoastalWarningArea'
+              
+    NavArea:
+      properties: 
+        navAreaCode:
+          $ref: '#/components/schemas/NavAreaCode'
+      required: [navAreaCode] 
+          
+    NavAreaCode:
+      type: integer
+      format: int32
+      minimum: 1
+      maximum: 21
+          
+    MetArea:
+      properties: 
+        metAreaCode:
+          $ref: '#/components/schemas/MetAreaCode'
+      required: [metAreaCode]
+    
+    MetAreaCode:
+      type: integer
+      format: int32
+      minimum: 1
+      maximum: 21
+      
+    MetCoastalWarningArea:
+      properties: 
+        subjectIndicator:
+          $ref: '#/components/schemas/SubjectIndicator'          
+        metAreaCode:
+          $ref: '#/components/schemas/MetAreaCode'
+        coastalWarningAreaCode:
+          type: string
+          pattern: '[a-zA-Z]'
+      required: [subjectIndicator, metAreaCode, coastalWarningAreaCode]
+
+    NavCoastalWarningArea:
+      properties: 
+        subjectIndicator:
+          $ref: '#/components/schemas/SubjectIndicator'          
+        navAreaCode:
+          $ref: '#/components/schemas/NavAreaCode'
+        coastalWarningAreaCode:
+          type: string
+          pattern: '[a-zA-Z]'
+      required: [subjectIndicator, navAreaCode, coastalWarningAreaCode]          
+
+    SubjectIndicator:
+      type: string
+      enum: 
+      - NAVIGATIONAL_WARNINGS
+      - METEOROLOGICAL_WARNINGS
+      - ICE_REPORTS
+      - SAR_INFO_AND_PIRACY_WARNINGS
+      - METEOROLOGICAL_FORECASTS
+      - NOT_USED
+      - SATNAV_MESSAGES
+      - OTHER_ELECTRONIC_NAVAID_MESSAGES
+      - OTHER_NAVIGATIONAL_WARNINGS
+      - PILOT_SERVICE_MESSAGES
+      - AIS
+      - LORAN_MESSAGES
+      - SPECIAL_SERVICES_V
+      - SPECIAL_SERVICES_W
+      - SPECIAL_SERVICES_X
+      - SPECIAL_SERVICES_Y
+      - NO_MESSAGES_ON_HAND
+      description: |
+        Subject indicator associated with a Coastal Warning
+                    
+    Repetition:
+      type: object
+      properties:
+        number: 
+          $ref: '#/components/schemas/NumRepetitions'
+        intervalHours: 
+          $ref: '#/components/schemas/IntervalHours'
+      required: [number, intervalHours] 
+      
+    NumRepetitions:
+      description: |
+        the number of non-echo repeats of a broadcast (so total number of broadcasts not 
+        including echoes will be that number plus one being the initial broadcast)
+      type: string
+      enum: [ONCE, TWICE, TILL_CANCELLED]
+      
+    IntervalHours:
+      type: integer
+      format: int32
+      enum: [1,2,3,4,5,6,12,18,24,30,36,48,60,72,96,120]  
+      description: |
+        The time gap between broadcasts of the same MSI.   
+        The satellite service provider documentation should be 
+        consulted to determine what values are supported and 
+        under what criteria.      
+            
+    ContinuationToken:
+      type: string
+      minLength: 1
+      maxLength: 4096
+      description: |
+        Indicates to the server the starting point of the next page 
+        of results. The token is not expected to be anywhere near as
+        long as 4096 characters but good to put an upper bound on it. 
+      example: 10
+      
+security: 
+- bearer: []      

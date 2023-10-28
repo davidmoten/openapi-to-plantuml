@@ -46,8 +46,24 @@ public final class ModelTransformerExtract implements ModelTransformer<PumlExtra
                     s.add(a);
                 });
 
+        Map<String, Set<Inheritance>> superClasses = new HashMap<>();
+        inheritances(m) //
+                .forEach(a -> a //
+                        .to() //
+                        .stream() //
+                        .forEach(x -> {
+                            m.cls(x) //
+                                    .ifPresent(c -> {
+                                        Set<Inheritance> s = superClasses.get(x);
+                                        if (s == null) {
+                                            s = new HashSet<>();
+                                            superClasses.put(x, s);
+                                        }
+                                    });
+                        }));
+
         for (Class c : new ArrayList<>(set)) {
-            addRelated(m, set, froms, c);
+            addRelated(m, set, froms, superClasses, c);
         }
 
         List<Class> classes = Stream.from(set) //
@@ -71,37 +87,70 @@ public final class ModelTransformerExtract implements ModelTransformer<PumlExtra
                 }) //
                 .toList().get();
 
-        List<Relationship> rels = m.relationships() //
-                .stream() //
-                .filter(r -> {
+        List<Relationship> rels = Stream //
+                .from(m.relationships()) //
+                .flatMap(r -> {
                     if (r instanceof Association) {
                         Association a = (Association) r;
-                        return set.contains(m.cls(a.from()).get()) && set.contains(m.cls(a.to()).get());
+                        if (set.contains(m.cls(a.from()).get()) //
+                                && set.contains(m.cls(a.to()).get())) {
+                            return Stream.of(r);
+                        } else {
+                            return Stream.empty();
+                        }
                     } else {
                         Inheritance a = (Inheritance) r;
-                        return Stream.of(a.from()).concatWith(Stream.from(a.to())).map(x -> m.cls(x).get())
-                                .any(x -> classes.contains(x)).get();
+                        List<String> tos = Stream //
+                                .from(a.to()) //
+                                .map(x -> m.cls(x).get()) //
+                                .filter(x -> classes.contains(x)) //
+                                .map(c -> c.name()) //
+                                .toList() //
+                                .get();
+                        if (tos.isEmpty()) {
+                            return Stream.empty();
+                        } else {
+                            return Stream.of(new Inheritance(a.from(), tos, a.type(), a.propertyName()));
+                        }
                     }
                 }) //
-                .collect(Collectors.toList());
+                .toList().get();
         return new Model(classes, rels);
     }
 
-    private static void addRelated(Model model, Set<Class> set, Map<String, Set<Association>> froms, Class a) {
+    private static void addRelated(Model model, Set<Class> set, Map<String, Set<Association>> froms,
+            Map<String, Set<Inheritance>> superClasses, Class a) {
         set.add(a);
         Set<Association> associations = froms.getOrDefault(a.name(), Collections.emptySet());
         for (Association ass : associations) {
             model.cls(ass.to()).ifPresent(cls -> {
                 if (!set.contains(cls)) {
-                    addRelated(model, set, froms, cls);
+                    addRelated(model, set, froms, superClasses, cls);
+                }
+            });
+        }
+        Set<Inheritance> supers = superClasses.getOrDefault(a.name(), Collections.emptySet());
+        for (Inheritance sup : supers) {
+            model.cls(sup.from()).ifPresent(cls -> {
+                if (!set.contains(cls)) {
+                    addRelated(model, set, froms, superClasses, cls);
                 }
             });
         }
     }
 
     private static Stream<Association> associations(Model m) {
-        return Stream.from(m.relationships()).filter(r -> r instanceof Association) //
+        return Stream //
+                .from(m.relationships()) //
+                .filter(r -> r instanceof Association) //
                 .map(r -> (Association) r);
+    }
+
+    private static Stream<Inheritance> inheritances(Model m) {
+        return Stream //
+                .from(m.relationships()) //
+                .filter(r -> r instanceof Inheritance) //
+                .map(r -> (Inheritance) r);
     }
 
     @Override

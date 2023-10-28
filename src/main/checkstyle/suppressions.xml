@@ -9,4 +9,8 @@
         files="src[\\/]test[\\/]java[\\/]" />
     <suppress checks="JavadocPackage"
         files="src[\\/]test[\\/]java[\\/]" />
+    <suppress checks="NoWhitespaceAfter"
+        files="src[\\/]test[\\/]java[\\/]" />
+    <suppress checks="NoWhitespaceBefore"
+        files="src[\\/]test[\\/]java[\\/]" />            
 </suppressions>
