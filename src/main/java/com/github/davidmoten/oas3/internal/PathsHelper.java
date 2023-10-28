@@ -58,7 +58,8 @@ public final class PathsHelper {
                 .stream() //
                 .map(entry -> {
                     Operation operation = entry.getValue();
-                    String className = entry.getKey() + " " + path;
+                    Optional<String> operationId = getOperationId(p);
+                    String className = operationId.orElse(entry.getKey() + " " + path);
                     FieldsWithModel f = toModelParameters(names, className,
                             operation.getParameters());
                     Model m = new Model(new Class(className, ClassType.METHOD, f.fields, false))
@@ -67,6 +68,28 @@ public final class PathsHelper {
                     return m.add(toModelRequestBody(className, operation, names));
                 }) //
                 .reduce(Model.EMPTY, (a, b) -> a.add(b));
+    }
+
+    private static Optional<String> getOperationId(PathItem p) {
+        String r;
+        if (p.getGet() != null) {
+            r =  p.getGet().getOperationId();
+        } else if (p.getHead() != null) {
+            r = p.getHead().getOperationId();
+        } else if (p.getOptions() != null) {
+            r = p.getOptions().getOperationId();
+        } else if (p.getPut() != null) {
+            r = p.getPut().getOperationId();
+        } else if (p.getPost() != null) {
+            r = p.getPost().getOperationId();
+        } else if (p.getDelete() != null) {
+            r = p.getDelete().getOperationId();
+        } else if (p.getPatch() != null) {
+            r = p.getPatch().getOperationId();
+        } else {
+            r = null;
+        }
+        return Optional.ofNullable(r);
     }
 
     private static FieldsWithModel toModelParameters(Names names, String className,

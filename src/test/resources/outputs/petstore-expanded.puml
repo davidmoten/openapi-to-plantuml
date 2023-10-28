@@ -23,50 +23,50 @@ class "Error" {
   {field} message : string
 }
 
-class "GET /pets" <<Path>> {
+class "findPets" <<Path>> {
   {field} tags : string[] {O}
   {field} limit : integer {O}
 }
 
-class "GET /pets 200" <<Response>> {
+class "findPets 200" <<Response>> {
 }
 
-class "POST /pets" <<Path>> {
+class "findPets" <<Path>> {
 }
 
-class "GET /pets/{id}" <<Path>> {
+class "find pet by id" <<Path>> {
   {field} id : integer
 }
 
-class "DELETE /pets/{id}" <<Path>> {
+class "find pet by id" <<Path>> {
   {field} id : integer
 }
 
-class "DELETE /pets/{id} 204" <<Response>> {
+class "find pet by id 204" <<Response>> {
 }
 
 "Pet" --> "1" "NewPet"
 
 "Pet" --> "1" "PetId"
 
-"GET /pets 200" --> "*" "Pet"
+"findPets 200" --> "*" "Pet"
 
-"GET /pets" ..> "1" "GET /pets 200"  :  "200"
+"findPets" ..> "1" "findPets 200"  :  "200"
 
-"GET /pets" ..> "1" "Error"  :  "default"
+"findPets" ..> "1" "Error"  :  "default"
 
-"POST /pets" ..> "1" "Pet"  :  "200"
+"findPets" ..> "1" "Pet"  :  "200"
 
-"POST /pets" ..> "1" "Error"  :  "default"
+"findPets" ..> "1" "Error"  :  "default"
 
-"POST /pets" --> "1" "NewPet"
+"findPets" --> "1" "NewPet"
 
-"GET /pets/{id}" ..> "1" "Pet"  :  "200"
+"find pet by id" ..> "1" "Pet"  :  "200"
 
-"GET /pets/{id}" ..> "1" "Error"  :  "default"
+"find pet by id" ..> "1" "Error"  :  "default"
 
-"DELETE /pets/{id}" ..> "1" "DELETE /pets/{id} 204"  :  "204"
+"find pet by id" ..> "1" "find pet by id 204"  :  "204"
 
-"DELETE /pets/{id}" ..> "1" "Error"  :  "default"
+"find pet by id" ..> "1" "Error"  :  "default"
 
 @enduml

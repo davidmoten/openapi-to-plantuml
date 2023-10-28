@@ -20,32 +20,32 @@ class "Error" {
   {field} message : string
 }
 
-class "GET /pets" <<Path>> {
+class "listPets" <<Path>> {
   {field} limit : integer {O}
 }
 
-class "POST /pets" <<Path>> {
+class "listPets" <<Path>> {
 }
 
-class "POST /pets 201" <<Response>> {
+class "listPets 201" <<Response>> {
 }
 
-class "GET /pets/{petId}" <<Path>> {
+class "showPetById" <<Path>> {
   {field} petId : string
 }
 
 "Pets" --> "*" "Pet"
 
-"GET /pets" ..> "1" "Pets"  :  "200"
+"listPets" ..> "1" "Pets"  :  "200"
 
-"GET /pets" ..> "1" "Error"  :  "default"
+"listPets" ..> "1" "Error"  :  "default"
 
-"POST /pets" ..> "1" "POST /pets 201"  :  "201"
+"listPets" ..> "1" "listPets 201"  :  "201"
 
-"POST /pets" ..> "1" "Error"  :  "default"
+"listPets" ..> "1" "Error"  :  "default"
 
-"GET /pets/{petId}" ..> "1" "Pet"  :  "200"
+"showPetById" ..> "1" "Pet"  :  "200"
 
-"GET /pets/{petId}" ..> "1" "Error"  :  "default"
+"showPetById" ..> "1" "Error"  :  "default"
 
 @enduml
