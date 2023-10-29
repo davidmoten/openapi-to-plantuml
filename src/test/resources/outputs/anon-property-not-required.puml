@@ -6,7 +6,7 @@ hide empty methods
 hide empty fields
 skinparam class {
 BackgroundColor<<Path>> Wheat
-BorderColor<<Path>> Tomato}
+}
 set namespaceSeparator none
 
 class "Customer.name" {

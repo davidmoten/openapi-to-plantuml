@@ -125,8 +125,7 @@ public final class Converter {
                 + "\nhide empty fields" //
                 + "\nskinparam class {"
                 + "\nBackgroundColor<<Path>> Wheat"
-                + "\nBorderColor<<Path>> Tomato"
-                + "}"
+                + "\n}"
                 // make sure that periods in class names aren't interpreted as namespace
                 // separators (which results in recursive boxing)
                 + "\nset namespaceSeparator none" //
