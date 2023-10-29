@@ -64,7 +64,6 @@ public final class ConverterMain {
                     } else {
                         File f = new File(out, filename + "." + format.toLowerCase(Locale.ENGLISH));
                         writeFileFormatFromPuml(puml.puml(), f.getPath(), format);
-//                        System.out.println("written " + f);
                     }
                 }
             } else {
