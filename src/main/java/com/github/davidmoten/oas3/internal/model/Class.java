@@ -3,6 +3,7 @@ package com.github.davidmoten.oas3.internal.model;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import com.google.common.base.Preconditions;
 
@@ -11,8 +12,9 @@ public final class Class {
     private final ClassType type;
     private final List<Field> fields;
     private final boolean isEnum;
+    private final Optional<String> description;
 
-    public Class(String name, ClassType type, List<Field> fields, boolean isEnum) {
+    public Class(String name, ClassType type, List<Field> fields, boolean isEnum, Optional<String> description) {
         this.isEnum = isEnum;
         Preconditions.checkNotNull(name);
         Preconditions.checkNotNull(type);
@@ -20,10 +22,11 @@ public final class Class {
         this.name = name;
         this.type = type;
         this.fields = fields;
+        this.description  = description;
     }
 
     public Class(String name, ClassType type) {
-        this(name, type, Collections.emptyList(), false);
+        this(name, type, Collections.emptyList(), false, Optional.empty());
     }
 
     public String name() {
@@ -40,6 +43,10 @@ public final class Class {
 
     public boolean isEnum() {
         return isEnum;
+    }
+
+    public Optional<String> description() {
+        return description;
     }
 
     @Override

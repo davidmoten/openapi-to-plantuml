@@ -123,6 +123,10 @@ public final class Converter {
                 + "\nhide <<" + toStereotype(ClassType.PARAMETER).get() + ">> circle" //
                 + "\nhide empty methods" //
                 + "\nhide empty fields" //
+                + "\nskinparam class {"
+                + "\nBackgroundColor<<Path>> Wheat"
+                + "\nBorderColor<<Path>> Tomato"
+                + "}"
                 // make sure that periods in class names aren't interpreted as namespace
                 // separators (which results in recursive boxing)
                 + "\nset namespaceSeparator none" //
@@ -145,11 +149,16 @@ public final class Converter {
                 b.append("\n}");
             } else {
                 b.append("\n\nclass " + Util.quote(cls.name())
-                        + toStereotype(cls.type()).map(x -> " <<" + x + ">>").orElse("") + " {");
+                        + toStereotype(cls.type()).map(x -> " <<" + x + ">> ").orElse("")
+                        + cls.description().map(x -> " <<" + x + ">> ").orElse("")
+                        + " {");
                 cls.fields().stream().forEach(f -> {
                     b.append("\n  {field} " + f.name() + COLON + f.type() + (f.isRequired() ? "" : " {O}"));
                 });
                 b.append("\n}");
+//                cls.description().ifPresent(desc -> {
+//                    b.append("\nnote top of " + Util.quote(cls.name()) + ": " + desc);
+//                });
             }
         }
         // add external ref classes

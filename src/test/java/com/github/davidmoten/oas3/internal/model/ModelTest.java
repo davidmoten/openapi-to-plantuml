@@ -22,7 +22,7 @@ public class ModelTest {
                 + "  Association [from=Thing, to=Stuff, type=ZERO_ONE, responseCode=, "
                 + "responseContentType=, propertyOrParameterName=],\n"
                 + "  Association [from=Thing, to=Other, type=ONE, responseCode=, "
-                + "responseContentType=, propertyOrParameterName=]\n" + "]", model.toString());
+                + "responseContentType=, propertyOrParameterName=]\n]", model.toString());
     }
 
 }

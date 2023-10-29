@@ -98,7 +98,7 @@ public final class ModelTransformerExtract implements ModelTransformer<PumlExtra
                         return c;
                     } else {
                         List<Field> fields = Stream.from(c.fields()).concatWith(Stream.from(extras)).toList().get();
-                        return new Class(c.name(), c.type(), fields, c.isEnum());
+                        return new Class(c.name(), c.type(), fields, c.isEnum(), c.description());
                     }
                 }) //
                 .toList().get();

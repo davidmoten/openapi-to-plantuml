@@ -187,7 +187,7 @@ final class Common {
                 }
             }
         }
-        classes.add(new Class(name, classType, fields, isEnum));
+        classes.add(new Class(name, classType, fields, isEnum, Optional.empty()));
         return new Model(classes, relationships);
     }
 
