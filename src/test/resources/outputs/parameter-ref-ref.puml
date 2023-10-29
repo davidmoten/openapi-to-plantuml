@@ -4,6 +4,9 @@ hide <<Response>> circle
 hide <<Parameter>> circle
 hide empty methods
 hide empty fields
+skinparam class {
+BackgroundColor<<Path>> Wheat
+BorderColor<<Path>> Tomato}
 set namespaceSeparator none
 
 class "Customer" {
@@ -11,17 +14,17 @@ class "Customer" {
   {field} lastName : string {O}
 }
 
-class "CustomerId" <<Parameter>> {
+class "CustomerId" <<Parameter>>  {
 }
 
-class "Id" <<Parameter>> {
+class "Id" <<Parameter>>  {
   {field} value : string
 }
 
-class "GET /customer/expired" <<Path>> {
+class "GET /customer/expired" <<Path>>  {
 }
 
-class "GET /customer/expired 200" <<Response>> {
+class "GET /customer/expired 200" <<Response>>  {
 }
 
 "CustomerId" --> "1" "Id"

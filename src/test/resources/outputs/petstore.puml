@@ -4,6 +4,9 @@ hide <<Response>> circle
 hide <<Parameter>> circle
 hide empty methods
 hide empty fields
+skinparam class {
+BackgroundColor<<Path>> Wheat
+BorderColor<<Path>> Tomato}
 set namespaceSeparator none
 
 class "Pet" {
@@ -20,17 +23,17 @@ class "Error" {
   {field} message : string
 }
 
-class "listPets" <<Path>> {
+class "listPets" <<Path>>  <<GET /pets>>  {
   {field} limit : integer {O}
 }
 
-class "listPets" <<Path>> {
+class "createPets" <<Path>>  <<POST /pets>>  {
 }
 
-class "listPets 201" <<Response>> {
+class "createPets 201" <<Response>>  {
 }
 
-class "showPetById" <<Path>> {
+class "showPetById" <<Path>>  <<GET /pets/{petId}>>  {
   {field} petId : string
 }
 
@@ -40,9 +43,9 @@ class "showPetById" <<Path>> {
 
 "listPets" ..> "1" "Error"  :  "default"
 
-"listPets" ..> "1" "listPets 201"  :  "201"
+"createPets" ..> "1" "createPets 201"  :  "201"
 
-"listPets" ..> "1" "Error"  :  "default"
+"createPets" ..> "1" "Error"  :  "default"
 
 "showPetById" ..> "1" "Pet"  :  "200"
 

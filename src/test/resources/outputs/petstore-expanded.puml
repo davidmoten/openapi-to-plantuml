@@ -4,6 +4,9 @@ hide <<Response>> circle
 hide <<Parameter>> circle
 hide empty methods
 hide empty fields
+skinparam class {
+BackgroundColor<<Path>> Wheat
+BorderColor<<Path>> Tomato}
 set namespaceSeparator none
 
 class "Pet" {
@@ -23,26 +26,26 @@ class "Error" {
   {field} message : string
 }
 
-class "findPets" <<Path>> {
+class "findPets" <<Path>>  <<GET /pets>>  {
   {field} tags : string[] {O}
   {field} limit : integer {O}
 }
 
-class "findPets 200" <<Response>> {
+class "findPets 200" <<Response>>  {
 }
 
-class "findPets" <<Path>> {
+class "addPet" <<Path>>  <<POST /pets>>  {
 }
 
-class "find pet by id" <<Path>> {
+class "find pet by id" <<Path>>  <<GET /pets/{id}>>  {
   {field} id : integer
 }
 
-class "find pet by id" <<Path>> {
+class "deletePet" <<Path>>  <<DELETE /pets/{id}>>  {
   {field} id : integer
 }
 
-class "find pet by id 204" <<Response>> {
+class "deletePet 204" <<Response>>  {
 }
 
 "Pet" --> "1" "NewPet"
@@ -55,18 +58,18 @@ class "find pet by id 204" <<Response>> {
 
 "findPets" ..> "1" "Error"  :  "default"
 
-"findPets" ..> "1" "Pet"  :  "200"
+"addPet" ..> "1" "Pet"  :  "200"
 
-"findPets" ..> "1" "Error"  :  "default"
+"addPet" ..> "1" "Error"  :  "default"
 
-"findPets" --> "1" "NewPet"
+"addPet" --> "1" "NewPet"
 
 "find pet by id" ..> "1" "Pet"  :  "200"
 
 "find pet by id" ..> "1" "Error"  :  "default"
 
-"find pet by id" ..> "1" "find pet by id 204"  :  "204"
+"deletePet" ..> "1" "deletePet 204"  :  "204"
 
-"find pet by id" ..> "1" "Error"  :  "default"
+"deletePet" ..> "1" "Error"  :  "default"
 
 @enduml

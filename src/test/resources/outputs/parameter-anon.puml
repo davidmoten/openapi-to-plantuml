@@ -4,6 +4,9 @@ hide <<Response>> circle
 hide <<Parameter>> circle
 hide empty methods
 hide empty fields
+skinparam class {
+BackgroundColor<<Path>> Wheat
+BorderColor<<Path>> Tomato}
 set namespaceSeparator none
 
 class "Customer" {
@@ -11,20 +14,20 @@ class "Customer" {
   {field} lastName : string {O}
 }
 
-class "GET /customer/expired" <<Path>> {
+class "GET /customer/expired" <<Path>>  {
 }
 
-class "GET /customer/expired.offset" <<Parameter>> {
+class "GET /customer/expired.offset" <<Parameter>>  {
   {field} min : integer {O}
   {field} max : integer {O}
 }
 
-class "GET /customer/expired.limit" <<Parameter>> {
+class "GET /customer/expired.limit" <<Parameter>>  {
   {field} min : integer {O}
   {field} max : integer {O}
 }
 
-class "GET /customer/expired 200" <<Response>> {
+class "GET /customer/expired 200" <<Response>>  {
 }
 
 "GET /customer/expired" --> "1" "GET /customer/expired.offset"  :  "offset"
