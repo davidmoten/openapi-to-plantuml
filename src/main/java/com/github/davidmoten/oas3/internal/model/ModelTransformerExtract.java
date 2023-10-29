@@ -147,7 +147,9 @@ public final class ModelTransformerExtract implements ModelTransformer<PumlExtra
         }
         Set<Class> subs = subClasses.getOrDefault(a.name(), Collections.emptySet());
         for (Class sub : subs) {
-            addRelated(model, set, froms, superClasses, subClasses, sub);
+            if (!set.contains(sub)) {
+                addRelated(model, set, froms, superClasses, subClasses, sub);
+            }
         }
         Set<Inheritance> supers = superClasses.getOrDefault(a.name(), Collections.emptySet());
         for (Inheritance sup : supers) {
