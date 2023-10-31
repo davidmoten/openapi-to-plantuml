@@ -12,6 +12,7 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 import com.github.davidmoten.guavamini.Lists;
+import com.github.davidmoten.oas3.internal.ExternalReferenceMerger;
 import com.github.davidmoten.oas3.internal.model.PumlExtract;
 
 import net.sourceforge.plantuml.FileFormat;
@@ -42,19 +43,29 @@ public final class ConverterMain {
 
     public static void main(String[] args) throws IOException {
         String usage = "Usage: java -jar openapi-to-plantuml-all.jar (single|split)"
-                + " <OPENAPI_FILE> <FILE_FORMAT> <OUTPUT_FILE>" + "\n  File formats are:\n"
+                + " <OPENAPI_FILE> <FILE_FORMAT> <OUTPUT_FILE> --combineExternalReferences" + "\n  File formats are:\n"
                 + FILE_FORMATS.stream().map(x -> "    " + x + "\n").collect(Collectors.joining());
-        if (args.length != 4) {
+        if (args.length < 4 || args.length > 5) {
             System.out.println(usage);
-            throw new IllegalArgumentException("must pass 4 arguments");
+            throw new IllegalArgumentException("must pass 4 arguments (optional flag: --combineExternalReferences)");
         } else {
+            File inputFile = new File(args[1]);
+
+            if (args.length == 5 && args[4].equals("--combineExternalReferences")) {
+                ExternalReferenceMerger referenceMerger = new ExternalReferenceMerger(inputFile);
+                var mergedContent = referenceMerger.mergeAllReferences();
+                // create tempfile with new content
+                inputFile = File.createTempFile("temp", "merged-swaggers.json");
+                Files.writeString(inputFile.toPath(), mergedContent);
+            }
+
+            String format = args[2];
+            File out = new File(args[3]);
+
             String mode = args[0];
             if (mode.equals("split")) {
-                String inputFilename = args[1];
-                String format = args[2];
-                File out = new File(args[3]);
                 out.mkdirs();
-                List<PumlExtract> list = Converter.openApiToPumlSplitByMethod(new File(inputFilename));
+                List<PumlExtract> list = Converter.openApiToPumlSplitByMethod(inputFile);
                 for (PumlExtract puml : list) {
                     String filename = puml.classNameFrom().iterator().next().replace(" ", "_").replace("/", "_")
                             .replace("\\", "_").replace("{", "").replace("}", "");
@@ -67,9 +78,7 @@ public final class ConverterMain {
                     }
                 }
             } else {
-                String puml = Converter.openApiToPuml(new File(args[1]));
-                String format = args[2];
-                File out = new File(args[3]);
+                String puml = Converter.openApiToPuml(inputFile);
                 if (format.equals("PUML")) {
                     Files.write(out.toPath(), puml.getBytes(StandardCharsets.UTF_8));
                 } else {
