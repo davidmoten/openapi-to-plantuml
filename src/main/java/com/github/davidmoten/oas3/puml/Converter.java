@@ -151,7 +151,7 @@ public final class Converter {
                 fields.stream().forEach(f -> {
                     b.append("\n  " + f.name());
                 });
-                if (fields.size() > max) {
+                if (cls.fields().size() > max) {
                     b.append("\n ...");
                 }
                 b.append("\n}");
