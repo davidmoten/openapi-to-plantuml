@@ -80,6 +80,9 @@ import com.github.davidmoten.oas3.puml.Converter;
 String puml = Converter.openApiToPuml(openapi);
 ```
 
+## System properties
+* `max.enum.entries` defaults to 12. If an enum has more than the max then it will be limited to that number and an entry `...` will appear at the end of the enums.
+
 ## Examples
 
 Unit test examples are [here](src/docs/generated/examples.md).
