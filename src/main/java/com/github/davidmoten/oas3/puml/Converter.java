@@ -25,6 +25,7 @@ import com.github.davidmoten.oas3.internal.model.Association;
 import com.github.davidmoten.oas3.internal.model.AssociationType;
 import com.github.davidmoten.oas3.internal.model.Class;
 import com.github.davidmoten.oas3.internal.model.ClassType;
+import com.github.davidmoten.oas3.internal.model.Field;
 import com.github.davidmoten.oas3.internal.model.HasPuml;
 import com.github.davidmoten.oas3.internal.model.Inheritance;
 import com.github.davidmoten.oas3.internal.model.Model;
@@ -142,9 +143,17 @@ public final class Converter {
             if (cls.isEnum()) {
                 b.append("\n\nenum " + Util.quote(cls.name())
                         + toStereotype(cls.type()).map(x -> " <<" + x + ">>").orElse("") + " {");
-                cls.fields().stream().forEach(f -> {
+                int max = Integer.getInteger("max.enum.entries", 12);
+                if (max == 0) {
+                    max = Integer.MAX_VALUE;
+                }
+                List<Field> fields = cls.fields().subList(0, Math.min(max, cls.fields().size()));
+                fields.stream().forEach(f -> {
                     b.append("\n  " + f.name());
                 });
+                if (fields.size() > max) {
+                    b.append("\n ...");
+                }
                 b.append("\n}");
             } else {
                 b.append("\n\nclass " + Util.quote(cls.name())
