@@ -1,4 +1,4 @@
-package com.github.davidmoten.oas3.puml;
+package com.github.davidmoten.oas3.uml;
 
 import static org.junit.Assert.assertTrue;
 

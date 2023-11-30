@@ -1,4 +1,4 @@
-package com.github.davidmoten.oas3.puml;
+package com.github.davidmoten.oas3.uml;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -12,7 +12,7 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 import com.github.davidmoten.guavamini.Lists;
-import com.github.davidmoten.oas3.internal.model.PumlExtract;
+import com.github.davidmoten.oas3.internal.model.UmlExtract;
 
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
@@ -25,8 +25,7 @@ public final class ConverterMain {
         // prevent instantiation
     }
 
-    static DiagramDescription writeFileFormatFromPuml(String puml, String filename, String format)
-            throws IOException {
+    static DiagramDescription writeFileFormatFromPuml(String puml, String filename, String format) throws IOException {
         FileFormat fileFormat = FileFormat.valueOf(format);
         File file = new File(filename);
         SourceStringReader reader = new SourceStringReader(puml);
@@ -38,7 +37,7 @@ public final class ConverterMain {
 
     private static final List<String> FILE_FORMATS = Lists.of("PUML", "EPS", "EPS_TEXT", "ATXT", "UTXT", "XMI_STANDARD",
             "XMI_STAR", "XMI_ARGO", "SCXML", "GRAPHML", "PDF", "MJPEG", "ANIMATED_GIF", "HTML", "HTML5", "VDX", "LATEX",
-            "LATEX_NO_PREAMBLE", "BASE64", "BRAILLE_PNG", "PREPROC", "DEBUG", "PNG", "RAW", "SVG");
+            "LATEX_NO_PREAMBLE", "BASE64", "BRAILLE_PNG", "PREPROC", "DEBUG", "PNG", "RAW", "SVG", "MERMAID");
 
     public static void main(String[] args) throws IOException {
         String usage = "Usage: java -jar openapi-to-plantuml-all.jar (single|split)"
@@ -54,16 +53,25 @@ public final class ConverterMain {
                 String format = args[2];
                 File out = new File(args[3]);
                 out.mkdirs();
-                List<PumlExtract> list = Converter.openApiToPumlSplitByMethod(new File(inputFilename));
-                for (PumlExtract puml : list) {
+
+                List<UmlExtract> list;
+                if (format.equals("MERMAID")) {
+                    list = Converter.openApiToMermaidSplitByMethod(new File(inputFilename));
+                } else {
+                    list = Converter.openApiToPumlSplitByMethod(new File(inputFilename));
+                }
+                for (UmlExtract puml : list) {
                     String filename = puml.classNameFrom().iterator().next().replace(" ", "_").replace("/", "_")
                             .replace("\\", "_").replace("{", "").replace("}", "");
                     if (format.equals("PUML")) {
                         File f = new File(out, filename + ".puml");
-                        Files.write(f.toPath(), puml.puml().getBytes(StandardCharsets.UTF_8));
+                        Files.write(f.toPath(), puml.uml().getBytes(StandardCharsets.UTF_8));
+                    } else if (format.equals("MERMAID")) {
+                        File f = new File(out, filename + ".mermaid");
+                        Files.write(f.toPath(), puml.uml().getBytes(StandardCharsets.UTF_8));
                     } else {
                         File f = new File(out, filename + "." + format.toLowerCase(Locale.ENGLISH));
-                        writeFileFormatFromPuml(puml.puml(), f.getPath(), format);
+                        writeFileFormatFromPuml(puml.uml(), f.getPath(), format);
                     }
                 }
             } else {

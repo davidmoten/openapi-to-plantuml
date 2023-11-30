@@ -2,18 +2,18 @@ package com.github.davidmoten.oas3.internal.model;
 
 import java.util.Set;
 
-public final class PumlExtract implements HasPuml {
+public final class UmlExtract implements HasUml {
 
     private final String puml;
     private final Set<String> classNameFrom;
 
-    public PumlExtract(String puml, Set<String> classNameFrom) {
-        this.puml = puml;
+    public UmlExtract(String uml, Set<String> classNameFrom) {
+        this.puml = uml;
         this.classNameFrom = classNameFrom;
     }
 
     @Override
-    public String puml() {
+    public String uml() {
         return puml;
     }
 

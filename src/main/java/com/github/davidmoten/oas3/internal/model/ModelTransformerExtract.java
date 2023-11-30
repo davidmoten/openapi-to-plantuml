@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 import org.davidmoten.kool.Stream;
 
-public final class ModelTransformerExtract implements ModelTransformer<PumlExtract> {
+public final class ModelTransformerExtract implements ModelTransformer<UmlExtract> {
 
     private final Set<String> classNamesFrom;
     private boolean regex;
@@ -183,8 +183,8 @@ public final class ModelTransformerExtract implements ModelTransformer<PumlExtra
     }
 
     @Override
-    public PumlExtract createHasPuml(String puml) {
-        return new PumlExtract(puml, classNamesFrom);
+    public UmlExtract createHasUml(String puml) {
+        return new UmlExtract(puml, classNamesFrom);
     }
 
 }

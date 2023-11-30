@@ -1,4 +1,4 @@
-package com.github.davidmoten.oas3.puml;
+package com.github.davidmoten.oas3.uml;
 
 import static org.junit.Assert.assertFalse;
 
@@ -16,6 +16,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.github.davidmoten.junit.Asserts;
+import com.github.davidmoten.oas3.uml.Converter;
 
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;

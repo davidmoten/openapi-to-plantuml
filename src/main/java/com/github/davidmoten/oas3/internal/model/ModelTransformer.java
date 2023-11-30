@@ -2,11 +2,11 @@ package com.github.davidmoten.oas3.internal.model;
 
 import java.util.function.Function;
 
-public interface ModelTransformer<T extends HasPuml> extends Function<Model, Model> {
+public interface ModelTransformer<T extends HasUml> extends Function<Model, Model> {
 
-    T createHasPuml(String puml);
+    T createHasUml(String puml);
 
-    static <T extends HasPuml> ModelTransformer<T> identity() {
+    static <T extends HasUml> ModelTransformer<T> identity() {
         return new ModelTransformer<T>() {
 
             @Override
@@ -16,8 +16,8 @@ public interface ModelTransformer<T extends HasPuml> extends Function<Model, Mod
 
             @SuppressWarnings("unchecked")
             @Override
-            public T createHasPuml(String puml) {
-                return (T) new Puml(puml);
+            public T createHasUml(String uml) {
+                return (T) new Uml(uml);
             }
         };
     }

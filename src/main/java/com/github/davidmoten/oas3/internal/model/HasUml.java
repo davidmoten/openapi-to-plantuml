@@ -1,7 +1,7 @@
 package com.github.davidmoten.oas3.internal.model;
 
-public interface HasPuml {
+public interface HasUml {
 
-    String puml();
+    String uml();
 
 }

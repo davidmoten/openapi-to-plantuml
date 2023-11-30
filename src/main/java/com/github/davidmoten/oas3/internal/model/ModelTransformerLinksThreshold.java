@@ -9,7 +9,7 @@ import java.util.Set;
 
 import org.davidmoten.kool.Stream;
 
-public final class ModelTransformerLinksThreshold implements ModelTransformer<Puml> {
+public final class ModelTransformerLinksThreshold implements ModelTransformer<Uml> {
 
     private final int threshold;
 
@@ -81,8 +81,8 @@ public final class ModelTransformerLinksThreshold implements ModelTransformer<Pu
     }
 
     @Override
-    public Puml createHasPuml(String puml) {
-        return new Puml(puml);
+    public Uml createHasUml(String puml) {
+        return new Uml(puml);
     }
 
 }

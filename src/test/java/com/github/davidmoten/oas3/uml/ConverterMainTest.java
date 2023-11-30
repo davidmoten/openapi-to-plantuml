@@ -1,11 +1,13 @@
-package com.github.davidmoten.oas3.puml;
+package com.github.davidmoten.oas3.uml;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Locale;
 
 import org.junit.Test;
 
+import com.github.davidmoten.guavamini.Lists;
 import com.github.davidmoten.junit.Asserts;
 
 import net.sourceforge.plantuml.FileFormat;
@@ -31,6 +33,17 @@ public class ConverterMainTest {
             System.out.println("writing unqork split in format " + ff);
             String[] args = new String[] { "split", "src/test/resources/demo/unqork.yml", ff.toString(),
                     new File("target/unqork-" + ff.name().toLowerCase(Locale.ENGLISH)).getPath() };
+            ConverterMain.main(args);
+        }
+    }
+    
+    @Test
+    public void testSplitMermaid() throws IOException {
+        List<String> formats = Lists.of("PUML", "MERMAID");
+        for (String format: formats) {
+            System.out.println("writing unqork split in format " + format);
+            String[] args = new String[] { "split", "src/test/resources/demo/unqork.yml", format,
+                    new File("target/unqork-" + format.toLowerCase(Locale.ENGLISH)).getPath() };
             ConverterMain.main(args);
         }
     }
@@ -64,5 +77,6 @@ public class ConverterMainTest {
     public void isUtilityClass() {
         Asserts.assertIsUtilityClass(ConverterMain.class);
     }
+    
 
 }

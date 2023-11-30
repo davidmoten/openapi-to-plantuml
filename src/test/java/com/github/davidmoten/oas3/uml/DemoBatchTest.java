@@ -1,4 +1,4 @@
-package com.github.davidmoten.oas3.puml;
+package com.github.davidmoten.oas3.uml;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -51,7 +51,7 @@ public class DemoBatchTest {
             File svg = new File(demos, input.getName().substring(0, input.getName().lastIndexOf('.')) + ".svg");
             String puml;
             try (InputStream def = new FileInputStream(input)) {
-                puml = com.github.davidmoten.oas3.puml.Converter.openApiToPuml(def);
+                puml = com.github.davidmoten.oas3.uml.Converter.openApiToPuml(def);
             }
             File pumlFile = new File(demos, input.getName().substring(0, input.getName().lastIndexOf('.')) + ".puml");
             pumlFile.delete();

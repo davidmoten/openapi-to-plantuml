@@ -1,15 +1,15 @@
 package com.github.davidmoten.oas3.internal.model;
 
-public final class Puml implements HasPuml {
+public final class Uml implements HasUml {
 
     private final String puml;
 
-    public Puml(String puml) {
+    public Uml(String puml) {
         this.puml = puml;
     }
 
     @Override
-    public String puml() {
+    public String uml() {
         return puml;
     }
 

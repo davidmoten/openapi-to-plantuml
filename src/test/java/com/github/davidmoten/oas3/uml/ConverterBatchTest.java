@@ -1,4 +1,4 @@
-package com.github.davidmoten.oas3.puml;
+package com.github.davidmoten.oas3.uml;
 
 import static org.junit.Assert.assertEquals;
 
@@ -17,6 +17,8 @@ import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+
+import com.github.davidmoten.oas3.uml.Converter;
 
 @RunWith(Parameterized.class)
 public class ConverterBatchTest {

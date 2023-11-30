@@ -4,4 +4,4 @@
  * @since 1.0
  * @see java.awt
  */
-package com.github.davidmoten.oas3.puml;
+package com.github.davidmoten.oas3.uml;
