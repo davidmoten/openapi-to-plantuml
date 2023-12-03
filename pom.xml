@@ -76,8 +76,10 @@
     </developers>
 
     <scm>
-        <connection>scm:git:https://github.com/davidmoten/openapi-to-plantuml.git</connection>
-        <developerConnection>scm:git:https://github.com/davidmoten/openapi-to-plantuml.git</developerConnection>
+        <connection>
+            scm:git:https://github.com/davidmoten/openapi-to-plantuml.git</connection>
+        <developerConnection>
+            scm:git:https://github.com/davidmoten/openapi-to-plantuml.git</developerConnection>
         <url>scm:git:https://github.com:davidmoten/openapi-to-plantuml.git</url>
         <tag>HEAD</tag>
     </scm>
@@ -89,7 +91,7 @@
             <artifactId>swagger-parser</artifactId>
             <version>2.1.19</version>
         </dependency>
-        
+
         <dependency>
             <groupId>com.github.davidmoten</groupId>
             <artifactId>kool</artifactId>
@@ -141,6 +143,12 @@
             <artifactId>junit-extras</artifactId>
             <version>0.4</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>1.11.0</version>
         </dependency>
 
     </dependencies>
@@ -244,7 +252,8 @@
                                         </limit>
                                     </limits>
                                     <!-- <excludes> -->
-                                    <!-- <exclude>com.xyz.ClassToExclude</exclude> -->
+                                    <!--
+                                    <exclude>com.xyz.ClassToExclude</exclude> -->
                                     <!-- </excludes> -->
                                 </rule>
                             </rules>
@@ -319,7 +328,8 @@
                             </descriptorRefs>
                             <archive>
                                 <manifest>
-                                    <mainClass>com.github.davidmoten.oas3.puml.ConverterMain</mainClass>
+                                    <mainClass>
+                                        com.github.davidmoten.oas3.puml.ConverterMain</mainClass>
                                 </manifest>
                             </archive>
                         </configuration>
@@ -402,8 +412,10 @@
             </plugin>
             <!-- commented this plugin out because cannot run offline (e.g. 
                 at home) -->
-            <!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-changelog-plugin</artifactId> 
-                <version>${changelog.version}</version> <configuration> <username>${svn.username}</username> 
+            <!-- <plugin> <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-changelog-plugin</artifactId> 
+                <version>${changelog.version}</version> <configuration>
+            <username>${svn.username}</username> 
                 <password>${svn.password}</password> </configuration> </plugin> -->
         </plugins>
     </reporting>
@@ -434,7 +446,8 @@
                 <repository>
                     <id>ossrh</id>
                     <name>Maven Central</name>
-                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+                    <url>
+                        https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
                 </repository>
             </distributionManagement>
         </profile>

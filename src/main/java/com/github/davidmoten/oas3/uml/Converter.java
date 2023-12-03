@@ -18,6 +18,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 import com.github.davidmoten.oas3.internal.ComponentsHelper;
 import com.github.davidmoten.oas3.internal.Names;
@@ -218,7 +219,7 @@ public final class Converter {
             } else {
                 b.append("\n\nclass " + backQuote(cls.name()) + " {"
                         + typeStereotype.map(x -> "\n  <<" + x + ">>").orElse("") + cls.description()
-                                .map(x -> "\n  <<" + x.replace("{", "_").replace("}", "_") + ">>").orElse(""));
+                                .map(x -> "\n  <<" + x.replace("{", "#123;").replace("}", "#125;").replace("/", "#47;") + ">>").orElse(""));
                 cls.fields().stream().forEach(f -> {
                     b.append("\n  " + f.name() + COLON + f.type() + (f.isRequired() ? "" : " #91;O#93;"));
                 });
