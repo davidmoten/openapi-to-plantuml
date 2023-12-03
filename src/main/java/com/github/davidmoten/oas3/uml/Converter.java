@@ -200,8 +200,8 @@ public final class Converter {
         for (Class cls : model.classes()) {
             Optional<String> typeStereotype = toStereotype(cls.type());
             if (cls.isEnum()) {
-                b.append("\n\nclass " + backQuote(cls.name() + "{\n")
-                        + toStereotype(cls.type()).map(x -> " <<" + x + ">>").orElse(""));
+                b.append("\n\nclass " + backQuote(cls.name()) + "{"
+                        + toStereotype(cls.type()).map(x -> "\n  <<" + x + ">>").orElse(""));
                 int max = Integer.getInteger("max.enum.entries", 12);
                 if (max == 0) {
                     max = Integer.MAX_VALUE;
