@@ -62,6 +62,12 @@ public class ConverterBatchTest {
             String expected = com.github.davidmoten.junit.Files.readUtf8(output).trim();
             ConverterTest.writeSvg(input, "target/outputs/" + output.getName() + ".svg");
             assertEquals(expected, puml);
+            String uml = Converter.openApiToMermaid(input).trim();
+            File umlFile = new File("target/outputs",
+                    input.getName().substring(0, input.getName().lastIndexOf('.')) + ".mermaid");
+            umlFile.getParentFile().mkdirs();
+            umlFile.delete();
+            Files.write(umlFile.toPath(), uml.getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }

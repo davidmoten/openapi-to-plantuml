@@ -35,5 +35,9 @@ public final class Util {
     public static String quote(String s) {
         return "\"" + s + "\"";
     }
+    
+    public static String singleQuote(String s) {
+        return "'" + s + "'";
+    }
 
 }

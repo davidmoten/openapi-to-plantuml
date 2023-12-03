@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashSet;
@@ -48,32 +49,53 @@ public final class Converter {
         // prevent instantiation
     }
 
-    public static String openApiToPuml(InputStream in) throws IOException {
+    public static String openApiToPuml(InputStream in) {
         return openApiToPuml(in, ModelTransformer.identity()).uml();
     }
 
-    public static List<UmlExtract> openApiToPumlSplitByMethod(File file) throws IOException {
-        try (InputStream in = new BufferedInputStream(new FileInputStream(file))) {
-            return openApiToPumlSplitByMethod(in);
-        }
-    }
-    
-    public static List<UmlExtract> openApiToMermaidSplitByMethod(File file) throws IOException {
-        try (InputStream in = new BufferedInputStream(new FileInputStream(file))) {
-            return openApiToMermaidSplitByMethod(in);
+    public static String openApiToMermaid(File file) {
+        try (InputStream in = new FileInputStream(file)) {
+            return openApiToMermaid(in, ModelTransformer.identity()).uml();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
     }
 
-    public static List<UmlExtract> openApiToPumlSplitByMethod(InputStream in) throws IOException {
+    public static String openApiToMermaid(InputStream in) {
+        return openApiToMermaid(in, ModelTransformer.identity()).uml();
+    }
+
+    public static List<UmlExtract> openApiToPumlSplitByMethod(File file) {
+        try (InputStream in = new BufferedInputStream(new FileInputStream(file))) {
+            return openApiToPumlSplitByMethod(in);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    public static List<UmlExtract> openApiToMermaidSplitByMethod(File file) {
+        try (InputStream in = new BufferedInputStream(new FileInputStream(file))) {
+            return openApiToMermaidSplitByMethod(in);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    public static List<UmlExtract> openApiToPumlSplitByMethod(InputStream in) {
         return openApiToUmlSplitByMethod(in, Converter::toPlantUml);
     }
-    
-    public static List<UmlExtract> openApiToMermaidSplitByMethod(InputStream in) throws IOException {
+
+    public static List<UmlExtract> openApiToMermaidSplitByMethod(InputStream in) {
         return openApiToUmlSplitByMethod(in, Converter::toMermaid);
     }
-    
-    public static List<UmlExtract> openApiToUmlSplitByMethod(InputStream in, Function<Model, String> converter) throws IOException {
-        OpenAPI api = parseOpenApi(IOUtils.toString(in, StandardCharsets.UTF_8));
+
+    public static List<UmlExtract> openApiToUmlSplitByMethod(InputStream in, Function<Model, String> converter) {
+        OpenAPI api;
+        try {
+            api = parseOpenApi(IOUtils.toString(in, StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
         Model m = toModel(api);
         return m //
                 .classes() //
@@ -87,23 +109,40 @@ public final class Converter {
                 .collect(Collectors.toList());
     }
 
-    public static <T extends HasUml> T openApiToPuml(InputStream in, ModelTransformer<T> transformer)
-            throws IOException {
-        return openApiToPuml(IOUtils.toString(in, StandardCharsets.UTF_8), transformer);
+    public static <T extends HasUml> T openApiToPuml(InputStream in, ModelTransformer<T> transformer) {
+        try {
+            return openApiToPuml(IOUtils.toString(in, StandardCharsets.UTF_8), transformer);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
-    public static String openApiToPuml(File file) throws IOException {
+    public static <T extends HasUml> T openApiToMermaid(InputStream in, ModelTransformer<T> transformer) {
+        try {
+            return openApiToMermaid(IOUtils.toString(in, StandardCharsets.UTF_8), transformer);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    public static String openApiToPuml(File file) {
         return openApiToPuml(file, ModelTransformer.identity()).uml();
     }
 
-    public static <T extends HasUml> T openApiToPuml(File file, ModelTransformer<T> transformer) throws IOException {
+    public static <T extends HasUml> T openApiToPuml(File file, ModelTransformer<T> transformer) {
         try (InputStream in = new BufferedInputStream(new FileInputStream(file))) {
             return openApiToPuml(in, transformer);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
     }
 
     public static <T extends HasUml> T openApiToPuml(String openApi, ModelTransformer<T> transformer) {
         return openApiToPuml(parseOpenApi(openApi), transformer);
+    }
+
+    public static <T extends HasUml> T openApiToMermaid(String openApi, ModelTransformer<T> transformer) {
+        return openApiToMermaid(parseOpenApi(openApi), transformer);
     }
 
     private static OpenAPI parseOpenApi(String openApi) {
@@ -123,6 +162,12 @@ public final class Converter {
         Model m = toModel(a);
         Model model = transformer.apply(m);
         return transformer.createHasUml(toPlantUml(model));
+    }
+
+    private static <T extends HasUml> T openApiToMermaid(OpenAPI a, ModelTransformer<T> transformer) {
+        Model m = toModel(a);
+        Model model = transformer.apply(m);
+        return transformer.createHasUml(toMermaid(model));
     }
 
     private static Model toModel(OpenAPI a) {
@@ -152,8 +197,9 @@ public final class Converter {
         StringBuilder b = new StringBuilder();
         b.append("classDiagram\n");
         for (Class cls : model.classes()) {
+            Optional<String> typeStereotype = toStereotype(cls.type());
             if (cls.isEnum()) {
-                b.append("\n\nclass " + Util.quote(cls.name() + "{\n")
+                b.append("\n\nclass " + backQuote(cls.name() + "{\n")
                         + toStereotype(cls.type()).map(x -> " <<" + x + ">>").orElse(""));
                 int max = Integer.getInteger("max.enum.entries", 12);
                 if (max == 0) {
@@ -167,12 +213,14 @@ public final class Converter {
                     b.append("\n ...");
                 }
                 b.append("\n}");
+            } else if (cls.fields().isEmpty() && !typeStereotype.isPresent() && !cls.description().isPresent()) {
+                b.append("\n\nclass " + backQuote(cls.name()));
             } else {
-                b.append("\n\nclass " + Util.quote(cls.name()) + " {\n"
-                        + toStereotype(cls.type()).map(x -> " <<" + x + ">> \n").orElse("")
-                        + cls.description().map(x -> " <<" + x + ">> \n").orElse(""));
+                b.append("\n\nclass " + backQuote(cls.name()) + " {"
+                        + typeStereotype.map(x -> "\n  <<" + x + ">>").orElse("") + cls.description()
+                                .map(x -> "\n  <<" + x.replace("{", "_").replace("}", "_") + ">>").orElse(""));
                 cls.fields().stream().forEach(f -> {
-                    b.append("\n  {field} " + f.name() + COLON + f.type() + (f.isRequired() ? "" : " {O}"));
+                    b.append("\n  " + f.name() + COLON + f.type() + (f.isRequired() ? "" : " #91;O#93;"));
                 });
                 b.append("\n}");
 //            cls.description().ifPresent(desc -> {
@@ -195,7 +243,7 @@ public final class Converter {
                 String[] items = to.split(Names.NAMESPACE_DELIMITER);
                 String namespace = items[0];
                 String clsName = items[1];
-                b.append("\n\nclass " + Util.quote(clsName) + " <<" + namespace + ">>" + " {");
+                b.append("\n\nclass " + backQuote(clsName) + " <<" + namespace + ">>" + " {");
                 b.append("\n}");
                 added.add(to);
             }
@@ -221,8 +269,8 @@ public final class Converter {
                 if (to.contains(Names.NAMESPACE_DELIMITER)) {
                     to = to.split(Names.NAMESPACE_DELIMITER)[1];
                 }
-                b.append("\n\n" + quote(a.from()) + SPACE + arrow + SPACE + quote(mult) + SPACE + quote(to)
-                        + (label.equals("") ? "" : SPACE + COLON + SPACE + quote(label)));
+                b.append("\n\n" + backQuote(a.from()) + SPACE + arrow + SPACE + quote(mult) + SPACE + backQuote(to)
+                        + (label.equals("") ? "" : SPACE + COLON + SPACE + label));
             } else {
                 Inheritance a = (Inheritance) r;
                 String from = a.from();
@@ -234,19 +282,23 @@ public final class Converter {
                     anonNumber++;
                     String diamond = "anon" + anonNumber;
                     b.append("\n\ndiamond " + diamond);
-                    b.append("\n\n" + quote(from) + SPACE + "-->" + quote(mult) + SPACE + quote(diamond)
-                            + a.propertyName().map(x -> COLON + quote(x)).orElse(""));
+                    b.append("\n\n" + backQuote(from) + SPACE + "-->" + quote(mult) + SPACE + quote(diamond)
+                            + a.propertyName().map(x -> COLON + x).orElse(""));
                     for (String otherClassName : a.to()) {
                         b.append("\n\n" + quote(otherClassName) + SPACE + "--|>" + SPACE + quote(diamond));
                     }
                 } else {
                     for (String otherClassName : a.to()) {
-                        b.append("\n\n" + quote(otherClassName) + SPACE + "--|>" + SPACE + quote(a.from()));
+                        b.append("\n\n" + backQuote(otherClassName) + SPACE + "--|>" + SPACE + backQuote(a.from()));
                     }
                 }
             }
         }
         return b.toString();
+    }
+
+    private static String backQuote(String s) {
+        return "`" + s + "`";
     }
 
     private static String toPlantUmlInner(Model model) {
