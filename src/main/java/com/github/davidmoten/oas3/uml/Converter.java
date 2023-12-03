@@ -244,7 +244,8 @@ public final class Converter {
                 String[] items = to.split(Names.NAMESPACE_DELIMITER);
                 String namespace = items[0];
                 String clsName = items[1];
-                b.append("\n\nclass " + backQuote(clsName) + " <<" + namespace + ">>" + " {");
+                b.append("\n\nclass " + backQuote(clsName) + " {");
+                b.append("\n  <<" + namespace + ">>");
                 b.append("\n}");
                 added.add(to);
             }
