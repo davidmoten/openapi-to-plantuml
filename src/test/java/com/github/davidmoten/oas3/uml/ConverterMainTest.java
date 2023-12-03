@@ -66,7 +66,7 @@ public class ConverterMainTest {
             }
             out.println("<script type=\"module\">\n"
                     + "      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';\n"
-                    + "      mermaid.initialize({ startOnLoad: true, theme: 'neutral' });\n"
+                    + "      mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });\n"
                     + "    </script>");
             out.println("</body>");
             out.println("</html>");
