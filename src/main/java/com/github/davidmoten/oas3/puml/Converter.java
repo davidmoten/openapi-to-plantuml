@@ -245,7 +245,7 @@ public final class Converter {
         } else if (type == AssociationType.ZERO_ONE) {
             mult = "0..1";            
         } else if (type == AssociationType.ONE_MANY) {
-          mult = "0..*"; 
+          mult = "1..*"; 
         }
         else {
             mult = "*";
