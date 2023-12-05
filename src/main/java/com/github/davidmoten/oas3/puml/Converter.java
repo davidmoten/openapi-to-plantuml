@@ -243,8 +243,11 @@ public final class Converter {
         if (type == AssociationType.ONE) {
             mult = "1";
         } else if (type == AssociationType.ZERO_ONE) {
-            mult = "0..1";
-        } else {
+            mult = "0..1";            
+        } else if (type == AssociationType.ONE_MANY) {
+          mult = "0..*"; 
+        }
+        else {
             mult = "*";
         }
         return mult;

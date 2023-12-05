@@ -81,8 +81,10 @@ final class Common {
             schema.getProperties().entrySet().forEach(entry -> {
                 String property = entry.getKey();
                 Schema<?> sch = entry.getValue();
-                if (sch instanceof ComposedSchema) {
-                    ComposedSchema s = (ComposedSchema) sch;
+                if (sch instanceof ComposedSchema || (sch instanceof ArraySchema && sch.getItems() instanceof ComposedSchema)) {
+                    
+                    ComposedSchema s = sch instanceof ComposedSchema?(ComposedSchema) sch: (ComposedSchema) sch.getItems();
+                    
                     @SuppressWarnings("rawtypes")
                     final List<Schema> list;
                     final AssociationType associationType;
@@ -90,10 +92,10 @@ final class Common {
                     boolean isAll = false;
                     if (s.getOneOf() != null) {
                         list = s.getOneOf();
-                        associationType = req ? AssociationType.ONE : AssociationType.ZERO_ONE;
+                        associationType = req ? (sch instanceof ArraySchema ? AssociationType.ONE_MANY: AssociationType.ONE ): (sch instanceof ArraySchema ? AssociationType.MANY : AssociationType.ZERO_ONE);
                     } else if (s.getAnyOf() != null) {
                         list = s.getAnyOf();
-                        associationType = req ? AssociationType.ONE : AssociationType.ZERO_ONE;
+                        associationType = req ? (sch instanceof ArraySchema ? AssociationType.ONE_MANY: AssociationType.ONE ): (sch instanceof ArraySchema ? AssociationType.MANY : AssociationType.ZERO_ONE);
                     } else if (s.getAllOf() != null) {
                         list = s.getAllOf();
                         isAll = true;
