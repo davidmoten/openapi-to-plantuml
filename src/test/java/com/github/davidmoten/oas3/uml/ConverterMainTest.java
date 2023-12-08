@@ -35,7 +35,7 @@ public class ConverterMainTest {
     public void testSplit() throws IOException {
         for (FileFormat ff : new FileFormat[] { FileFormat.PNG, FileFormat.SVG, FileFormat.LATEX }) {
             System.out.println("writing unqork split in format " + ff);
-            String[] args = new String[] { "split", "src/test/resources/demo/unqork.yml", ff.toString(),
+            String[] args = new String[] { "split", "../openapi-codegen/openapi-codegen-maven-plugin-test/src/main/openapi/marqueta.yml", ff.toString(),
                     new File("target/unqork-" + ff.name().toLowerCase(Locale.ENGLISH)).getPath() };
             ConverterMain.main(args);
         }
@@ -43,7 +43,7 @@ public class ConverterMainTest {
     
     @Test
     public void testSplitMermaid() throws IOException {
-        List<String> formats = Lists.of("PUML", "MERMAID");
+        List<String> formats = Lists.of("MERMAID");
         for (String format: formats) {
             System.out.println("writing unqork split in format " + format);
             String[] args = new String[] { "split", "src/test/resources/demo/unqork.yml", format,
@@ -51,8 +51,8 @@ public class ConverterMainTest {
             ConverterMain.main(args);
         }
         
-        File md = new File("target/mermaids.html");
-        try (PrintStream out = new PrintStream(md)) {
+        File html = new File("target/operations.html");
+        try (PrintStream out = new PrintStream(html)) {
             out.println("<html>");
             out.println("<body>");
             File mermaids = new File("target/unqork-mermaid");
@@ -70,6 +70,19 @@ public class ConverterMainTest {
                     + "    </script>");
             out.println("</body>");
             out.println("</html>");
+        }
+        
+        File md = new File("target/operations.md");
+        try (PrintStream out = new PrintStream(md)) {
+            File mermaids = new File("target/unqork-mermaid");
+            for (File f: mermaids.listFiles()) {
+                String code = new String(Files.readAllBytes(f.toPath()), StandardCharsets.UTF_8);
+                out.println();
+                out.println("## "+ f.getName().replace(".mermaid", ""));
+                out.println("```mermaid");
+                out.println(code);
+                out.println("```");
+            }
         }
     }
 

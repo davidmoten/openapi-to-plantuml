@@ -18,7 +18,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.text.StringEscapeUtils;
 
 import com.github.davidmoten.oas3.internal.ComponentsHelper;
 import com.github.davidmoten.oas3.internal.Names;
@@ -192,6 +191,10 @@ public final class Converter {
                 + toPlantUmlInner(model) //
                 + "\n\n@enduml";
     }
+    
+    private static String mermaidClassName(String name) {
+        return backQuote(name.replace(".", "#46;"));
+    }
 
     private static String toMermaid(Model model) {
         int anonNumber = 0;
@@ -200,7 +203,7 @@ public final class Converter {
         for (Class cls : model.classes()) {
             Optional<String> typeStereotype = toStereotype(cls.type());
             if (cls.isEnum()) {
-                b.append("\n\nclass " + backQuote(cls.name()) + "{"
+                b.append("\n\nclass " + mermaidClassName(cls.name()) + "{"
                         + toStereotype(cls.type()).map(x -> "\n  <<" + x + ">>").orElse(""));
                 int max = Integer.getInteger("max.enum.entries", 12);
                 if (max == 0) {
@@ -215,9 +218,9 @@ public final class Converter {
                 }
                 b.append("\n}");
             } else if (cls.fields().isEmpty() && !typeStereotype.isPresent() && !cls.description().isPresent()) {
-                b.append("\n\nclass " + backQuote(cls.name()));
+                b.append("\n\nclass " + mermaidClassName(cls.name()));
             } else {
-                b.append("\n\nclass " + backQuote(cls.name()) + " {"
+                b.append("\n\nclass " + mermaidClassName(cls.name()) + " {"
                         + typeStereotype.map(x -> "\n  <<" + x + ">>").orElse("") + cls.description()
                                 .map(x -> "\n  <<" + x.replace("{", "#123;").replace("}", "#125;").replace("/", "#47;") + ">>").orElse(""));
                 cls.fields().stream().forEach(f -> {
@@ -244,7 +247,7 @@ public final class Converter {
                 String[] items = to.split(Names.NAMESPACE_DELIMITER);
                 String namespace = items[0];
                 String clsName = items[1];
-                b.append("\n\nclass " + backQuote(clsName) + " {");
+                b.append("\n\nclass " + mermaidClassName(clsName) + " {");
                 b.append("\n  <<" + namespace + ">>");
                 b.append("\n}");
                 added.add(to);
@@ -271,7 +274,7 @@ public final class Converter {
                 if (to.contains(Names.NAMESPACE_DELIMITER)) {
                     to = to.split(Names.NAMESPACE_DELIMITER)[1];
                 }
-                b.append("\n\n" + backQuote(a.from()) + SPACE + arrow + SPACE + quote(mult) + SPACE + backQuote(to)
+                b.append("\n\n" + mermaidClassName(a.from()) + SPACE + arrow + SPACE + quote(mult) + SPACE + mermaidClassName(to)
                         + (label.equals("") ? "" : SPACE + COLON + SPACE + label));
             } else {
                 Inheritance a = (Inheritance) r;
@@ -284,14 +287,14 @@ public final class Converter {
                     anonNumber++;
                     String diamond = "anon" + anonNumber;
                     b.append("\n\ndiamond " + diamond);
-                    b.append("\n\n" + backQuote(from) + SPACE + "-->" + quote(mult) + SPACE + quote(diamond)
+                    b.append("\n\n" + mermaidClassName(from) + SPACE + "-->" + quote(mult) + SPACE + quote(diamond)
                             + a.propertyName().map(x -> COLON + x).orElse(""));
                     for (String otherClassName : a.to()) {
                         b.append("\n\n" + quote(otherClassName) + SPACE + "--|>" + SPACE + quote(diamond));
                     }
                 } else {
                     for (String otherClassName : a.to()) {
-                        b.append("\n\n" + backQuote(otherClassName) + SPACE + "--|>" + SPACE + backQuote(a.from()));
+                        b.append("\n\n" + mermaidClassName(otherClassName) + SPACE + "--|>" + SPACE + mermaidClassName(a.from()));
                     }
                 }
             }
