@@ -12,7 +12,6 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 import com.github.davidmoten.guavamini.Lists;
-import com.github.davidmoten.oas3.internal.model.UmlExtract;
 
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;

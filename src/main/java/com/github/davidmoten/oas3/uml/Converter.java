@@ -3,6 +3,7 @@ package com.github.davidmoten.oas3.uml;
 import static com.github.davidmoten.oas3.internal.Util.quote;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -34,7 +35,6 @@ import com.github.davidmoten.oas3.internal.model.Model;
 import com.github.davidmoten.oas3.internal.model.ModelTransformer;
 import com.github.davidmoten.oas3.internal.model.ModelTransformerExtract;
 import com.github.davidmoten.oas3.internal.model.Relationship;
-import com.github.davidmoten.oas3.internal.model.UmlExtract;
 
 import io.swagger.parser.OpenAPIParser;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -83,6 +83,14 @@ public final class Converter {
 
     public static List<UmlExtract> openApiToPumlSplitByMethod(InputStream in) {
         return openApiToUmlSplitByMethod(in, Converter::toPlantUml);
+    }
+     
+    public static List<UmlExtract> openApiToMermaidSplitByMethod(String yaml) {
+        try (InputStream in = new ByteArrayInputStream(yaml.getBytes(StandardCharsets.UTF_8))) {
+            return openApiToUmlSplitByMethod(in, Converter::toMermaid);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     public static List<UmlExtract> openApiToMermaidSplitByMethod(InputStream in) {
@@ -156,6 +164,10 @@ public final class Converter {
 
     public static String openApiToPuml(String openApi) {
         return openApiToPuml(openApi, ModelTransformer.identity()).uml();
+    }
+    
+    public static String openApiToMermaid(String openApi) {
+        return openApiToMermaid(openApi, ModelTransformer.identity()).uml();
     }
 
     private static <T extends HasUml> T openApiToPuml(OpenAPI a, ModelTransformer<T> transformer) {

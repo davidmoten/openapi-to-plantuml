@@ -1,6 +1,8 @@
-package com.github.davidmoten.oas3.internal.model;
+package com.github.davidmoten.oas3.uml;
 
 import java.util.Set;
+
+import com.github.davidmoten.oas3.internal.model.HasUml;
 
 public final class UmlExtract implements HasUml {
 

@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 
 import org.davidmoten.kool.Stream;
 
+import com.github.davidmoten.oas3.uml.UmlExtract;
+
 public final class ModelTransformerExtract implements ModelTransformer<UmlExtract> {
 
     private final Set<String> classNamesFrom;
