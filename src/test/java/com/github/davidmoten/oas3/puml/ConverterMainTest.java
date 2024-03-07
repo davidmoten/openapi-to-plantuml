@@ -65,4 +65,9 @@ public class ConverterMainTest {
         Asserts.assertIsUtilityClass(ConverterMain.class);
     }
 
+    public static void main(String[] args) throws IOException {
+        String[] arr = new String[] { "single", "../temp.yaml", "PUML", "target/converted.puml" };
+        ConverterMain.main(arr);
+    }
+
 }

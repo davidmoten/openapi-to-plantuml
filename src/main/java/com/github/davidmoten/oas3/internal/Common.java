@@ -133,6 +133,10 @@ final class Common {
                                     required.contains(property), true);
                         } else if (type.equals("map")) {
                             MapSchema ms = (MapSchema) sch;
+                            if (ms.getAdditionalProperties() instanceof Boolean) {
+                                // TODO what if Boolean.FALSE?
+                                ms.setAdditionalProperties(new Schema<>());
+                            }
                             Schema<?> valueSchema = ((Schema<?>) ms.getAdditionalProperties());
                             if (valueSchema.get$ref() != null) {
                                 String keyClassName = names.nextClassName(name + "." + property);
