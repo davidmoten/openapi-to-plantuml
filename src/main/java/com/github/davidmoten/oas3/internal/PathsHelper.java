@@ -172,7 +172,7 @@ public final class PathsHelper {
         }
     }
 
-    private static <K, V> Map<K,V> emptyIfNull(Map<K, V> map) {
+    private static <K, V> Map<K, V> emptyIfNull(Map<K, V> map) {
         if (map == null) {
             return Collections.emptyMap();
         } else {
