@@ -6,6 +6,7 @@ import static com.github.davidmoten.oas3.internal.Util.nullListToEmpty;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 
@@ -160,9 +161,22 @@ public final class PathsHelper {
         Preconditions.checkNotNull(ref);
         Reference r = new Reference(ref);
         if ("#/components/parameters".equals(r.namespace)) {
-            return components.getParameters().get(r.simpleName);
+            Parameter p = emptyIfNull(components.getParameters()).get(r.simpleName);
+            if (p == null) {
+                throw new RuntimeException(ref + " not found in openapi definition");
+            } else {
+                return p;
+            }
         } else {
             throw new RuntimeException("unexpected");
+        }
+    }
+
+    private static <K, V> Map<K,V> emptyIfNull(Map<K, V> map) {
+        if (map == null) {
+            return Collections.emptyMap();
+        } else {
+            return map;
         }
     }
 

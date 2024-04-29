@@ -184,7 +184,7 @@ final class Common {
                         && !isEmpty(schema.getEnum())) {
                     isEnum = true;
                     for (Object item: schema.getEnum()) {
-                        fields.add(new Field(item.toString(), type, false, false));
+                        fields.add(new Field(String.valueOf(item), type, false, false));
                     }
                 } else {
                     fields.add(new Field("value", type, type.endsWith("]"), true));
