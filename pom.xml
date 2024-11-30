@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.davidmoten</groupId>
     <artifactId>openapi-to-plantuml</artifactId>
-    <version>0.1.31</version>
+    <version>0.1.32-SNAPSHOT</version>
     <name>${project.artifactId}</name>
     <description>Generates PlantUML file from an OpenAPI 3.0 Definition</description>
     <packaging>jar</packaging>
