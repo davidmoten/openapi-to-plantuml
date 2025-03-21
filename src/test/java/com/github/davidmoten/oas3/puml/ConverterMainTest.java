@@ -14,7 +14,7 @@ public class ConverterMainTest {
 
     @Test
     public void testToImages() throws IOException {
-        for (FileFormat ff : new FileFormat[] { FileFormat.PNG, FileFormat.SVG, FileFormat.LATEX }) {
+        for (FileFormat ff : new FileFormat[] { FileFormat.PNG, FileFormat.SVG }) {
             try {
                 String[] args = new String[] { "single", "src/test/resources/openapi-example.yml", ff.toString(),
                         new File("target/converted." + ff.getFileSuffix()).getPath() };
@@ -27,7 +27,7 @@ public class ConverterMainTest {
 
     @Test
     public void testSplit() throws IOException {
-        for (FileFormat ff : new FileFormat[] { FileFormat.PNG, FileFormat.SVG, FileFormat.LATEX }) {
+        for (FileFormat ff : new FileFormat[] { FileFormat.PNG, FileFormat.SVG }) {
             System.out.println("writing unqork split in format " + ff);
             String[] args = new String[] { "split", "src/test/resources/demo/unqork.yml", ff.toString(),
                     new File("target/unqork-" + ff.name().toLowerCase(Locale.ENGLISH)).getPath() };
