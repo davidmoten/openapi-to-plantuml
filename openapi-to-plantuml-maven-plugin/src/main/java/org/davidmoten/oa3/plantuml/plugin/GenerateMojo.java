@@ -49,10 +49,10 @@ public final class GenerateMojo extends AbstractMojo {
             final File out;
             if (output == null) {
                 if (style == Style.SINGLE) {
-                    out = new File(project.getBuild().getDirectory() + File.pathSeparator + "diagrams"
+                    out = new File(project.getBuild().getDirectory() + File.separator + "diagrams"
                             + File.pathSeparator + "class-diagram." + format.toLowerCase(Locale.ROOT));
                 } else {
-                    out = new File(project.getBuild().getDirectory() + File.pathSeparator + "diagrams");
+                    out = new File(project.getBuild().getDirectory() + File.separator + "diagrams");
                 }
             } else {
                 out = output;
