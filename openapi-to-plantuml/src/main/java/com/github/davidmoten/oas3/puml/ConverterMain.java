@@ -42,11 +42,11 @@ public final class ConverterMain {
 
     public static void main(String[] args) throws IOException {
         String usage = "Usage: java -jar openapi-to-plantuml-all.jar (single|split)"
-                + " <OPENAPI_FILE> <FILE_FORMAT> <OUTPUT_DIRECTORY> <PREFIX>" + "\n  File formats are:\n"
+                + " <OPENAPI_FILE> <FILE_FORMAT> <OUTPUT_DIRECTORY>" + "\n  File formats are:\n"
                 + FILE_FORMATS.stream().map(x -> "    " + x + "\n").collect(Collectors.joining());
-        if (args.length < 4) {
+        if (args.length != 4) {
             System.out.println(usage);
-            throw new IllegalArgumentException("must pass 4 or 5 arguments");
+            throw new IllegalArgumentException("must pass 4 arguments");
         } else {
             String mode = args[0];
             if (mode.equals("split")) {
@@ -70,12 +70,10 @@ public final class ConverterMain {
                 String puml = Converter.openApiToPuml(new File(args[1]));
                 String format = args[2];
                 File out = new File(args[3]);
-                String prefix = args.length == 5 ? args[4] : "diagram";
-                File output = new File(out, prefix + "." + format.toLowerCase(Locale.ENGLISH));
                 if (format.equals("PUML")) {
-                    Files.write(output.toPath(), puml.getBytes(StandardCharsets.UTF_8));
+                    Files.write(out.toPath(), puml.getBytes(StandardCharsets.UTF_8));
                 } else {
-                    writeFileFormatFromPuml(puml, output.getPath(), format);
+                    writeFileFormatFromPuml(puml, out.getPath(), format);
                 }
             }
         }

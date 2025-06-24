@@ -11,6 +11,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.project.MavenProject;
 
 import com.github.davidmoten.oas3.puml.ConverterMain;
 
@@ -32,26 +33,35 @@ public final class GenerateMojo extends AbstractMojo {
     @Parameter(name = "formats")
     private List<String> formats;
 
-    @Parameter(name = "output", defaultValue = "${project.build.directory}/diagrams")
+    @Parameter(name = "output")
     private File output;
-    
-    @Parameter(name = "prefix", defaultValue = "diagram")
-    private String prefix;
+
+    @Parameter(defaultValue = "${project}", readonly = true, required = true)
+    private MavenProject project;
 
     @Override
     public void execute() throws MojoExecutionException {
         if (formats == null || formats.isEmpty()) {
             formats = Arrays.asList("PNG", "SVG");
         }
+
         for (String format : formats) {
-            getLog().info("Generating diagram(s) in format=" + format + " with style=" + style);
+            if (output == null) {
+                final File out;
+                if (style == Style.SINGLE) {
+                    out = new File(project.getBuild().getDirectory() + File.pathSeparator + "diagrams"
+                            + File.pathSeparator + "class-diagram." + format.toLowerCase(Locale.ROOT));
+                } else {
+                    out = new File(project.getBuild().getDirectory() + File.pathSeparator + "diagrams");
+                }
+            }
+            getLog().info("Generating diagram in format=" + format + " with style=" + style + " to " + output);
             try {
                 ConverterMain.main(new String[] { //
                         style.name().toLowerCase(Locale.ROOT), //
                         input.getAbsolutePath(), //
                         format, //
-                        output.getAbsolutePath(), //
-                        prefix});
+                        output.getAbsolutePath() });
             } catch (IOException e) {
                 throw new MojoExecutionException("Error generating diagrams", e);
             }
