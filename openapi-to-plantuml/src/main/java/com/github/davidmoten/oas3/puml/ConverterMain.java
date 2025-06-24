@@ -70,6 +70,7 @@ public final class ConverterMain {
                 String puml = Converter.openApiToPuml(new File(args[1]));
                 String format = args[2];
                 File out = new File(args[3]);
+                out.getParentFile().mkdirs();
                 if (format.equals("PUML")) {
                     Files.write(out.toPath(), puml.getBytes(StandardCharsets.UTF_8));
                 } else {
