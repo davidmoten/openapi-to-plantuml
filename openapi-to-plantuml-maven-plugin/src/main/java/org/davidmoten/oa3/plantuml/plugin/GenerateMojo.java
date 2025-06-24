@@ -13,6 +13,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
+import com.github.davidmoten.oas3.puml.Converter;
 import com.github.davidmoten.oas3.puml.ConverterMain;
 
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_RESOURCES, threadSafe = false)
@@ -59,7 +60,10 @@ public final class GenerateMojo extends AbstractMojo {
             }
             getLog().info("Generating diagram in format=" + format + " with style=" + style + " to " + output);
             try {
-                ConverterMain.main(new String[] { //
+                if (style == Style.SINGLE) {
+                  Converter.writeSingleFile(input.getAbsolutePath(), format, out);   
+                }
+                Converter.main(new String[] { //
                         style.name().toLowerCase(Locale.ROOT), //
                         input.getAbsolutePath(), //
                         format, //

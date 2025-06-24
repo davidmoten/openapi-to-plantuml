@@ -3,14 +3,19 @@ package com.github.davidmoten.oas3.puml;
 import static com.github.davidmoten.oas3.internal.Util.quote;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -37,6 +42,10 @@ import com.github.davidmoten.oas3.internal.model.Relationship;
 import io.swagger.parser.OpenAPIParser;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.parser.core.models.SwaggerParseResult;
+import net.sourceforge.plantuml.FileFormat;
+import net.sourceforge.plantuml.FileFormatOption;
+import net.sourceforge.plantuml.SourceStringReader;
+import net.sourceforge.plantuml.core.DiagramDescription;
 
 public final class Converter {
 
@@ -266,4 +275,38 @@ public final class Converter {
         return Optional.ofNullable(result);
     }
 
+    public static void writeSplitFiles(File inputFile, String format, File out) throws IOException {
+        out.mkdirs();
+        List<PumlExtract> list = Converter.openApiToPumlSplitByMethod(inputFile);
+        for (PumlExtract puml : list) {
+            String filename = puml.classNameFrom().iterator().next().replace(" ", "_").replace("/", "_")
+                    .replace("\\", "_").replace("{", "").replace("}", "");
+            if (format.equals("PUML")) {
+                File f = new File(out, filename + ".puml");
+                Files.write(f.toPath(), puml.puml().getBytes(StandardCharsets.UTF_8));
+            } else {
+                File f = new File(out, filename + "." + format.toLowerCase(Locale.ENGLISH));
+                writeFileFormatFromPuml(puml.puml(), f, format);
+            }
+        }
+    }
+
+    public static void writeSingleFile(File inputFile, String format, File out) throws IOException {
+        out.getParentFile().mkdirs();
+        String puml = Converter.openApiToPuml(inputFile);
+        if (format.equals("PUML")) {
+            Files.write(out.toPath(), puml.getBytes(StandardCharsets.UTF_8));
+        } else {
+            writeFileFormatFromPuml(puml, out, format);
+        }
+    }
+
+    static DiagramDescription writeFileFormatFromPuml(String puml, File file, String format) throws IOException {
+        FileFormat fileFormat = FileFormat.valueOf(format);
+        SourceStringReader reader = new SourceStringReader(puml);
+        try (OutputStream os = new BufferedOutputStream(new FileOutputStream(file))) {
+            // Write the first image to "os"
+            return reader.outputImage(os, new FileFormatOption(fileFormat));
+        }
+    }
 }
