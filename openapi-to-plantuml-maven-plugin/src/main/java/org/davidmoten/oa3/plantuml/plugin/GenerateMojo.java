@@ -14,7 +14,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 
 import com.github.davidmoten.oas3.puml.ConverterMain;
 
-@Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_SOURCES, threadSafe = false)
+@Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_RESOURCES, threadSafe = false)
 public final class GenerateMojo extends AbstractMojo {
 
     @Parameter(name = "style", defaultValue = "SINGLE")
@@ -41,6 +41,7 @@ public final class GenerateMojo extends AbstractMojo {
             formats = Arrays.asList("PNG", "SVG");
         }
         for (String format : formats) {
+            getLog().info("Generating diagram(s) in format=" + format + " with style=" + style);
             try {
                 ConverterMain.main(new String[] { //
                         style.name().toLowerCase(Locale.ROOT), //
