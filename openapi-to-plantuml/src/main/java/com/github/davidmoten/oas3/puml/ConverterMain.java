@@ -42,7 +42,7 @@ public final class ConverterMain {
 
     public static void main(String[] args) throws IOException {
         String usage = "Usage: java -jar openapi-to-plantuml-all.jar (single|split)"
-                + " <OPENAPI_FILE> <FILE_FORMAT> <OUTPUT_FILE>" + "\n  File formats are:\n"
+                + " <OPENAPI_FILE> <FILE_FORMAT> <OUTPUT_DIRECTORY>" + "\n  File formats are:\n"
                 + FILE_FORMATS.stream().map(x -> "    " + x + "\n").collect(Collectors.joining());
         if (args.length != 4) {
             System.out.println(usage);
