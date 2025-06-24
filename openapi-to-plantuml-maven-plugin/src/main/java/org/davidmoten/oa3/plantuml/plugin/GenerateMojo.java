@@ -17,7 +17,7 @@ import com.github.davidmoten.oas3.puml.ConverterMain;
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_RESOURCES, threadSafe = false)
 public final class GenerateMojo extends AbstractMojo {
 
-    @Parameter(name = "style", defaultValue = "SINGLE")
+    @Parameter(name = "style", defaultValue = "SPLIT")
     private Style style;
 
     @Parameter(name = "input", required = true)
@@ -32,8 +32,11 @@ public final class GenerateMojo extends AbstractMojo {
     @Parameter(name = "formats")
     private List<String> formats;
 
-    @Parameter(name = "outputDirectory", defaultValue = "${project.build.directory}/diagrams")
-    private File outputDirectory;
+    @Parameter(name = "output", defaultValue = "${project.build.directory}/diagrams")
+    private File output;
+    
+    @Parameter(name = "prefix", defaultValue = "diagram")
+    private String prefix;
 
     @Override
     public void execute() throws MojoExecutionException {
@@ -47,7 +50,8 @@ public final class GenerateMojo extends AbstractMojo {
                         style.name().toLowerCase(Locale.ROOT), //
                         input.getAbsolutePath(), //
                         format, //
-                        outputDirectory.getAbsolutePath() });
+                        output.getAbsolutePath(), //
+                        prefix});
             } catch (IOException e) {
                 throw new MojoExecutionException("Error generating diagrams", e);
             }
