@@ -50,7 +50,7 @@ public final class GenerateMojo extends AbstractMojo {
             if (output == null) {
                 if (style == Style.SINGLE) {
                     out = new File(project.getBuild().getDirectory() + File.separator + "diagrams"
-                            + File.pathSeparator + "class-diagram." + format.toLowerCase(Locale.ROOT));
+                            + File.separator + "class-diagram." + format.toLowerCase(Locale.ROOT));
                 } else {
                     out = new File(project.getBuild().getDirectory() + File.separator + "diagrams");
                 }
