@@ -46,14 +46,16 @@ public final class GenerateMojo extends AbstractMojo {
         }
 
         for (String format : formats) {
+            final File out;
             if (output == null) {
-                final File out;
                 if (style == Style.SINGLE) {
                     out = new File(project.getBuild().getDirectory() + File.pathSeparator + "diagrams"
                             + File.pathSeparator + "class-diagram." + format.toLowerCase(Locale.ROOT));
                 } else {
                     out = new File(project.getBuild().getDirectory() + File.pathSeparator + "diagrams");
                 }
+            } else {
+                out = output;
             }
             getLog().info("Generating diagram in format=" + format + " with style=" + style + " to " + output);
             try {
@@ -61,7 +63,7 @@ public final class GenerateMojo extends AbstractMojo {
                         style.name().toLowerCase(Locale.ROOT), //
                         input.getAbsolutePath(), //
                         format, //
-                        output.getAbsolutePath() });
+                        out.getAbsolutePath() });
             } catch (IOException e) {
                 throw new MojoExecutionException("Error generating diagrams", e);
             }
