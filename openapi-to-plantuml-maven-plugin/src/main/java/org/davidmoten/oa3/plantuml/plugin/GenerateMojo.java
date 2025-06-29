@@ -19,9 +19,18 @@ import com.github.davidmoten.oas3.puml.Style;
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_RESOURCES, threadSafe = false)
 public final class GenerateMojo extends AbstractMojo {
 
+    /**
+     * The style of the generated diagrams. {@code SINGLE} makes a single class diagram that
+     * holds all operations. {@code SPLIT} makes a class diagram per operation (recommended
+     * for large OpenAPI definitions).
+     */
     @Parameter(name = "style", defaultValue = "SPLIT")
     private Style style;
 
+    /**
+     * The root OpenAPI file to convert to PlantUML. Can make relative references to
+     * other files.
+     */
     @Parameter(name = "input", required = true)
     private File input;
 
@@ -34,6 +43,10 @@ public final class GenerateMojo extends AbstractMojo {
     @Parameter(name = "formats")
     private List<String> formats;
 
+    /**
+     * The output file for {@code Style.SINGLE} or the output directory for
+     * {@code Style.SPLIT}.
+     */
     @Parameter(name = "output")
     private File output;
 
@@ -50,8 +63,8 @@ public final class GenerateMojo extends AbstractMojo {
             final File out;
             if (output == null) {
                 if (style == Style.SINGLE) {
-                    out = new File(project.getBuild().getDirectory() + File.separator + "diagrams"
-                            + File.separator + "class-diagram." + format.toLowerCase(Locale.ROOT));
+                    out = new File(project.getBuild().getDirectory() + File.separator + "diagrams" + File.separator
+                            + "class-diagram." + format.toLowerCase(Locale.ROOT));
                 } else {
                     out = new File(project.getBuild().getDirectory() + File.separator + "diagrams");
                 }
@@ -62,7 +75,7 @@ public final class GenerateMojo extends AbstractMojo {
                     + " with style=" + style + " to " + output);
             try {
                 if (style == Style.SINGLE) {
-                  Converter.writeSingleFile(input, format, out);   
+                    Converter.writeSingleFile(input, format, out);
                 } else {
                     Converter.writeSplitFiles(input, format, out);
                 }
