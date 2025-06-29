@@ -72,7 +72,7 @@ public final class GenerateMojo extends AbstractMojo {
                 out = output;
             }
             getLog().info("Generating diagram in format=" + format //
-                    + " with style=" + style + " to " + output);
+                    + " with style=" + style + " to " + out);
             try {
                 if (style == Style.SINGLE) {
                     Converter.writeSingleFile(input, format, out);
