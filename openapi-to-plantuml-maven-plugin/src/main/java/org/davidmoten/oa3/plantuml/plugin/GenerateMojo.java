@@ -45,7 +45,9 @@ public final class GenerateMojo extends AbstractMojo {
 
     /**
      * The output file for {@code Style.SINGLE} or the output directory for
-     * {@code Style.SPLIT}.
+     * {@code Style.SPLIT}. Default file is
+     * {@code target/diagrams/class-diagram.png} for SINGLE, and
+     * {@code target/diagrams} for SPLIT.
      */
     @Parameter(name = "output")
     private File output;
