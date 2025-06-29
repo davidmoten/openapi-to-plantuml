@@ -4,83 +4,15 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.github.davidmoten</groupId>
+    <parent>
+        <groupId>com.github.davidmoten</groupId>
+        <artifactId>openapi-to-plantuml-parent</artifactId>
+        <version>0.1.33-SNAPSHOT</version>
+    </parent>
     <artifactId>openapi-to-plantuml</artifactId>
-    <version>0.1.33-SNAPSHOT</version>
     <name>${project.artifactId}</name>
     <description>Generates PlantUML file from an OpenAPI 3.0 Definition</description>
     <packaging>jar</packaging>
-
-    <url>http://github.com/davidmoten/openapi-to-plantuml</url>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <maven.compiler.target>1.8</maven.compiler.target>
-
-        <slf4j.version>2.0.13</slf4j.version>
-        <checkstyle.version>3.6.0</checkstyle.version>
-        <checkstyle.xml>src/main/checkstyle/checkstyle.xml</checkstyle.xml>
-        <checkstyle.suppressions.xml>src/main/checkstyle/suppressions.xml</checkstyle.suppressions.xml>
-        <checkstyle.core.version>9.3</checkstyle.core.version>
-        <spotbugs.version>4.8.6.6</spotbugs.version>
-        <javadoc.version>3.11.2</javadoc.version>
-        <pmd.version>3.26.0</pmd.version>
-        <jdepend.version>2.1</jdepend.version>
-        <project.info.version>3.9.0</project.info.version>
-        <jxr.version>3.6.0</jxr.version>
-        <taglist.version>3.2.1</taglist.version>
-        <m3.site.version>3.21.0</m3.site.version>
-        <changelog.version>2.2</changelog.version>
-        <bundle.plugin.version>6.0.0</bundle.plugin.version>
-        <coverage.reports.dir>${project.build.directory}/target/coverage-reports</coverage.reports.dir>
-        <line.coverage>0.80</line.coverage>
-        <branch.coverage>0.40</branch.coverage>
-
-        <slf4j.version>1.7.36</slf4j.version>
-        <log4j.version>2.25.0</log4j.version>
-
-    </properties>
-
-    <licenses>
-        <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-            <comments>A business-friendly OSS license</comments>
-        </license>
-    </licenses>
-
-    <ciManagement>
-        <system>Travis</system>
-        <url>https://travis-ci.org/davidmoten/openapi-to-plantuml</url>
-    </ciManagement>
-
-    <issueManagement>
-        <system>GitHub</system>
-        <url>https://github.com/davidmoten/openapi-to-plantuml/issues</url>
-    </issueManagement>
-
-    <inceptionYear>2021</inceptionYear>
-    <developers>
-        <developer>
-            <id>dave</id>
-            <name>Dave Moten</name>
-            <url>https://github.com/davidmoten/</url>
-            <roles>
-                <role>architect</role>
-                <role>developer</role>
-            </roles>
-            <timezone>+10</timezone>
-        </developer>
-    </developers>
-
-    <scm>
-        <connection>scm:git:https://github.com/davidmoten/openapi-to-plantuml.git</connection>
-        <developerConnection>scm:git:https://github.com/davidmoten/openapi-to-plantuml.git</developerConnection>
-        <url>scm:git:https://github.com:davidmoten/openapi-to-plantuml.git</url>
-        <tag>HEAD</tag>
-    </scm>
 
     <dependencies>
 
