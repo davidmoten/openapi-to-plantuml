@@ -3,6 +3,7 @@ package com.github.davidmoten.oas3.puml;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import com.github.davidmoten.guavamini.Lists;
@@ -25,8 +26,8 @@ public final class ConverterMain {
             System.out.println(usage);
             throw new IllegalArgumentException("must pass 4 arguments");
         } else {
-            String mode = args[0];
-            if (mode.equals("split")) {
+            Style style = Style.valueOf(args[0].toUpperCase(Locale.ENGLISH));
+            if (style == Style.SPLIT) {
                 String inputFilename = args[1];
                 String format = args[2];
                 File out = new File(args[3]);
