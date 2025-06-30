@@ -16,3 +16,4 @@ buildNumber.properties
 .checkstyle
 .gradle
 build
+bin

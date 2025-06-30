@@ -1,41 +1,27 @@
 plugins {
     id 'java-gradle-plugin'
     id 'maven-publish'
-    id 'com.gradle.plugin-publish' version '1.2.1'
 }
 
-group = 'com.example'
-version = '1.0.0'
+group = 'com.github.davidmoten.openapi-to-plantuml-gradle-plugin'
+version = '0.1'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation 'com.github.davidmoten:openapi-to-plantuml:0.5.2' // adjust to the correct version
+    implementation 'com.github.davidmoten:openapi-to-plantuml:0.1.34'
 }
 
 gradlePlugin {
     plugins {
         openapiToPlantuml {
-            id = 'com.example.openapi-to-plantuml'
-            implementationClass = 'com.example.openapi.OpenApiToPlantUmlPlugin'
+            id = 'com.github.davidmoten.openapi-to-plantuml-gradle-plugin'
+            implementationClass = 'com.github.davidmoten.oas3.puml.gradle.OpenApiToPlantumlPlugin'
             displayName = 'OpenAPI to PlantUML Plugin'
             description = 'Generates PlantUML diagrams from OpenAPI files'
         }
     }
 }
 
-pluginBundle {
-    website = 'https://github.com/example/openapi-to-plantuml-gradle-plugin'
-    vcsUrl = 'https://github.com/example/openapi-to-plantuml-gradle-plugin.git'
-    tags = ['openapi', 'plantuml', 'uml', 'generator', 'documentation']
-}
-
-publishing {
-    publications {
-        pluginMaven(MavenPublication) {
-            from components.java
-        }
-    }
-}

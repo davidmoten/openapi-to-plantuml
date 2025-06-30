@@ -1,17 +1,21 @@
-package com.example.openapi;
+package com.github.davidmoten.oas3.puml.gradle;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+
+import org.gradle.api.DefaultTask;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.TaskAction;
-import org.gradle.api.DefaultTask;
 
 import com.github.davidmoten.oas3.puml.Converter;
 import com.github.davidmoten.oas3.puml.Style;
-
-import java.io.File;
-import java.util.List;
 
 public class OpenApiToPlantUmlPlugin implements Plugin<Project> {
     @Override
@@ -116,19 +120,36 @@ abstract class OpenApiToPlantUmlTask extends DefaultTask {
 
     @TaskAction
     public void generate() {
-        Style resolvedStyle = Style.valueOf(style.toUpperCase());
-        File resolvedOutput = output != null ? output : new File("build/diagrams");
-        if (!resolvedOutput.exists()) {
-            resolvedOutput.mkdirs();
+        Style resolvedStyle = Style.valueOf(style.toUpperCase(Locale.ENGLISH));
+        
+        if (formats == null || formats.isEmpty()) {
+            formats = Arrays.asList("PNG", "SVG");
         }
 
-        Converter converter = new Converter()
-            .input(input)
-            .style(resolvedStyle)
-            .formats(formats)
-            .output(resolvedOutput);
-
-        converter.convert();
+        for (String format : formats) {
+            final File out;
+            if (output == null) {
+                if (resolvedStyle == Style.SINGLE) {
+                    out = new File("build" + File.separator + "diagrams" + File.separator
+                            + "class-diagram." + format.toLowerCase(Locale.ROOT));
+                } else {
+                    out = new File("build" + File.separator + "diagrams");
+                }
+            } else {
+                out = output;
+            }
+            getLogger().info("Generating diagram in format=" + format //
+                    + " with style=" + style + " to " + out);
+            try {
+                if (resolvedStyle == Style.SINGLE) {
+                    Converter.writeSingleFile(input, format, out);
+                } else {
+                    Converter.writeSplitFiles(input, format, out);
+                }
+            } catch (IOException e) {
+                throw new UncheckedIOException("Error generating diagrams", e);
+            }
+        }
     }
 }
 }
