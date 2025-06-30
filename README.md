@@ -119,29 +119,29 @@ Unit test examples are [here](openapi-to-plantuml/src/docs/generated/examples.md
 
 [petstore-expanded.yml](openapi-to-plantuml/src/test/resources/inputs/petstore-expanded.yml):
 
-<img src="src/docs/tests/petstore-expanded.puml.svg"/>
+<img src="openapi-to-plantuml/src/docs/tests/petstore-expanded.puml.svg"/>
 
 [bookstore.yml](openapi-to-plantuml/src/test/resources/demos/bookstore.yml):
 
-<img src="src/docs/demos/bookstore.svg"/>
+<img src="openapi-to-plantuml/src/docs/demos/bookstore.svg"/>
 
 [ecommerce.yml](openapi-to-plantuml/src/test/resources/demos/ecommerce.yml)
 
-<img src="src/docs/demos/ecommerce.svg"/>
+<img src="openapi-to-plantuml/src/docs/demos/ecommerce.svg"/>
 
 [news.yml](openapi-to-plantuml/src/test/resources/demos/news.yml):
 
-<img src="src/docs/demos/news.svg"/>
+<img src="openapi-to-plantuml/src/docs/demos/news.svg"/>
 
 [strava.yml](openapi-to-plantuml/src/test/resources/demos/strava.yml):
 
-<img src="src/docs/demos/strava.svg"/>
+<img src="openapi-to-plantuml/src/docs/demos/strava.svg"/>
 
 [twitter.yml](openapi-to-plantuml/src/test/resources/demos/twitter.yml):
 
-<img src="src/docs/demos/twitter.svg"/>
+<img src="openapi-to-plantuml/src/docs/demos/twitter.svg"/>
 
 [ebay.yml](openapi-to-plantuml/src/test/resources/demos/ebay.yml):
 
-<img src="src/docs/demos/ebay.svg"/>
+<img src="openapi-to-plantuml/src/docs/demos/ebay.svg"/>
 
