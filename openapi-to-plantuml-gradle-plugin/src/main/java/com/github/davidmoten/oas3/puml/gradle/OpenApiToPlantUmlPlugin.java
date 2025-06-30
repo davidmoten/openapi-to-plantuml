@@ -39,7 +39,7 @@ public class OpenApiToPlantUmlPlugin implements Plugin<Project> {
 class OpenApiToPlantUmlExtension {
     private String style = "SPLIT";
     private File input;
-    private List<String> formats = List.of("SVG");
+    private List<String> formats = List.of("PNG", "SVG");
     private File output;
 
     public String getStyle() {
