@@ -18,7 +18,7 @@ gradlePlugin {
     plugins {
         openapiToPlantuml {
             id = 'com.github.davidmoten.openapi-to-plantuml-gradle-plugin'
-            implementationClass = 'com.github.davidmoten.oas3.puml.gradle.OpenApiToPlantumlPlugin'
+            implementationClass = 'com.github.davidmoten.oas3.puml.gradle.OpenApiToPlantUmlPlugin'
             displayName = 'OpenAPI to PlantUML Plugin'
             description = 'Generates PlantUML diagrams from OpenAPI files'
         }
