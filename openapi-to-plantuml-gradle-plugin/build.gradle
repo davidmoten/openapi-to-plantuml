@@ -3,7 +3,7 @@ plugins {
     id 'maven-publish'
 }
 
-group = 'com.github.davidmoten.openapi-to-plantuml-gradle-plugin'
+group = 'com.github.davidmoten'
 version = '0.1'
 
 repositories {
