@@ -11,7 +11,7 @@
     <name>${project.artifactId}</name>
     <description>Generates code from OpenAPI v3 schemas</description>
     <properties>
-        <maven.version>3.9.10</maven.version>
+        <maven.version>3.9.11</maven.version>
     </properties>
     <dependencies>
         <dependency>
