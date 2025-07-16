@@ -11,6 +11,7 @@ import org.gradle.api.DefaultTask;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.tasks.Input;
+import org.gradle.api.tasks.InputFile;
 import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.TaskAction;
 
@@ -23,7 +24,7 @@ public class OpenApiToPlantUmlPlugin implements Plugin<Project> {
         OpenApiToPlantUmlExtension extension = project.getExtensions().create("openApiToPlantUml",
                 OpenApiToPlantUmlExtension.class);
 
-        project.getTasks().register("generatePlantUml", OpenApiToPlantUmlTask.class, task -> {
+        project.getTasks().register("generateDiagrams", OpenApiToPlantUmlTask.class, task -> {
             task.setGroup("documentation");
             task.setDescription("Generates PlantUML diagrams from an OpenAPI spec.");
 
@@ -41,10 +42,6 @@ public class OpenApiToPlantUmlPlugin implements Plugin<Project> {
         private File input;
         private List<String> formats = List.of("PNG", "SVG");
         private File output;
-        
-        public OpenApiToPlantUmlExtension() {
-            
-        }
 
         public String getStyle() {
             return style;
@@ -79,7 +76,7 @@ public class OpenApiToPlantUmlPlugin implements Plugin<Project> {
         }
     }
 
-    abstract static class OpenApiToPlantUmlTask extends DefaultTask {
+    public static class OpenApiToPlantUmlTask extends DefaultTask {
         private String style;
         private File input;
         private List<String> formats = List.of("SVG");
@@ -94,7 +91,7 @@ public class OpenApiToPlantUmlPlugin implements Plugin<Project> {
             this.style = style;
         }
 
-        @Input
+        @InputFile
         public File getInput() {
             return input;
         }
@@ -113,7 +110,7 @@ public class OpenApiToPlantUmlPlugin implements Plugin<Project> {
         }
 
         @Optional
-        @Input
+        @InputFile
         public File getOutput() {
             return output;
         }
