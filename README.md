@@ -10,6 +10,7 @@ Try it online [here](https://openapi-to-puml.davidmoten.org/prod/site/index.html
 **Features**
 
 * Maven plugin to produce diagrams in multiple formats
+* Gradle usage example
 * One consolidated diagram or diagram-per-operation options
   
 Supports all features of OpenAPI 3.0 including
