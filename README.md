@@ -100,7 +100,7 @@ configurations {
 }
 
 dependencies {
-    diagrams 'com.github.davidmoten:openapi-to-plantuml:VERSION_HERE'
+    diagrams 'com.github.davidmoten:openapi-to-plantuml:VERSION_HERE:jar-with-dependencies'
 }
 
 task diagrams(type: JavaExec) {
