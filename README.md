@@ -93,7 +93,7 @@ is getting cut off then you need to increase the plantuml image size limit like 
 java -DPLANTUML_LIMIT_SIZE=8192 -jar openapi-to-plantuml-VERSION_HERE-jar-with-dependencies.jar openapi.yaml PNG openapi.png
 ```
 ### Gradle
-You can call the diagram generator from Gradle in `build.gradle` like this:
+You can configure the diagram generator from Gradle in `build.gradle` like this:
 ```groovy
 configurations {
     diagrams
@@ -108,6 +108,10 @@ task diagrams(type: JavaExec) {
     classpath = configurations.diagrams
     args = ['split','openapi.yaml','PNG', 'build/diagrams']
 }
+```
+Then call
+```bash
+gradle diagrams
 ```
 
 ### How to produce a diagram per service method
