@@ -76,7 +76,7 @@ Use the Maven plugin:
 |-----------|---------------|----------|----------------------------------|-------------|
 | `style`   | `Style`       | No       | `SPLIT`                          | The style of the generated diagrams. `SINGLE` creates one diagram for all operations, while `SPLIT` creates a separate diagram per operation (recommended for large OpenAPI specs). |
 | `input`   | `File`        | Yes      | –                                | The source OpenAPI file to generate diagrams from. Can include relative references to other files. |
-| `formats` | `List<String>`| No       | PNG, SVG                         | Output formats. Possible values include: `PUML`, `EPS`, `SVG`, `PDF`, `PNG`, `HTML`, etc. |
+| `formats` | `List<String>`| No       | PNG, SVG                         | Output formats. Possible values include: `PUML`, `EPS`, `EPS_TEXT`, `ATXT`, `UTXT`, `XMI_STANDARD`, `XMI_STAR`, `XMI_ARGO`, `SCXML`, `GRAPHML`, `PDF`, `MJPEG`, `ANIMATED_GIF`, `HTML`, `HTML5`, `VDX`, `LATEX`, `LATEX_NO_PREAMBLE`, `BASE64`, `BRAILLE_PNG`, `PREPROC`, `DEBUG`, `PNG`, `RAW`, `SVG` |
 | `output`  | `File`        | No       | `target/diagrams/class-diagram.png` (for `SINGLE`) or `target/diagrams` (for `SPLIT`) | The output file (for `SINGLE`) or output directory (for `SPLIT`). |
 
 ### Standalone jar
