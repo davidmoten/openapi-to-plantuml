@@ -109,6 +109,9 @@ task diagrams(type: JavaExec) {
     classpath = configurations.diagrams
     args = ['split','openapi.yaml','PNG', 'build/diagrams']
 }
+
+// include this to ensure runs with `gradle build`
+build.dependsOn diagrams
 ```
 Then call
 ```bash
