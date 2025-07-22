@@ -17,7 +17,7 @@ public class ConverterMainTest {
         for (FileFormat ff : new FileFormat[] { FileFormat.PNG, FileFormat.SVG }) {
             try {
                 String[] args = new String[] { "single", "src/test/resources/openapi-example.yml", ff.toString(),
-                        new File("target/converted." + ff.getFileSuffix()).getPath() };
+                        new File("target/converted" + ff.getFileSuffix()).getPath() };
                 ConverterMain.main(args);
             } catch (Throwable e) {
                 //
