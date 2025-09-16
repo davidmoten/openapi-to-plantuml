@@ -24,7 +24,7 @@
         <checkstyle.version>3.6.0</checkstyle.version>
         <checkstyle.xml>src/main/checkstyle/checkstyle.xml</checkstyle.xml>
         <checkstyle.suppressions.xml>src/main/checkstyle/suppressions.xml</checkstyle.suppressions.xml>
-        <checkstyle.core.version>9.3</checkstyle.core.version>
+        <checkstyle.core.version>11.0.1</checkstyle.core.version>
         <spotbugs.version>4.8.6.6</spotbugs.version>
         <javadoc.version>3.11.3</javadoc.version>
         <pmd.version>3.27.0</pmd.version>
