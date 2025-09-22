@@ -41,7 +41,7 @@
 
         <slf4j.version>1.7.36</slf4j.version>
         <log4j.version>2.25.1</log4j.version>
-        <compiler.plugin.version>3.14.0</compiler.plugin.version>
+        <compiler.plugin.version>3.14.1</compiler.plugin.version>
 
     </properties>
 
