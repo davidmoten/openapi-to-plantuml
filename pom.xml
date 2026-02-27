@@ -34,7 +34,7 @@
         <taglist.version>3.2.2</taglist.version>
         <m3.site.version>3.21.0</m3.site.version>
         <changelog.version>2.2</changelog.version>
-        <bundle.plugin.version>6.0.0</bundle.plugin.version>
+        <bundle.plugin.version>6.0.2</bundle.plugin.version>
         <coverage.reports.dir>${project.build.directory}/target/coverage-reports</coverage.reports.dir>
         <line.coverage>0.80</line.coverage>
         <branch.coverage>0.40</branch.coverage>
