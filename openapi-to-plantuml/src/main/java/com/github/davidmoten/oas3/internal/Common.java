@@ -60,7 +60,8 @@ final class Common {
             // this is an alias case for a schema
             String otherClassName = names.refToClassName(schema.get$ref()).className();
             relationships.add(Association.from(name).to(otherClassName).one().build());
-        } else if (schema instanceof ComposedSchema) {
+        }
+        if (schema instanceof ComposedSchema) {
             ComposedSchema s = (ComposedSchema) schema;
             if (s.getOneOf() != null) {
                 addInheritance(classes, relationships, name, s.getOneOf(), names);
@@ -71,7 +72,8 @@ final class Common {
             } else {
                 throw new RuntimeException("unexpected");
             }
-        } else if (schema.getProperties() != null) {
+        }
+        if (schema.getProperties() != null) {
             final Set<String> required;
             if (schema.getRequired() != null) {
                 required = new HashSet<>(schema.getRequired());
@@ -111,18 +113,21 @@ final class Common {
                                     associationType, names);
                         }
                     }
-                } else if (sch.get$ref() != null) {
+                }
+                if (sch.get$ref() != null) {
                     String ref = sch.get$ref();
                     String otherClassName = names.refToClassName(ref).className();
                     addToOne(relationships, name, otherClassName, property,
                             required.contains(entry.getKey()), false);
-                } else {
+                }
+                if (sch instanceof Object) {
                     Optional<String> t = getUmlTypeName(sch, names);
                     if (t.isPresent()) {
                         String type = t.get();
                         if (isComplexArrayType(type)) {
-                            addArray(name, classes, relationships, property, (ArraySchema) sch,
+                            String otherClassname = addArray(name, classes, relationships, property, (ArraySchema) sch,
                                     names);
+                            fields.add(new Field(property, otherClassname + "[]", true, true));
                         } else if (type.equals("object")) {
                             // create anon class
                             String otherClassName = names.nextClassName(name + "." + property);
@@ -149,6 +154,8 @@ final class Common {
                                 addToMany(relationships, name, keyClassName, property, true);
                                 String valueClassName = names.refToClassName(valueSchema.get$ref()).className();
                                 addToOne(relationships, keyClassName, valueClassName, "value", true, false);
+                                fields.add(new Field(entry.getKey(), valueClassName, type.endsWith("]"),
+                                        true));
                             } else {
                                 fields.add(new Field(entry.getKey(), "string -> string", type.endsWith("]"),
                                         true));
@@ -160,7 +167,8 @@ final class Common {
                     }
                 }
             });
-        } else if (schema instanceof ArraySchema) {
+        }
+        if (schema instanceof ArraySchema) {
             ArraySchema a = (ArraySchema) schema;
             Schema<?> items = a.getItems();
             String ref = items.get$ref();
@@ -175,7 +183,8 @@ final class Common {
                 relationships.addAll(m.relationships());
             }
             addToMany(relationships, name, otherClassName);
-        } else if (!(schema instanceof ObjectSchema)) {
+        }
+        if (!(schema instanceof ObjectSchema)) {
             // has no properties so ignore ObjectSchema
             Optional<String> t = getUmlTypeName(schema, names);
             if (t.isPresent()) {
@@ -186,8 +195,6 @@ final class Common {
                     for (Object item: schema.getEnum()) {
                         fields.add(new Field(String.valueOf(item), type, false, false));
                     }
-                } else {
-                    fields.add(new Field("value", type, type.endsWith("]"), true));
                 }
             }
         }
@@ -207,7 +214,7 @@ final class Common {
         return SIMPLE_TYPES_WITHOUT_BRACKETS.contains(s.replace("[", "").replace("]", ""));
     }
 
-    private static void addArray(String name, List<Class> classes, List<Relationship> relationships,
+    private static String addArray(String name, List<Class> classes, List<Relationship> relationships,
             String property, ArraySchema a, Names names) {
         Preconditions.checkNotNull(property);
         // is array of items
@@ -224,6 +231,7 @@ final class Common {
             relationships.addAll(m.relationships());
         }
         addToMany(relationships, name, otherClassName, property);
+        return otherClassName;
     }
 
     private static void addMixedTypeAll(List<Class> classes, List<Relationship> relationships,

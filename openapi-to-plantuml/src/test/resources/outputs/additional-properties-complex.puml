@@ -16,6 +16,7 @@ class "Thing.property" {
 class "Thing" {
   {field} name : string
   {field} description : string {O}
+  {field} property : MyValue
 }
 
 class "MyValue" {
