@@ -15,6 +15,7 @@ class "Customers.names" {
 }
 
 class "Customers" {
+  {field} names : Customers.names[]
 }
 
 "Customers" --> "*" "Customers.names"  :  "names"

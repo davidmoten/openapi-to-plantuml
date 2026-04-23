@@ -10,13 +10,15 @@ BackgroundColor<<Path>> Wheat
 set namespaceSeparator none
 
 class "CustomerType" {
-  {field} value : string
 }
 
 class "Customer" {
   {field} firstName : string
   {field} lastName : string
   {field} heightMetres : decimal {O}
+  {field} type : CustomerType
+  {field} friends : Customer[]
+  {field} favouritePartner : Customer {O}
 }
 
 "Customer" --> "1" "CustomerType"  :  "type"

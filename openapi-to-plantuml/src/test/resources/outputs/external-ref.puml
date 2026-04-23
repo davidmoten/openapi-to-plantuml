@@ -14,10 +14,12 @@ class "employee" {
 
 class "nurse" {
   {field} level : integer
+  {field} agreement : agreements.yml::agreement {O}
 }
 
 class "doctor" {
   {field} income : decimal
+  {field} agreement : agreements.yml::agreement {O}
 }
 
 class "agreement" <<agreements.yml>> {

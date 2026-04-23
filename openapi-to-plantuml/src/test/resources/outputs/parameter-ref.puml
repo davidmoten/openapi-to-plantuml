@@ -15,7 +15,6 @@ class "Customer" {
 }
 
 class "CustomerId" <<Parameter>>  {
-  {field} value : string
 }
 
 class "GET /customer/expired" <<Path>>  {

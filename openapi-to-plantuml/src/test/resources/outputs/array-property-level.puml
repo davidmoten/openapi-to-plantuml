@@ -10,6 +10,7 @@ BackgroundColor<<Path>> Wheat
 set namespaceSeparator none
 
 class "Customers" {
+  {field} group : Customer[]
 }
 
 class "Customer" {
