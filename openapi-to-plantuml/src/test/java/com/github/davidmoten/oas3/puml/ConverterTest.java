@@ -46,8 +46,29 @@ public class ConverterTest {
     }
 
     @Test
+    public void testConvert31() {
+        String openapi = "openapi: 3.1.0\n" + "components:\n" + "  schemas:\n"
+                + "    CustomerType:\n" + "      type: [string, \"null\"]\n" + "      example: Example value\n"
+                + "    Customer:\n" + "      properties:\n" + "        firstName:\n"
+                + "          type: string\n" + "        lastName:\n" + "          type: string\n"
+                + "        heightMetres:\n" + "          type: number\n" + "        type:\n"
+                + "          $ref: '#/components/schemas/CustomerType'\n" + "        friends:\n"
+                + "          type: array\n" + "          items:\n"
+                + "            $ref: '#/components/schemas/Customer'\n" + "      ";
+
+        Converter.openApiToPuml(openapi);
+    }
+
+    @Test
     public void testConvertExternalRef() throws IOException {
         Converter.openApiToPuml(new File("src/test/resources/inputs/external-ref.yml"));
+    }
+
+    @Test
+    public void testConvertExternalRef31() throws IOException {
+        String openapi = readString("src/test/resources/inputs/external-ref.yml");
+        openapi = openapi.replace("openapi: 3.0.1", "openapi: 3.1.0");
+        Converter.openApiToPuml(openapi);
     }
 
     @Test(expected = IllegalArgumentException.class)

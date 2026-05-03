@@ -10,7 +10,7 @@ BackgroundColor<<Path>> Wheat
 set namespaceSeparator none
 
 class "employee" {
-  {field} role : string {O}
+  {field} role : doctor {O}
 }
 
 class "nurse" {

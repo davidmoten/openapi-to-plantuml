@@ -1,0 +1,12 @@
+openapi: 3.1.0
+info:
+  title: unit test
+  version: 0.0.1
+components:
+  schemas:
+    Thing:
+      properties:
+        property:
+          type: object
+          additionalProperties:
+            type: string

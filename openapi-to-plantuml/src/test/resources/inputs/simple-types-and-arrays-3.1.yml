@@ -1,0 +1,56 @@
+openapi: 3.1.0
+info:
+  title: unit test
+  version: 0.0.1
+components:
+  schemas:
+    # in plantuml need to set namespaceChar none so that grouping doesn't happen on the dot in class name
+    My.Customer:
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        secret:
+          type: string
+          format: password
+        email:
+          type: string
+          format: email
+        id:
+          type: string
+          format: uuid
+        history:
+          type: string
+          format: binary
+        history2:
+          type: string
+          format: byte
+        heightMetres:
+          type: number
+        dateOfBirth:
+          type: string
+          format: date
+        lastSessionTime:
+          type: string
+          format: date-time  
+        numberOfChildren:
+          type: integer        
+        alive:
+          type: boolean
+        nicknames:
+          type: array
+          items: 
+            type: string
+        favouriteNumbers:
+          type: array
+          items:
+            type: integer 
+        picture:
+          type: string
+          format: binary
+      required:
+      - firstName
+      - lastName
+      - dateOfBirth
+        

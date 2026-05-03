@@ -1,0 +1,23 @@
+@startuml
+hide <<Path>> circle
+hide <<Response>> circle
+hide <<Parameter>> circle
+hide empty methods
+hide empty fields
+skinparam class {
+BackgroundColor<<Path>> Wheat
+}
+set namespaceSeparator none
+
+class "Customers.names" {
+  {field} firstName : string
+  {field} lastName : string
+}
+
+class "Customers" {
+  {field} names : Customers.names[]
+}
+
+"Customers" --> "*" "Customers.names"  :  "names"
+
+@enduml

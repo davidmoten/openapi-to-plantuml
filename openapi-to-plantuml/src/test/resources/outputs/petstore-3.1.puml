@@ -1,0 +1,54 @@
+@startuml
+hide <<Path>> circle
+hide <<Response>> circle
+hide <<Parameter>> circle
+hide empty methods
+hide empty fields
+skinparam class {
+BackgroundColor<<Path>> Wheat
+}
+set namespaceSeparator none
+
+class "Pet" {
+  {field} id : integer
+  {field} name : string
+  {field} tag : string {O}
+}
+
+class "Pets" {
+}
+
+class "Error" {
+  {field} code : integer
+  {field} message : string
+}
+
+class "listPets" <<Path>>  <<GET /pets>>  {
+  {field} limit : integer {O}
+}
+
+class "createPets" <<Path>>  <<POST /pets>>  {
+}
+
+class "createPets 201" <<Response>>  {
+}
+
+class "showPetById" <<Path>>  <<GET /pets/{petId}>>  {
+  {field} petId : string
+}
+
+"Pets" --> "*" "Pet"
+
+"listPets" ..> "1" "Pets"  :  "200"
+
+"listPets" ..> "1" "Error"  :  "default"
+
+"createPets" ..> "1" "createPets 201"  :  "201"
+
+"createPets" ..> "1" "Error"  :  "default"
+
+"showPetById" ..> "1" "Pet"  :  "200"
+
+"showPetById" ..> "1" "Error"  :  "default"
+
+@enduml
