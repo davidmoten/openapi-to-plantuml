@@ -1,0 +1,61 @@
+@startuml
+hide <<Path>> circle
+hide <<Response>> circle
+hide <<Parameter>> circle
+hide empty methods
+hide empty fields
+skinparam class {
+BackgroundColor<<Path>> Wheat
+}
+set namespaceSeparator none
+
+class "Customer.nicknames" {
+}
+
+class "Customer.favouriteNumbers" {
+}
+
+class "Customer" {
+  {field} firstName : string
+  {field} lastName : string
+  {field} heightMetres : decimal {O}
+  {field} dateOfBirth : date
+  {field} lastSessionTime : timestamp {O}
+  {field} numberOfChildren : integer {O}
+  {field} alive : boolean {O}
+  {field} nicknames : Customer.nicknames[]
+  {field} favouriteNumbers : Customer.favouriteNumbers[]
+  {field} picture : string {O}
+}
+
+class "repositories" <<RequestBody>>  {
+}
+
+class "repositoriesAlt.repository_ids" {
+}
+
+class "repositoriesAlt" <<RequestBody>>  {
+  {field} repository_ids : repositoriesAlt.repository_ids[]
+}
+
+class "GET /customer/expired" <<Path>>  {
+}
+
+class "GET /customer/expired 200" <<Response>>  {
+}
+
+"Customer" --> "*" "Customer.nicknames"  :  "nicknames"
+
+"Customer" --> "*" "Customer.favouriteNumbers"  :  "favouriteNumbers"
+
+"repositories" --> "1" "repositoriesAlt"
+
+"repositoriesAlt" --> "*" "repositoriesAlt.repository_ids"  :  "repository_ids"
+
+"GET /customer/expired 200" --> "*" "Customer"
+
+"GET /customer/expired" ..> "1" "GET /customer/expired 200"  :  "200"
+
+"GET /customer/expired" --> "1" "repositories"
+
+@enduml

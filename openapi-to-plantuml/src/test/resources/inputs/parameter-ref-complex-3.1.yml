@@ -1,0 +1,38 @@
+openapi: 3.1.0
+info:
+  title: unit test
+  version: 0.0.1
+paths:
+  /customer/expired:
+    get:
+      parameters:
+      - $ref: '#/components/parameters/CustomerId'
+      responses:
+        '200':  
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+components:
+  schemas:
+    Customer:
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+  parameters:
+    CustomerId:
+      name: customerId
+      in: query
+      description: Unique identification of customer resource
+      required: true
+      schema:
+        properties:
+          id:
+            type: string
+            pattern: '^([a-zA-Z0-9 /\-?:\()\.,'']{1,35})$'
+          prefix:
+            type: string

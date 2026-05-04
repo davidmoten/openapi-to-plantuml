@@ -1,0 +1,41 @@
+@startuml
+hide <<Path>> circle
+hide <<Response>> circle
+hide <<Parameter>> circle
+hide empty methods
+hide empty fields
+skinparam class {
+BackgroundColor<<Path>> Wheat
+}
+set namespaceSeparator none
+
+class "Customer" {
+  {field} firstName : string {O}
+  {field} lastName : string {O}
+}
+
+class "GET /customer/expired" <<Path>>  {
+}
+
+class "GET /customer/expired.offset" <<Parameter>>  {
+  {field} min : integer {O}
+  {field} max : integer {O}
+}
+
+class "GET /customer/expired.limit" <<Parameter>>  {
+  {field} min : integer {O}
+  {field} max : integer {O}
+}
+
+class "GET /customer/expired 200" <<Response>>  {
+}
+
+"GET /customer/expired" --> "1" "GET /customer/expired.offset"  :  "offset"
+
+"GET /customer/expired" --> "0..1" "GET /customer/expired.limit"  :  "limit"
+
+"GET /customer/expired 200" --> "*" "Customer"
+
+"GET /customer/expired" ..> "1" "GET /customer/expired 200"  :  "200"
+
+@enduml
