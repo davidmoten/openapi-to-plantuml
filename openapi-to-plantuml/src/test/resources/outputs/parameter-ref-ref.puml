@@ -17,14 +17,14 @@ class "Customer" {
 class "CustomerId" <<Parameter>>  {
 }
 
-class "Id" <<Parameter>>  {
-  {field} value : string
-}
-
 class "GET /customer/expired" <<Path>>  {
 }
 
 class "GET /customer/expired 200" <<Response>>  {
+}
+
+class "Id" <<Parameter>>  {
+  {field} value : string
 }
 
 "CustomerId" --> "1" "Id"

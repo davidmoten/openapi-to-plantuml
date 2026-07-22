@@ -9,6 +9,9 @@ BackgroundColor<<Path>> Wheat
 }
 set namespaceSeparator none
 
+class "employee" {
+}
+
 class "employee.1" {
   {field} employeeType : string {O}
   {field} level : integer
@@ -17,9 +20,6 @@ class "employee.1" {
 class "employee.2" {
   {field} employeeType : string {O}
   {field} income : decimal
-}
-
-class "employee" {
 }
 
 "employee.1" --|> "employee"

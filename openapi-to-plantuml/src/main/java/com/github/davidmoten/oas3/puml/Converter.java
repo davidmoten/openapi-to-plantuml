@@ -13,6 +13,7 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -148,7 +149,10 @@ public final class Converter {
 //        model = new ModelConverterExtract(Collections.singleton("GET.*athletes.*routes"), true).apply(model);
         int anonNumber = 0;
         StringBuilder b = new StringBuilder();
-        for (Class cls : model.classes()) {
+        List<Class> sortedClasses = model.classes().stream()
+                .sorted(Comparator.comparing(Class::name))
+                .collect(Collectors.toList());
+        for (Class cls : sortedClasses) {
             if (cls.isEnum()) {
                 b.append("\n\nenum " + Util.quote(cls.name())
                         + toStereotype(cls.type()).map(x -> " <<" + x + ">>").orElse("") + " {");

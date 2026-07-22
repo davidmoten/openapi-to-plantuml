@@ -9,6 +9,11 @@ BackgroundColor<<Path>> Wheat
 }
 set namespaceSeparator none
 
+class "Error" {
+  {field} code : integer
+  {field} message : string
+}
+
 class "Pet" {
   {field} id : integer
   {field} name : string
@@ -18,19 +23,14 @@ class "Pet" {
 class "Pets" {
 }
 
-class "Error" {
-  {field} code : integer
-  {field} message : string
-}
-
-class "listPets" <<Path>>  <<GET /pets>>  {
-  {field} limit : integer {O}
-}
-
 class "createPets" <<Path>>  <<POST /pets>>  {
 }
 
 class "createPets 201" <<Response>>  {
+}
+
+class "listPets" <<Path>>  <<GET /pets>>  {
+  {field} limit : integer {O}
 }
 
 class "showPetById" <<Path>>  <<GET /pets/{petId}>>  {

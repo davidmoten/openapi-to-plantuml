@@ -17,13 +17,13 @@ class "Customer" {
 class "GET /customer/expired" <<Path>>  {
 }
 
-class "GET /customer/expired.offset" <<Parameter>>  {
+class "GET /customer/expired 200" <<Response>>  {
 }
 
 class "GET /customer/expired.limit" <<Parameter>>  {
 }
 
-class "GET /customer/expired 200" <<Response>>  {
+class "GET /customer/expired.offset" <<Parameter>>  {
 }
 
 "GET /customer/expired" --> "1" "GET /customer/expired.offset"  :  "offset"

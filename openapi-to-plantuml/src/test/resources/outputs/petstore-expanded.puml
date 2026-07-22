@@ -9,11 +9,9 @@ BackgroundColor<<Path>> Wheat
 }
 set namespaceSeparator none
 
-class "Pet" {
-}
-
-class "PetId" {
-  {field} id : integer
+class "Error" {
+  {field} code : integer
+  {field} message : string
 }
 
 class "NewPet" {
@@ -21,9 +19,25 @@ class "NewPet" {
   {field} tag : string {O}
 }
 
-class "Error" {
-  {field} code : integer
-  {field} message : string
+class "Pet" {
+}
+
+class "PetId" {
+  {field} id : integer
+}
+
+class "addPet" <<Path>>  <<POST /pets>>  {
+}
+
+class "deletePet" <<Path>>  <<DELETE /pets/{id}>>  {
+  {field} id : integer
+}
+
+class "deletePet 204" <<Response>>  {
+}
+
+class "find pet by id" <<Path>>  <<GET /pets/{id}>>  {
+  {field} id : integer
 }
 
 class "findPets" <<Path>>  <<GET /pets>>  {
@@ -32,20 +46,6 @@ class "findPets" <<Path>>  <<GET /pets>>  {
 }
 
 class "findPets 200" <<Response>>  {
-}
-
-class "addPet" <<Path>>  <<POST /pets>>  {
-}
-
-class "find pet by id" <<Path>>  <<GET /pets/{id}>>  {
-  {field} id : integer
-}
-
-class "deletePet" <<Path>>  <<DELETE /pets/{id}>>  {
-  {field} id : integer
-}
-
-class "deletePet 204" <<Response>>  {
 }
 
 "Pet" --> "1" "NewPet"

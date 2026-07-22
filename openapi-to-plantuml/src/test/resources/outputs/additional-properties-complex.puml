@@ -9,8 +9,9 @@ BackgroundColor<<Path>> Wheat
 }
 set namespaceSeparator none
 
-class "Thing.property" {
-  {field} key : string
+class "MyValue" {
+  {field} name : string
+  {field} expiry : timestamp
 }
 
 class "Thing" {
@@ -18,9 +19,8 @@ class "Thing" {
   {field} description : string {O}
 }
 
-class "MyValue" {
-  {field} name : string
-  {field} expiry : timestamp
+class "Thing.property" {
+  {field} key : string
 }
 
 "Thing" *--> "*" "Thing.property"  :  "property"

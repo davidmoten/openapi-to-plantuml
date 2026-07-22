@@ -9,9 +9,6 @@ BackgroundColor<<Path>> Wheat
 }
 set namespaceSeparator none
 
-class "Customers" {
-}
-
 class "Customer" {
   {field} firstName : string
   {field} lastName : string
@@ -23,6 +20,9 @@ class "Customer" {
   {field} nicknames : string[] {O}
   {field} favouriteNumbers : integer[] {O}
   {field} picture : byte[] {O}
+}
+
+class "Customers" {
 }
 
 class "Customers.1" <<Response>>  {

@@ -9,12 +9,12 @@ BackgroundColor<<Path>> Wheat
 }
 set namespaceSeparator none
 
+class "Client" {
+}
+
 class "Customer" {
   {field} firstName : string
   {field} lastName : string
-}
-
-class "Client" {
 }
 
 "Client" --> "1" "Customer"

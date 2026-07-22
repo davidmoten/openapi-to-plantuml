@@ -22,14 +22,14 @@ class "Customer" {
   {field} picture : byte[] {O}
 }
 
-class "repositories" <<RequestBody>>  {
-  {field} repository_ids : integer[] {O}
-}
-
 class "GET /customer/expired" <<Path>>  {
 }
 
 class "GET /customer/expired 200" <<Response>>  {
+}
+
+class "repositories" <<RequestBody>>  {
+  {field} repository_ids : integer[] {O}
 }
 
 "GET /customer/expired 200" --> "*" "Customer"

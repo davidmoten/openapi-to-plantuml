@@ -9,6 +9,9 @@ BackgroundColor<<Path>> Wheat
 }
 set namespaceSeparator none
 
+class "employee" {
+}
+
 class "employee.role" {
   {field} employeeType : string {O}
   {field} level : integer
@@ -17,9 +20,6 @@ class "employee.role" {
 class "employee.role.1" {
   {field} employeeType : string {O}
   {field} income : decimal
-}
-
-class "employee" {
 }
 
 diamond anon1

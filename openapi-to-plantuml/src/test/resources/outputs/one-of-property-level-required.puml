@@ -9,15 +9,15 @@ BackgroundColor<<Path>> Wheat
 }
 set namespaceSeparator none
 
+class "doctor" {
+  {field} income : decimal
+}
+
 class "employee" {
 }
 
 class "nurse" {
   {field} level : integer
-}
-
-class "doctor" {
-  {field} income : decimal
 }
 
 diamond anon1
