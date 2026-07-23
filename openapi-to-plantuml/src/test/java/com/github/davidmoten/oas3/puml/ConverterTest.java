@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.Arrays;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -77,7 +78,9 @@ public class ConverterTest {
         file.getParentFile().mkdirs();
         StringBuilder b = new StringBuilder();
         b.append("## openapi-to-plantuml examples\n");
-        for (File f : new File("src/test/resources/inputs").listFiles()) {
+        File[] files = new File("src/test/resources/inputs").listFiles();
+        Arrays.sort(files, (x, y) -> x.getName().compareTo(y.getName()));
+        for (File f : files) {
             b.append("\n\n* [" + f.getName() + "](../../../src/test/resources/inputs/" + f.getName()
                     + ")");
             String svg = f.getName().substring(0, f.getName().lastIndexOf(".")) + ".puml.svg";
