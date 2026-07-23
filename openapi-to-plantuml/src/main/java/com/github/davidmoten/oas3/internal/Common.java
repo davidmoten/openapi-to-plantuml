@@ -60,18 +60,15 @@ final class Common {
             // this is an alias case for a schema
             String otherClassName = names.refToClassName(schema.get$ref()).className();
             relationships.add(Association.from(name).to(otherClassName).one().build());
-        } else if (schema instanceof ComposedSchema) {
-            ComposedSchema s = (ComposedSchema) schema;
-            if (s.getOneOf() != null) {
-                addInheritance(classes, relationships, name, s.getOneOf(), names);
-            } else if (s.getAnyOf() != null) {
-                addInheritance(classes, relationships, name, s.getAnyOf(), names);
-            } else if (s.getAllOf() != null) {
-                addMixedTypeAll(classes, relationships, name, s.getAllOf(), null, names);
-            } else {
-                throw new RuntimeException("unexpected");
-            }
-        } else if (schema.getProperties() != null) {
+        }
+        if (schema.getOneOf() != null) {
+            addInheritance(classes, relationships, name, schema.getOneOf(), names);
+        } else if (schema.getAnyOf() != null) {
+            addInheritance(classes, relationships, name, schema.getAnyOf(), names);
+        } else if (schema.getAllOf() != null) {
+            addMixedTypeAll(classes, relationships, name, schema.getAllOf(), null, names);
+        }
+        if (schema.getProperties() != null) {
             final Set<String> required;
             if (schema.getRequired() != null) {
                 required = new HashSet<>(schema.getRequired());
@@ -81,21 +78,20 @@ final class Common {
             schema.getProperties().entrySet().forEach(entry -> {
                 String property = entry.getKey();
                 Schema<?> sch = entry.getValue();
-                if (sch instanceof ComposedSchema) {
-                    ComposedSchema s = (ComposedSchema) sch;
+                if (sch.getOneOf() != null || sch.getAnyOf() != null || sch.getAllOf() != null) {
                     @SuppressWarnings("rawtypes")
                     final List<Schema> list;
                     final AssociationType associationType;
                     boolean req = required.contains(property);
                     boolean isAll = false;
-                    if (s.getOneOf() != null) {
-                        list = s.getOneOf();
+                    if (sch.getOneOf() != null) {
+                        list = sch.getOneOf();
                         associationType = req ? AssociationType.ONE : AssociationType.ZERO_ONE;
-                    } else if (s.getAnyOf() != null) {
-                        list = s.getAnyOf();
+                    } else if (sch.getAnyOf() != null) {
+                        list = sch.getAnyOf();
                         associationType = req ? AssociationType.ONE : AssociationType.ZERO_ONE;
-                    } else if (s.getAllOf() != null) {
-                        list = s.getAllOf();
+                    } else if (sch.getAllOf() != null) {
+                        list = sch.getAllOf();
                         isAll = true;
                         associationType = null;
                     } else {
@@ -121,8 +117,7 @@ final class Common {
                     if (t.isPresent()) {
                         String type = t.get();
                         if (isComplexArrayType(type)) {
-                            addArray(name, classes, relationships, property, (ArraySchema) sch,
-                                    names);
+                            addArray(name, classes, relationships, property, sch, names);
                         } else if (type.equals("object")) {
                             // create anon class
                             String otherClassName = names.nextClassName(name + "." + property);
@@ -132,12 +127,12 @@ final class Common {
                             addToOne(relationships, name, otherClassName, property,
                                     required.contains(property), true);
                         } else if (type.equals("map")) {
-                            MapSchema ms = (MapSchema) sch;
-                            if (ms.getAdditionalProperties() instanceof Boolean) {
+                            Object additionalProperties = sch.getAdditionalProperties();
+                            if (additionalProperties instanceof Boolean) {
                                 // TODO what if Boolean.FALSE?
-                                ms.setAdditionalProperties(new Schema<>());
+                                sch.setAdditionalProperties(new Schema<>());
                             }
-                            Schema<?> valueSchema = ((Schema<?>) ms.getAdditionalProperties());
+                            Schema<?> valueSchema = (Schema<?>) sch.getAdditionalProperties();
                             if (valueSchema.get$ref() != null) {
                                 String keyClassName = names.nextClassName(name + "." + property);
                                 ObjectSchema keySchema = new ObjectSchema();
@@ -153,16 +148,15 @@ final class Common {
                                 fields.add(new Field(entry.getKey(), "string -> string", type.endsWith("]"),
                                         true));
                             }
-                        } else {
+                        } else if (!(entry.getValue() instanceof ComposedSchema)) {
                             fields.add(new Field(entry.getKey(), type, type.endsWith("]"),
                                     required.contains(entry.getKey())));
                         }
                     }
                 }
             });
-        } else if (schema instanceof ArraySchema) {
-            ArraySchema a = (ArraySchema) schema;
-            Schema<?> items = a.getItems();
+        } else if (schema.getItems() != null) {
+            Schema<?> items = schema.getItems();
             String ref = items.get$ref();
             String otherClassName;
             if (ref != null) {
@@ -175,7 +169,11 @@ final class Common {
                 relationships.addAll(m.relationships());
             }
             addToMany(relationships, name, otherClassName);
-        } else if (!(schema instanceof ObjectSchema)) {
+        } else if (!(schema instanceof ObjectSchema)
+                && schema.get$ref() == null
+                && schema.getOneOf() == null
+                && schema.getAnyOf() == null
+                && schema.getAllOf() == null) {
             // has no properties so ignore ObjectSchema
             Optional<String> t = getUmlTypeName(schema, names);
             if (t.isPresent()) {
@@ -208,7 +206,7 @@ final class Common {
     }
 
     private static void addArray(String name, List<Class> classes, List<Relationship> relationships,
-            String property, ArraySchema a, Names names) {
+            String property, Schema a, Names names) {
         Preconditions.checkNotNull(property);
         // is array of items
         Schema<?> items = a.getItems();
@@ -313,26 +311,25 @@ final class Common {
             type = names.refToClassName(ref).className();
         } else if (schema == null) {
             type = null;
+        } else if (schema instanceof BinarySchema || "binary".equals(schema.getFormat())) {
+            type = "byte[]";
+        } else if (schema instanceof ByteArraySchema || "byte".equals(schema.getFormat())) {
+            type = "byte[]";
         } else if (schema instanceof StringSchema) {
             type = "string";
         } else if (schema instanceof BooleanSchema) {
             type = "boolean";
-        } else if (schema instanceof DateTimeSchema) {
+        } else if (schema instanceof DateTimeSchema || "date-time".equals(schema.getFormat())) {
             type = "timestamp";
-        } else if (schema instanceof DateSchema) {
+        } else if (schema instanceof DateSchema || "date".equals(schema.getFormat())) {
             type = "date";
         } else if (schema instanceof NumberSchema) {
             type = "decimal";
         } else if (schema instanceof IntegerSchema) {
             type = "integer";
-        } else if (schema instanceof ArraySchema) {
-            ArraySchema a = (ArraySchema) schema;
-            type = getUmlTypeName(a.getItems(), names) //
+        } else if (schema instanceof ArraySchema || schema.getItems() != null) {
+            type = getUmlTypeName(schema.getItems(), names) //
                     .orElse("object") + "[]";
-        } else if (schema instanceof BinarySchema) {
-            type = "byte[]";
-        } else if (schema instanceof ByteArraySchema) {
-            type = "byte[]";
         } else if (schema instanceof ObjectSchema) {
             type = "object";
         } else if (schema instanceof FileSchema) {
@@ -343,19 +340,40 @@ final class Common {
             type = "string";
         } else if (schema instanceof UUIDSchema) {
             type = "string";
-        } else if (schema instanceof MapSchema) {
+        } else if (schema instanceof MapSchema
+                || (schema.getAdditionalProperties() != null
+                        && !(schema.getAdditionalProperties() instanceof Boolean))) {
             type = "map";
         } else if (schema instanceof ComposedSchema) {
             // TODO handle ComposedSchema
             type = "string";
-        } else if ("string".equals(schema.getType())) {
-            type = "string";
-        } else if (schema.get$ref() != null) {
-            type = names.refToClassName(schema.get$ref()).className();
-        } else if (schema.getType() == null) {
-            type = null;
         } else {
-            throw new RuntimeException("not expected" + schema);
+            Set<String> types = schema.getTypes();
+            if (types != null && !types.isEmpty()) {
+                if (types.contains("array")) {
+                    type = getUmlTypeName(schema.getItems(), names).orElse("object") + "[]";
+                } else if (types.contains("string")) {
+                    type = "string";
+                } else if (types.contains("integer")) {
+                    type = "integer";
+                } else if (types.contains("number")) {
+                    type = "decimal";
+                } else if (types.contains("boolean")) {
+                    type = "boolean";
+                } else if (types.contains("object")) {
+                    type = "object";
+                } else {
+                    type = types.iterator().next();
+                }
+            } else if ("string".equals(schema.getType())) {
+                type = "string";
+            } else if (schema.get$ref() != null) {
+                type = names.refToClassName(schema.get$ref()).className();
+            } else if (schema.getType() == null) {
+                type = null;
+            } else {
+                throw new RuntimeException("not expected" + schema);
+            }
         }
         return Optional.ofNullable(type);
     }
