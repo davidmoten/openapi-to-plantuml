@@ -24,7 +24,7 @@ public final class ComponentsHelper {
                 .stream() //
                 .map(entry -> Common.toModelClass(names.schemaClassName(entry.getKey()), entry.getValue(), names,
                         ClassType.SCHEMA)) //
-                .reduce(Model.EMPTY, (a, b) -> a.add(b));
+                .reduce(Model.EMPTY, Model::add);
 
         Model part2 = names //
                 .requestBodies() //
@@ -45,7 +45,7 @@ public final class ComponentsHelper {
                                 ClassType.REQUEST_BODY);
                     }
                 }) //
-                .reduce(Model.EMPTY, (a, b) -> a.add(b));
+                .reduce(Model.EMPTY, Model::add);
 
         Model part3 = names //
                 .parameters() //

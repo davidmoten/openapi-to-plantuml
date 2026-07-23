@@ -1,9 +1,11 @@
 package com.github.davidmoten.oas3.puml;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
@@ -14,9 +16,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class ConverterBatchTest {
@@ -43,9 +43,22 @@ public class ConverterBatchTest {
     }
 
     @Test
-    public void test() {
+    public void test30() {
         System.out.println("checking " + input);
-        try (InputStream in = new FileInputStream(input)) {
+        String inputData = com.github.davidmoten.junit.Files.readString(input, StandardCharsets.UTF_8);
+        test(inputData);
+    }
+
+    @Test
+    public void test31() {
+        System.out.println("checking " + input);
+        String inputData = com.github.davidmoten.junit.Files.readString(input, StandardCharsets.UTF_8);
+        inputData = inputData.replace("openapi: 3.0.1", "openapi: 3.1.0");
+        test(inputData);
+    }
+
+    private void test(String inputData) {
+        try (InputStream in = new ByteArrayInputStream(inputData.getBytes())) {
             String puml = Converter.openApiToPuml(in).trim();
             File pumlFile = new File("target/outputs",
                     input.getName().substring(0, input.getName().lastIndexOf('.')) + ".puml");
