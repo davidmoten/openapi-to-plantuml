@@ -57,19 +57,21 @@ public final class Converter {
         // prevent instantiation
     }
 
-    public static String openApiToPuml(InputStream in) throws IOException {
-        return openApiToPuml(in, ModelTransformer.identity()).puml();
+    public static String openApiToPuml(InputStream in, boolean includeRelationFields) throws IOException {
+        return openApiToPuml(in, ModelTransformer.identity(), includeRelationFields).puml();
     }
 
-    public static List<PumlExtract> openApiToPumlSplitByMethod(File file) throws IOException {
+    public static List<PumlExtract> openApiToPumlSplitByMethod(File file,
+            boolean includeRelationFields) throws IOException {
         try (InputStream in = new BufferedInputStream(new FileInputStream(file))) {
-            return openApiToPumlSplitByMethod(in);
+            return openApiToPumlSplitByMethod(in, includeRelationFields);
         }
     }
 
-    public static List<PumlExtract> openApiToPumlSplitByMethod(InputStream in) throws IOException {
+    public static List<PumlExtract> openApiToPumlSplitByMethod(InputStream in,
+            boolean includeRelationFields) throws IOException {
         OpenAPI api = parseOpenApi(IOUtils.toString(in, StandardCharsets.UTF_8));
-        Model m = toModel(api);
+        Model m = toModel(api, includeRelationFields);
         return m //
                 .classes() //
                 .stream() //
@@ -82,23 +84,26 @@ public final class Converter {
                 .collect(Collectors.toList());
     }
 
-    public static <T extends HasPuml> T openApiToPuml(InputStream in, ModelTransformer<T> transformer)
+    public static <T extends HasPuml> T openApiToPuml(InputStream in, ModelTransformer<T> transformer,
+            boolean includeRelationFields)
             throws IOException {
-        return openApiToPuml(IOUtils.toString(in, StandardCharsets.UTF_8), transformer);
+        return openApiToPuml(IOUtils.toString(in, StandardCharsets.UTF_8), transformer, includeRelationFields);
     }
 
-    public static String openApiToPuml(File file) throws IOException {
-        return openApiToPuml(file, ModelTransformer.identity()).puml();
+    public static String openApiToPuml(File file, boolean includeRelationFields) throws IOException {
+        return openApiToPuml(file, ModelTransformer.identity(), includeRelationFields).puml();
     }
 
-    public static <T extends HasPuml> T openApiToPuml(File file, ModelTransformer<T> transformer) throws IOException {
+    public static <T extends HasPuml> T openApiToPuml(File file, ModelTransformer<T> transformer,
+            boolean includeRelationFields) throws IOException {
         try (InputStream in = new BufferedInputStream(new FileInputStream(file))) {
-            return openApiToPuml(in, transformer);
+            return openApiToPuml(in, transformer, includeRelationFields);
         }
     }
 
-    public static <T extends HasPuml> T openApiToPuml(String openApi, ModelTransformer<T> transformer) {
-        return openApiToPuml(parseOpenApi(openApi), transformer);
+    public static <T extends HasPuml> T openApiToPuml(String openApi, ModelTransformer<T> transformer,
+            boolean includeRelationFields) {
+        return openApiToPuml(parseOpenApi(openApi), transformer, includeRelationFields);
     }
 
     private static OpenAPI parseOpenApi(String openApi) {
@@ -110,21 +115,22 @@ public final class Converter {
         return result.getOpenAPI();
     }
 
-    public static String openApiToPuml(String openApi) {
-        return openApiToPuml(openApi, ModelTransformer.identity()).puml();
+    public static String openApiToPuml(String openApi, boolean includeRelationFields) {
+        return openApiToPuml(openApi, ModelTransformer.identity(), includeRelationFields).puml();
     }
 
-    private static <T extends HasPuml> T openApiToPuml(OpenAPI a, ModelTransformer<T> transformer) {
-        Model m = toModel(a);
+    private static <T extends HasPuml> T openApiToPuml(OpenAPI a, ModelTransformer<T> transformer,
+            boolean includeRelationFields) {
+        Model m = toModel(a, includeRelationFields);
         Model model = transformer.apply(m);
         return transformer.createHasPuml(toPlantUml(model));
     }
 
-    private static Model toModel(OpenAPI a) {
+    private static Model toModel(OpenAPI a, boolean includeRelationFields) {
         Names names = new Names(a);
         return ComponentsHelper //
-                .toModel(names) //
-                .add(PathsHelper.toModel(names));
+                .toModel(names, includeRelationFields) //
+                .add(PathsHelper.toModel(names, includeRelationFields));
     }
 
     private static String toPlantUml(Model model) {
@@ -279,9 +285,10 @@ public final class Converter {
         return Optional.ofNullable(result);
     }
 
-    public static void writeSplitFiles(File inputFile, String format, File out) throws IOException {
+    public static void writeSplitFiles(File inputFile, String format, File out,
+            boolean includeRelationFields) throws IOException {
         out.mkdirs();
-        List<PumlExtract> list = Converter.openApiToPumlSplitByMethod(inputFile);
+        List<PumlExtract> list = Converter.openApiToPumlSplitByMethod(inputFile, includeRelationFields);
         for (PumlExtract puml : list) {
             String filename = puml.classNameFrom().iterator().next().replace(" ", "_").replace("/", "_")
                     .replace("\\", "_").replace("{", "").replace("}", "");
@@ -295,9 +302,10 @@ public final class Converter {
         }
     }
 
-    public static void writeSingleFile(File inputFile, String format, File out) throws IOException {
+    public static void writeSingleFile(File inputFile, String format, File out,
+            boolean includeRelationFields) throws IOException {
         out.getParentFile().mkdirs();
-        String puml = Converter.openApiToPuml(inputFile);
+        String puml = Converter.openApiToPuml(inputFile, includeRelationFields);
         if (format.equals("PUML")) {
             Files.write(out.toPath(), puml.getBytes(StandardCharsets.UTF_8));
         } else {

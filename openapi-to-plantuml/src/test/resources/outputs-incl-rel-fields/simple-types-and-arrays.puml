@@ -1,0 +1,30 @@
+@startuml
+hide <<Path>> circle
+hide <<Response>> circle
+hide <<Parameter>> circle
+hide empty methods
+hide empty fields
+skinparam class {
+BackgroundColor<<Path>> Wheat
+}
+set namespaceSeparator none
+
+class "My.Customer" {
+  {field} firstName : string
+  {field} lastName : string
+  {field} secret : string {O}
+  {field} email : string {O}
+  {field} id : string {O}
+  {field} history : byte[] {O}
+  {field} history2 : byte[] {O}
+  {field} heightMetres : decimal {O}
+  {field} dateOfBirth : date
+  {field} lastSessionTime : timestamp {O}
+  {field} numberOfChildren : integer {O}
+  {field} alive : boolean {O}
+  {field} nicknames : string[] {O}
+  {field} favouriteNumbers : integer[] {O}
+  {field} picture : byte[] {O}
+}
+
+@enduml

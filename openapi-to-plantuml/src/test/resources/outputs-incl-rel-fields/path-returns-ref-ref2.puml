@@ -1,0 +1,40 @@
+@startuml
+hide <<Path>> circle
+hide <<Response>> circle
+hide <<Parameter>> circle
+hide empty methods
+hide empty fields
+skinparam class {
+BackgroundColor<<Path>> Wheat
+}
+set namespaceSeparator none
+
+class "Customer" {
+  {field} firstName : string
+  {field} lastName : string
+  {field} heightMetres : decimal {O}
+  {field} dateOfBirth : date
+  {field} lastSessionTime : timestamp {O}
+  {field} numberOfChildren : integer {O}
+  {field} alive : boolean {O}
+  {field} nicknames : string[] {O}
+  {field} favouriteNumbers : integer[] {O}
+  {field} picture : byte[] {O}
+}
+
+class "Customers" {
+}
+
+class "Customers.1" <<Response>>  {
+}
+
+class "GET /customer/expired" <<Path>>  {
+}
+
+"Customers" --> "*" "Customer"
+
+"Customers.1" --> "1" "Customers"
+
+"GET /customer/expired" ..> "1" "Customers.1"  :  "200"
+
+@enduml

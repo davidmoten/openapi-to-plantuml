@@ -52,6 +52,13 @@ public final class GenerateMojo extends AbstractMojo {
     @Parameter(name = "output")
     private File output;
 
+    /**
+     * Include relation fields in the generated class diagram?
+     * When true relations are both displayed as relations and displayed as class fields.
+     */
+    @Parameter(name = "includeRelationFields")
+    private boolean includeRelationFields = false;
+
     @Parameter(defaultValue = "${project}", readonly = true, required = true)
     private MavenProject project;
 
@@ -74,12 +81,12 @@ public final class GenerateMojo extends AbstractMojo {
                 out = output;
             }
             getLog().info("Generating diagram in format=" + format //
-                    + " with style=" + style + " to " + out);
+                    + " with style=" + style + " to " + out + " with includeRelationFields=" + includeRelationFields);
             try {
                 if (style == Style.SINGLE) {
-                    Converter.writeSingleFile(input, format, out);
+                    Converter.writeSingleFile(input, format, out, includeRelationFields);
                 } else {
-                    Converter.writeSplitFiles(input, format, out);
+                    Converter.writeSplitFiles(input, format, out, includeRelationFields);
                 }
             } catch (IOException e) {
                 throw new MojoExecutionException("Error generating diagrams", e);

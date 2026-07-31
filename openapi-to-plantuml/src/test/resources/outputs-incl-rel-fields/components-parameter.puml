@@ -1,0 +1,28 @@
+@startuml
+hide <<Method>> circle
+hide empty methods
+hide empty fields
+set namespaceSeparator none
+
+class "Customer" {
+  firstName : string {O}
+  lastName : string {O}
+}
+
+class "CustomerId" <<Parameter>> {
+  value : string
+}
+
+class "GET /customer/expired" <<Method>> {
+}
+
+class "GET /customer/expired 200 Response" <<Response>> {
+}
+
+"GET /customer/expired 200 Response" --> "*" "Customer"
+
+"GET /customer/expired" ..> "GET /customer/expired 200 Response": 200
+
+"GET /customer/expired" --> "1" "CustomerId" : "customerId"
+
+@enduml

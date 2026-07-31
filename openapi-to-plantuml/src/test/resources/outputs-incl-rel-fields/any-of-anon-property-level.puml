@@ -1,0 +1,34 @@
+@startuml
+hide <<Path>> circle
+hide <<Response>> circle
+hide <<Parameter>> circle
+hide empty methods
+hide empty fields
+skinparam class {
+BackgroundColor<<Path>> Wheat
+}
+set namespaceSeparator none
+
+class "employee" {
+  {field} role : employee.role {O}
+}
+
+class "employee.role" {
+  {field} employeeType : string {O}
+  {field} level : integer
+}
+
+class "employee.role.1" {
+  {field} employeeType : string {O}
+  {field} income : decimal
+}
+
+diamond anon1
+
+"employee" -->"0..1" "anon1" : "role"
+
+"employee.role" --|> "anon1"
+
+"employee.role.1" --|> "anon1"
+
+@enduml
