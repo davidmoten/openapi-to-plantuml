@@ -1,0 +1,31 @@
+@startuml
+hide <<Path>> circle
+hide <<Response>> circle
+hide <<Parameter>> circle
+hide empty methods
+hide empty fields
+skinparam class {
+BackgroundColor<<Path>> Wheat
+}
+set namespaceSeparator none
+
+class "MyValue" {
+  {field} name : string
+  {field} expiry : timestamp
+}
+
+class "Thing" {
+  {field} name : string
+  {field} description : string {O}
+  {field} property : MyValue {O}
+}
+
+class "Thing.property" {
+  {field} key : string
+}
+
+"Thing" *--> "*" "Thing.property"  :  "property"
+
+"Thing.property" --> "1" "MyValue"  :  "value"
+
+@enduml

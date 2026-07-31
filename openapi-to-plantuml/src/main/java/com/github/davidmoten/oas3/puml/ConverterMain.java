@@ -20,24 +20,26 @@ public final class ConverterMain {
 
     public static void main(String[] args) throws IOException {
         String usage = "Usage: java -jar openapi-to-plantuml-all.jar (single|split)"
-                + " <OPENAPI_FILE> <FILE_FORMAT> <OUTPUT_DIRECTORY>" + "\n  File formats are:\n"
+                + " <OPENAPI_FILE> <FILE_FORMAT> <OUTPUT_DIRECTORY> [include-relation-fields]"
+                + "\n  File formats are:\n"
                 + FILE_FORMATS.stream().map(x -> "    " + x + "\n").collect(Collectors.joining());
-        if (args.length != 4) {
+        if (args.length != 4 && args.length != 5) {
             System.out.println(usage);
-            throw new IllegalArgumentException("must pass 4 arguments");
+            throw new IllegalArgumentException("must pass 4 or 5 arguments");
         } else {
             Style style = Style.valueOf(args[0].toUpperCase(Locale.ENGLISH));
+            String inputFilename = args[1];
+            String format = args[2];
+            File out = new File(args[3]);
+            boolean includeRelationFields = false;
+            if (args.length == 5) {
+                includeRelationFields = Boolean.parseBoolean(args[4]);
+            }
             if (style == Style.SPLIT) {
-                String inputFilename = args[1];
-                String format = args[2];
-                File out = new File(args[3]);
                 out.mkdirs();
-                Converter.writeSplitFiles(new File(inputFilename), format, out);
+                Converter.writeSplitFiles(new File(inputFilename), format, out, includeRelationFields);
             } else {
-                String inputFilename = args[1];
-                String format = args[2];
-                File out = new File(args[3]);
-                Converter.writeSingleFile(new File(inputFilename), format, out);
+                Converter.writeSingleFile(new File(inputFilename), format, out, includeRelationFields);
             }
         }
     }

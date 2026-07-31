@@ -34,11 +34,11 @@ public final class PathsHelper {
         // prevent instantiation
     }
 
-    public static Model toModel(Names names) {
-        return paths(names);
+    public static Model toModel(Names names, boolean includeRelationFields) {
+        return paths(names, includeRelationFields);
     }
 
-    private static Model paths(Names names) {
+    private static Model paths(Names names, boolean includeRelationFields) {
         if (names.paths() == null) {
             return Model.EMPTY;
         } else {
@@ -46,12 +46,12 @@ public final class PathsHelper {
                     .entrySet() //
                     .stream() //
                     .map(entry -> toModelPath(entry.getKey(), //
-                            entry.getValue(), names))
+                            entry.getValue(), names, includeRelationFields))
                     .reduce(Model.EMPTY, (a, b) -> a.add(b));
         }
     }
 
-    private static Model toModelPath(String path, PathItem p, Names names) {
+    private static Model toModelPath(String path, PathItem p, Names names, boolean includeRelationFields) {
         // add method class blocks with HTTP verb and parameters
         // add response lines
         return p.readOperationsMap() //
@@ -63,23 +63,23 @@ public final class PathsHelper {
                     String defaultClassName = entry.getKey() + " " + path;
                     String className = operationId.orElse(defaultClassName);
                     FieldsWithModel f = toModelParameters(names, className,
-                            operation.getParameters());
+                            operation.getParameters(), includeRelationFields);
                     Optional<String> description = operationId.isPresent() //
                             ? Optional.of(defaultClassName) : Optional.empty();
                     Model m = new Model(new Class(className, ClassType.METHOD, //
                             f.fields, false, description))
                             .add(f.model);
-                    m = m.add(toModelResponses(names, operation, className));
-                    return m.add(toModelRequestBody(className, operation, names));
+                    m = m.add(toModelResponses(names, operation, className, includeRelationFields));
+                    return m.add(toModelRequestBody(className, operation, names, includeRelationFields));
                 }) //
                 .reduce(Model.EMPTY, (a, b) -> a.add(b));
     }
 
     private static FieldsWithModel toModelParameters(Names names, String className,
-            List<Parameter> parameters) {
+            List<Parameter> parameters, boolean includeRelationFields) {
         return nullListToEmpty(parameters) //
                 .stream()//
-                .map(param -> toModelParameter(names, className, param)) //
+                .map(param -> toModelParameter(names, className, param, includeRelationFields)) //
                 .reduce(FieldsWithModel.EMPTY, (a, b) -> a.add(b));
     }
 
@@ -102,7 +102,7 @@ public final class PathsHelper {
     }
 
     private static FieldsWithModel toModelParameter(Names names, String className,
-            Parameter param) {
+            Parameter param, boolean includeRelationFields) {
         String ref = param.get$ref();
         String parameterName = param.getName();
         Boolean required = param.getRequired();
@@ -140,7 +140,7 @@ public final class PathsHelper {
                 final Model m;
                 if (param.getSchema() != null) {
                     m = Common.toModelClass(anonClassName, param.getSchema(), names,
-                            ClassType.PARAMETER);
+                            ClassType.PARAMETER, includeRelationFields);
                 } else {
                     m = new Model(new Class(anonClassName, ClassType.PARAMETER));
                 }
@@ -180,7 +180,8 @@ public final class PathsHelper {
         }
     }
 
-    private static Model toModelRequestBody(String className, Operation operation, Names names) {
+    private static Model toModelRequestBody(String className, Operation operation, Names names,
+            boolean includeRelationFields) {
         RequestBody body = operation.getRequestBody();
         if (body != null) {
             String ref = body.get$ref();
@@ -203,7 +204,7 @@ public final class PathsHelper {
                 } else {
                     requestBodyClassName = className + " Request";
                     model = Common.toModelClass(requestBodyClassName, sch, names,
-                            ClassType.REQUEST_BODY);
+                            ClassType.REQUEST_BODY, includeRelationFields);
                 }
                 Association a = Association.from(className).to(requestBodyClassName).one().build();
                 return model.add(a);
@@ -212,7 +213,8 @@ public final class PathsHelper {
         return Model.EMPTY;
     }
 
-    private static Model toModelResponses(Names names, Operation operation, String className) {
+    private static Model toModelResponses(Names names, Operation operation, String className,
+            boolean includeRelationFields) {
         return operation //
                 .getResponses() //
                 .entrySet() //
@@ -255,7 +257,7 @@ public final class PathsHelper {
                                 } else {
                                     String returnClassName = newReturnClassName;
                                     m = m.add(Common.toModelClass(returnClassName, sch, names,
-                                            ClassType.RESPONSE));
+                                            ClassType.RESPONSE, includeRelationFields));
                                     m = m.add(Association.from(className).to(returnClassName).one()
                                             .responseCode(responseCode)
                                             .responseContentType(contentType).build());

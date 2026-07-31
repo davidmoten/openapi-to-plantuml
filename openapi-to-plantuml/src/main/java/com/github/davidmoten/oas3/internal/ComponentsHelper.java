@@ -17,13 +17,13 @@ public final class ComponentsHelper {
         // prevent instantiation
     }
 
-    public static Model toModel(Names names) {
+    public static Model toModel(Names names, boolean includeRelationFields) {
         Model part1 = names //
                 .schemas() //
                 .entrySet() //
                 .stream() //
                 .map(entry -> Common.toModelClass(names.schemaClassName(entry.getKey()), entry.getValue(), names,
-                        ClassType.SCHEMA)) //
+                        ClassType.SCHEMA, includeRelationFields)) //
                 .reduce(Model.EMPTY, Model::add);
 
         Model part2 = names //
@@ -42,7 +42,7 @@ public final class ComponentsHelper {
                     } else {
                         return Common.toModelClass(names.requestBodyClassName(entry.getKey()),
                                 first(entry.getValue().getContent()).get().getValue().getSchema(), names,
-                                ClassType.REQUEST_BODY);
+                                ClassType.REQUEST_BODY, includeRelationFields);
                     }
                 }) //
                 .reduce(Model.EMPTY, Model::add);
@@ -61,7 +61,8 @@ public final class ComponentsHelper {
                         Association a = Association.from(className).to(otherClassName).one().build();
                         return new Model(c, a);
                     } else {
-                        return Common.toModelClass(className, p.getSchema(), names, ClassType.PARAMETER);
+                        return Common.toModelClass(className, p.getSchema(), names, ClassType.PARAMETER,
+                                includeRelationFields);
                     }
                 }) //
                 .reduce(Model.EMPTY, (a, b) -> a.add(b));
@@ -73,7 +74,7 @@ public final class ComponentsHelper {
                 // TODO handle ref responses as per parameters and request bodies above
                 .map(entry -> first(nullMapToEmpty(entry.getValue().getContent())) //
                         .map(x -> Common.toModelClass(names.responseClassName(entry.getKey()), x.getValue().getSchema(),
-                                names, ClassType.RESPONSE)) //
+                                names, ClassType.RESPONSE, includeRelationFields)) //
                         .orElse(new Model(new Class(names.responseClassName(entry.getKey()), ClassType.RESPONSE)))) //
                 .reduce(Model.EMPTY, (a, b) -> a.add(b));
 

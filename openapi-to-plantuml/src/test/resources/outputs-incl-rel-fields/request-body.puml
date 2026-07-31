@@ -1,0 +1,41 @@
+@startuml
+hide <<Path>> circle
+hide <<Response>> circle
+hide <<Parameter>> circle
+hide empty methods
+hide empty fields
+skinparam class {
+BackgroundColor<<Path>> Wheat
+}
+set namespaceSeparator none
+
+class "Customer" {
+  {field} firstName : string
+  {field} lastName : string
+  {field} heightMetres : decimal {O}
+  {field} dateOfBirth : date
+  {field} lastSessionTime : timestamp {O}
+  {field} numberOfChildren : integer {O}
+  {field} alive : boolean {O}
+  {field} nicknames : string[] {O}
+  {field} favouriteNumbers : integer[] {O}
+  {field} picture : byte[] {O}
+}
+
+class "GET /customer/expired" <<Path>>  {
+}
+
+class "GET /customer/expired 200" <<Response>>  {
+}
+
+class "GET /customer/expired Request" <<RequestBody>>  {
+  {field} repository_ids : integer[] {O}
+}
+
+"GET /customer/expired 200" --> "*" "Customer"
+
+"GET /customer/expired" ..> "1" "GET /customer/expired 200"  :  "200"
+
+"GET /customer/expired" --> "1" "GET /customer/expired Request"
+
+@enduml

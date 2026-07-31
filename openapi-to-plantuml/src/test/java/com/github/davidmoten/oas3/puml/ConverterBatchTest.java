@@ -23,6 +23,7 @@ public class ConverterBatchTest {
 
     private static final File INPUTS = new File("src/test/resources/inputs/");
     private static final File OUTPUTS = new File("src/test/resources/outputs/");
+    private static final File OUTPUTS_INC_RELATION_FIELDS = new File("src/test/resources/outputs-incl-rel-fields/");
 
     private final File input;
 
@@ -46,7 +47,7 @@ public class ConverterBatchTest {
     public void test30() {
         System.out.println("checking " + input);
         String inputData = com.github.davidmoten.junit.Files.readString(input, StandardCharsets.UTF_8);
-        test(inputData);
+        test(inputData, false);
     }
 
     @Test
@@ -54,18 +55,35 @@ public class ConverterBatchTest {
         System.out.println("checking " + input);
         String inputData = com.github.davidmoten.junit.Files.readString(input, StandardCharsets.UTF_8);
         inputData = inputData.replace("openapi: 3.0.1", "openapi: 3.1.0");
-        test(inputData);
+        test(inputData, false);
     }
 
-    private void test(String inputData) {
+    @Test
+    public void test30IncludeRelationFields() {
+        System.out.println("checking " + input);
+        String inputData = com.github.davidmoten.junit.Files.readString(input, StandardCharsets.UTF_8);
+        test(inputData, true);
+    }
+
+    @Test
+    public void test31IncludeRelationFields() {
+        System.out.println("checking " + input);
+        String inputData = com.github.davidmoten.junit.Files.readString(input, StandardCharsets.UTF_8);
+        inputData = inputData.replace("openapi: 3.0.1", "openapi: 3.1.0");
+        test(inputData, true);
+    }
+
+    private void test(String inputData, boolean includeRelationFields) {
         try (InputStream in = new ByteArrayInputStream(inputData.getBytes())) {
-            String puml = Converter.openApiToPuml(in).trim();
+            String puml = Converter.openApiToPuml(in, includeRelationFields).trim();
             File pumlFile = new File("target/outputs",
                     input.getName().substring(0, input.getName().lastIndexOf('.')) + ".puml");
             pumlFile.getParentFile().mkdirs();
             pumlFile.delete();
             Files.write(pumlFile.toPath(), puml.getBytes(StandardCharsets.UTF_8));
-            File output = new File(OUTPUTS, input.getName().substring(0, input.getName().lastIndexOf('.')) + ".puml");
+            File outputsPath = includeRelationFields ? OUTPUTS_INC_RELATION_FIELDS : OUTPUTS;
+            String outputsName = input.getName().substring(0, input.getName().lastIndexOf('.')) + ".puml";
+            File output = new File(outputsPath, outputsName);
             if (!output.exists()) {
                 output.createNewFile();
                 System.out.println(puml);
